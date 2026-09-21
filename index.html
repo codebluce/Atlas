@@ -3,96 +3,44 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>信贷风控学习手册 · 路线图</title>
-<link rel="stylesheet" href="style.css">
+<title>Atlas · 研究课题目录</title>
+<link rel="stylesheet" href="design-system/style.css">
 </head>
 <body>
 
 <header class="masthead">
   <div class="container">
-    <span class="eyebrow">📓 个人学习手册 · 持续更新</span>
-    <h1>信贷风控学习手册</h1>
-    <p class="sub">从一篇公众号科普文出发，系统搭建信贷风控的知识框架。这本手册不追求"面面俱到"，只追求"每个概念都配得上一个能讲清楚的例子"。</p>
+    <span class="eyebrow">🗂️ 个人研究档案 · 持续更新</span>
+    <h1>Atlas</h1>
+    <p class="sub">研究课题与手册的集散地。每个课题独立成册，点进卡片进入对应课题的目录页。</p>
   </div>
 </header>
 
 <div class="wrap">
 
   <div class="part" style="margin-top:36px;">
-    <div class="part-head"><span class="part-num">MAP</span><h2>怎么用这本手册</h2></div>
-    <p class="part-lede">整本手册围绕信贷风控的两条主线组织：<strong>业务生命周期</strong>（贷前→贷中→贷后）和 <strong>方法论层次</strong>（数据→特征→模型→策略→监控）。下面 7 个模块是知识地图的划分方式；点开的卡片是已经写好的正文，其余会陆续更新。</p>
+    <div class="part-head"><span class="part-num">TOPICS</span><h2>课题列表</h2></div>
+    <p class="part-lede">按主题拆分的研究单元。点开卡片即进入该课题的目录与正文。新课题只往这里加，不动其他目录。</p>
   </div>
 
   <div class="roadmap-grid">
 
-    <a class="module-card linked" href="module-01-scorecard.html">
-      <div class="card-top"><span class="kicker">模块一 · 骨架</span><span class="tag tag-good">推荐第③步 · 已完成</span></div>
-      <h3>评分卡体系 →</h3>
-      <p>A卡 / B卡 / C卡是什么，为什么逻辑回归是主流，评分卡怎么从"概率"变成"分数"。</p>
+    <a class="module-card linked" href="topics/credit-risk/index.html">
+      <div class="card-top"><span class="kicker">信贷风控</span><span class="tag tag-good">进行中 · 4 / 7 模块</span></div>
+      <h3>信贷风控学习手册 →</h3>
+      <p>从一篇公众号科普文出发，系统搭建信贷风控的知识框架。Vintage 分析、评分卡、特征工程、模型评估。</p>
     </a>
 
-    <a class="module-card linked" href="module-02-woe.html">
-      <div class="card-top"><span class="kicker">模块二 · 手艺</span><span class="tag tag-good">推荐第②步 · 已完成</span></div>
-      <h3>特征工程四件套 →</h3>
-      <p>分箱、WOE、IV、单调性约束——风控建模里最日常、也最容易踩坑的手活。</p>
-    </a>
-
-    <a class="module-card linked" href="module-03-metrics.html">
-      <div class="card-top"><span class="kicker">模块三 · 标尺</span><span class="tag tag-good">推荐第①步 · 已完成</span></div>
-      <h3>模型评估指标 →</h3>
-      <p>KS、AUC、PSI、Lift——怎么判断一个模型"好不好"、上线后"稳不稳"。</p>
-    </a>
-
-    <a class="module-card current linked" href="module-04-vintage.html">
-      <div class="card-top"><span class="kicker">模块四 · 透视镜</span><span class="tag tag-current">推荐第④步 · 当前在学</span></div>
-      <h3>资产质量分析 →</h3>
-      <p>Vintage、MOB、迁徙率——不用建模，光靠分组和对齐账龄就能看穿风险。</p>
-    </a>
-
-    <div class="module-card">
-      <div class="card-top"><span class="kicker">模块五 · 决策</span><span class="tag tag-todo">推荐第⑤步 · 待更新</span></div>
-      <h3>决策与策略</h3>
-      <p>额度定价、冠军挑战者AB测试、拒绝推断、增益模型——从"打分"到"做决定"。</p>
-    </div>
-
-    <div class="module-card">
-      <div class="card-top"><span class="kicker">模块六 · 边界</span><span class="tag tag-todo">推荐第⑥步 · 待更新</span></div>
-      <h3>数据与合规边界</h3>
-      <p>三类数据源、穿越变量/目标泄露、个保法自动化决策条款、利率红线。</p>
-    </div>
-
-    <div class="module-card">
-      <div class="card-top"><span class="kicker">模块七 · 外延</span><span class="tag tag-todo">选修 · 待更新</span></div>
-      <h3>进阶与外延</h3>
-      <p>反欺诈、反洗钱、ABS资产证券化、联合贷资金方口径、BNPL出海合规。</p>
-    </div>
-
-  </div>
-
-  <div class="order-strip">
-    <strong style="margin-right:4px;">推荐学习顺序：</strong>
-    <a class="chip done-chip" href="module-01-scorecard.html">✓ ③ 评分卡体系</a><span class="arrow">→</span>
-    <a class="chip done-chip" href="module-02-woe.html">✓ ② 特征工程</a><span class="arrow">→</span>
-    <a class="chip done-chip" href="module-03-metrics.html">✓ ① 评估指标</a><span class="arrow">→</span>
-    <span class="chip current-chip">④ 资产质量分析</span><span class="arrow">→</span>
-    <span class="chip">⑤ 决策与策略</span><span class="arrow">→</span>
-    <span class="chip">⑥ 合规边界</span><span class="arrow">→</span>
-    <span class="chip">⑦ 进阶外延</span>
   </div>
 
   <div class="callout info">
-    <span class="label">为什么先学模块四？</span>
-    Vintage / 迁徙率这类"资产质量分析"几乎不需要建模知识，只需要会分组、会对齐账龄，就能马上用在实际业务判断上——投入产出比最高，适合作为切入口。之后再往回补模块①②③的建模功底，会更有动力。
-  </div>
-
-  <div class="callout warn">
-    <span class="label">起点</span>
-    本手册第一颗种子来自这篇科普文：<a href="https://mp.weixin.qq.com/s/tjZUQ2JcXQrNb-5O6oVy9Q" target="_blank">《信贷风控的"透视镜"：一文看懂 Vintage 分析》</a>（任知微，风控拾光）。模块四在此基础上做了系统化扩写、补充了迁徙率/损失预测的实战方法，并配了可视化图表。
+    <span class="label">怎么新增一个课题</span>
+    在 <code>topics/</code> 下新建英文 slug 文件夹（如 <code>topics/xxx-analysis/</code>），复制 <code>design-system/module-skeleton.html</code> 为新课题的首个模块页，再到本页面 <code>roadmap-grid</code> 里加一张 <code>module-card</code> 即可。
   </div>
 
   <div class="page-footer">
-    <span>信贷风控学习手册 · 个人笔记，非机构内部资料</span>
-    <span>已完成 → <a href="module-01-scorecard.html">模块①评分卡体系</a> · <a href="module-02-woe.html">模块②特征工程</a> · <a href="module-03-metrics.html">模块③模型评估指标</a> · <a href="module-04-vintage.html">模块④资产质量分析</a></span>
+    <span>Atlas · 个人研究档案</span>
+    <span><a href="DESIGN-SPEC.md">设计范式说明书</a> · <a href="topics/credit-risk/index.html">信贷风课题</a></span>
   </div>
 
 </div>

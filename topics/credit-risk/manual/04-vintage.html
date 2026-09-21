@@ -4,14 +4,14 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>模块四 · 资产质量分析（Vintage分析）| 信贷风控学习手册</title>
-<link rel="stylesheet" href="style.css">
+<link rel="stylesheet" href="../../../design-system/style.css">
 <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.4/dist/chart.umd.min.js"></script>
 </head>
 <body>
 
 <header class="masthead">
   <div class="container">
-    <div class="breadcrumb"><a href="index.html">信贷风控学习手册</a> › 模块四</div>
+    <div class="breadcrumb"><a href="../index.html">信贷风控学习手册</a> › 模块四</div>
     <span class="eyebrow">🔍 模块四 · 资产质量分析</span>
     <h1>Vintage 分析与迁徙率：不用建模，也能看穿风险</h1>
     <p class="sub">同一款贷款产品，1月放的款和10月放的款，风险能差出一大截。只看"整体不良率"，这个差异会被完美掩盖——本节教你怎么拆开看。</p>
@@ -29,6 +29,7 @@
     <a href="#p7">⑦ 三个坑</a>
     <a href="#p8">⑧ 速查表</a>
     <a href="#p9">⑨ 自测</a>
+    <a href="#p10">⑩ 真实案例</a>
   </div>
 </nav>
 
@@ -43,6 +44,7 @@
       <li>理解迁徙率（Roll Rate）怎么算，用它判断催收效果好不好</li>
       <li>走一遍完整案例：从"发现异常"到"要不要收紧策略"的决策过程</li>
       <li>避开三个实战中最容易踩的坑</li>
+      <li>（进阶）看一份真实消费贷ABS静态池数据，从Excel原始表一步步加工出Vintage曲线，并挖出3个教程例子之外的真实发现</li>
     </ul>
   </div>
 
@@ -410,6 +412,284 @@
     </div>
   </div>
 
+  <!-- ============ PART 10 真实案例 ============ -->
+  <div class="part" id="p10">
+    <div class="part-head"><span class="part-num">10</span><h2>真实数据实战：某消费贷产品静态池全解析</h2></div>
+    <p class="part-lede">前面9节用的都是为了讲清楚概念而编的示例数据。这一节换成一份真实的信贷ABS静态池披露文件，把同一套方法论重新走一遍——你会看到：结论方向没错，但真实世界比教程例子复杂得多，还会冒出教程没讲过的新东西。</p>
+
+    <div class="callout info">
+      <span class="label"><span class="tag tag-real">真实数据</span> 数据说明</span>
+      数据来自某消费贷产品（下文称"消费贷产品A"）的静态池信息披露文件，覆盖 <strong>121个放款批次（2016-06 ~ 2026-06，整整10年）</strong>，每个批次从放款当月起逐月追踪到2026-06最新一期。放款规模从最早单月8.5亿元，涨到最新单月1086亿元，10年涨了<strong>128倍</strong>。这类"静态池表"是消费贷ABS/资产证券化里给投资人做资产质量披露的标准格式，字段本身就是按Vintage逻辑设计的——放款时间=批次，期数=账龄，文件还直接给了"M1+逾期率""不良率"两个预算好的累计指标。
+    </div>
+
+    <!-- 10.1 -->
+    <h3 style="font-size:17px; margin-top:32px;">10.1 从Excel到Vintage曲线：完整加工步骤（以2025-06批次为例）</h3>
+    <p>先搞懂这张表的"行"是什么：每一行不是一笔贷款，而是<strong>"某个放款批次，在某个统计月末的一次快照"</strong>。同一个放款批次会重复出现很多行，每多过一个月就多一行。以放款时间=2025-06这一个批次为例，从2025-06-30到2026-06-30正好13个月末，筛出来就是13行：</p>
+
+    <div class="table-scroll">
+    <table class="tbl">
+      <tr><th>期数</th><th>统计时间</th><th>MOB=期数-1</th><th>逾期金额1-30</th><th>逾期金额31-60</th><th>…180+</th><th>文件自带 M1+逾期率</th></tr>
+      <tr><td>1</td><td>2025-06-30</td><td>0</td><td class="num">589万</td><td class="num">0</td><td class="num">0</td><td class="num">0.000%</td></tr>
+      <tr><td>2</td><td>2025-07-31</td><td>1</td><td class="num">2.67亿</td><td class="num">209万</td><td class="num">0</td><td class="num">0.002%</td></tr>
+      <tr><td>7</td><td>2025-12-31</td><td>6</td><td class="num">4.63亿</td><td class="num">4.21亿</td><td class="num">1899万</td><td class="num">2.043%</td></tr>
+      <tr class="hl"><td>13</td><td>2026-06-30</td><td>12</td><td class="num">5749万</td><td class="num">7768万</td><td class="num">18.6亿</td><td class="num">3.507%</td></tr>
+    </table>
+    </div>
+
+    <div class="method-step">
+      <div class="m-num">1</div>
+      <div class="m-body">
+        <h4>筛选出这一个Vintage的全部生命周期记录</h4>
+        <pre><code>df = pd.read_excel('消费贷产品A_static_2026-06-30.xlsx', sheet_name='静态池')
+v = df[df['放款时间'] == '2025-06'].sort_values('期数')</code></pre>
+      </div>
+    </div>
+
+    <div class="method-step">
+      <div class="m-num">2</div>
+      <div class="m-body">
+        <h4>派生账龄 MOB</h4>
+        <pre><code>v['MOB'] = v['期数'] - 1</code></pre>
+        为什么减1：期数=1对应的统计时间就是放款当月本身，即账龄=0。期数每+1，日历往后走一个月，账龄也跟着+1。这是唯一需要自己"加工"的列，其余全是原表数据。
+      </div>
+    </div>
+
+    <div class="method-step">
+      <div class="m-num">3</div>
+      <div class="m-body">
+        <h4>纵轴用哪个数——一个容易踩的方法论坑</h4>
+        <p>表里有两条路：<strong>路线A</strong>直接用文件自带的 <code>M1+逾期率</code> 列；<strong>路线B</strong>是自己把7个逾期区间桶（1-30/31-60/…/180+）加总除以放款总额，"自己造"一个逾期率。我实测两条路线算出来的数完全不一样，而且差异方向会随时间反转：</p>
+        <table class="tbl">
+          <tr><th>MOB</th><th>路线B：7个桶余额直接加总÷交易额</th><th>路线A：文件自带M1+逾期率</th></tr>
+          <tr><td>1</td><td class="num">0.31%</td><td class="num">0.002%</td></tr>
+          <tr><td>4</td><td class="num">1.64%</td><td class="num">1.06%</td></tr>
+          <tr><td>9</td><td class="num">2.97%</td><td class="num">2.80%</td></tr>
+          <tr class="hl"><td>12</td><td class="num">3.18%</td><td class="num">3.51%（反而更高）</td></tr>
+        </table>
+        <div class="callout warn">
+          <span class="label">为什么会反转</span>
+          路线B是"此刻快照口径"——客户还上钱、退出逾期桶后，这部分就从分子消失了；路线A是"历史累计口径"——这个客户曾经30天以上逾期过，就永久记入分子，哪怕后来还清也不会被"减掉"。Vintage分析要的是后者。我另外验证了：文件的M1+逾期率对每个批次都随MOB严格单调不减、到某个MOB后完全走平——这两个特征只有"只增不减的历史累计口径"才会有，进一步确认路线A是对的。<strong>所以我直接引用了文件自带字段，没有自己用桶余额重新拼凑。</strong>
+        </div>
+      </div>
+    </div>
+
+    <div class="method-step">
+      <div class="m-num">4</div>
+      <div class="m-body">
+        <h4>单位转换 + 画图</h4>
+        <pre><code>v['M1+逾期率_pct'] = v['M1+逾期率'] * 100
+plt.plot(v['MOB'], v['M1+逾期率_pct'], marker='o')</code></pre>
+        13行数据 → 13个点 → 连成线：
+      </div>
+    </div>
+
+    <div class="figure">
+      <img src="../figures/fig04-vintage-single-2025-06-annotated.png" alt="2025-06批次单批Vintage曲线，13个观测点">
+      <div class="fig-cap">图E · 2025-06批次单批Vintage曲线，每个点标注了具体数值，能跟上面13行原始数据逐一对上。</div>
+    </div>
+
+    <p>做多批次对比/光谱图时，唯一区别是把筛选条件从"放款时间=='2025-06'"换成对全部121个批次循环，每次重复步骤1-4得到一条曲线，再用放款时间早晚映射成颜色叠加到同一张图——下面10.3节的两张图就是这么来的。</p>
+
+    <!-- 10.2 -->
+    <h3 style="font-size:17px; margin-top:36px;">10.2 真实发现一：整体口径陷阱的"镜像版本"</h3>
+    <p>把全部批次在每个统计月的余额和逾期金额直接加总，算出一个"整体逾期率"：</p>
+    <table class="tbl">
+      <tr><th>统计时间</th><th>整体逾期率（全部批次混合）</th></tr>
+      <tr><td>2023-06</td><td class="num">14.85%</td></tr>
+      <tr><td>2024-06</td><td class="num">18.50%</td></tr>
+      <tr><td>2025-06</td><td class="num">16.97%</td></tr>
+      <tr class="hl"><td>2026-06</td><td class="num">20.43%</td></tr>
+    </table>
+    <p>数字高得离谱（消费贷正常水平不会到20%），而且缓慢抬升。但按账龄拆开2026-06这一个截面就发现，这跟"整体口径骗人"是同一个病、不同的病灶：</p>
+    <table class="tbl">
+      <tr><th>账龄段</th><th>余额占比</th><th>逾期贡献占比</th><th>逾期率</th></tr>
+      <tr><td>MOB0-6（新批次）</td><td class="num">69.0%</td><td class="num">4.3%</td><td class="num">1.29%</td></tr>
+      <tr><td>MOB7-12</td><td class="num">13.5%</td><td class="num">16.4%</td><td class="num">24.8%</td></tr>
+      <tr><td>MOB13-24</td><td class="num">7.0%</td><td class="num">28.1%</td><td class="num">81.6%</td></tr>
+      <tr class="hl"><td>MOB25+（老尾巴）</td><td class="num">10.5%</td><td class="num">51.2%</td><td class="num">100.0%</td></tr>
+    </table>
+    <div class="callout bad">
+      <span class="label">镜像陷阱：不是新批次拉低分母，是老批次拉高分母</span>
+      MOB25+这批"老尾巴"，99.98%的余额都趴在180天以上桶里——彻底收不回，但没被从这张表里核销掉，就一直"僵尸式"挂账。它只占总余额10.5%，却贡献了51%的"逾期"。这跟第①节坑一讲的"新批次拉低分母"正好反过来：这里是<strong>老批次的死账拉高了分母</strong>。同样的解法——不按账龄拆开看，整体数字毫无意义。
+    </div>
+
+    <!-- 10.3 -->
+    <h3 style="font-size:17px; margin-top:36px;">10.3 真实发现二：Vintage曲线——十年一路走高的趋势带</h3>
+    <p>挑7个有代表性的批次，按MOB对齐：</p>
+    <div class="figure">
+      <img src="../figures/fig04-vintage-curve-real.png" alt="消费贷产品A代表性批次Vintage曲线">
+      <div class="fig-cap">图F · 老批次(2019-06)收敛最低~1.25%；2025-06是全数据集最差批次，MOB12时已到3.51%且尚未走平；2026年最新批次早期表现反而是近三年最优。</div>
+    </div>
+    <p>再把<strong>全部121个批次</strong>叠加同框，用颜色深浅表示放款时间早晚：</p>
+    <div class="figure">
+      <img src="../figures/fig04-vintage-spectrum-real.png" alt="消费贷产品A全部121批次Vintage光谱图">
+      <div class="fig-cap">图G · 冷色(2016-2018)收敛在0.6%~1.0%，暖色(2022-2024)收敛在2.0%~2.9%，最新12个月(粗红线)在MOB10附近就冲到3.0%~3.5%。</div>
+    </div>
+    <div class="callout bad">
+      <span class="label">这不是一次性异常，是十年趋势的最新极值</span>
+      2025年年中那批"最差批次"不是突然冒出来的孤立点，而是<strong>一条已经持续十年、逐批抬高的曲线带上最新、最极端的一个点</strong>。这跟同期放款规模128倍的扩张几乎同步——典型的"规模扩张→客群下沉→风险定价没跟上"故事，不是单一渠道/单一月份的偶发事故。这一发现比教程原案例（只对比4个批次）更有说服力，因为它把"曲线整体上移"这个信号放到了十年的时间尺度上验证。
+    </div>
+
+    <!-- 10.4 -->
+    <h3 style="font-size:17px; margin-top:36px;">10.4 真实发现三：两个独立指标交叉定位问题环节</h3>
+    <p><strong>指标一：迁徙率proxy</strong>（用当期1-30逾期余额→下期31-60逾期余额的比例近似）：</p>
+    <table class="tbl">
+      <tr><th>批次</th><th>M1→M2迁徙率(均值)</th><th>M2→M3迁徙率(均值)</th></tr>
+      <tr><td>2024-04（健康）</td><td class="num">~78%</td><td class="num">~95%</td></tr>
+      <tr><td>2025-06（问题）</td><td class="num">~79%</td><td class="num">~95%</td></tr>
+      <tr><td>2025-11（回暖）</td><td class="num">~81%</td><td class="num">~95%</td></tr>
+    </table>
+    <p><strong>指标二：不良转化比</strong>（不良率÷M1+逾期率，衡量"进了逾期的钱最终有多大比例真滑向不良"，同一行两个字段直接相除，不需要跨期）：</p>
+    <div class="figure">
+      <img src="../figures/fig04-npl-conversion-ratio.png" alt="不良转化比：左图成熟曲线，右图跨批次趋势对比">
+      <div class="fig-cap">图H · 左图：转化比本身也是一条随MOB收敛的成熟曲线，2024-04最终收敛在92.1%，2019-06收敛在81.6%。右图：以2023-01为基期=100，MOB12时点的M1+逾期率(红线)在90~193之间大幅波动，但不良转化比(蓝线)几乎全程贴着100不动。</div>
+    </div>
+    <div class="callout good">
+      <span class="label">两个指标互相印证：问题在准入端，不在催收端</span>
+      迁徙率proxy在健康/问题/回暖三个批次之间几乎没有变化；不良转化比在M1+涨了将近1倍时几乎原地不动。<strong>两个完全独立算出来的指标，结论指向同一个地方</strong>：2025年的恶化是"更多钱开始逾期"（量在涨），不是"逾期之后更难追回"（质没怎么变）。这跟教程原案例（进件+催收双重恶化）不同——真实数据给出了更干净、更具体的诊断：<strong>该收紧的是准入规则，不是加派催收人力</strong>。
+    </div>
+
+    <!-- 10.5 -->
+    <h3 style="font-size:17px; margin-top:36px;">10.5 真实发现四：成熟度外推法验证——2025H2起已在回暖</h3>
+
+    <p>还没成熟的批次（比如刚放款半年的2025-11批），此刻的 M1+逾期率只是"半成品"，不能直接当终值用。但历史上其他批次的曲线告诉我们：<strong>同一款产品，不同批次的"曲线形状"通常是相似的</strong>——虽然每批的高低不一样，但从 MOB6 长到 MOB12，涨的<strong>倍数</strong>往往落在差不多的区间。这就给了我们外推的依据：用历史批次"从MOB6长到MOB12平均涨了多少倍"，去推算新批次将来会长成什么样。</p>
+
+    <div class="analogy">
+      <span class="label">📏 类比</span>
+      如果你知道同龄小孩从6岁到12岁身高平均会长1.6倍，那看到一个6岁小孩现在1米高，就能大致猜他12岁时会长到1.6米左右——猜的不是这个小孩本身的数据，而是"同类小孩的普遍长法"。
+    </div>
+
+    <p><strong>第一步：算出"历史平均成熟度倍数"</strong>。做法是——找一批已经同时观测到 MOB6 和 MOB12 的历史批次（这里用2022-2024年的36个批次），对每一个批次单独算：</p>
+    <div class="calc-box">
+      单批次成熟度倍数 = 该批次MOB12的M1+逾期率 ÷ 该批次MOB6的M1+逾期率
+    </div>
+    <p>节选9个批次看实际算出来的样子：</p>
+    <table class="tbl">
+      <tr><th>批次</th><th>MOB6值</th><th>MOB12值</th><th>成熟度倍数=MOB12÷MOB6</th></tr>
+      <tr><td>2022-01</td><td class="num">0.74%</td><td class="num">1.25%</td><td class="num">1.688</td></tr>
+      <tr><td>2022-09</td><td class="num">1.00%</td><td class="num">1.49%</td><td class="num">1.488</td></tr>
+      <tr><td>2023-05</td><td class="num">1.25%</td><td class="num">2.00%</td><td class="num">1.604</td></tr>
+      <tr><td>2024-01</td><td class="num">0.99%</td><td class="num">1.51%</td><td class="num">1.514</td></tr>
+      <tr><td>2024-09</td><td class="num">1.49%</td><td class="num">2.37%</td><td class="num">1.584</td></tr>
+    </table>
+    <p>36个批次单独算下来，每一个的倍数都不完全一样（从1.49到1.74不等，这是正常的批次间噪音），<strong>把36个倍数取平均</strong>，就得到一个更稳的"典型涨法"：</p>
+    <div class="calc-box">
+      历史平均成熟度倍数 = 36个批次"成熟度倍数"的均值<br>
+      <span class="eq">= 1.59（中位数1.59，标准差0.08，样本量n=36）</span>
+    </div>
+    <div class="callout">
+      <span class="label">为什么要average这么多批次，不直接拿最近一个算</span>
+      单看一个历史批次的倍数（比如2022-09只有1.49），可能只是那一批自己的偶然波动，不能代表"典型涨法"。<strong>用36个批次取平均，就是用样本量把单个批次的噪音磨平</strong>，剩下的1.59更接近这款产品从MOB6到MOB12的"普遍规律"。标准差0.08也有用——它告诉你这个规律本身有多稳（不是所有批次都精确等于1.59，实际会在1.51~1.67这个区间内摆动，这就是外推法天生带着的不确定性，后面会用2025-06批的真实结果验证这一点）。
+    </div>
+
+    <p><strong>第二步：把这个倍数用到还没成熟的新批次上</strong>：</p>
+    <div class="calc-box">
+      外推MOB12终值 = 新批次MOB6观测值 × 历史平均成熟度倍数<br>
+      <span class="eq">= 新批次MOB6观测值 × 1.59</span>
+    </div>
+    <p>逻辑很直接：既然历史上"MOB6→MOB12"平均涨1.59倍，那把这个倍数套到一个刚观测到MOB6、还没走到MOB12的新批次身上，用它当前的MOB6值乘以1.59，就是对它MOB12终值的一个估计。</p>
+
+    <p>用这个公式外推2025年下半年批次的终局水平：</p>
+    <table class="tbl">
+      <tr><th>批次</th><th>MOB6已观测值</th><th>外推MOB12终值</th></tr>
+      <tr><td>2025-07</td><td class="num">1.94%</td><td class="num">1.94% × 1.59 ≈ 3.09%（仍偏高）</td></tr>
+      <tr><td>2025-09</td><td class="num">1.43%</td><td class="num">1.43% × 1.59 ≈ 2.28%</td></tr>
+      <tr><td>2025-11</td><td class="num">1.34%</td><td class="num">1.34% × 1.59 ≈ 2.14%</td></tr>
+      <tr class="hl"><td>2025-12</td><td class="num">1.14%</td><td class="num">1.14% × 1.59 ≈ 1.82%（接近2024健康基准2.04%）</td></tr>
+    </table>
+
+    <p>用同一方法反推一个已经知道真实答案的批次做校验——2025-06批当时MOB6观测值是2.04%，外推值 = 2.04% × 1.59 ≈ 3.25%，而它现在实际已经走到MOB12，真实值是3.51%，外推<strong>低估了约8%</strong>。</p>
+    <div class="callout warn">
+      <span class="label">外推法不是精确科学，会系统性低估</span>
+      这次恶化的爬升速度比历史平均的"成熟节奏"更猛，用历史平均倍数外推会<strong>低估</strong>当下这一轮的严重程度——这也正是标准差0.08提前给出的警告：1.59只是中枢，真实倍数完全可能摆到区间上沿。这是教程原案例（第⑥节）没提到的重要补充：<strong>成熟曲线百分比法给出的是参考值，不是精确值，尤其是在资产质量正发生趋势性变化的窗口，要预留安全边际，不能直接拿外推值当拍板依据</strong>。好消息是：2026年一季度新批次的早期指标（MOB2/3）已经比2024、2025年同期都更健康，比如2026-03批MOB3=0.26%，明显低于2024-03(0.45%)和2025-03(0.51%)——大概率是风控收紧动作生效。
+    </div>
+
+    <!-- 10.6 -->
+    <h3 style="font-size:17px; margin-top:36px;">10.6 延伸：这份数据还能算的其他指标</h3>
+    <p>除了Vintage曲线，这张表还有5组"原材料"字段没用完：还款结构(正常/提前/逾期各区间还款)、收入(日息/罚息/手续费)、笔数(发放/存量)、未逾期金额。实际验证过的几个：</p>
+    <div class="concept-grid">
+      <div class="concept-card">
+        <div class="c-name">提前还款率</div>
+        <div class="c-def">MOB6时点，2024-10到2025-12各批次稳定在1.7%~2.0%，没有异常波动——<strong>排除了"好客户提前跑光、剩下都是差客户"这种统计假象</strong>，说明之前看到的M1+曲线抬升是真实的资产质量问题。</div>
+        <div class="c-formula">提前还款率 = 提前还款 / 交易额</div>
+      </div>
+      <div class="concept-card">
+        <div class="c-name">单位经济性</div>
+        <div class="c-def">2024-04→2025-06：规模涨1.52倍，手续费收入涨1.83倍，但180+挂账损失涨了<strong>2.35倍</strong>——损失增速明显甩开收入增速，量化验证"这笔账划不划算"。</div>
+        <div class="c-formula">损失增幅 vs 收入增幅 vs 规模增幅 三者对比</div>
+      </div>
+      <div class="concept-card">
+        <div class="c-name">笔数 vs 余额衰减结构</div>
+        <div class="c-def">2023-06批MOB12时，余额占比2.6%，笔数占比却还有4.2%（是余额占比的1.6倍）——<strong>大额客户更早被结清/流失，小额和问题贷款留存得更久</strong>，对催收资源分配有直接参考价值。</div>
+        <div class="c-formula">余额占比 = 余额/放款额；笔数占比 = 存量笔数/发放笔数</div>
+      </div>
+      <div class="concept-card">
+        <div class="c-name">（尝试但未成功）真实回滚率</div>
+        <div class="c-def">想用"逾期还款X-Y"字段（实际收回的钱）替代余额差分算更精确的迁徙率，但实测算出比值超过100%，说明该字段的口径（"付款时刻处于该逾期区间"）跟"上期末该桶余额"对不上，<strong>不能拿现成公式硬套，需要先跟数据提供方确认口径定义</strong>。</div>
+        <div class="c-formula">✗ 需要更严谨的口径定义才能用</div>
+      </div>
+    </div>
+
+    <!-- 10.7 多产品横向对照 -->
+    <h3 style="font-size:17px; margin-top:36px;">10.7 多产品横向对照：不止一个产品在讲同一个故事</h3>
+    <p>同一批静态池披露文件里，除了消费贷产品A，还有另外三个产品——B1、B2、C，覆盖期同样是2021-01~2026-06（66个批次）。用完全相同的方法论（10.1节的步骤）各跑一遍，每个产品出两张图：<strong>关键月份图</strong>（挑5-6个有代表性的批次对比）和<strong>全口径光谱图</strong>（全部66批次叠加，颜色按放款时间冷暖渐变）。</p>
+
+    <div class="callout warn">
+      <span class="label">复核时抓到的一处错误</span>
+      生成图表后我重新核对了一遍数据（检查重复行、缺失值、单调性、不良率≤M1+的子集关系等6项），过程中发现B2图里把2021-01标成了"历史次差"，实际排序后它是<strong>全历史最差</strong>的批次（3.75%），2025-04（3.44%）在历史上只排第4。已经改过来重新出图。<strong>这是个有用的提醒：图表里的"最优/最差"这类排名描述，一定要跑一遍实际排序验证，不能凭肉眼扫一眼数据就下结论。</strong>
+    </div>
+
+    <h4 style="font-size:15.5px; margin:24px 0 6px;">产品B1：温和波动，没有长期趋势</h4>
+    <p style="font-size:14.5px; color:var(--ink-soft);">MOB12水平常年在0.5%~1.6%之间波动，2023-07有个短暂峰值（收敛较晚，要到MOB25才真正走平到2.56%），但2025-04的偏高（1.24%）幅度远小于其他产品的同期问题。全口径光谱图上，最差的几条线夹在光谱中段（2023年批次），最新12个月的批次（深红）反而落在偏健康的区间——是四个产品里唯一没有表现出"整体上移"信号的。</p>
+    <div class="figure-pair">
+      <div class="figure"><img src="../figures/fig04-vintage-curve-B1.png" alt="消费贷产品B1关键月份Vintage曲线"><div class="fig-cap">关键月份图</div></div>
+      <div class="figure"><img src="../figures/fig04-vintage-spectrum-B1.png" alt="消费贷产品B1全部批次光谱图"><div class="fig-cap">全口径光谱图（66批次）</div></div>
+    </div>
+
+    <h4 style="font-size:15.5px; margin:24px 0 6px;">产品B2：U型——冷启动差，中期转优，近期几乎打平回冷启动</h4>
+    <p style="font-size:14.5px; color:var(--ink-soft);">2021-01冷启动批次是全历史最差（3.75%），随后逐年改善，2024-02触底至历史最优（0.96%）——降幅接近75%；但2025-04（3.44%）几乎把改善成果全部吐回去，逼近冷启动时的水平。全口径光谱图上能看得很清楚：蓝色（2021年）扎堆在最上方，米黄色（2022-2024）压到最低，最新的深红色正在往上爬，还没追上最早那批，但趋势很陡。四个产品里波动幅度最大的一个。</p>
+    <div class="figure-pair">
+      <div class="figure"><img src="../figures/fig04-vintage-curve-B2.png" alt="消费贷产品B2关键月份Vintage曲线"><div class="fig-cap">关键月份图</div></div>
+      <div class="figure"><img src="../figures/fig04-vintage-spectrum-B2.png" alt="消费贷产品B2全部批次光谱图"><div class="fig-cap">全口径光谱图（66批次）</div></div>
+    </div>
+
+    <h4 style="font-size:15.5px; margin:24px 0 6px;">产品C：最干净的"曲线整体上移"教学案例</h4>
+    <p style="font-size:14.5px; color:var(--ink-soft);">2021-01历史最低（0.42%）一路爬升到2025-04历史最差（5.34%），涨了近12倍，中间只有2024年上半年一个"短暂企稳窗口"（~2.2%~2.3%），几乎没有像B2那样的深度回调。全口径光谱图呈现出教科书式的彩虹排列——蓝色垫底、红色封顶，几乎每一条新批次的线都比前一条更靠上。三个新产品里，这是长期趋势最干净、最没有例外的一个，也是消费贷产品A的十年光谱图之外，最适合用来教"曲线整体上移"这个信号的真实案例。</p>
+    <div class="figure-pair">
+      <div class="figure"><img src="../figures/fig04-vintage-curve-C.png" alt="消费贷产品C关键月份Vintage曲线"><div class="fig-cap">关键月份图</div></div>
+      <div class="figure"><img src="../figures/fig04-vintage-spectrum-C.png" alt="消费贷产品C全部批次光谱图"><div class="fig-cap">全口径光谱图（66批次）</div></div>
+    </div>
+
+    <p style="margin-top:20px;"><strong>四个产品放在一张表里对比：</strong></p>
+    <div class="table-scroll">
+    <table class="tbl">
+      <tr><th>产品</th><th>形态</th><th>历史最优(MOB12)</th><th>历史最差(MOB12)</th><th>2026年最新批次早期表现</th></tr>
+      <tr><td>A（消费贷）</td><td>十年缓慢单边上移</td><td class="num">1.25%(2019-06)</td><td class="num">3.51%+(2025-06，未收敛)</td><td class="num">优于近三年同期</td></tr>
+      <tr><td>B1</td><td>温和波动，无长期趋势</td><td class="num">0.49%(2023-11)</td><td class="num">2.56%(2023-07)</td><td class="num">优于近三年同期</td></tr>
+      <tr><td>B2</td><td>U型：差→优→接近打平回冷启动</td><td class="num">0.96%(2024-02)</td><td class="num">3.75%(2021-01)</td><td class="num">优于近三年同期</td></tr>
+      <tr class="hl"><td>C</td><td>近乎单调的长期恶化</td><td class="num">0.42%(2021-01)</td><td class="num">5.34%(2025-04)</td><td class="num">优于近三年同期</td></tr>
+    </table>
+    </div>
+
+    <div class="callout good">
+      <span class="label">跨产品的共同信号</span>
+      四个产品形态各不相同，但有一点完全一致：<strong>2026年最新批次的早期表现，全部优于2025年同期</strong>。四个产品同时在同一个时间窗口转好，不太像各自独立的巧合，更像是<strong>平台级的风控收紧动作在2025下半年同步生效</strong>——这也是"多产品横向对照"这个方法本身的价值：单看一个产品，很难判断改善是产品自身策略调整还是外部环境变化；四个产品同步验证，才能把"平台级动作"和"单产品局部调整"区分开。
+    </div>
+
+    <!-- 10.8 总结 -->
+    <div class="summary-box" style="margin-top:32px;">
+      <h3>真实案例给教程增加了什么</h3>
+      <p>方法论方向没有错——Vintage对齐、迁徙率、成熟度外推法在真实数据上全部验证有效。但真实世界比教程例子复杂，补充了四处教程没讲到的地方：</p>
+      <ul style="margin:10px 0 0; padding-left:20px; font-size:14.5px; line-height:2;">
+        <li><strong>整体口径陷阱有镜像版本</strong>：不只是新批次稀释分母，老批次的"僵尸死账"同样会污染分母，方向相反，但解法相同——按账龄拆开看</li>
+        <li><strong>迁徙率/不良转化比可以反过来帮你排除假设</strong>：不一定跟资产质量同向恶化，稳定不变本身就是有用信息，能把"进件问题"和"催收问题"精确分开</li>
+        <li><strong>成熟度外推法有系统性偏差</strong>：在资产质量正发生趋势性变化时会低估，只能当参考值、要留安全边际，不能当精确拍板依据</li>
+        <li><strong>不是所有产品都会"曲线整体上移"</strong>：同一个平台的四个产品，形态可以是单边恶化（C）、大幅震荡回调（B2）或基本无趋势（B1）——套用同一套方法论之前，先看这个产品历史上属于哪种形态，再决定该往哪个方向重点排查</li>
+      </ul>
+      <div class="mnemonic-line">真实数据不会让方法论失效，但会告诉你方法论的边界在哪里。</div>
+    </div>
+  </div>
+
   <!-- ============ 小结 ============ -->
   <div class="summary-box">
     <h3>本节小结</h3>
@@ -424,11 +704,11 @@
     </div>
     <div class="n-arrow">→</div>
   </div>
-  <p style="text-align:center;"><a href="index.html">← 返回信贷风控学习手册总目录</a></p>
+  <p style="text-align:center;"><a href="../index.html">← 返回信贷风控学习手册总目录</a></p>
 
   <div class="page-footer">
     <span>信贷风控学习手册 · 模块四</span>
-    <span>参考来源：任知微，《信贷风控的"透视镜"：一文看懂 Vintage 分析》，风控拾光</span>
+    <span>参考来源：任知微，《信贷风控的"透视镜"：一文看懂 Vintage 分析》，风控拾光 ｜ 第⑩节真实数据来自某消费贷产品静态池披露文件</span>
   </div>
 
 </div>

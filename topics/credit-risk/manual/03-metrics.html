@@ -4,14 +4,14 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>模块三 · 模型评估指标（KS/AUC/PSI/Lift）| 信贷风控学习手册</title>
-<link rel="stylesheet" href="style.css">
+<link rel="stylesheet" href="../../../design-system/style.css">
 <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.4/dist/chart.umd.min.js"></script>
 </head>
 <body>
 
 <header class="masthead">
   <div class="container">
-    <div class="breadcrumb"><a href="index.html">信贷风控学习手册</a> › 模块三</div>
+    <div class="breadcrumb"><a href="../index.html">信贷风控学习手册</a> › 模块三</div>
     <span class="eyebrow">📏 模块三 · 模型评估指标</span>
     <h1>KS / AUC / PSI / Lift：怎么判断一个模型好不好、稳不稳</h1>
     <p class="sub">"准确率99%"听起来很厉害，但如果坏客户本来就只占2%，一个"无论如何都预测好客户"的懒模型也能到98%——风控评估从来不用准确率，这一节讲清楚该用什么、怎么算、多少算合格。</p>
@@ -505,7 +505,7 @@
     </div>
     <div class="n-arrow">→</div>
   </div>
-  <p style="text-align:center;"><a href="index.html">← 返回信贷风控学习手册总目录</a></p>
+  <p style="text-align:center;"><a href="../index.html">← 返回信贷风控学习手册总目录</a></p>
 
   <div class="page-footer">
     <span>信贷风控学习手册 · 模块三</span>
@@ -540,22 +540,21 @@ new Chart(document.getElementById('chartK1'), {
   }
 });
 
-// 图K2：ROC曲线
+// 图K2：ROC曲线（X/Y 均为百分比轴，两轴刻度都带 %）
 new Chart(document.getElementById('chartK2'), {
   type: 'line',
   data: {
-    labels: ['0','8.9','18.2','27.8','37.7','47.8','58.1','68.5','79.0','89.5','100'],
     datasets: [
-      { label:'ROC曲线（AUC≈0.79）', data:[0,30.0,54.0,72.0,84.0,92.0,96.0,98.0,99.0,99.6,100.0], borderColor:'#3E8362', backgroundColor:'rgba(62,131,98,0.12)', fill:true, tension:0.25, borderWidth:2.5, pointRadius:2.5 },
-      { label:'随机模型基准线（AUC=0.5）', data:[0,10,20,30,40,50,60,70,80,90,100], borderColor:'#C9BFB2', borderDash:[6,4], pointRadius:0, borderWidth:1.5, fill:false }
+      { label:'ROC曲线（AUC≈0.79）', data:[{x:0,y:0},{x:8.9,y:30.0},{x:18.2,y:54.0},{x:27.8,y:72.0},{x:37.7,y:84.0},{x:47.8,y:92.0},{x:58.1,y:96.0},{x:68.5,y:98.0},{x:79.0,y:99.0},{x:89.5,y:99.6},{x:100,y:100.0}], borderColor:'#3E8362', backgroundColor:'rgba(62,131,98,0.12)', fill:true, tension:0.25, borderWidth:2.5, pointRadius:2.5 },
+      { label:'随机模型基准线（AUC=0.5）', data:[{x:0,y:0},{x:20,y:20},{x:40,y:40},{x:60,y:60},{x:80,y:80},{x:100,y:100}], borderColor:'#C9BFB2', borderDash:[6,4], pointRadius:0, borderWidth:1.5, fill:false }
     ]
   },
   options: {
     responsive: true, maintainAspectRatio: false,
     plugins: { legend: { position:'top', align:'end', labels:{ boxWidth:10, usePointStyle:true, font:{size:11.5} } } },
     scales: {
-      y: { min:0, max:100, ticks:{ callback:v=>v+'%' }, grid:{ color: gridColor }, title:{ display:true, text:'TPR 真阳性率（累计坏%）' } },
-      x: { grid:{ display:false }, title:{ display:true, text:'FPR 假阳性率（累计好%）' } }
+      y: { type:'linear', min:0, max:100, ticks:{ callback:v=>v+'%' }, grid:{ color: gridColor }, title:{ display:true, text:'TPR 真阳性率（累计坏%）' } },
+      x: { type:'linear', min:0, max:100, ticks:{ stepSize:20, callback:v=>v+'%' }, grid:{ display:false }, title:{ display:true, text:'FPR 假阳性率（累计好%）' } }
     }
   }
 });

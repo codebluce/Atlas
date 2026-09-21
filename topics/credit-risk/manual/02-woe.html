@@ -4,14 +4,14 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>模块二 · 特征工程四件套（分箱/WOE/IV/单调性）| 信贷风控学习手册</title>
-<link rel="stylesheet" href="style.css">
+<link rel="stylesheet" href="../../../design-system/style.css">
 <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.4/dist/chart.umd.min.js"></script>
 </head>
 <body>
 
 <header class="masthead">
   <div class="container">
-    <div class="breadcrumb"><a href="index.html">信贷风控学习手册</a> › 模块二</div>
+    <div class="breadcrumb"><a href="../index.html">信贷风控学习手册</a> › 模块二</div>
     <span class="eyebrow">🛠️ 模块二 · 特征工程四件套</span>
     <h1>分箱 / WOE / IV / 单调性：风控建模最日常的手活</h1>
     <p class="sub">逻辑回归喜欢线性关系，但原始特征几乎从不听话——年龄和风险不是直线关系，类别变量没法直接乘系数。分箱+WOE就是把任何"不听话"的特征，捏成模型能用的样子。</p>
@@ -128,7 +128,7 @@
       <div class="concept-card">
         <div class="c-name">④ 特征稳定性 PSI</div>
         <div class="c-en">Population Stability Index</div>
-        <div class="c-def">不止评分要监控PSI，入模前的<strong>候选特征本身</strong>也要检查跨时间窗口的分布是否稳定（详细算法见<a href="module-03-metrics.html">模块三</a>）。</div>
+        <div class="c-def">不止评分要监控PSI，入模前的<strong>候选特征本身</strong>也要检查跨时间窗口的分布是否稳定（详细算法见<a href="03-metrics.html">模块三</a>）。</div>
         <div class="c-formula">PSI = Σ(实际占比−预期占比)×ln(实际占比/预期占比)</div>
         <div class="c-mnemonic">看什么：IV再高，不稳定也不能用</div>
       </div>
@@ -276,7 +276,7 @@
 
     <div class="analogy">
       <span class="label">🩺 怎么做</span>
-      用两个不同时间窗口的样本（比如建模用的近12个月 vs 更早之前的12个月），对同一个候选特征分别算一次分布，再用<a href="module-03-metrics.html">模块三</a>讲过的PSI公式对比这两份分布——如果PSI已经偏高，说明这个特征的分布本身随时间在变，即使当下IV很高，未来也大概率会像模块三案例里"近3个月申请次数"那样，成为模型衰退的导火索。
+      用两个不同时间窗口的样本（比如建模用的近12个月 vs 更早之前的12个月），对同一个候选特征分别算一次分布，再用<a href="03-metrics.html">模块三</a>讲过的PSI公式对比这两份分布——如果PSI已经偏高，说明这个特征的分布本身随时间在变，即使当下IV很高，未来也大概率会像模块三案例里"近3个月申请次数"那样，成为模型衰退的导火索。
     </div>
 
     <table class="tbl">
@@ -450,7 +450,7 @@
     </div>
     <div class="n-arrow">→</div>
   </div>
-  <p style="text-align:center;"><a href="index.html">← 返回信贷风控学习手册总目录</a></p>
+  <p style="text-align:center;"><a href="../index.html">← 返回信贷风控学习手册总目录</a></p>
 
   <div class="page-footer">
     <span>信贷风控学习手册 · 模块二</span>

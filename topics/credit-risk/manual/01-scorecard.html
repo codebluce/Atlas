@@ -4,14 +4,14 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>模块一 · 评分卡体系（A/B/C卡）| 信贷风控学习手册</title>
-<link rel="stylesheet" href="style.css">
+<link rel="stylesheet" href="../../../design-system/style.css">
 <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.4/dist/chart.umd.min.js"></script>
 </head>
 <body>
 
 <header class="masthead">
   <div class="container">
-    <div class="breadcrumb"><a href="index.html">信贷风控学习手册</a> › 模块一</div>
+    <div class="breadcrumb"><a href="../index.html">信贷风控学习手册</a> › 模块一</div>
     <span class="eyebrow">🏗️ 模块一 · 评分卡体系</span>
     <h1>A卡 / B卡 / C卡：评分卡怎么从"概率"变成"分数"</h1>
     <p class="sub">评分卡诞生于上世纪50年代的FICO，70多年过去，深度学习都快把传统机器学习卷完了，风控核心决策还是离不开这张"卡"。这一节讲清楚它是什么、为什么是它、以及一个分数具体是怎么算出来的。</p>
@@ -69,7 +69,7 @@
 
     <div class="callout">
       <span class="label">这也解释了为什么逻辑回归到今天还没被淘汰</span>
-      树模型、深度学习的排序能力（KS/AUC，见<a href="module-03-metrics.html">模块三</a>）经常更强，但风控模型要兼顾"准不准"和"能不能解释清楚"——这个取舍会在第④节详细展开。
+      树模型、深度学习的排序能力（KS/AUC，见<a href="03-metrics.html">模块三</a>）经常更强，但风控模型要兼顾"准不准"和"能不能解释清楚"——这个取舍会在第④节详细展开。
     </div>
   </div>
 
@@ -141,7 +141,7 @@
 
     <div class="callout">
       <span class="label">这份手册怎么串起来</span>
-      第⑤步"分箱WOE"是<a href="module-02-woe.html">模块二</a>的主场；第⑦步"模型评估"和第⑨步"上线监控"是<a href="module-03-metrics.html">模块三</a>的主场；本节聚焦第⑥步"为什么用逻辑回归"和第⑧步"怎么转换成分数"。三个模块合起来才是一条完整的建模流水线。
+      第⑤步"分箱WOE"是<a href="02-woe.html">模块二</a>的主场；第⑦步"模型评估"和第⑨步"上线监控"是<a href="03-metrics.html">模块三</a>的主场；本节聚焦第⑥步"为什么用逻辑回归"和第⑧步"怎么转换成分数"。三个模块合起来才是一条完整的建模流水线。
     </div>
   </div>
 
@@ -249,7 +249,7 @@
 
     <div class="callout">
       <span class="label">留意最后这个变量</span>
-      "近3个月申请次数"越多，扣分越狠——这跟直觉一致：短期内到处申请贷款（多头借贷），通常意味着资金紧张、风险更高。这个变量在<a href="module-02-woe.html">模块二</a>会被详细拆解怎么算出WOE/IV，在<a href="module-03-metrics.html">模块三</a>的监控案例里，它也是后来导致模型失效的那个"元凶"——同一个变量，贯穿了建模、特征工程、上线监控三个环节。
+      "近3个月申请次数"越多，扣分越狠——这跟直觉一致：短期内到处申请贷款（多头借贷），通常意味着资金紧张、风险更高。这个变量在<a href="02-woe.html">模块二</a>会被详细拆解怎么算出WOE/IV，在<a href="03-metrics.html">模块三</a>的监控案例里，它也是后来导致模型失效的那个"元凶"——同一个变量，贯穿了建模、特征工程、上线监控三个环节。
     </div>
 
     <p>某客户：32岁，已婚，本科，近3个月申请1次：</p>
@@ -300,7 +300,7 @@
     <div class="case-step">
       <div class="step-body" style="margin-left:38px;">
         <h4>特征筛选</h4>
-        候选特征做IV初筛（详见<a href="module-02-woe.html">模块二</a>），"近3个月申请次数"（IV≈0.56）、"历史逾期次数"（IV≈0.41）等强特征入选，同时排查单调性和特征层PSI，剔除不稳定的高IV特征。<span class="result">→ 最终入模变量：年龄、婚姻状况、学历、近3个月申请次数等。</span>
+        候选特征做IV初筛（详见<a href="02-woe.html">模块二</a>），"近3个月申请次数"（IV≈0.56）、"历史逾期次数"（IV≈0.41）等强特征入选，同时排查单调性和特征层PSI，剔除不稳定的高IV特征。<span class="result">→ 最终入模变量：年龄、婚姻状况、学历、近3个月申请次数等。</span>
       </div>
     </div>
     <div class="case-step">
@@ -312,7 +312,7 @@
     <div class="case-step">
       <div class="step-body" style="margin-left:38px;">
         <h4>模型评估达标</h4>
-        测试集（跨时间样本）验证：KS=0.46，AUC=0.79（评估方法见<a href="module-03-metrics.html">模块三</a>），达到内部投产标准。<span class="result">→ 准备上线。</span>
+        测试集（跨时间样本）验证：KS=0.46，AUC=0.79（评估方法见<a href="03-metrics.html">模块三</a>），达到内部投产标准。<span class="result">→ 准备上线。</span>
       </div>
     </div>
     <div class="case-step">
@@ -324,7 +324,7 @@
 
     <div class="callout bad">
       <span class="label">留一个悬念</span>
-      这张卡上线9个月后会发生什么？"近3个月申请次数"这个特征后来的分布漂移，直接触发了模型衰退预警——完整的监控排查过程见<a href="module-03-metrics.html">模块三·实战案例</a>。
+      这张卡上线9个月后会发生什么？"近3个月申请次数"这个特征后来的分布漂移，直接触发了模型衰退预警——完整的监控排查过程见<a href="03-metrics.html">模块三·实战案例</a>。
     </div>
   </div>
 
@@ -441,7 +441,7 @@
     </div>
     <div class="n-arrow">→</div>
   </div>
-  <p style="text-align:center;"><a href="index.html">← 返回信贷风控学习手册总目录</a></p>
+  <p style="text-align:center;"><a href="../index.html">← 返回信贷风控学习手册总目录</a></p>
 
   <div class="page-footer">
     <span>信贷风控学习手册 · 模块一</span>
