@@ -1,0 +1,540 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>模块二 · 特征工程四件套（分箱/WOE/IV/单调性）| 信贷风控学习手册</title>
+<link rel="stylesheet" href="style.css">
+<script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.4/dist/chart.umd.min.js"></script>
+</head>
+<body>
+
+<header class="masthead">
+  <div class="container">
+    <div class="breadcrumb"><a href="index.html">信贷风控学习手册</a> › 模块二</div>
+    <span class="eyebrow">🛠️ 模块二 · 特征工程四件套</span>
+    <h1>分箱 / WOE / IV / 单调性：风控建模最日常的手活</h1>
+    <p class="sub">逻辑回归喜欢线性关系，但原始特征几乎从不听话——年龄和风险不是直线关系，类别变量没法直接乘系数。分箱+WOE就是把任何"不听话"的特征，捏成模型能用的样子。</p>
+  </div>
+</header>
+
+<nav class="local-nav">
+  <div class="container">
+    <a href="#p1">① 痛点</a>
+    <a href="#p2">② 核心概念</a>
+    <a href="#p3">③ 指标图鉴</a>
+    <a href="#p4">④ 算WOE</a>
+    <a href="#p5">⑤ 算IV筛选</a>
+    <a href="#p6">⑥ 单调性</a>
+    <a href="#p7">⑦ 特征稳定性</a>
+    <a href="#p8">⑧ 实战案例</a>
+    <a href="#p9">⑨ 三个坑</a>
+    <a href="#p10">⑩ 速查表</a>
+    <a href="#p11">⑪ 自测</a>
+  </div>
+</nav>
+
+<div class="wrap">
+
+  <div class="checklist" style="margin-top:32px;">
+    <h4>本节读完，你能做到</h4>
+    <ul>
+      <li>解释清楚为什么原始特征不能直接扔进逻辑回归</li>
+      <li>手算一遍 WOE：从分箱统计表到WOE值，理解它在算什么</li>
+      <li>手算一遍 IV，知道筛选特征的经验阈值是多少</li>
+      <li>识别"非单调"特征，知道遇到U型分布该怎么处理</li>
+      <li>理解为什么建模阶段就要给候选特征做稳定性(PSI)体检</li>
+      <li>走一遍完整案例：一个特征从原始数据到入模的全过程</li>
+      <li>避开特征工程最容易踩的三个坑</li>
+    </ul>
+  </div>
+
+  <!-- ============ PART 1 痛点 ============ -->
+  <div class="part" id="p1">
+    <div class="part-head"><span class="part-num">01</span><h2>先说痛点：原始特征直接扔进模型会怎样</h2></div>
+    <p class="part-lede">逻辑回归本质是在做线性加权求和，它假设每个特征和"风险"之间是一条直线关系——但现实里几乎没有变量这么听话。</p>
+
+    <div class="analogy">
+      <span class="label">📈 一个类比</span>
+      "年龄"和"违约风险"的关系，往往是一个浅浅的U型：太年轻（收入不稳定）风险高，中年（收入稳定、有资产）风险低，年纪太大（收入下降、健康支出增加）风险又略微回升。如果强行让逻辑回归拿"年龄"这个数字直接乘一个系数，它只能学出"年龄越大风险越低"或"越高"这一种单一方向的直线关系，U型的中间那段"由高到低再到高"的真实规律，直接建模是学不出来的。
+    </div>
+
+    <p>除了非线性关系，原始特征还有几个直接入模的硬伤：</p>
+    <table class="tbl">
+      <tr><th>问题</th><th>具体表现</th></tr>
+      <tr><td>类别变量没法乘系数</td><td>"婚姻状况=已婚/未婚/离异"这种字符串，逻辑回归根本算不了</td></tr>
+      <tr><td>异常值/缺失值敏感</td><td>年龄字段里混进一个"199岁"，会把线性拟合直接带偏</td></tr>
+      <tr><td>可解释性差</td><td>系数×原始值，业务很难翻译成"这一条对客户到底意味着什么"</td></tr>
+    </table>
+
+    <div class="callout bad">
+      <span class="label">分箱 + WOE 一次性解决三个问题</span>
+      把连续变量切成几段（分箱），把每一段的风险水平转换成一个叫 WOE 的数值——这样类别变量、连续变量统一变成同一种"证据强度"的度量，异常值和缺失值也能被单独分到自己的箱里处理，逻辑回归拿到的是一份"已经翻译好"的特征。这是本节要讲的核心手艺。
+    </div>
+  </div>
+
+  <!-- ============ PART 2 核心概念 ============ -->
+  <div class="part" id="p2">
+    <div class="part-head"><span class="part-num">02</span><h2>先搞清楚：分箱在做什么</h2></div>
+    <p class="part-lede">分箱是特征工程的第一步，后面WOE、IV都建立在分箱结果之上。</p>
+
+    <div class="concept-grid">
+      <div class="concept-card">
+        <div class="c-name">分箱</div>
+        <div class="c-en">Binning</div>
+        <div class="c-def">把连续变量切成几段区间（比如年龄切成4段），或把类别变量的多个取值合并成几组，降低特征复杂度，同时让"风险随分箱变化"这件事变得可以观察、可以解释。</div>
+        <div class="c-mnemonic">记忆点：分箱是把"一条曲线"拍扁成"几根柱子"</div>
+      </div>
+      <div class="concept-card">
+        <div class="c-name">分箱方法</div>
+        <div class="c-en">Binning Methods</div>
+        <div class="c-def">等频分箱（每箱人数一样多）、等距分箱（每箱区间宽度一样）、卡方分箱/决策树分箱（有监督，按"能不能区分好坏"自动找最优切点）。业务上常用卡方/决策树分箱，因为它直接考虑了标签。</div>
+        <div class="c-mnemonic">记忆点：有监督分箱通常比无监督分箱更贴合业务</div>
+      </div>
+    </div>
+
+    <div class="callout">
+      <span class="label">分箱的两个硬性要求</span>
+      每个分箱的样本量不能太少（业界经验：至少占总样本5%左右），否则这一箱的风险水平会被随机波动主导，不可信；分箱数量也不宜太多（常见4~8箱），箱太多会让WOE曲线变得不稳定，且会在第⑥节讲到的"单调性"上更容易出问题。
+    </div>
+  </div>
+
+  <!-- ============ PART 3 指标图鉴 ============ -->
+  <div class="part" id="p3">
+    <div class="part-head"><span class="part-num">03</span><h2>指标图鉴：4 个特征工程核心概念</h2></div>
+
+    <div class="concept-grid">
+      <div class="concept-card">
+        <div class="c-name">① WOE 证据权重</div>
+        <div class="c-en">Weight of Evidence</div>
+        <div class="c-def">衡量一个分箱里，坏客户和好客户分布差异的方向与强度。WOE为正，这一箱坏客户偏多（风险高）；为负，好客户偏多（风险低）。</div>
+        <div class="c-formula">WOE = ln( (坏占比) / (好占比) )</div>
+        <div class="c-mnemonic">看什么：正负方向 + 数值大小</div>
+      </div>
+      <div class="concept-card">
+        <div class="c-name">② IV 信息价值</div>
+        <div class="c-en">Information Value</div>
+        <div class="c-def">把每个分箱的WOE加权求和，衡量整个变量的预测能力，是筛选入模特征的核心依据。</div>
+        <div class="c-formula">IV = Σ (坏占比−好占比) × WOE</div>
+        <div class="c-mnemonic">看什么：IV越大，这个变量越有区分力</div>
+      </div>
+      <div class="concept-card">
+        <div class="c-name">③ 单调性约束</div>
+        <div class="c-en">Monotonicity</div>
+        <div class="c-def">分箱后的WOE理应随分箱有序变化（比如查询次数越多WOE越高）。如果忽高忽低，说明这个特征和风险不是简单的单向关系。</div>
+        <div class="c-formula">WOE₁ ≤ WOE₂ ≤ … ≤ WOEₙ（或反向）</div>
+        <div class="c-mnemonic">看什么：曲线是不是"一路涨"或"一路跌"</div>
+      </div>
+      <div class="concept-card">
+        <div class="c-name">④ 特征稳定性 PSI</div>
+        <div class="c-en">Population Stability Index</div>
+        <div class="c-def">不止评分要监控PSI，入模前的<strong>候选特征本身</strong>也要检查跨时间窗口的分布是否稳定（详细算法见<a href="module-03-metrics.html">模块三</a>）。</div>
+        <div class="c-formula">PSI = Σ(实际占比−预期占比)×ln(实际占比/预期占比)</div>
+        <div class="c-mnemonic">看什么：IV再高，不稳定也不能用</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ============ PART 4 算WOE ============ -->
+  <div class="part" id="p4">
+    <div class="part-head"><span class="part-num">04</span><h2>手算一遍 WOE：用"近3个月申请次数"这个特征</h2></div>
+    <p class="part-lede">这个特征后面会贯穿模块一（入选评分卡）和模块三（上线后漂移失效），这里先把它的WOE/IV算清楚。样本沿用模块三同一批：9500个好客户，500个坏客户，总样本10000人。</p>
+
+    <div class="method-step">
+      <div class="m-num">1</div>
+      <div class="m-body">
+        <h4>分箱，统计每箱的好坏人数</h4>
+        <table class="tbl">
+          <tr><th>分箱</th><th>好客户数</th><th>坏客户数</th></tr>
+          <tr><td>[0,1]次</td><td class="num">3800</td><td class="num">80</td></tr>
+          <tr><td>[2,3]次</td><td class="num">2800</td><td class="num">100</td></tr>
+          <tr><td>[4,5]次</td><td class="num">1500</td><td class="num">110</td></tr>
+          <tr><td>[6,8]次</td><td class="num">900</td><td class="num">130</td></tr>
+          <tr><td>[9,+)次</td><td class="num">500</td><td class="num">80</td></tr>
+          <tr class="hl"><td>合计</td><td class="num">9500</td><td class="num">500</td></tr>
+        </table>
+      </div>
+    </div>
+
+    <div class="method-step">
+      <div class="m-num">2</div>
+      <div class="m-body">
+        <h4>算每箱的好坏占比，再算WOE</h4>
+        <div class="calc-box">
+          WOE = ln( 坏客户占比 / 好客户占比 )　　（坏占比=该箱坏客户数÷总坏客户500；好占比=该箱好客户数÷总好客户9500）<br>
+          以[0,1]次为例：<span class="eq">= ln( (80/500) / (3800/9500) ) = ln(0.16/0.40) = ln(0.4) ≈ −0.916</span>
+        </div>
+      </div>
+    </div>
+
+    <table class="tbl">
+      <tr><th>分箱</th><th>好客户占比</th><th>坏客户占比</th><th>WOE</th></tr>
+      <tr><td>[0,1]次</td><td class="num">40.0%</td><td class="num">16.0%</td><td class="num">−0.916</td></tr>
+      <tr><td>[2,3]次</td><td class="num">29.5%</td><td class="num">20.0%</td><td class="num">−0.388</td></tr>
+      <tr><td>[4,5]次</td><td class="num">15.8%</td><td class="num">22.0%</td><td class="num">0.332</td></tr>
+      <tr><td>[6,8]次</td><td class="num">9.5%</td><td class="num">26.0%</td><td class="num">1.010</td></tr>
+      <tr><td>[9,+)次</td><td class="num">5.3%</td><td class="num">16.0%</td><td class="num">1.112</td></tr>
+    </table>
+
+    <div class="chart-card">
+      <div class="chart-title">图W1 · WOE 分箱柱状图</div>
+      <div class="chart-sub">申请次数越多，WOE越高（越正）——曲线严格单调递增，符合业务直觉</div>
+      <div class="chart-wrap short"><canvas id="chartW1"></canvas></div>
+      <div class="chart-footnote">示例数据，用于教学演示，非真实业务数据。</div>
+    </div>
+
+    <div class="callout good">
+      <span class="label">读懂这张图</span>
+      5个箱的WOE从−0.916一路涨到1.112，<strong>严格单调递增</strong>——申请次数越多，坏客户占比相对越高，这正是"多头借贷、资金紧张"的业务信号。这种干净的单调形态，是逻辑回归最喜欢的特征形状（详见第⑥节）。
+    </div>
+  </div>
+
+  <!-- ============ PART 5 算IV筛选 ============ -->
+  <div class="part" id="p5">
+    <div class="part-head"><span class="part-num">05</span><h2>手算一遍 IV，再看筛选标准</h2></div>
+
+    <div class="calc-box">
+      单箱IV贡献 = (坏占比−好占比) × WOE<br>
+      以[0,1]次为例：<span class="eq">= (0.16−0.40) × (−0.916) = (−0.24) × (−0.916) ≈ 0.220</span>
+    </div>
+
+    <table class="tbl">
+      <tr><th>分箱</th><th>坏占比−好占比</th><th>WOE</th><th>该箱IV贡献</th></tr>
+      <tr><td>[0,1]次</td><td class="num">−0.240</td><td class="num">−0.916</td><td class="num">0.220</td></tr>
+      <tr><td>[2,3]次</td><td class="num">−0.095</td><td class="num">−0.388</td><td class="num">0.037</td></tr>
+      <tr><td>[4,5]次</td><td class="num">0.062</td><td class="num">0.332</td><td class="num">0.021</td></tr>
+      <tr><td>[6,8]次</td><td class="num">0.165</td><td class="num">1.010</td><td class="num">0.167</td></tr>
+      <tr><td>[9,+)次</td><td class="num">0.107</td><td class="num">1.112</td><td class="num">0.119</td></tr>
+      <tr class="hl"><td>IV 总计</td><td colspan="2"></td><td class="num">0.563</td></tr>
+    </table>
+
+    <p>把这个IV放进筛选标准里看看：</p>
+    <table class="tbl">
+      <tr><th>IV 区间</th><th>预测能力判断</th></tr>
+      <tr><td>&lt; 0.02</td><td>几乎无预测力，直接剔除</td></tr>
+      <tr><td>0.02 ~ 0.1</td><td>较弱</td></tr>
+      <tr><td>0.1 ~ 0.3</td><td>中等，建模主力特征</td></tr>
+      <tr class="hl"><td>&gt; 0.3</td><td>强，但要警惕过拟合或稳定性风险（本例IV=0.563就在这一档）</td></tr>
+    </table>
+
+    <div class="chart-card">
+      <div class="chart-title">图W2 · 候选特征 IV 排行</div>
+      <div class="chart-sub">按强弱分层上色，直观看出哪些特征该留、该剔除</div>
+      <div class="chart-wrap short"><canvas id="chartW2"></canvas></div>
+      <div class="chart-footnote">示例数据，用于教学演示，非真实业务数据。</div>
+    </div>
+
+    <div class="callout warn">
+      <span class="label">IV高不等于能直接用</span>
+      "近3个月申请次数"IV=0.563，预测力很强，但<strong>IV越高的特征往往越容易受市场策略、渠道结构变化影响，稳定性风险也越大</strong>——这正是第⑦节要专门检查特征PSI的原因。IV只回答"预测力强不强"，不回答"稳不稳"，两件事要分开判断。
+    </div>
+  </div>
+
+  <!-- ============ PART 6 单调性 ============ -->
+  <div class="part" id="p6">
+    <div class="part-head"><span class="part-num">06</span><h2>非单调特征：U型分布该怎么处理</h2></div>
+    <p class="part-lede">不是所有特征都像"申请次数"这么听话。用"居住时长"这个经典反例走一遍。</p>
+
+    <table class="tbl">
+      <tr><th>分箱</th><th>WOE</th></tr>
+      <tr><td>&lt;1年</td><td class="num">0.45</td></tr>
+      <tr><td>1~3年</td><td class="num">−0.62</td></tr>
+      <tr><td>3~5年</td><td class="num">−0.18</td></tr>
+      <tr><td>5年以上</td><td class="num">0.21</td></tr>
+    </table>
+
+    <div class="chart-card">
+      <div class="chart-title">图W3 · "居住时长"的 WOE 曲线呈 U 型</div>
+      <div class="chart-sub">先降后升，不是一路涨或一路跌——这就是"非单调"</div>
+      <div class="chart-wrap short"><canvas id="chartW3"></canvas></div>
+      <div class="chart-footnote">示例数据，用于教学演示，非真实业务数据。</div>
+    </div>
+
+    <div class="callout bad">
+      <span class="label">为什么非单调特征不能直接塞进逻辑回归</span>
+      居住时长&lt;1年的客户风险最高（刚搬来、不稳定），1~3年风险最低（安顿下来），3~5年风险又开始回升（可能是又要搬家的信号），5年以上重新走高——如果直接把WOE编码后的这个变量放进逻辑回归，模型只能学到一个单一方向的线性关系，会在中间某一段"学反"，对某些客户给出业务上讲不通的评分。
+    </div>
+
+    <p><strong>三种处理方式：</strong></p>
+    <table class="tbl">
+      <tr><th>方法</th><th>做法</th></tr>
+      <tr><td>①合并分箱</td><td>把WOE相近的箱合并，强制让曲线变单调（可能会损失一些信息量）</td></tr>
+      <tr><td>②拆成虚拟变量</td><td>拆成"是否&lt;1年""是否&gt;3年"这类0/1变量分别入模，让模型自己组合出U型效果</td></tr>
+      <tr><td>③换用树模型</td><td>树模型能自动处理非线性关系，但会失去评分卡的可解释性（见模块一第④节的取舍）</td></tr>
+    </table>
+
+    <div class="callout">
+      <span class="label">单调性检查是入模前的必做动作</span>
+      不要等模型上线后才发现某个特征"学反了"再回头查——分箱之后先画一遍WOE曲线，肉眼或程序检查单调性，是特征工程里最基础也最容易被跳过的一步。
+    </div>
+  </div>
+
+  <!-- ============ PART 7 特征稳定性 ============ -->
+  <div class="part" id="p7">
+    <div class="part-head"><span class="part-num">07</span><h2>建模阶段就要做的稳定性体检</h2></div>
+    <p class="part-lede">IV告诉你"这个特征有没有用"，PSI告诉你"这个特征稳不稳"——两件事同等重要，但很多团队只做了前者。</p>
+
+    <div class="analogy">
+      <span class="label">🩺 怎么做</span>
+      用两个不同时间窗口的样本（比如建模用的近12个月 vs 更早之前的12个月），对同一个候选特征分别算一次分布，再用<a href="module-03-metrics.html">模块三</a>讲过的PSI公式对比这两份分布——如果PSI已经偏高，说明这个特征的分布本身随时间在变，即使当下IV很高，未来也大概率会像模块三案例里"近3个月申请次数"那样，成为模型衰退的导火索。
+    </div>
+
+    <table class="tbl">
+      <tr><th>特征</th><th>IV</th><th>特征PSI（跨窗口）</th><th>入模建议</th></tr>
+      <tr><td>近3个月申请次数</td><td class="num">0.563</td><td class="num">0.18</td><td>预测力强但不稳定，需谨慎监控或做分段处理</td></tr>
+      <tr><td>历史逾期次数</td><td class="num">0.412</td><td class="num">0.04</td><td>强且稳定，优先入模</td></tr>
+      <tr><td>月收入</td><td class="num">0.156</td><td class="num">0.06</td><td>中等且稳定，主力特征</td></tr>
+      <tr><td>居住时长</td><td class="num">0.089</td><td class="num">0.09</td><td>弱，且需先解决单调性问题</td></tr>
+      <tr><td>性别</td><td class="num">0.008</td><td class="num">0.01</td><td>剔除，无预测力</td></tr>
+    </table>
+
+    <div class="callout warn">
+      <span class="label">这正是模块三案例的前情提要</span>
+      "近3个月申请次数"在建模阶段的特征PSI就已经是0.18（模块三讲过，0.1~0.25属于"需要关注"区间），却因为IV实在太强被保留入模——这本身是个可以接受的权衡，但意味着<strong>上线后必须对这个特征做加密监控</strong>，这也正是模块三案例里它最终被"抓到"漂移的原因：团队一直有在盯它。
+    </div>
+  </div>
+
+  <!-- ============ PART 8 实战案例 ============ -->
+  <div class="part" id="p8">
+    <div class="part-head"><span class="part-num">08</span><h2>实战案例：一个特征从原始数据到入模的完整流程</h2></div>
+
+    <div class="case-step">
+      <div class="step-badge">1</div>
+      <div class="step-body">
+        <h4>原始数据：近3个月申请次数（连续整数，0~20+不等）</h4>
+        从征信报告衍生出的原始字段，取值分散，直接入模不可解释也不稳定。
+      </div>
+    </div>
+    <div class="case-step">
+      <div class="step-body" style="margin-left:38px;">
+        <h4>分箱</h4>
+        用卡方分箱在10000人的训练样本上，找到[0,1]/[2,3]/[4,5]/[6,8]/[9,+)这5个切点，每箱样本量都在5%以上（最小的[9,+)箱有580人，占5.8%）。
+      </div>
+    </div>
+    <div class="case-step">
+      <div class="step-body" style="margin-left:38px;">
+        <h4>计算WOE，检查单调性</h4>
+        第④节算出的WOE序列 −0.916 → −0.388 → 0.332 → 1.010 → 1.112，严格单调递增，通过检查。<span class="result">→ 不需要合并分箱或拆虚拟变量。</span>
+      </div>
+    </div>
+    <div class="case-step">
+      <div class="step-body" style="margin-left:38px;">
+        <h4>计算IV，通过初筛</h4>
+        IV=0.563，远高于0.1的主力特征门槛。<span class="result">→ 预测力确认足够强。</span>
+      </div>
+    </div>
+    <div class="case-step">
+      <div class="step-body" style="margin-left:38px;">
+        <h4>检查特征PSI，识别风险但不放弃</h4>
+        跨窗口PSI=0.18，落在"需要关注"区间。<span class="result">→ 团队决策：保留入模（IV太强不舍得丢），但标记为"高监控优先级特征"，纳入模块三的月度特征PSI监控清单。</span>
+      </div>
+    </div>
+    <div class="case-step">
+      <div class="step-body" style="margin-left:38px;">
+        <h4>WOE编码，交给逻辑回归</h4>
+        原始的"申请次数"字段被替换成WOE数值，进入模块一第⑤节的评分卡转换流程，最终变成"0次+15分/1~2次0分/3次以上−20分"这张具体的分箱得分表。
+      </div>
+    </div>
+  </div>
+
+  <!-- ============ PART 9 三个坑 ============ -->
+  <div class="part" id="p9">
+    <div class="part-head"><span class="part-num">09</span><h2>三个容易踩的坑</h2></div>
+
+    <div class="pitfall">
+      <div class="pit-title">坑一 · 分箱切太细，样本量撑不住</div>
+      为了让WOE曲线看起来更精细，把一个特征切成十几个箱，结果某些箱只有几十个样本——这种箱的WOE几乎就是随机噪音，换一批数据算出来的WOE可能完全不一样，甚至出现某箱全是好客户或全是坏客户导致WOE趋于正负无穷。<strong>每箱样本量至少占总量的5%左右</strong>，是业界的经验底线。
+    </div>
+
+    <div class="pitfall">
+      <div class="pit-title">坑二 · 只看IV，不看特征PSI</div>
+      IV高的特征天然更有吸引力，但正如第⑦节演示的，<strong>预测力和稳定性是两件独立的事</strong>。只用IV筛选、跳过PSI体检，等于把"未来会漂移的特征"提前混进了模型，模块三讲的衰退案例，根源往往就在这一步埋下的。
+    </div>
+
+    <div class="pitfall">
+      <div class="pit-title">坑三 · 忽视单调性，硬把非单调特征塞进逻辑回归</div>
+      第⑥节"居住时长"的U型WOE如果不处理直接入模，逻辑回归会被迫学出一个"平均化"的错误方向，对中间那段客群的评分完全不可信。<strong>分箱后先画WOE曲线看单调性，是不能省略的一步</strong>，哪怕看起来只是多花五分钟。
+    </div>
+  </div>
+
+  <!-- ============ PART 10 速查表 ============ -->
+  <div class="part" id="p10">
+    <div class="part-head"><span class="part-num">10</span><h2>本节速查表</h2></div>
+    <div class="cheat-grid">
+      <div class="cheat-card">
+        <div class="cc-name">分箱</div>
+        <div class="cc-detail">把连续/类别变量切成几段。<br><b>要求：</b>每箱样本量≥总量5%左右</div>
+      </div>
+      <div class="cheat-card">
+        <div class="cc-name">WOE</div>
+        <div class="cc-detail">= ln(坏占比/好占比)<br><b>用途：</b>把分箱转成统一的风险强度数值</div>
+      </div>
+      <div class="cheat-card">
+        <div class="cc-name">IV</div>
+        <div class="cc-detail">= Σ(坏占比−好占比)×WOE<br><b>阈值：</b>&lt;0.02剔除，0.1~0.3主力，&gt;0.3强但需警惕</div>
+      </div>
+      <div class="cheat-card">
+        <div class="cc-name">单调性</div>
+        <div class="cc-detail">WOE应随分箱有序递增或递减。<br><b>不满足：</b>合并分箱/拆虚拟变量/换树模型</div>
+      </div>
+      <div class="cheat-card">
+        <div class="cc-name">特征PSI</div>
+        <div class="cc-detail">跨时间窗口对比特征分布。<br><b>用途：</b>IV高但PSI高的特征要加密监控</div>
+      </div>
+      <div class="cheat-card">
+        <div class="cc-name">卡方/决策树分箱</div>
+        <div class="cc-detail">有监督分箱方法。<br><b>优势：</b>直接按"能否区分好坏"找最优切点</div>
+      </div>
+      <div class="cheat-card">
+        <div class="cc-name">虚拟变量拆分</div>
+        <div class="cc-detail">非单调特征的处理方案之一。<br><b>做法：</b>拆成多个0/1变量分别入模</div>
+      </div>
+      <div class="cheat-card">
+        <div class="cc-name">三个坑</div>
+        <div class="cc-detail">分箱太细/只看IV不看PSI/忽视单调性</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ============ PART 11 自测 ============ -->
+  <div class="part" id="p11">
+    <div class="part-head"><span class="part-num">11</span><h2>自测：检验一下是不是真的懂了</h2></div>
+
+    <div class="quiz-item">
+      <div class="q-title">Q1. 为什么"年龄"这种连续变量不能直接乘一个回归系数入模？</div>
+      <details><summary>查看解析</summary>
+        <div class="answer">因为年龄和风险的关系往往不是一条直线（比如U型：太年轻和太年长风险都偏高，中年风险低），逻辑回归只能学出单一方向的线性关系，学不出这种非线性形态。分箱+WOE能把这种非线性关系转换成模型可以直接使用的形式。</div>
+      </details>
+    </div>
+
+    <div class="quiz-item">
+      <div class="q-title">Q2. WOE为正和为负分别代表什么？</div>
+      <details><summary>查看解析</summary>
+        <div class="answer">WOE为正，说明这一箱里<b>坏客户占比相对更高</b>（风险更高）；WOE为负，说明<b>好客户占比相对更高</b>（风险更低）。数值大小代表这种倾向的强弱程度。</div>
+      </details>
+    </div>
+
+    <div class="quiz-item">
+      <div class="q-title">Q3. 计算题：某分箱好客户占比25%，坏客户占比10%，求这一箱的WOE和IV贡献（提示：ln(0.10/0.25)=ln(0.4)≈−0.916）。</div>
+      <details><summary>查看解析</summary>
+        <div class="answer">WOE = ln(0.10/0.25) ≈ <b>−0.916</b>。IV贡献 = (0.10−0.25)×(−0.916) = (−0.15)×(−0.916) ≈ <b>0.137</b>。</div>
+      </details>
+    </div>
+
+    <div class="quiz-item">
+      <div class="q-title">Q4. 一个特征IV=0.45，很强，但特征PSI=0.3，该怎么处理？</div>
+      <details><summary>查看解析</summary>
+        <div class="answer">不能只看IV就直接放心用。PSI=0.3已经超过"严重漂移"的阈值，说明这个特征的分布本身很不稳定，即使当下预测力强，也很可能像模块三案例一样，成为未来模型衰退的根源。应该<b>结合业务判断是否入模</b>：如果一定要用，需要纳入高优先级监控清单，并准备好一旦漂移触发时的应急预案（比如临时加规则）。</div>
+      </details>
+    </div>
+
+    <div class="quiz-item">
+      <div class="q-title">Q5. 分析题：一个特征分箱后WOE呈现"先升后降"的非单调形态，业务上你会怎么处理？</div>
+      <details><summary>查看解析</summary>
+        <div class="answer">三种思路：①<b>合并分箱</b>，把WOE相近的箱合并，强制让曲线单调（可能损失一些信息）；②<b>拆成虚拟变量</b>，把这个特征拆成几个0/1变量分别入模，让模型自己组合出非线性效果；③如果这种非线性关系对业务很重要、又不想损失信息，考虑<b>换用树模型</b>作为辅助/挑战者模型，但要接受可解释性下降的代价（见模块一第④节）。</div>
+      </details>
+    </div>
+  </div>
+
+  <!-- ============ 小结 ============ -->
+  <div class="summary-box">
+    <h3>本节小结</h3>
+    <p>特征工程的四件套——分箱、WOE、IV、单调性检查——本质是在做同一件事：<strong>把任何一个原始特征，翻译成逻辑回归听得懂、业务看得懂、经得起时间检验的形式</strong>。IV回答"有没有用"，单调性回答"讲不讲得通"，特征PSI回答"稳不稳"，三个问题都要过一遍，少一个都可能在后面（模块一的建模、模块三的监控）留下隐患。</p>
+    <div class="mnemonic-line">分箱是翻译，WOE是度量，IV是筛选，单调性和PSI是把关。</div>
+  </div>
+
+  <div class="next-card">
+    <div>
+      <div class="n-label">下一步</div>
+      <div class="n-title">回到路线图，选择下一个模块继续学</div>
+    </div>
+    <div class="n-arrow">→</div>
+  </div>
+  <p style="text-align:center;"><a href="index.html">← 返回信贷风控学习手册总目录</a></p>
+
+  <div class="page-footer">
+    <span>信贷风控学习手册 · 模块二</span>
+    <span>示例数据均为教学演示用途，非真实业务数据</span>
+  </div>
+
+</div>
+
+<script>
+const gridColor = '#EFE7DA';
+Chart.defaults.font.family = "-apple-system,BlinkMacSystemFont,'PingFang SC','Microsoft YaHei',sans-serif";
+Chart.defaults.font.size = 12.5;
+Chart.defaults.color = '#5B5147';
+
+// 图W1：WOE分箱柱状图
+new Chart(document.getElementById('chartW1'), {
+  type: 'bar',
+  data: {
+    labels: ['[0,1]次','[2,3]次','[4,5]次','[6,8]次','[9,+)次'],
+    datasets: [{
+      label: 'WOE',
+      data: [-0.916,-0.388,0.332,1.010,1.112],
+      backgroundColor: ctx => ctx.raw < 0 ? '#3E7E96' : '#C0433D',
+      borderRadius: 4
+    }]
+  },
+  options: {
+    responsive: true, maintainAspectRatio: false,
+    plugins: { legend: { display:false } },
+    scales: {
+      y: { min:-1.2, max:1.3, grid:{ color: gridColor }, title:{ display:true, text:'WOE' } },
+      x: { grid:{ display:false } }
+    }
+  }
+});
+
+// 图W2：IV排行
+new Chart(document.getElementById('chartW2'), {
+  type: 'bar',
+  data: {
+    labels: ['性别','居住时长','月收入','历史逾期次数','近3个月申请次数'],
+    datasets: [{
+      label: 'IV',
+      data: [0.008,0.089,0.156,0.412,0.563],
+      backgroundColor: ['#C9BFB2','#D9A24A','#C1892A','#3E8362','#C0433D'],
+      borderRadius: 4
+    }]
+  },
+  options: {
+    indexAxis: 'y',
+    responsive: true, maintainAspectRatio: false,
+    plugins: { legend: { display:false } },
+    scales: {
+      x: { min:0, max:0.65, grid:{ color: gridColor }, title:{ display:true, text:'IV' } },
+      y: { grid:{ display:false } }
+    }
+  }
+});
+
+// 图W3：U型WOE曲线
+new Chart(document.getElementById('chartW3'), {
+  type: 'line',
+  data: {
+    labels: ['<1年','1~3年','3~5年','5年以上'],
+    datasets: [{
+      label: 'WOE',
+      data: [0.45,-0.62,-0.18,0.21],
+      borderColor: '#D9764A',
+      backgroundColor: '#D9764A',
+      tension: 0.35,
+      borderWidth: 2.5,
+      pointRadius: 5
+    }]
+  },
+  options: {
+    responsive: true, maintainAspectRatio: false,
+    plugins: { legend: { display:false } },
+    scales: {
+      y: { min:-0.8, max:0.6, grid:{ color: gridColor }, title:{ display:true, text:'WOE' } },
+      x: { grid:{ display:false }, title:{ display:true, text:'居住时长分箱' } }
+    }
+  }
+});
+</script>
+
+</body>
+</html>
