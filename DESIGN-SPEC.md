@@ -1,7 +1,7 @@
 # 信贷风控学习手册 · 设计规格说明书（Design Spec）
 
 > **版本**：v1.1 · 2026-09-21
-> **来源**：基于当前仓库实际代码反向拆解（`index.html` + 模块①②③④共5个页面 + `style.css`，合计 3509 行）
+> **来源**：基于当前仓库实际代码反向拆解（`index.html` + 模块①②③④⑤共6个页面 + `style.css`，合计 3703 行）
 > **用途**：①续写文章模块⑤⑥⑦、修改既有页面；②作为**其他 topic/领域生成学习手册的范本**——§10 和附 C/D 是泛化/复刻的入口。
 > **维护约定**：发现代码与本文档不一致时，以代码实际行为为准，并回来更新本文档。
 
@@ -61,29 +61,35 @@
 
 | # | 文件 | 主题 | 昵称 | eyebrow emoji | 状态 |
 |---|---|---|---|---|---|
-| ① | `module-01-scorecard.html` | 评分卡体系（A/B/C卡） | 骨架 | 🏗️ | ✅ 已完成 |
-| ② | `module-02-woe.html` | 特征工程四件套（分箱/WOE/IV） | 手艺 | 🛠️ | ✅ 已完成 |
-| ③ | `module-03-metrics.html` | 模型评估指标（KS/AUC/PSI） | 标尺 | 📏 | ✅ 已完成 |
-| ④ | `module-04-vintage.html`（完整版）/ `module-04-vintage-teaching.html`（纯教学版） | 资产质量分析（Vintage/迁徙率） | 透视镜 | 🔍 | ✅ 已完成 · 最早编写（index 上保留"当前在学"高亮） |
-| ⑤ | `module-05-*.html` | 决策与策略（AB测试/拒绝推断） | 决策 | — | 待写 |
-| ⑥ | `module-06-*.html` | 数据与合规边界 | 边界 | — | 待写 |
-| ⑦ | `module-07-*.html` | 进阶外延（反欺诈/ABS/BNPL） | 外延 | — | 待写 |
+| ① | `01-scorecard.html` | 评分卡体系（A/B/C卡） | 骨架 | 🏗️ | ✅ 已完成 |
+| ② | `02-woe.html` | 特征工程四件套（分箱/WOE/IV） | 手艺 | 🛠️ | ✅ 已完成 |
+| ③ | `03-metrics.html` | 模型评估指标（KS/AUC/PSI） | 标尺 | 📏 | ✅ 已完成 |
+| ④ | `04-vintage.html` | 资产质量分析（Vintage/迁徙率） | 透视镜 | 🔍 | ✅ 已完成 · 最早编写（index 上保留"当前在学"高亮） |
+| ⑤ | `05-strategy.html` | 决策与策略（AB测试/拒绝推断） | 决策 | — | ✅ 已完成 |
+| ⑥ | `06-*.html` | 数据与合规边界 | 边界 | — | 待写 |
+| ⑦ | `07-*.html` | 进阶外延（反欺诈/ABS/BNPL） | 外延 | — | 待写 |
 
 **推荐学习顺序**（固定，不随完成度变化）：③评估指标 → ②特征工程 → ①评分卡 → ④资产质量 → ⑤决策策略 → ⑥合规边界 → ⑦进阶外延。
 
 ### 2.2 文件布局与命名
 
 ```
-credit-risk-handbook/
-├── index.html                    # 封面 + 知识地图 + 路线图（hub）
-├── style.css                     # 唯一共享样式（设计系统，见 §4/§5）
-├── module-0N-关键词.html          # 模块页，N 用两位数字
-├── module-04-vintage-teaching.html  # 特例：模块④的"纯教学版"衍生副本
-└── *.png                          # matplotlib 真实数据图（紧贴引用它的页面存放）
+atlas/
+├── index.html                       # Atlas 总目录（课题卡片）
+├── DESIGN-SPEC.md                   # 本文档
+├── design-system/
+│   ├── style.css                    # 唯一共享样式（设计系统，见 §4/§5）
+│   └── module-skeleton.html         # 新模块起步模板
+└── topics/credit-risk/
+    ├── index.html                   # 课题封面 + 知识地图 + 路线图（hub）
+    ├── manual/0N-关键词.html          # 模块页，N 用两位数字
+    ├── figures/figNN-*.png          # matplotlib 真实数据图
+    ├── data/                        # 数据（预留）
+    └── reports/                     # 报告（预留）
 ```
 
-- 命名规则：`module-0N-关键词.html`，关键词用英文小写连字符。
-- 真实数据图片命名：`{分析主题}-{变体}.png`，如 `vintage-curve-real.png`、`vintage-spectrum-B2.png`、`vintage-single-2025-06-annotated.png`。
+- 命名规则：`manual/0N-关键词.html`，关键词用英文小写连字符。
+- 真实数据图片命名：`fig{模块两位号}-{分析主题}-{变体}.png`，统一放 `figures/`，如 `fig04-vintage-curve-real.png`、`fig04-vintage-spectrum-B2.png`、`fig04-vintage-single-2025-06-annotated.png`。
 
 ### 2.3 导航模型：hub-and-spoke + 交叉引用
 
@@ -91,7 +97,7 @@ credit-risk-handbook/
 
 1. **index → 模块**：roadmap 卡片（仅已完成的卡片是 `<a>` 可点击）+ order-strip chip（已完成/在学的 chip 可点击）+ 页脚"已完成"链接列表。三处状态必须同步更新。
 2. **模块 → index**：masthead 内 breadcrumb（`手册 › 模块N`）+ 文末 `← 返回信贷风控学习手册总目录`。
-3. **模块 ↔ 模块**：正文中用 `<a href="module-0X.html">` 就地交叉引用对应小节（服务于 §7.3 的叙事线）。
+3. **模块 ↔ 模块**：正文中用 `<a href="0X-keyword.html">` 就地交叉引用对应小节（服务于 §7.3 的叙事线）。
 
 模块完成时的**状态同步清单**（index.html 三处）：
 - roadmap 卡片：`tag-todo` → `tag-good`，文案"推荐第N步 · 待更新" → "推荐第N步 · 已完成"，卡片加 `linked` class 变可点击，h3 标题加 `→`；
@@ -193,7 +199,9 @@ Part 是正文的一级单元，结构：`.part` 容器（`id="pN"`）→ `.part
 
 ### 3.7 教学版/完整版双版本特例（仅模块④）
 
-`module-04-vintage.html`（完整版）与 `module-04-vintage-teaching.html`（纯教学版）的差异**仅 4 处**：local-nav 的 `⑩ 真实案例` 链接、checklist 的"（进阶）"条目、整个 Part⑩、页脚来源声明。第 1–9 Part **逐字节相同**。
+> 注：纯教学版已于 c044e88 从仓库移除，当前只保留完整版 `04-vintage.html`；以下规则留作需要重新衍生教学版时的参考。
+
+`04-vintage.html`（完整版）与 `04-vintage-teaching.html`（纯教学版）的差异**仅 4 处**：local-nav 的 `⑩ 真实案例` 链接、checklist 的"（进阶）"条目、整个 Part⑩、页脚来源声明。第 1–9 Part **逐字节相同**。
 
 **维护规则**：完整版第 1–9 Part 有任何改动，必须同步教学版（或从完整版重新复制生成）。
 
@@ -356,8 +364,8 @@ Part 是正文的一级单元，结构：`.part` 容器（`id="pN"`）→ `.part
 | "小结/收尾金句" | `.summary-box` + `.mnemonic-line` | 已经有一句口诀 → 复用同一 `.mnemonic-line`；想得到下一个动作 → 在 `next-card` 里指向 |
 | "一个词/徽章就够了" | `.tag`（6 个语义色 + `tag-real`） | "当前在学/推荐第N步/已完成/待更新" → 模块卡片专属语义；真实数据 → `tag-real` 只配真实数据页 |
 | "一个指标、阈值、用法" | `.cheat-card`（速查卡：`<b>用途：</b>/<b>阈值：</b>` 前缀） | 不是速查表（正文内的补充） → 不要拉 `.cheat-grid`，放 `.callout` |
-| "一串同主题入口（模块间跳转）" | module-card（非泛化 scope） | 模块内内联交叉引用 → 直接 `<a href="module-0X.html">` |
-| "下钻某点、链接到本模块其他 Part" | 内文 `<a href="#pN">` | 指向其他模块 → `href="module-0X-keyword.html"`，文本里明确写'见模块X' |
+| "一串同主题入口（模块间跳转）" | module-card（非泛化 scope） | 模块内内联交叉引用 → 直接 `<a href="0X-keyword.html">` |
+| "下钻某点、链接到本模块其他 Part" | 内文 `<a href="#pN">` | 指向其他模块 → `href="0X-keyword.html"`，文本里明确写'见模块X' |
 
 ---
 
@@ -451,16 +459,16 @@ scales: {
 模块①②③共享一条隐藏"连续剧"，数字完全互通：
 
 ```
-module-02：用"近3个月申请次数"手算 WOE/IV（9500好+500坏样本，IV=0.563，高值段[6,8]+[9,+]占16.1%）
+02-woe：用"近3个月申请次数"手算 WOE/IV（9500好+500坏样本，IV=0.563，高值段[6,8]+[9,+]占16.1%）
      ↓ 该特征被选入建模
-module-01：同一特征进入评分卡（四变量算出总分628）；案例建模 KS=0.46 / AUC=0.79
+01-scorecard：同一特征进入评分卡（四变量算出总分628）；案例建模 KS=0.46 / AUC=0.79
      ↓ 同一组基线数字
-module-03：同一模型上线9个月后衰退；PSI=0.179 拆箱 → 特征PSI排行 → "近3个月申请次数"PSI=0.19 严重漂移
-           → 高值段占比 16.1% → 32%（呼应 module-02 算 WOE 时的高值段）
+03-metrics：同一模型上线9个月后衰退；PSI=0.179 拆箱 → 特征PSI排行 → "近3个月申请次数"PSI=0.19 严重漂移
+           → 高值段占比 16.1% → 32%（呼应 02-woe 算 WOE 时的高值段）
 ```
 
 **维护规则**：
-1. 三模块间用 `<a href="module-0X.html">` 交叉引用对应小节；
+1. 三模块间用 `<a href="0X-keyword.html">` 交叉引用对应小节；
 2. 任何改动涉及这条线上具体数字（样本量、KS/AUC、分箱边界、占比）时，**三处必须同步核对**；
 3. 新模块若引入新案例，优先复用这条叙事线或开一条新的贯通线，避免孤立的"一次性案例"。
 
@@ -528,7 +536,7 @@ v1.0 只写了"痛点先行""凡例子必可复算"两条内容原则，下列�
 
 ## 9. 续写新模块操作清单（以模块⑤为例）
 
-1. 复制任一已完成模块页作为模板（推荐 module-03，结构最标准），改 title / breadcrumb / eyebrow（自选固定 emoji）/ h1 / sub。
+1. 复制任一已完成模块页作为模板（推荐 03-metrics，结构最标准），改 title / breadcrumb / eyebrow（自选固定 emoji）/ h1 / sub。
 2. 按模板改 checklist、local-nav、各 Part；图表编号启用新前缀（如 `图G1…`，避开已用的 S/W/K/A–H、D）。
 3. 案例数据优先接入 §7.3 叙事线或新开一条贯通线；示例数据全部可复算。
 4. 严格遵守：三个坑恰好 3 个、自测恰好 5 题、速查卡 8~9 张、教学图表每张带脚注。
