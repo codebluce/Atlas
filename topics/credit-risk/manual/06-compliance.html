@@ -1,0 +1,891 @@
+<!-- ===== 模块⑥ 数据与合规边界 ===== -->
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>模块六 · 数据与合规边界（数据源/穿越变量/个保法/利率红线）| 信贷风控学习手册</title>
+<link rel="stylesheet" href="../../../design-system/style.css">
+<!-- Chart.js：本地优先，CDN 兜底（离线也能出图） -->
+<script src="../../../design-system/vendor/chart.umd.min.js"></script>
+<script>window.Chart||document.write('<script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.4/dist/chart.umd.min.js"><\/script>');</script>
+</head>
+<body>
+
+<header class="masthead">
+  <div class="container">
+    <div class="breadcrumb"><a href="../index.html">信贷风控学习手册</a> › 模块六</div>
+    <span class="eyebrow">⚖️ 模块六 · 数据与合规边界</span>
+    <h1>"这个变量能用吗？"——风控里最贵的一个问题</h1>
+    <p class="sub">模块②教你把变量做成 WOE、算出 IV；模块⑤教你把分数变成额度和利率。但在这两件事中间，横着一道没人写进教科书、却能让整个模型报废的关卡：<strong>这份数据，你有没有资格用；这个变量，在决策那一刻到底存不存在；这个利率，法律认不认</strong>。这一模块专门讲这道关卡。</p>
+  </div>
+</header>
+
+<nav class="local-nav">
+  <div class="container">
+    <a href="#p1">① 痛点</a>
+    <a href="#p2">② 数据源</a>
+    <a href="#p3">③ 穿越变量</a>
+    <a href="#p4">④ 时点体检</a>
+    <a href="#p5">⑤ 看图</a>
+    <a href="#p6">⑥ 法规红线</a>
+    <a href="#p7">⑦ 完整案例</a>
+    <a href="#p8">⑧ 三个坑</a>
+    <a href="#p9">⑨ 速查表</a>
+    <a href="#p10">⑩ 自测</a>
+  </div>
+</nav>
+
+<div class="wrap">
+
+  <div class="checklist" style="margin-top:32px;">
+    <h4>本节读完，你能做到</h4>
+    <ul>
+      <li>说清风控数据的三类来源（自有 / 持牌征信 / 第三方），以及每一类各自的"授权链条"要走到哪一步才算合规</li>
+      <li>识别穿越变量（时间穿越 / 目标泄露）——为什么"IV 高得离谱"通常不是喜讯而是事故信号</li>
+      <li>亲手做一遍变量时点体检：拿采集时间戳减去决策时点 T0，判断每个变量该留还是该杀</li>
+      <li>看懂"离线 KS 0.62、上线只剩 0.39"这种断崖是怎么由穿越变量造成的，并能提前算出剔除后的真实水位</li>
+      <li>复述《个人信息保护法》第 24 条对自动化决策的三项要求，知道"拒绝仅由自动化决策"意味着风控系统要留哪个口子</li>
+      <li>手算等本等息的真实年化 IRR：名义 18% 实际是多少，为什么"宣传利率"和"司法口径"经常差一倍</li>
+      <li>区分民间借贷 LPR 4 倍上限与持牌机构 24% 综合成本口径，不再把两者混着用</li>
+      <li>建立一张变量上线前的合规检查清单，在建模阶段就把"能不能用"问完，而不是等评审会被打回</li>
+    </ul>
+  </div>
+
+  <!-- ============ PART 1 痛点 ============ -->
+  <div class="part" id="p1">
+    <div class="part-head"><span class="part-num">01</span><h2>先说痛点：一个 KS 0.62 的"神模型"，是怎么在评审会上被毙掉的</h2></div>
+    <p class="part-lede">模块⑤最后上线的那个挑战者，KS=0.51。但它的第一版不是这个数——<strong>第一版离线 KS 高达 0.62、AUC 0.86</strong>，全组都很兴奋。然后合规评审花了两个小时，把它退回重做。这一节讲清楚那两个小时里发生了什么。</p>
+
+    <h3>痛点一：指标好得不像话，往往是数据在作弊</h3>
+    <p>风控建模里有条不成文的经验：<strong>零售信贷的 A 卡，KS 落在 0.30~0.45 算正常，0.45~0.50 算优秀，超过 0.55 就该先怀疑自己而不是先庆祝</strong>。挑战者 v1 的 0.62 不是模型做得多好，而是特征里混进了"未来的答案"——模型提前看到了它本不该看到的东西。</p>
+    <div class="callout bad">
+      <span class="label">被退回的三个变量</span>
+      <strong>首期账单还款状态</strong>（IV=0.89）、<strong>授信后额度使用率</strong>（IV=0.71）、<strong>放款后 3 天内取现标记</strong>（IV=0.52）。三个共同点：名字里都带着"后"字。它们都是<strong>放款之后才可能产生的数据</strong>，而 A 卡要解决的问题是"要不要给这个人放款"——放款还没发生，这些字段在真实决策时点全是空的。
+    </div>
+
+    <h3>痛点二：数据"拿得到"不等于"能用"</h3>
+    <p>技术上，数据仓库里躺着一张宽表，你 SELECT 出来就能用；合规上，每一列都要回答三个问题：<strong>这列数据是谁采集的？用户授权的范围包不包括"用于信贷风险评估"？我们是直接拿的原始数据，还是经过持牌征信机构？</strong> 这三问中任何一问答不上来，这一列就不能进模型——哪怕它的 IV 再漂亮。</p>
+
+    <h3>痛点三：把"宣传利率"当成"合规利率"</h3>
+    <p>模块⑤把利率定在 18%，看起来离任何一条红线都很远。但 18% 是<strong>名义利率</strong>——如果产品形态是"等本等息"（每月还固定本金 + 按初始本金计息），客户实际承担的年化资金成本（IRR）会接近 <strong>31.7%</strong>。这不是算错了，是两种口径。Part 6 会一步步手算出这个数字。</p>
+
+    <div class="analogy">
+      <span class="label">打个比方：考试前一天捡到了答案</span>
+      一个学生平时考 70 分，某次考了 98 分，全班第一。老师很高兴，直到发现他考前捡到了答题卡——<strong>那 98 分不是他的水平，是答案的水平</strong>。下一次没有答案的考试，他考了 52 分，比平时还低（因为他把复习时间用在背答案上了）。<br><br>
+      穿越变量就是这张捡到的答题卡：<strong>离线评估时它在，KS 0.62；上线真实决策时它是空的，KS 只剩 0.39</strong>——比老冠军的 0.38 只强一点点。更糟的是，模型的权重全压在这几个"作弊变量"上，反而把真正有用的行为变量挤到了边缘，所以上线表现比"一开始就不用它们"还要差。
+    </div>
+
+    <p>本模块目标：把"能不能用"这件事<strong>提前到建模之前</strong>。顺序是——先搞清数据从哪来（Part 2）、再识别时点穿越（Part 3–4）、然后看断崖是怎么发生的（Part 5）、最后把法规红线和利率口径算清楚（Part 6），并走一遍完整评审流程（Part 7）。</p>
+  </div>
+
+  <!-- ============ PART 2 数据源 ============ -->
+  <div class="part" id="p2">
+    <div class="part-head"><span class="part-num">02</span><h2>数据从哪来：三类数据源，三条授权链条</h2></div>
+    <p class="part-lede">合规讨论最容易变成"感觉不太行"的口水仗。要把它变成可操作的判断，第一步是把数据按<strong>来源</strong>分类——因为来源决定了要走哪条授权链条，也决定了出事时责任在谁。</p>
+
+    <div class="concept-grid">
+      <div class="concept-card">
+        <div class="c-name">自有数据</div>
+        <div class="c-en">first-party data</div>
+        <div class="c-def">用户在本机构产品内直接产生的数据：注册信息、申请表填写项、App 内行为、历史借还记录、客服沟通记录。</div>
+        <div class="c-formula">授权依据：注册协议 + 隐私政策 + 信贷业务专项授权书</div>
+        <div class="c-mnemonic">最安全的一类，但"收集时说的用途"必须覆盖"信贷风险评估"</div>
+      </div>
+      <div class="concept-card">
+        <div class="c-name">持牌征信数据</div>
+        <div class="c-en">licensed credit bureau data</div>
+        <div class="c-def">央行征信中心的信用报告，以及持有个人征信业务牌照的市场化机构提供的评分、标签类产品。</div>
+        <div class="c-formula">授权依据：逐笔、书面（含电子）单独授权 + 查询留痕</div>
+        <div class="c-mnemonic">每查一次都要有一次授权，"一次授权长期查"是违规高发区</div>
+      </div>
+      <div class="concept-card">
+        <div class="c-name">第三方数据</div>
+        <div class="c-en">third-party / alternative data</div>
+        <div class="c-def">运营商标签、电商消费画像、设备指纹、多头借贷指数等。风控里最"好用"也最容易踩线的一类。</div>
+        <div class="c-formula">授权依据：用户单独同意 + 供方合规资质 + 断直连要求</div>
+        <div class="c-mnemonic">IV 往往最高，但"供方有没有资格卖"经常是个黑盒</div>
+      </div>
+      <div class="concept-card">
+        <div class="c-name">授权链条</div>
+        <div class="c-en">chain of consent</div>
+        <div class="c-def">从"用户点了同意"到"这个字段进入模型"之间的完整证据链。链条断在哪一环，哪一环之后的所有使用都是无源之水。</div>
+        <div class="c-formula">告知 → 同意 → 采集 → 传输 → 使用 → 留痕 → 删除</div>
+        <div class="c-mnemonic">合规评审问的不是"你有没有授权"，是"授权覆不覆盖这个用途"</div>
+      </div>
+    </div>
+
+    <h3>授权链条要走完的三步</h3>
+    <div class="method-step">
+      <div class="m-num">1</div>
+      <div class="m-body">
+        <h4>告知—同意：把"用来干什么"写清楚</h4>
+        《个人信息保护法》第 13、17 条确立了"告知—同意"作为处理个人信息的基础合法性来源：处理者应当<strong>以显著方式、清晰易懂的语言真实、准确、完整地告知</strong>处理目的、方式、种类、保存期限。风控场景的常见事故是：注册时的隐私政策只说了"用于提供服务"，模型却拿去做了"信贷风险评估"——<strong>用途超出告知范围，同意就不成立</strong>。
+      </div>
+    </div>
+    <div class="method-step">
+      <div class="m-num">2</div>
+      <div class="m-body">
+        <h4>单独同意：涉及第三方和敏感信息时，不能打包</h4>
+        第 23 条要求，向其他处理者<strong>提供</strong>个人信息，应当告知对方名称、联系方式、处理目的与信息种类，并取得<strong>单独同意</strong>。落到产品上：那个"我已阅读并同意《XX 协议》《YY 授权书》"的合并勾选框，在征信查询授权这类场景下是不够的——需要一个<strong>独立的、可单独取消的勾选</strong>。
+      </div>
+    </div>
+    <div class="method-step">
+      <div class="m-num">3</div>
+      <div class="m-body">
+        <h4>留痕与可追溯：授权书要能翻出来</h4>
+        评审会上最常见的一问是"这个客户 2025 年 3 月的这次查询，授权书在哪"。答不上来，等同于没有授权。实践中要求<strong>授权文本版本号 + 用户确认时间戳 + 查询日志三者可关联</strong>。
+      </div>
+    </div>
+
+    <div class="callout info">
+      <span class="label">"断直连"是什么意思</span>
+      《征信业务管理办法》（2021 年发布、2022 年 1 月 1 日施行）把"<strong>为金融机构提供用于判断个人信用状况的信息服务</strong>"明确纳入征信业务监管，并提出最小必要原则。由此衍生出行业俗称的"断直连"：<strong>数据供方不能再把个人信用信息直接推给放贷机构，必须经由持牌征信机构中转</strong>。对建模同学的直接影响是——以前直连拿到的一批"好用标签"，现在要么走持牌通道重新接、要么下线。<br>
+      <span style="color:var(--ink-faint);font-size:13px;">具体适用口径请以最新监管文件与本机构法务意见为准，本手册为学习笔记。</span>
+    </div>
+  </div>
+
+  <!-- ============ PART 3 穿越变量 ============ -->
+  <div class="part" id="p3">
+    <div class="part-head"><span class="part-num">03</span><h2>穿越变量与目标泄露：模型偷看了未来</h2></div>
+    <p class="part-lede">合规是"能不能用"的外部边界，穿越是"能不能用"的内部边界。两者放在同一模块，因为它们导致的后果一样：<strong>变量必须下线，模型必须重训</strong>。</p>
+
+    <div class="concept-grid">
+      <div class="concept-card">
+        <div class="c-name">决策时点</div>
+        <div class="c-en">decision point, T0</div>
+        <div class="c-def">系统真正要给出"批 / 拒"答案的那个瞬间。所有进入 A 卡的变量，采集时间必须早于或等于这一刻。</div>
+        <div class="c-formula">可用性判据：采集时间 ≤ T0</div>
+        <div class="c-mnemonic">建模的世界要和上线那一刻的世界长得一模一样</div>
+      </div>
+      <div class="concept-card">
+        <div class="c-name">穿越变量</div>
+        <div class="c-en">time-travel / look-ahead variable</div>
+        <div class="c-def">采集时间晚于 T0 的变量。训练时能取到（因为历史数据已经攒齐了），上线时取不到（因为未来还没发生）。</div>
+        <div class="c-formula">典型特征：名字里含"后""首期""放款""授信后"</div>
+        <div class="c-mnemonic">离线是神器，上线是空值</div>
+      </div>
+      <div class="concept-card">
+        <div class="c-name">目标泄露</div>
+        <div class="c-en">target leakage</div>
+        <div class="c-def">变量本身就是目标（是否逾期）的一部分或直接衍生。即使采集时间合法，它也把答案抄了进来。</div>
+        <div class="c-formula">例：用"是否已进入催收流程"预测"是否逾期"</div>
+        <div class="c-mnemonic">不是偷看未来，是把答案直接抄在题干上</div>
+      </div>
+      <div class="concept-card">
+        <div class="c-name">可用性衰减</div>
+        <div class="c-en">availability decay</div>
+        <div class="c-def">变量在训练集里覆盖率 95%，上线后只有 40% 能取到（接口超时、供方限流、授权未勾选）。不算穿越，但效果同样打折。</div>
+        <div class="c-formula">上线前必查：线上实时覆盖率 vs 离线覆盖率</div>
+        <div class="c-mnemonic">能取到 ≠ 每次都能取到</div>
+      </div>
+    </div>
+
+    <h3>为什么 IV 高反而要警惕</h3>
+    <p>模块②说过，IV 用来衡量变量对好坏客户的区分能力，经验阈值大致是：<span class="tag tag-todo">&lt;0.02 几乎无用</span> <span class="tag tag-info">0.02~0.1 弱</span> <span class="tag tag-good">0.1~0.3 中等</span> <span class="tag tag-warn">0.3~0.5 强</span> <span class="tag tag-bad">&gt;0.5 可疑</span>。</p>
+    <p>最后那档的表述在很多教程里写的是"极强"，但在风控实践中更准确的说法是<strong>"强到需要解释"</strong>。理由很朴素：信贷违约是一件受收入、意愿、外部冲击共同影响的复杂事件，<strong>任何单一变量都不太可能独自解释掉大部分风险</strong>。如果一个变量做到了，最可能的三种情况依次是：</p>
+    <div class="checklist">
+      <h4>IV &gt; 0.5 时的排查顺序</h4>
+      <ul>
+        <li>它是穿越变量——采集时点晚于 T0（本案例三个变量全属此类）</li>
+        <li>它是目标泄露——变量定义里直接或间接包含了 Y 的成分</li>
+        <li>它是样本构造问题——比如只在坏样本上做了补采，好样本大面积缺失，"缺失本身"成了强信号</li>
+      </ul>
+    </div>
+    <div class="callout warn">
+      <span class="label">一条可以直接写进流程的规则</span>
+      <strong>任何 IV &gt; 0.5 的变量，必须人工复核采集时点，并在模型文档中写明复核结论。</strong>这条规则的成本极低（这样的变量通常一个模型里不超过 5 个），但能拦下绝大部分穿越事故。挑战者 v1 的三个问题变量，IV 分别是 0.89、0.71、0.52——<strong>全部命中这条规则</strong>。
+    </div>
+
+    <h3>三种最常见的穿越场景</h3>
+    <div class="pitfall" style="border-color:var(--line);background:var(--paper);">
+      <div class="pit-title" style="color:var(--ink);">场景 A · 宽表 JOIN 时没加时间条件</div>
+      <p style="margin:0;">用户维度宽表按 <code>user_id</code> 关联，取到的是"该用户<strong>最新</strong>的额度使用率"，而不是"申请那一刻的额度使用率"。这是穿越变量最主要的生产方式，且代码上完全看不出异常。正确写法必须带上 <code>snapshot_date &lt;= apply_time</code> 这类时点条件。</p>
+    </div>
+    <div class="pitfall" style="border-color:var(--line);background:var(--paper);">
+      <div class="pit-title" style="color:var(--ink);">场景 B · 标签口径和特征口径不同源</div>
+      <p style="margin:0;">Y 标签取自贷后系统（放款后 MOB3 是否 30+），特征取自申请系统。两套系统对"同一笔业务"的时间定义不一致（申请时间 vs 放款时间，差 1~7 天），中间那几天产生的数据就悄悄漏进了特征。</p>
+    </div>
+    <div class="pitfall" style="border-color:var(--line);background:var(--paper);">
+      <div class="pit-title" style="color:var(--ink);">场景 C · 衍生变量继承了父变量的穿越</div>
+      <p style="margin:0;">"近 6 个月最大逾期天数"本身没问题，但如果它的计算窗口是"截至数据跑批日"而不是"截至申请日"，那么对于 3 个月前的申请样本，这个变量包含了申请后 3 个月的表现——<strong>父变量合规，衍生口径不合规</strong>。</p>
+    </div>
+  </div>
+
+  <!-- ============ PART 4 时点体检 ============ -->
+  <div class="part" id="p4">
+    <div class="part-head"><span class="part-num">04</span><h2>手算一遍：给挑战者 v1 做变量时点体检</h2></div>
+    <p class="part-lede">规则已经有了，现在把它变成一张能在评审会上直接摊开的表。方法只有一步：<strong>给每个变量标注采集时点，再减去决策时点 T0</strong>。差值为正的，一律下线。</p>
+
+    <div class="calc-box">
+      <div><span class="calc-label">第 1 步 · 定义 T0</span></div>
+      <p style="margin:6px 0 0;">本案例 T0 = <strong>用户点击"提交申请"的那一刻</strong>。产品上，授信审批在 T0 之后 3 秒内给出结果，所以 T0 可以近似等于审批时点。</p>
+      <p class="eq" style="margin:10px 0 0;">时点偏移 Δ = 变量采集时间 − T0，判据：Δ ≤ 0 合规，Δ &gt; 0 穿越</p>
+    </div>
+
+    <div class="table-scroll">
+      <table class="tbl">
+        <thead>
+          <tr><th>变量名</th><th class="num">IV</th><th>采集时点</th><th class="num">Δ</th><th>判定</th></tr>
+        </thead>
+        <tbody>
+          <tr class="hl"><td>首期账单还款状态</td><td class="num">0.89</td><td>T+35 天（首期账单日后）</td><td class="num">+35</td><td><span class="tag tag-bad">穿越 · 下线</span></td></tr>
+          <tr class="hl"><td>授信后额度使用率</td><td class="num">0.71</td><td>T+3 天（放款到账后）</td><td class="num">+3</td><td><span class="tag tag-bad">穿越 · 下线</span></td></tr>
+          <tr class="hl"><td>放款后 3 天内取现标记</td><td class="num">0.52</td><td>T+3 天</td><td class="num">+3</td><td><span class="tag tag-bad">穿越 · 下线</span></td></tr>
+          <tr><td>近 3 个月申请次数</td><td class="num">0.563</td><td>T−1 天（征信快照）</td><td class="num">−1</td><td><span class="tag tag-good">合规 · 保留</span></td></tr>
+          <tr><td>近 6 个月最大逾期天数</td><td class="num">0.41</td><td>T−1 天（征信快照）</td><td class="num">−1</td><td><span class="tag tag-good">合规 · 保留</span></td></tr>
+          <tr><td>月收入分箱</td><td class="num">0.22</td><td>T0（申请表填写）</td><td class="num">0</td><td><span class="tag tag-good">合规 · 保留</span></td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <div class="callout warn">
+      <span class="label">等等，"近 3 个月申请次数" IV=0.563 也 &gt; 0.5，为什么不杀？</span>
+      这正是<strong>"IV &gt; 0.5 触发复核"而不是"IV &gt; 0.5 直接下线"</strong>的意义。复核结论是：<br>
+      ① 它来自 T−1 的征信快照，<strong>Δ = −1 天，时点合规</strong>；<br>
+      ② 它的高 IV 有清晰的业务解释——短期内高频申请是典型的"多头借贷"信号，模块②已经完整分析过它的 WOE 单调性，分箱后趋势平滑、无跳变；<br>
+      ③ 线上实时覆盖率 97%，与离线一致，不存在可用性衰减。<br>
+      <strong>三条都过，保留。</strong>复核不是找借口下线，是逼你把"为什么这么强"说清楚。
+    </div>
+
+    <h3>剔除之后，KS 会掉到哪里</h3>
+    <div class="calc-box">
+      <div><span class="calc-label">第 2 步 · 重训并重算</span></div>
+      <p style="margin:6px 0 0;">把三个穿越变量从特征池中移除，用剩余变量重新训练（重训而非直接把权重置零，否则剩余变量拿不到应有的权重）：</p>
+      <p class="eq" style="margin:10px 0 0;">挑战者 v1（含穿越）离线 KS = 0.62 → 挑战者 v2（剔除后）离线 KS = 0.51</p>
+      <p style="margin:10px 0 0;">看起来"损失"了 0.11。但这 0.11 从来就不属于你——它属于那张捡来的答题卡。</p>
+    </div>
+
+    <div class="callout good">
+      <span class="label">真正该看的是这组对比</span>
+      <table class="tbl" style="margin:8px 0 0;">
+        <thead><tr><th>版本</th><th class="num">离线 KS</th><th class="num">上线真实 KS</th><th class="num">落差</th></tr></thead>
+        <tbody>
+          <tr><td>挑战者 v1（含 3 个穿越变量）</td><td class="num">0.62</td><td class="num">0.39</td><td class="num">−0.23</td></tr>
+          <tr class="hl"><td>挑战者 v2（剔除后重训）</td><td class="num">0.51</td><td class="num">0.49</td><td class="num">−0.02</td></tr>
+        </tbody>
+      </table>
+      <p style="margin:10px 0 0;">v1 上线只剩 <strong>0.39</strong>，比模块③里那个已经衰减到 0.38 的老冠军几乎没有改善——<strong>两个月的开发周期和一次全量切换的风险，换来 0.01</strong>。而 v2 离线 0.51、上线 0.49，落差只有 0.02，这才是模块⑤敢把它推上 10% 流量的底气。</p>
+    </div>
+
+    <p>顺带解释一个常被问到的问题：<strong>为什么 v2 上线 KS（0.49）比离线（0.51）还是低了一点点？</strong>这 0.02 是正常的，来源是样本外泛化损失 + 线上特征覆盖率的轻微差异，属于模块③讲的"稳定性正常波动"范围。<strong>落差 0.02 是健康，落差 0.23 是事故</strong>——这条经验比记住任何阈值都有用。</p>
+  </div>
+
+  <!-- ============ PART 5 看图 ============ -->
+  <div class="part" id="p5">
+    <div class="part-head"><span class="part-num">05</span><h2>两张图：把"穿越"画出来，评审会上省一小时</h2></div>
+    <p class="part-lede">上面那张表是给自己看的，下面两张图是给别人看的。合规评审、业务老板、风险委员会——他们不会逐行看你的变量清单，但会盯着图问问题。</p>
+
+    <div class="chart-card">
+      <div class="chart-title">图 L1 · 变量时点偏移体检图（IV × Δ 散点）</div>
+      <div class="chart-sub">横轴 = 采集时点相对 T0 的偏移天数，纵轴 = IV。右上角是危险区：又强又晚。</div>
+      <div class="chart-wrap">
+        <canvas id="chartL1"></canvas>
+      </div>
+      <div class="legend-note">
+        <span><span class="dot" style="background:#C0433D;"></span>穿越变量（Δ &gt; 0）</span>
+        <span style="margin-left:14px;"><span class="dot" style="background:#3E8362;"></span>合规变量（Δ ≤ 0）</span>
+        <span style="margin-left:14px;"><span class="dot" style="background:#C1892A;"></span>IV=0.5 复核线</span>
+      </div>
+      <p class="chart-footnote">读法：竖着的虚线是 T0。<strong>所有落在 T0 右侧的点，无论 IV 多高，一律下线</strong>；落在 T0 左侧但高于横向复核线（IV=0.5）的点，需要人工写复核结论——本例中只有"近 3 个月申请次数"落在这个区域。 <span >示例数据，用于教学演示，非真实业务数据。</span></p>
+    </div>
+
+    <div class="chart-card">
+      <div class="chart-title">图 L2 · 离线 KS vs 上线真实 KS（v1 / v2 对照）</div>
+      <div class="chart-sub">同一份数据、同一套建模流程，区别只在于要不要那三个"后"字变量。</div>
+      <div class="chart-wrap">
+        <canvas id="chartL2"></canvas>
+      </div>
+      <div class="legend-note">
+        <span><span class="dot" style="background:#C9BFB2;"></span>离线评估 KS</span>
+        <span style="margin-left:14px;"><span class="dot" style="background:#3E7E96;"></span>上线真实 KS</span>
+      </div>
+      <p class="chart-footnote">读法：只看灰柱，v1（0.62）完胜 v2（0.51），谁都会选 v1。加上蓝柱之后结论直接反转——<strong>v1 上线只有 0.39，几乎贴着模块③那个已经衰减的老冠军（0.38）</strong>。这张图的用途是回答那个永远会被问到的问题："为什么要放弃一个 KS 更高的模型？" <span >示例数据，用于教学演示，非真实业务数据。</span></p>
+    </div>
+
+    <div class="callout info">
+      <span class="label">怎么在上线前就知道"上线真实 KS"</span>
+      不可能真的等上线才知道，但可以做<strong>时点回放（point-in-time replay）</strong>：重新构造一份"只保留 T0 及之前可得字段"的样本集，把穿越变量全部置为上线时的真实状态（空值 / 默认值），再跑一次评估。这份评估的结果就是对上线表现的合理估计。图 L2 里的 0.39 和 0.49 就是这么来的——<strong>它不是上线后的事后复盘，而是评审会当天就能给出的数字</strong>。
+    </div>
+  </div>
+
+  <!-- ============ PART 6 法规红线 ============ -->
+  <div class="part" id="p6">
+    <div class="part-head"><span class="part-num">06</span><h2>两条必须背下来的红线：自动化决策，和利率</h2></div>
+    <p class="part-lede">前面五个 Part 讲的是"数据对不对"，这一 Part 讲的是"做法合不合法"。风控从业者不需要成为法律专家，但有两处必须能脱口而出——因为它们直接决定系统要留哪些口子、产品能定多高的价。</p>
+
+    <h3>红线一：《个人信息保护法》第 24 条 · 自动化决策</h3>
+    <p>风控评分卡本质就是一套自动化决策系统。第 24 条对它提出了三项要求，一款一个重点：</p>
+    <div class="method-step">
+      <div class="m-num">1</div>
+      <div class="m-body">
+        <h4>透明度与结果公平公正</h4>
+        利用个人信息进行自动化决策，应当保证<strong>决策的透明度和结果公平、公正</strong>，不得对个人在交易价格等交易条件上实行<strong>不合理的差别待遇</strong>。<br>
+        <span style="color:var(--ink-faint);">→ 风控含义：<strong>风险定价是允许的</strong>（不同风险给不同价格本身合理），但差别待遇要建立在风险因素上，不能建立在与风险无关的身份因素上。这也是模型变量筛查要剔除敏感属性及其强代理变量的法律出处。</span>
+      </div>
+    </div>
+    <div class="method-step">
+      <div class="m-num">2</div>
+      <div class="m-body">
+        <h4>信息推送与商业营销：给非个性化选项或便捷拒绝方式</h4>
+        通过自动化决策方式向个人进行信息推送、商业营销，应当<strong>同时提供不针对其个人特征的选项，或者向个人提供便捷的拒绝方式</strong>。<br>
+        <span style="color:var(--ink-faint);">→ 风控含义：模块⑤的<strong>增益模型</strong>（只对 Persuadables 投放营销）正好落在这一款的射程内——精准营销可以做，但 App 里必须有一个能关掉个性化推荐的开关。</span>
+      </div>
+    </div>
+    <div class="method-step">
+      <div class="m-num">3</div>
+      <div class="m-body">
+        <h4>重大影响决策：有权要求说明，有权拒绝"仅由自动化决策"</h4>
+        通过自动化决策方式作出对个人权益有<strong>重大影响</strong>的决定，个人有权要求处理者予以<strong>说明</strong>，并有权<strong>拒绝处理者仅通过自动化决策的方式作出决定</strong>。<br>
+        <span style="color:var(--ink-faint);">→ 风控含义：<strong>信贷拒绝毫无疑问属于"重大影响"</strong>。这一款直接翻译成两个产品需求：<strong>（a）拒绝原因要可说明；（b）要有人工复核通道。</strong></span>
+      </div>
+    </div>
+
+    <div class="callout warn">
+      <span class="label">这一款为什么直接影响模型选型</span>
+      "个人有权要求予以说明"意味着当客户问"我为什么被拒"时，你得给出一个能听懂的答案。<strong>这正是模块①里"为什么逻辑回归至今仍是评分卡主流"的最硬理由之一</strong>——评分卡能天然输出"因为你近 3 个月申请了 9 次，这一项扣了 42 分"这样的拒绝原因码；而一个几百棵树的集成模型，要额外做一层归因工程才能说清楚。<br><br>
+      同时，"有权拒绝仅通过自动化决策"不等于"不能用模型"，它要求的是<strong>留一条人工复核路径</strong>：客户申诉 → 人工调阅材料 → 人工作出决定。<strong>系统设计时留这个口子的成本很低，事后补的代价很高。</strong>
+    </div>
+
+    <div class="callout info">
+      <span class="label">配套动作：个人信息保护影响评估（PIA）</span>
+      第 55 条列举了必须<strong>事前</strong>进行个人信息保护影响评估并记录处理情况的情形，<strong>利用个人信息进行自动化决策</strong>是其中之一；第 56 条要求评估内容包括处理目的与方式是否合法正当必要、对个人权益的影响及安全风险、保护措施是否有效适配，且<strong>评估报告和处理记录应当至少保存三年</strong>。<br>
+      → 落到工程上：<strong>模型文档不是写给自己看的，是合规证据链的一部分</strong>。变量清单、时点体检表、拒绝原因码映射、人工复核流程，都应当进入这份文档并留存。
+    </div>
+  </div>
+
+  <!-- ============ PART 6B 利率红线 ============ -->
+  <div class="part">
+    <div class="part-head"><span class="part-num">06</span><h2>红线二：利率到底不能超过多少——一个被普遍讲错的问题</h2></div>
+    <p class="part-lede">模块⑤的速查卡上写着"24% = 法律保护上限，24%~36% = 自然债务，&gt;36% 无效"。这个说法在 2020 年 8 月之前是对的，之后就不完整了。这一节把它拆开讲清楚，因为定价定错了，前面所有模型工作都白做。</p>
+
+    <h3>先分清两个完全不同的赛道</h3>
+    <div class="concept-grid">
+      <div class="concept-card">
+        <div class="c-name">民间借贷</div>
+        <div class="c-en">private lending</div>
+        <div class="c-def">自然人、法人、非法人组织之间的融资行为。不含经金融监管部门批准设立的持牌放贷机构。</div>
+        <div class="c-formula">上限 = 合同成立时 1 年期 LPR × 4</div>
+        <div class="c-mnemonic">2020-08-20 修订后的司法解释口径，浮动、随 LPR 变</div>
+      </div>
+      <div class="concept-card">
+        <div class="c-name">持牌金融机构</div>
+        <div class="c-en">licensed financial institution</div>
+        <div class="c-def">银行、消费金融公司、汽车金融公司、小贷公司等经批准从事放贷业务的主体。</div>
+        <div class="c-formula">不适用民间借贷司法解释的 LPR 4 倍上限</div>
+        <div class="c-mnemonic">走的是金融监管 + 司法调减的另一套逻辑</div>
+      </div>
+    </div>
+
+    <div class="callout bad">
+      <span class="label">最常见的错误：把 LPR 4 倍套在持牌机构头上</span>
+      2020 年 8 月 20 日，最高人民法院修订《关于审理民间借贷案件适用法律若干问题的规定》，将民间借贷利率司法保护上限调整为<strong>合同成立时 1 年期 LPR 的 4 倍</strong>，取代了原先"以 24% 和 36% 为基准的两线三区"。同时，该司法解释明确<strong>经金融监管部门批准设立的从事贷款业务的金融机构及其分支机构，因发放贷款等相关金融业务引发的纠纷，不适用本规定</strong>。<br><br>
+      这条"除外条款"在实践中被反复误用——曾有一审法院直接按 LPR 4 倍调减持牌机构的利率，后被二审纠正。<strong>持牌机构不适用 LPR 4 倍，不代表持牌机构可以随便定价</strong>，它适用的是另一套约束。
+    </div>
+
+    <h3>持牌机构实际面对的三层约束</h3>
+    <div class="method-step">
+      <div class="m-num">1</div>
+      <div class="m-body">
+        <h4>司法层：24% 的综合费率调减惯例</h4>
+        2017 年《关于进一步加强金融审判工作的若干意见》提出，金融借款合同中同时约定利息、复利、罚息、违约金和其他费用，若<strong>总计超过年利率 24%</strong>，超过部分的诉讼请求人民法院不予支持。注意措辞是"不予支持"——它是<strong>司法调减线</strong>，不是行政意义上的法定上限，但对定价的实际约束力很强：定到 30%，超出部分诉讼时拿不回来。
+      </div>
+    </div>
+    <div class="method-step">
+      <div class="m-num">2</div>
+      <div class="m-body">
+        <h4>监管层：窗口指导与压降要求</h4>
+        监管对消费金融公司提出过<strong>综合融资成本不超过 24%、并逐步向 20% 以内压降</strong>的要求；针对小额贷款公司，《小额贷款公司综合融资成本管理工作指引》要求向客户收取的综合融资成本<strong>在 2027 年底前压降至 1 年期 LPR 4 倍以内</strong>。行业整体方向是<strong>持续下行</strong>。
+      </div>
+    </div>
+    <div class="method-step">
+      <div class="m-num">3</div>
+      <div class="m-body">
+        <h4>口径层：算的是"综合融资成本"，不是"名义利率"</h4>
+        三层约束里最容易翻车的是这一层。监管和司法看的都是<strong>客户实际承担的全部成本</strong>——利息 + 服务费 + 担保费 + 咨询费，折算成年化。<strong>你按名义 18% 定价，不代表你的综合成本就是 18%。</strong>下一节手算这件事。
+      </div>
+    </div>
+
+    <div class="callout info">
+      <span class="label">给模块⑤速查卡打个补丁</span>
+      模块⑤那张"24% / 24%~36% / &gt;36%"的卡片，准确的说法应该是：<strong>"两线三区"是 2020 年 8 月 20 日之前受理的民间借贷案件适用的旧口径</strong>；此后民间借贷按 <strong>1 年期 LPR × 4</strong>；而<strong>持牌机构不适用该上限，实践中参照 24% 综合费率司法调减线 + 监管压降要求</strong>。<br>
+      <span style="color:var(--ink-faint);font-size:13px;">LPR 逐月公布、监管口径持续演进，落地定价请以最新 LPR 报价、最新监管文件与本机构法务意见为准。</span>
+    </div>
+  </div>
+
+  <!-- ============ PART 6C 利率手算 ============ -->
+  <div class="part">
+    <div class="part-head"><span class="part-num">06</span><h2>手算：名义 18%，客户实际付的是 31.7%</h2></div>
+    <p class="part-lede">这是本模块第二个必须动笔的地方。模块⑤把利率定在 18%，离 24% 还有 6 个点的余量——除非产品是"等本等息"。</p>
+
+    <div class="calc-box">
+      <div><span class="calc-label">场景设定</span></div>
+      <p style="margin:6px 0 0;">借款本金 <strong>12000 元</strong>，期限 <strong>12 期</strong>（按月还），产品形态<strong>等本等息</strong>：每月还固定本金，利息按<strong>初始本金</strong>计算，名义年利率 <strong>18%</strong>。</p>
+      <p class="eq" style="margin:12px 0 0;">总利息 = 12000 × 18% × 1 年 = 2160 元</p>
+      <p class="eq" style="margin:6px 0 0;">每月还款 = (12000 + 2160) ÷ 12 = 14160 ÷ 12 = <strong>1180 元</strong></p>
+    </div>
+
+    <p>问题出在哪？<strong>客户并没有全程占用 12000 元</strong>。第 1 个月他确实用着 12000，但第 2 个月起本金逐月减少，到第 12 个月只剩 1000 元左右——可利息却始终按 12000 收。真实的资金成本要用 <strong>IRR（内部收益率）</strong>来算：找到一个月利率 r，使得 12 期每期 1180 元的现值之和正好等于 12000。</p>
+
+    <div class="calc-box">
+      <div><span class="calc-label">第 1 步 · 列方程</span></div>
+      <p class="eq" style="margin:8px 0 0;">12000 = 1180 × [1 − (1+r)<sup>−12</sup>] ÷ r</p>
+      <p style="margin:8px 0 0;">即求年金现值系数 = 12000 ÷ 1180 = <strong>10.1695</strong> 对应的 r。</p>
+     <div style="margin-top:12px;"><span class="calc-label">第 2 步 · 试算逼近</span></div>
+      <p style="margin:6px 0 0;">r = 2.5% 时，系数 = 10.2578（大于 10.1695，说明 r 偏小）；<br>r = 2.7% 时，系数 = 10.1354（小于 10.1695，说明 r 偏大）；<br>线性插值 → <strong>r ≈ 2.6437%/月</strong>。</p>
+      <div style="margin-top:12px;"><span class="calc-label">第 3 步 · 年化</span></div>
+      <p class="eq" style="margin:6px 0 0;">IRR<sub>年</sub> = 2.6437% × 12 = <strong>31.7%</strong></p>
+      <p style="margin:8px 0 0;">（若按复利折算 (1+2.6437%)<sup>12</sup>−1 ≈ 36.7%，监管口径通常采用单利年化，即 31.7%。）</p>
+    </div>
+
+    <div class="callout bad">
+      <span class="label">结论：名义 18% 的等本等息产品，实际年化约 31.7%</span>
+      这个数字<strong>越过了 24% 的司法调减线</strong>。如果按旧的"两线三区"口径，它正好落在 24%~36% 的自然债务区——借款人自愿还了法院不管，但诉讼时超过 24% 的部分拿不回来。<strong>模型再准，定价口径错了，这笔业务从第一天起就带着法律瑕疵。</strong>
+    </div>
+
+    <h3>反过来算：如果要让 IRR 真的不超过 24%，名义利率能定多少？</h3>
+    <div class="calc-box">
+      <div><span class="calc-label">反推</span></div>
+      <p style="margin:6px 0 0;">目标 IRR<sub>年</sub> = 24% → 月利率 r = 2%。12 期、r=2% 的年金现值系数 = <strong>10.57534</strong>。</p>
+      <p class="eq" style="margin:10px 0 0;">月供 = 12000 ÷ 10.57534 = <strong>1134.01 元</strong></p>
+      <p class="eq" style="margin:6px 0 0;">总利息 = 1134.01 × 12 − 12000 = 13608.1 − 12000 = <strong>1608.1 元</strong></p>
+      <p class="eq" style="margin:6px 0 0;">等本等息名义年利率 = 1608.1 ÷ 12000 = <strong>13.4%</strong></p>
+    </div>
+
+    <div class="callout good">
+      <span class="label">一条可以直接用的换算经验</span>
+      等本等息（先息后本类）产品，<strong>真实 IRR ≈ 名义利率 × 1.8 左右</strong>（12 期口径）。反过来说，<strong>要守住 24% 的综合成本线，等本等息的名义利率大约只能定到 13.4%</strong>。<br>
+      这条经验能帮你在产品会上迅速判断："销售说我们利率才 12%，很有竞争力"——先问一句<strong>"12% 是名义还是 IRR？还本方式是什么？"</strong>
+    </div>
+
+    <div class="chart-card">
+      <div class="chart-title">图 L3 · 名义利率 → 真实 IRR 换算曲线（12 期）</div>
+      <div class="chart-sub">同一个名义利率，等本等息和等额本息给出的真实成本完全不同。</div>
+      <div class="chart-wrap">
+        <canvas id="chartL3"></canvas>
+      </div>
+      <div class="legend-note">
+        <span><span class="dot" style="background:#C0433D;"></span>等本等息（利息按初始本金计）</span>
+        <span style="margin-left:14px;"><span class="dot" style="background:#3E8362;"></span>等额本息（利息按剩余本金计）</span>
+        <span style="margin-left:14px;"><span class="dot" style="background:#C1892A;"></span>24% 综合成本参考线</span>
+      </div>
+      <p class="chart-footnote">读法：绿线几乎是 45° 对角线——<strong>等额本息的名义利率就约等于真实 IRR</strong>，因为利息本来就是按剩余本金算的。红线陡得多：名义 13.4% 时触及 24% 参考线，名义 18% 时已经到 31.7%。<strong>看到"等本等息"四个字，心里就要自动乘 1.8。</strong> <span >示例数据，用于教学演示，非真实业务数据。</span></p>
+    </div>
+  </div>
+
+  <!-- ============ PART 7 完整案例 ============ -->
+  <div class="part" id="p7">
+    <div class="part-head"><span class="part-num">07</span><h2>完整案例：那两个小时的评审会，到底走了哪几步</h2></div>
+    <p class="part-lede">把前面所有工具串成一条流水线。这就是挑战者 v1 变成 v2 的全过程——也是模块⑤能拿到"KS 0.51、坏账 1.85%→1.62%、误伤 20%→12%"这组数字的前提。</p>
+
+    <div class="case-step">
+      <div class="step-badge">1</div>
+      <div class="step-body">
+        <h4>清点变量来源，画出授权链条</h4>
+        入模变量 28 个，按来源拆：自有 16 个、持牌征信 7 个、第三方 5 个。第三方那 5 个逐一核查供方资质与授权路径，<span class="result">其中 2 个走的是直连通道，按"断直连"要求改由持牌征信机构中转后重新接入</span>，另 3 个下线。
+      </div>
+    </div>
+    <div class="case-step">
+      <div class="step-badge">2</div>
+      <div class="step-body">
+        <h4>按 IV 排序，圈出所有 IV &gt; 0.5 的变量</h4>
+        28 个变量中有 4 个越线：0.89、0.71、0.563、0.52。<span class="result">4 个全部进入人工复核清单</span>——这一步只花了 10 分钟，却是整场评审最关键的动作。
+      </div>
+    </div>
+    <div class="case-step">
+      <div class="step-badge">3</div>
+      <div class="step-body">
+        <h4>逐个标注采集时点，算 Δ</h4>
+        查数据字典 + 追溯 ETL 任务的跑批逻辑，把 4 个变量的真实采集时点还原出来：+35 天、+3 天、−1 天、+3 天。<span class="result">3 个 Δ &gt; 0，判定穿越；1 个 Δ = −1 天，时点合规</span>。
+      </div>
+    </div>
+    <div class="case-step">
+      <div class="step-badge">4</div>
+      <div class="step-body">
+        <h4>给合规的那个高 IV 变量写复核结论</h4>
+        "近 3 个月申请次数"IV=0.563 但 Δ=−1：补上业务解释（多头借贷信号）、WOE 单调性检查（模块②已完成）、线上覆盖率验证（97%）。<span class="result">三项齐备，写入模型文档，保留入模</span>。
+      </div>
+    </div>
+    <div class="case-step">
+      <div class="step-badge">5</div>
+      <div class="step-body">
+        <h4>剔除 + 重训 + 时点回放</h4>
+        移除 3 个穿越变量后重新训练（不是把权重置零），得到 v2：<span class="result">离线 KS 0.51 / AUC 0.82</span>。再对 v1 和 v2 各做一次时点回放，得到上线真实估计 <span class="result">0.39 与 0.49</span>——这就是图 L2 的四根柱子。
+      </div>
+    </div>
+    <div class="case-step">
+      <div class="step-badge">6</div>
+      <div class="step-body">
+        <h4>补齐自动化决策合规件</h4>
+        拒绝原因码映射表（每个入模变量对应一条可对客话术）、人工复核通道（客户申诉入口 + 人工调阅流程）、PIA 报告（含本次变量体检全过程）。<span class="result">三件齐备，评审通过</span>。
+      </div>
+    </div>
+    <div class="case-step">
+      <div class="step-badge">7</div>
+      <div class="step-body">
+        <h4>核定价口径</h4>
+        产品侧确认还本方式为等额本息而非等本等息，名义 18% 对应 IRR 约 18.x%，<span class="result">落在 24% 参考线内，定价口径通过</span>。若当初按等本等息上线，同样的 18% 会变成 31.7%——整个模块⑤的利润测算都要推倒重来。
+      </div>
+    </div>
+
+    <div class="chart-card">
+      <div class="chart-title">图 L4 · 三类数据源的 IV 贡献 vs 合规成本</div>
+      <div class="chart-sub">气泡越大代表该来源贡献的入模变量越多；越往右合规成本越高。</div>
+      <div class="chart-wrap">
+        <canvas id="chartL4"></canvas>
+      </div>
+      <div class="legend-note">
+        <span><span class="dot" style="background:#3E8362;"></span>自有数据</span>
+        <span style="margin-left:14px;"><span class="dot" style="background:#3E7E96;"></span>持牌征信</span>
+        <span style="margin-left:14px;"><span class="dot" style="background:#C1892A;"></span>第三方数据</span>
+      </div>
+      <p class="chart-footnote">读法：第三方数据单位变量的 IV 贡献最高（这也是它在行业里长盛不衰的原因），但合规成本同样最高、且政策波动最大——<strong>把模型的主干压在这一类数据上，等于把模型的寿命交给了下一份监管文件</strong>。健康的结构是：自有数据做主干，持牌征信做骨架，第三方做增量。 <span >示例数据，用于教学演示，非真实业务数据。</span></p>
+    </div>
+  </div>
+
+  <!-- ============ PART 8 三个坑 ============ -->
+  <div class="part" id="p8">
+    <div class="part-head"><span class="part-num">08</span><h2>三个坑：每一个都够开一次问责会</h2></div>
+    <p class="part-lede">前面七节讲的是"怎么做对"。这一节讲的是我见过和听过的"做错了会怎样"。合规上的坑和建模上的坑有个本质区别：<strong>建模的坑，指标会告诉你；合规的坑，指标一片大好，直到有人来问你要证据。</strong></p>
+
+    <div class="pitfall">
+      <div class="pit-title">坑一 · 把"隐私计算"当免死金牌</div>
+      <p style="margin:0 0 10px;">最常听到的一句话是："我们走的是联邦学习／多方安全计算，<strong>原始数据不出域</strong>，所以不用单独授权。"这句话把两件事混为一谈了：</p>
+      <ul style="margin:0 0 10px 18px;">
+        <li><strong>数据安全</strong>问题——原始数据不出域，解决的是"会不会泄漏"。</li>
+        <li><strong>处理合法性</strong>问题——你依然在用这个人的信息<strong>做出对他有影响的决策</strong>，这要求的是他本人的同意，而不是某种加密技术。</li>
+      </ul>
+      <p style="margin:0 0 10px;">《个人信息保护法》约束的动作是"<strong>处理</strong>"（收集、存储、使用、加工、传输、提供、公开、删除），不是"传输明文"。密文参与建模，仍然是处理。技术方案再先进，也不能替代告知—同意这一步。</p>
+      <div class="callout warn">
+        <span class="label">怎么避</span>
+        把"技术是否安全"和"法律是否有据"拆成两张表分别过：前者由安全团队签字，后者由法务／合规签字。<strong>两张表都签完才算过</strong>。见过的真实教训是：技术评审一路绿灯，上线半年后才发现授权文本里根本没提这类数据，只能全量下线重新采集授权。
+      </div>
+    </div>
+
+    <div class="pitfall">
+      <div class="pit-title">坑二 · 利率口径混用，把 LPR 四倍到处套</div>
+      <p style="margin:0 0 10px;">两个独立的错误经常一起出现：</p>
+      <ul style="margin:0 0 10px 18px;">
+        <li><strong>主体搞错：</strong>把"LPR 四倍"当成所有放贷主体的天花板。这条上限出自民间借贷司法解释，<strong>持牌金融机构不适用</strong>；反过来，也不能因为"我们是持牌的"就认为没有约束——24% 的司法调减线、监管的窗口指导、综合融资成本口径，一个都跑不掉（第 6B 节）。</li>
+        <li><strong>口径搞错：</strong>把名义年化利率直接拿去和红线比。等本等息的 18%，真实 IRR 是 <strong>31.7%</strong>（第 6C 节算过）。用错口径的后果是：合同上写着"合规"，实际收上来的钱早就越线了。</li>
+      </ul>
+      <div class="callout bad">
+        <span class="label">连锁反应</span>
+        利率口径一错，错的不只是合规——<strong>模块⑤所有的利润测算全部作废</strong>。定价 18% 和 31.7% 对应的是完全不同的客群、不同的坏账容忍度、不同的通过率最优点。这也是为什么第 7 节案例的最后一步必须是"核定价口径"。
+      </div>
+      <p style="margin:10px 0 0;">口诀：<strong>先问谁在放款（主体），再问怎么还款（口径），最后才看数字大小。</strong></p>
+    </div>
+
+    <div class="pitfall">
+      <div class="pit-title">坑三 · 授权一次、长期复用</div>
+      <p style="margin:0 0 10px;">这个坑有两种长相，都很常见：</p>
+      <ul style="margin:0 0 10px 18px;">
+        <li><strong>打包勾选：</strong>注册页一个"我已阅读并同意《用户协议》《隐私政策》《征信授权书》"的复选框走天下。征信信息属于敏感个人信息，《个人信息保护法》第 23 条要求<strong>单独同意</strong>——单独同意的意思是"这一项要单独一个勾"，不是"在长文档里单独一段"。</li>
+        <li><strong>授权过期仍在查：</strong>授权书上写着"授权期限自签署之日起至本笔贷款结清后 5 年"，结果贷后监控每月拉一次征信，客户早已结清两年。<strong>超期查询等于无授权查询</strong>，这是监管现场检查最容易查出的项目之一。</li>
+      </ul>
+      <div class="callout info">
+        <span class="label">怎么避</span>
+        建一张<strong>授权台账</strong>：每个数据源一行，记录授权文本版本、同意方式（单独／打包）、授权时间、有效期、可用用途（准入／贷后／营销）。查询接口调用前校验台账，过期直接拒绝调用。这张表在监管检查时就是你的答卷。
+      </div>
+    </div>
+  </div>
+
+  <!-- ============ PART 9 速查表 ============ -->
+  <div class="part" id="p9">
+    <div class="part-head"><span class="part-num">09</span><h2>速查表：评审会上要能立刻答出来的九张卡</h2></div>
+    <p class="part-lede">这一节不需要理解，只需要记住。合规评审的问题往往来得很突然，而且只给你三十秒。</p>
+
+    <div class="cheat-grid">
+      <div class="cheat-card">
+        <div class="cc-name">决策时点 T0</div>
+        <div class="cc-detail"><b>定义：</b>系统做出授信决策的那一刻（通常取申请提交时间）。<br><b>用途：</b>所有特征的合法采集时间必须 ≤ T0。<br><b>一句话：</b>T0 是这一整个模块的原点。</div>
+      </div>
+      <div class="cheat-card">
+        <div class="cc-name">穿越变量 Leakage</div>
+        <div class="cc-detail"><b>定义：</b>含有 T0 之后信息的变量。<br><b>症状：</b>离线 IV／KS 异常高，上线后暴跌。<br><b>后果：</b>模型失效 + 无法解释，双重损失。</div>
+      </div>
+      <div class="cheat-card">
+        <div class="cc-name">Δ 与 IV&gt;0.5 复核规则</div>
+        <div class="cc-detail"><b>算法：</b>Δ = 采集时间 − T0，Δ &gt; 0 即穿越。<br><b>阈值：</b>任何 IV &gt; 0.5 的变量必须人工复核时点并在模型文档写明结论。<br><b>成本：</b>一个模型通常不超过 5 个，极低。</div>
+      </div>
+      <div class="cheat-card">
+        <div class="cc-name">单独同意</div>
+        <div class="cc-detail"><b>出处：</b>《个人信息保护法》第 23 条（敏感个人信息、对外提供）。<br><b>标准：</b>单独一个勾，不是长文档里单独一段。<br><b>反例：</b>注册页打包勾选三份协议。</div>
+      </div>
+      <div class="cheat-card">
+        <div class="cc-name">断直连</div>
+        <div class="cc-detail"><b>出处：</b>《征信业务管理办法》（2021 年发布，2022-01-01 施行）。<br><b>要求：</b>数据源与放贷机构之间不得直连，须经持牌征信机构中转。<br><b>影响：</b>第三方数据成本上升、可用字段收敛。</div>
+      </div>
+      <div class="cheat-card">
+        <div class="cc-name">PIA 影响评估</div>
+        <div class="cc-detail"><b>出处：</b>《个人信息保护法》第 55、56 条。<br><b>触发：</b>处理敏感个人信息、自动化决策、对外提供等。<br><b>留存：</b>评估报告与处理记录<b>至少保存三年</b>。</div>
+      </div>
+      <div class="cheat-card">
+        <div class="cc-name">自动化决策三件套</div>
+        <div class="cc-detail"><b>出处：</b>《个人信息保护法》第 24 条。<br><b>要求：</b>①透明度与结果公平；②推送营销须提供非个性化选项；③重大影响决策有权要求说明、并可拒绝<b>仅</b>通过自动化作出的决定。<br><b>落地：</b>拒绝原因码 + 人工复核通道。</div>
+      </div>
+      <div class="cheat-card">
+        <div class="cc-name">名义利率 vs IRR</div>
+        <div class="cc-detail"><b>陷阱：</b>等本等息名义 18% → 真实 IRR <b>31.7%</b>。<br><b>经验值：</b>等本等息真实 IRR ≈ 名义 × 1.8。<br><b>反推：</b>IRR 要压到 24%，名义只能写到约 13.4%。</div>
+      </div>
+      <div class="cheat-card">
+        <div class="cc-name">利率红线速记</div>
+        <div class="cc-detail"><b>民间借贷：</b>LPR × 4（2020-08-20 修订，取代旧"两线三区"）。<br><b>持牌机构：</b>不适用 LPR4 倍，但受 24% 司法调减线、监管窗口指导（消金 24%→20%、小贷 2027 年底前压降至 LPR4 倍）、综合融资成本口径三重约束。<br><b>顺序：</b>先问主体，再问口径，最后看数字。</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ============ PART 10 自测 ============ -->
+  <div class="part" id="p10">
+    <div class="part-head"><span class="part-num">10</span><h2>自测五题：能答出来，才算把这一节读完了</h2></div>
+    <p class="part-lede">先自己在纸上写答案，再展开看解析。第 3 题请动笔算，不要心算。</p>
+
+    <div class="quiz-item">
+      <div class="q-title">第 1 题 · 概念辨析</div>
+      <p style="margin:0;">"穿越变量"和"强变量"在离线指标上都表现为 IV 很高。请说出<strong>三个</strong>可以把它们区分开的具体做法。</p>
+      <details>
+        <summary>查看解析</summary>
+        <div class="answer">
+          <b>① 算 Δ（最直接）。</b>查这个变量的数据来源表，确认字段的实际采集／更新时间，计算 Δ = 采集时间 − T0。Δ &gt; 0 的一定是穿越，和 IV 高低无关。<br><br>
+          <b>② 看业务语义里的"后"字。</b>"首期账单还款状态""授信后额度使用率""放款后 3 天是否取现"——只要变量名或口径里出现了"授信后／放款后／首期／账单"，几乎必然穿越。挑战者 v1 的三个问题变量全部命中。<br><br>
+          <b>③ 做时点回放（out-of-time 验证）。</b>用严格按 T0 切片重建的样本重跑一遍。真正的强变量 IV 只会小幅下降（如"近 3 个月申请次数"0.563 → 0.52），穿越变量会崩塌（0.89 → 0.05 级别）。<br><br>
+          补充判据：穿越变量的<strong>单调性往往过于完美</strong>（每一箱坏账率都严格递增、没有任何噪声），这在真实业务数据里几乎不可能出现。
+        </div>
+      </details>
+    </div>
+
+    <div class="quiz-item">
+      <div class="q-title">第 2 题 · 定义复述</div>
+      <p style="margin:0;">请分别说明：（a）什么情况下必须取得"单独同意"？（b）什么情况下必须做 PIA？PIA 报告要保存多久？</p>
+      <details>
+        <summary>查看解析</summary>
+        <div class="answer">
+          <b>（a）单独同意</b>——《个人信息保护法》第 23 条等条款要求：处理<b>敏感个人信息</b>（含金融账户、征信信息、生物识别等）、<b>向第三方提供</b>个人信息、<b>公开</b>个人信息、<b>跨境传输</b>等情形，须取得单独同意。关键标准是"单独一个勾选动作"，把征信授权塞进《用户协议》一揽子勾选<b>不构成</b>单独同意。<br><br>
+          <b>（b）PIA（个人信息保护影响评估）</b>——第 55 条列举了触发情形：处理敏感个人信息、<b>利用个人信息进行自动化决策</b>、委托处理／向他人提供／公开、跨境提供，以及其他对个人权益有重大影响的处理活动。风控模型至少同时命中"敏感信息"和"自动化决策"两项。<br><br>
+          <b>保存期限：</b>第 56 条明确，评估报告和处理情况记录应当<b>至少保存三年</b>。
+        </div>
+      </details>
+    </div>
+
+    <div class="quiz-item">
+      <div class="q-title">第 3 题 · 计算题（请动笔）</div>
+      <p style="margin:0;">某现金贷产品：本金 <strong>10 000 元</strong>，<strong>12 期</strong>，<strong>等本等息</strong>，对客展示"年化利率 15%"。请计算每期月供、真实月 IRR 与年化 IRR，并判断是否触及 24% 参考线。</p>
+      <details>
+        <summary>查看解析</summary>
+        <div class="answer">
+          <b>第一步 · 总利息：</b>10 000 × 15% = <b>1 500 元</b>（等本等息按本金全额计息，不管你已经还了多少）。<br><br>
+          <b>第二步 · 月供：</b>(10 000 + 1 500) ÷ 12 = <b>958.33 元</b>。<br><br>
+          <b>第三步 · 年金现值系数：</b>10 000 ÷ 958.33 = <b>10.4348</b>。<br><br>
+          <b>第四步 · 试算月利率 r</b>，使 (1 − (1+r)<sup>−12</sup>) ÷ r = 10.4348：<br>
+          r = 2.20% → 系数 10.4463（偏大）；r = 2.25% → 系数 10.4149（偏小）；线性插值得 <b>r ≈ 2.218%／月</b>。<br><br>
+          <b>第五步 · 年化 IRR：</b>2.218% × 12 = <b>约 26.6%</b>。<br><br>
+          <b>结论：</b>名义 15% 看上去离 24% 还有近十个百分点的余量，真实 IRR 却是 <b>26.6%，已经越线</b>。倍数 26.6 ÷ 15 ≈ <b>1.77</b>，与"等本等息真实 IRR ≈ 名义 × 1.8"的经验值吻合。<br><br>
+          <b>这道题的意义：</b>如果定价评审只看合同上那个 15%，这款产品会带着一个越线的真实利率上线；而它一旦被认定越线，超出部分的利息要退，模块⑤里"利率 18%"支撑的全部利润测算也要重做。
+        </div>
+      </details>
+    </div>
+
+    <div class="quiz-item">
+      <div class="q-title">第 4 题 · 信号判读</div>
+      <p style="margin:0;">某新模型离线 KS 0.58，上线首月掉到 0.41。排查发现 20 个入模变量中，有一个 IV = 0.66 的变量叫"<strong>近 30 天账单分期次数</strong>"，取自账单系统。同时另一个变量"近 3 个月申请次数"IV = 0.563，取自征信查询记录。请判断：问题出在哪个变量？你需要追问哪些信息才能下结论？</p>
+      <details>
+        <summary>查看解析</summary>
+        <div class="answer">
+          <b>两个变量都触发了"IV &gt; 0.5 必须复核时点"的规则</b>，但结论大概率不同。<br><br>
+          <b>"近 30 天账单分期次数"——高度可疑。</b>要追问：这里的"近 30 天"是<b>截至申请日</b>还是<b>截至数据跑批日</b>？账单系统的账单日通常在放款之后；如果客户是新户，申请时根本没有账单，这个字段的非空值本身就说明数据来自 T0 之后。这正是第 3 节讲的<b>场景 C：衍生变量继承了父变量的穿越</b>——"账单分期次数"这个指标本身没错，错的是窗口的右端点。<br><br>
+          <b>"近 3 个月申请次数"——大概率合规。</b>征信查询记录是<b>申请时点拉取的报文快照</b>，Δ = −1 天（报文在 T0 前生成）。它在模块②里 IV = 0.563，本来就是这个体系里最强的合规变量，IV 高是<b>业务规律</b>而非泄露。<br><br>
+          <b>还需要追问的信息：</b>① 两个变量各自的 Δ；② 宽表 JOIN 是否带了 <code>snapshot_date &lt;= apply_time</code>；③ Y 标签取自贷后系统、特征取自申请系统时，两边的时间基准是"申请时间"还是"放款时间"（场景 B）。<br><br>
+          <b>验证动作：</b>做时点回放。剔除可疑变量重训后，若离线 KS 落到 0.42 左右、与上线的 0.41 基本对齐，就证明问题已定位——<b>离线和上线对得上，才是模型可信的唯一标准</b>。
+        </div>
+      </details>
+    </div>
+
+    <div class="quiz-item">
+      <div class="q-title">第 5 题 · 分析题</div>
+      <p style="margin:0;">断直连之后，某第三方数据源必须经持牌征信机构中转，单次查询成本从 0.8 元涨到 2.5 元。该数据源贡献 3 个入模变量，合计使模型 KS 从 0.48 提升到 0.51。已知：月申请量 20 万笔、放款 6 万笔，模块⑤的口径是利率 18%、LGD 45%、固定成本 50 元／件。<strong>要不要保留这个数据源？</strong>请给出你的分析框架。</p>
+      <details>
+        <summary>查看解析</summary>
+        <div class="answer">
+          <b>这道题没有标准答案，但有标准框架。</b>合规决策的本质是把"合规成本"翻译成"财务语言"，再和收益放在同一张表上比。<br><br>
+          <b>① 算成本增量。</b>查询费涨 1.7 元／笔，按全量申请调用计：20 万 × 1.7 = <b>34 万元／月</b>。第一个可优化点立刻出现——<b>能不能只对灰区客户调用</b>？如果只对评分 560~680 的 30% 申请量调用，成本降到约 10 万元／月，KS 损失很小。<br><br>
+          <b>② 算收益增量。</b>KS 0.48 → 0.51 大致对应坏账率下降（参考模块⑤：挑战者 KS 0.51 时坏账 1.85% → 1.62%）。按放款 6 万笔、件均本金 1 万元估算，坏账改善 0.2 个百分点 × 6 亿元 × LGD 45% ≈ <b>54 万元／月</b>的损失减少。<br><br>
+          <b>③ 比较并留安全边际。</b>54 万 &gt; 34 万，单看财务账是划算的。但还要问第三个问题：<b>这个数据源的政策稳定性如何？</b>图 L4 的结论是——第三方数据单位变量 IV 贡献最高，但政策波动也最大。如果这 3 个变量占了模型 KS 的主要来源，一旦下一份文件把它断掉，模型会瞬间失效。<br><br>
+          <b>④ 给出可执行结论。</b>保留，但附三个条件：<b>(1)</b> 改为灰区触发调用，压低成本；<b>(2)</b> 同步训练一个<b>不含该数据源的备用模型</b>并保持热备，作为政策变化时的降级方案；<b>(3)</b> 在模型文档中登记该数据源的授权链条与合规成本，纳入季度复评。<br><br>
+          <b>记住：</b>合规不是成本中心，而是<b>把不确定性提前定价</b>。愿意为"备用模型"付出的那点训练成本，买的是模型的寿命。
+        </div>
+      </details>
+    </div>
+  </div>
+
+  <!-- ============ 总结 ============ -->
+  <div class="summary-box">
+    <h3>回头看：这一模块其实只讲了三道关卡</h3>
+    <p>模块②到模块⑤解决的是"模型好不好"，这一模块解决的是"<strong>模型能不能活下来</strong>"。三道关卡按顺序卡在建模流程的不同位置：</p>
+    <p><strong>第一道 · 资格关（数据源）。</strong>这份数据从哪来、授权链条是否完整、是否需要单独同意、是否必须经持牌征信机构中转。答不上来，后面全不用做。</p>
+    <p><strong>第二道 · 时点关（穿越变量）。</strong>以决策时点 T0 为原点，任何 Δ &gt; 0 的变量都是穿越。这道关最阴险——它不报错，只是把你的 KS 从 0.62 虚高到上线后的 0.39。<strong>IV &gt; 0.5 必须复核时点</strong>，是性价比最高的一条纪律。</p>
+    <p><strong>第三道 · 定价关（利率红线）。</strong>先问主体（民间借贷还是持牌机构），再问口径（名义还是 IRR），最后才看数字。等本等息名义 18% 的真实 IRR 是 31.7%，名义 15% 的真实 IRR 是 26.6%——<strong>合同上的数字从来不是利率</strong>。</p>
+    <p>再加一条贯穿全程的义务：自动化决策要能<strong>解释</strong>（拒绝原因码）、要留<strong>人工通道</strong>、要有 <strong>PIA 报告并保存三年</strong>。这三件事在模型上线前补，成本是几人天；在监管检查时补，成本是整个模型下线。</p>
+    <div class="mnemonic-line">先问有没有资格用，再问那一刻在不在，最后问法律认不认</div>
+  </div>
+
+  <div class="next-card">
+    <div>
+      <div class="n-label">下一步</div>
+      <div class="n-title">模块七 · 进阶与外延：反欺诈、团伙识别与资金侧视角</div>
+    </div>
+    <div class="n-arrow">→</div>
+  </div>
+  <p style="text-align:center;"><a href="../index.html">← 返回信贷风控学习手册总目录</a></p>
+
+  <div class="page-footer">
+    <span>信贷风控学习手册 · 模块六</span>
+    <span>非机构内部资料 · 独立学习笔记 · 示例数据均为教学构造</span>
+  </div>
+</div>
+
+<script>
+if (!window.Chart) {
+  // 本地 vendor 与 CDN 都取不到时，给出可读的降级提示，而不是留空白框
+  document.querySelectorAll('.chart-wrap').forEach(function (el) {
+    el.innerHTML = '<div style="display:flex;align-items:center;justify-content:center;height:100%;'
+      + 'color:#9A8F82;font-size:13.5px;line-height:1.8;text-align:center;padding:0 24px;">'
+      + '图表库 Chart.js 未能加载<br>请检查网络，或确认 design-system/vendor/chart.umd.min.js 存在</div>';
+  });
+} else {
+
+const gridColor = 'rgba(0,0,0,0.06)';
+const axisFont = { family:"'Songti SC','STSong',Georgia,serif", size: 11 };
+const COLORS = { good:'#3E8362', bad:'#C0433D', info:'#3E7E96', warn:'#C1892A', gray:'#C9BFB2' };
+
+// 图 L1：IV × Δ 散点 —— 穿越变量全部落在 0.5 复核线以上、Δ>0 的右侧
+new Chart(document.getElementById('chartL1'), {
+  type: 'scatter',
+  data: {
+    datasets: [{
+      label: '穿越变量（Δ > 0）',
+      data: [
+        { x: 35, y: 0.89, v: '首期账单还款状态' },
+        { x: 3,  y: 0.71, v: '授信后额度使用率' },
+        { x: 3,  y: 0.52, v: '放款后 3 天是否取现' }
+      ],
+      backgroundColor: COLORS.bad, borderColor: COLORS.bad, pointRadius: 7, pointHoverRadius: 9
+    }, {
+      label: '合规变量（Δ ≤ 0）',
+      data: [
+        { x: -1, y: 0.563, v: '近 3 个月申请次数' },
+        { x: -1, y: 0.41,  v: '近 6 个月最大逾期天数' },
+        { x: 0,  y: 0.22,  v: '月收入分箱' }
+      ],
+      backgroundColor: COLORS.good, borderColor: COLORS.good, pointRadius: 7, pointHoverRadius: 9
+    }, {
+      label: 'IV = 0.5 人工复核线',
+      type: 'line',
+      data: [{ x: -6, y: 0.5 }, { x: 40, y: 0.5 }],
+      borderColor: COLORS.warn, borderWidth: 2, borderDash: [6,3], pointRadius: 0, fill: false
+    }]
+  },
+  options: {
+    responsive: true, maintainAspectRatio: false,
+    plugins: {
+      legend: { position:'top', align:'end', labels:{ boxWidth:10, usePointStyle:true, font: axisFont } },
+      tooltip: { callbacks: { label: c => (c.raw.v || '') + '：IV ' + c.parsed.y + '，Δ ' + (c.parsed.x > 0 ? '+' : '') + c.parsed.x + ' 天' } }
+    },
+    scales: {
+      x: { min: -6, max: 40, title:{ display:true, text:'Δ = 采集时间 − 决策时点 T0（天）', font: axisFont },
+           ticks:{ callback: v => (v > 0 ? '+' : '') + v + '天', font: axisFont }, grid:{ color: gridColor } },
+      y: { min: 0, max: 1, title:{ display:true, text:'IV（信息值）', font: axisFont },
+           ticks:{ font: axisFont }, grid:{ color: gridColor } }
+    }
+  }
+});
+
+// 图 L2：离线 KS vs 上线首月 KS
+new Chart(document.getElementById('chartL2'), {
+  type: 'bar',
+  data: {
+    labels: ['挑战者 v1（含 3 个穿越变量）', '挑战者 v2（剔除后重训）'],
+    datasets: [
+      { label:'离线验证 KS', data:[0.62, 0.51], backgroundColor: COLORS.gray, borderRadius: 3, barPercentage: 0.62 },
+      { label:'上线首月 KS', data:[0.39, 0.49], backgroundColor: COLORS.info, borderRadius: 3, barPercentage: 0.62 }
+    ]
+  },
+  options: {
+    responsive: true, maintainAspectRatio: false,
+    plugins: {
+      legend: { position:'top', align:'end', labels:{ boxWidth:10, usePointStyle:true, font: axisFont } },
+      tooltip: { callbacks: { label: c => c.dataset.label + '：' + c.parsed.y.toFixed(2) } }
+    },
+    scales: {
+      y: { min: 0, max: 0.7, title:{ display:true, text:'KS', font: axisFont },
+           ticks:{ stepSize: 0.1, callback: v => Number(v).toFixed(1), font: axisFont }, grid:{ color: gridColor } },
+      x: { grid:{ display:false }, ticks:{ font: axisFont } }
+    }
+  }
+});
+
+// 图 L3：名义年化利率 → 真实 IRR（等本等息 vs 等额本息，12 期）
+new Chart(document.getElementById('chartL3'), {
+  type: 'line',
+  data: {
+    labels: ['6%','9%','12%','15%','18%','21%','24%'],
+    datasets: [
+      { label:'等本等息（真实 IRR）', data:[10.9, 16.2, 21.5, 26.6, 31.7, 36.8, 41.7],
+        borderColor: COLORS.bad, backgroundColor: COLORS.bad, borderWidth: 2.5, pointRadius: 3.5, tension: 0.25, fill: false },
+      { label:'等额本息（真实 IRR）', data:[6, 9, 12, 15, 18, 21, 24],
+        borderColor: COLORS.good, backgroundColor: COLORS.good, borderWidth: 2.5, pointRadius: 3.5, tension: 0.25, fill: false },
+      { label:'24% 司法调减参考线', data:[24, 24, 24, 24, 24, 24, 24],
+        borderColor: COLORS.warn, borderWidth: 2, borderDash: [6,3], pointRadius: 0, fill: false }
+    ]
+  },
+  options: {
+    responsive: true, maintainAspectRatio: false,
+    interaction: { mode: 'index', intersect: false },
+    plugins: {
+      legend: { position:'top', align:'end', labels:{ boxWidth:10, usePointStyle:true, font: axisFont } },
+      tooltip: { callbacks: {
+        title: items => '合同名义年化 ' + items[0].label,
+        label: c => c.dataset.label + '：' + c.parsed.y + '%'
+      } }
+    },
+    scales: {
+      y: { min: 0, max: 45, title:{ display:true, text:'真实年化 IRR', font: axisFont },
+           ticks:{ stepSize: 5, callback: v => v + '%', font: axisFont }, grid:{ color: gridColor } },
+      x: { title:{ display:true, text:'合同上写的名义年化利率', font: axisFont },
+           ticks:{ font: axisFont }, grid:{ display:false } }
+    }
+  }
+});
+
+// 图 L4：三类数据源的 IV 贡献 vs 合规成本（气泡大小 = 入模变量数）
+new Chart(document.getElementById('chartL4'), {
+  type: 'bubble',
+  data: {
+    datasets: [
+      { label:'自有数据（16 个变量）', data:[{ x: 2.0, y: 0.18, r: 24, n: 16 }],
+        backgroundColor: 'rgba(62,131,98,0.35)', borderColor: COLORS.good, borderWidth: 2 },
+      { label:'持牌征信（7 个变量）', data:[{ x: 5.2, y: 0.31, r: 16, n: 7 }],
+        backgroundColor: 'rgba(62,126,150,0.35)', borderColor: COLORS.info, borderWidth: 2 },
+      { label:'第三方数据（5 个变量）', data:[{ x: 8.6, y: 0.38, r: 13, n: 5 }],
+        backgroundColor: 'rgba(193,137,42,0.35)', borderColor: COLORS.warn, borderWidth: 2 }
+    ]
+  },
+  options: {
+    responsive: true, maintainAspectRatio: false,
+    plugins: {
+      legend: { position:'top', align:'end', labels:{ boxWidth:10, usePointStyle:true, font: axisFont } },
+      tooltip: { callbacks: {
+        label: c => c.dataset.label + '：单位变量平均 IV ' + c.parsed.y + '，合规成本 ' + c.parsed.x + ' 分'
+      } }
+    },
+    scales: {
+      x: { min: 0, max: 10, title:{ display:true, text:'合规成本（授权/中转/留痕，10 分制）→ 越右越贵', font: axisFont },
+           ticks:{ stepSize: 2, callback: v => v + '分', font: axisFont }, grid:{ color: gridColor } },
+      y: { min: 0, max: 0.5, title:{ display:true, text:'单位变量平均 IV 贡献', font: axisFont },
+           ticks:{ stepSize: 0.1, callback: v => Number(v).toFixed(1), font: axisFont }, grid:{ color: gridColor } }
+    }
+  }
+});
+}
+</script>
+</body>
+</html>

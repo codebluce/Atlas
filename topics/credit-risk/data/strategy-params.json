@@ -1,0 +1,12 @@
+{
+  "_about": "⑤ Part 3/Part 4 的业务参数——唯一事实来源。改这里后跑 tools/recompute_strategy.py 对账。",
+  "EAD_yuan": 50000,
+  "rate_annual": 0.18,
+  "LGD": 0.45,
+  "fixed_cost_per_capita_yuan": 50,
+  "red_lines": {
+    "compliance_min_cutoff_decile": 4,
+    "pd_cap": 0.045,
+    "balance_cap_yi_yuan": 5.0
+  }
+}

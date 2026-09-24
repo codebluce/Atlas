@@ -5,7 +5,9 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>模块一 · 评分卡体系（A/B/C卡）| 信贷风控学习手册</title>
 <link rel="stylesheet" href="../../../design-system/style.css">
-<script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.4/dist/chart.umd.min.js"></script>
+<!-- Chart.js：本地优先，CDN 兜底（离线也能出图） -->
+<script src="../../../design-system/vendor/chart.umd.min.js"></script>
+<script>window.Chart||document.write('<script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.4/dist/chart.umd.min.js"><\/script>');</script>
 </head>
 <body>
 
@@ -451,6 +453,15 @@
 </div>
 
 <script>
+if (!window.Chart) {
+  // 本地 vendor 与 CDN 都取不到时，给出可读的降级提示，而不是留两个空白框
+  document.querySelectorAll('.chart-wrap').forEach(function (el) {
+    el.innerHTML = '<div style="display:flex;align-items:center;justify-content:center;height:100%;'
+      + 'color:#9A8F82;font-size:13.5px;line-height:1.8;text-align:center;padding:0 24px;">'
+      + '图表库 Chart.js 未能加载<br>请检查网络，或确认 design-system/vendor/chart.umd.min.js 存在</div>';
+  });
+} else {
+
 const gridColor = '#EFE7DA';
 Chart.defaults.font.family = "-apple-system,BlinkMacSystemFont,'PingFang SC','Microsoft YaHei',sans-serif";
 Chart.defaults.font.size = 12.5;
@@ -502,6 +513,8 @@ new Chart(document.getElementById('chartS2'), {
     }
   }
 });
+
+}
 </script>
 
 </body>

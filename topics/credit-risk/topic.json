@@ -1,0 +1,17 @@
+{
+  "slug": "credit-risk",
+  "title": "信贷风控学习手册",
+  "prototype": "compute-model",
+  "status": "active",
+  "order_note": "推荐学习顺序固定：③①②④⑤⑥⑦（order 字段即推荐顺序）",
+  "root_index_card": { "progress": "7 / 7", "tag": "tag-good" },
+  "modules": [
+    { "id": "01", "order": 3, "title": "评分卡体系", "file": "manual/01-scorecard.html", "alias": "骨架", "emoji": "🏗️", "state": "done" },
+    { "id": "02", "order": 2, "title": "特征工程四件套", "file": "manual/02-woe.html", "alias": "手艺", "emoji": "🛠️", "state": "done" },
+    { "id": "03", "order": 1, "title": "模型评估指标", "file": "manual/03-metrics.html", "alias": "标尺", "emoji": "📏", "state": "done" },
+    { "id": "04", "order": 4, "title": "资产质量分析", "file": "manual/04-vintage.html", "alias": "透视镜", "emoji": "🔍", "state": "done" },
+    { "id": "05", "order": 5, "title": "决策与策略", "file": "manual/05-strategy.html", "alias": "决策", "emoji": "🎯", "state": "done" },
+    { "id": "06", "order": 6, "title": "数据与合规边界", "file": "manual/06-compliance.html", "alias": "边界", "emoji": "⚖️", "state": "current" },
+    { "id": "07", "order": 7, "title": "进阶与外延", "file": "manual/07-frontier.html", "alias": "外延", "emoji": "🗺️", "state": "done", "note": "选修" }
+  ]
+}

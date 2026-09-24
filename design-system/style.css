@@ -309,7 +309,8 @@ table.tbl tr.hl td{ background:var(--brand-bg); font-weight:700; }
   padding:14px 18px; margin:12px 0; font-family:Menlo,Consolas,monospace; font-size:13.5px;
   color:var(--ink-soft); line-height:2;
 }
-.calc-box .eq{ color:var(--brand-dark); font-weight:700; }
+.calc-box .calc-label{ display:inline-block; font-size:12px; font-weight:600; color:var(--ink-faint); }
+.calc-box .eq, .eq{ color:var(--brand-dark); font-weight:700; }
 
 /* ---------- 自测 quiz ---------- */
 .quiz-item{

@@ -5,7 +5,9 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>模块四 · 资产质量分析（Vintage分析）| 信贷风控学习手册</title>
 <link rel="stylesheet" href="../../../design-system/style.css">
-<script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.4/dist/chart.umd.min.js"></script>
+<!-- Chart.js：本地优先，CDN 兜底（离线也能出图） -->
+<script src="../../../design-system/vendor/chart.umd.min.js"></script>
+<script>window.Chart||document.write('<script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.4/dist/chart.umd.min.js"><\/script>');</script>
 </head>
 <body>
 
@@ -205,7 +207,7 @@
     </div>
 
     <div class="chart-card">
-      <div class="chart-title">迁徙路径示意（历史平均口径）</div>
+      <div class="chart-title">图C · 迁徙路径示意（历史平均口径）</div>
       <div class="rollrate-row">
         <div class="rr-box m0">M0 正常</div>
         <div class="rr-arrow"><span class="pct">3.0% 新增逾期</span><div class="bar-bg"><div class="bar-fill" style="width:3%"></div></div></div>
@@ -217,18 +219,18 @@
         <div class="rr-arrow"><span class="pct">80% 迁徙</span><div class="bar-bg"><div class="bar-fill" style="width:80%"></div></div></div>
         <div class="rr-box co">核销</div>
       </div>
-      <div class="chart-footnote">未迁徙的部分不会消失，大部分回滚（cure）到更早状态——比如 M1 有约42%在本月还清欠款、回到 M0，这部分叫"回滚率/催回率"，同样是催收效果的体现。</div>
+      <div class="chart-footnote">未迁徙的部分不会消失，大部分回滚（cure）到更早状态——比如 M1 有约42%在本月还清欠款、回到 M0，这部分叫"回滚率/催回率"，同样是催收效果的体现。示例数据，用于教学演示，非真实业务数据。</div>
     </div>
 
     <div class="chart-card">
-      <div class="chart-title">图C · 迁徙率对比：历史平均 vs 最近一月</div>
+      <div class="chart-title">图D · 迁徙率对比：历史平均 vs 最近一月</div>
       <div class="chart-sub">同一套迁徙路径，对比"过去常态"和"最新观测"，看恶化发生在哪一级</div>
       <div class="chart-wrap short"><canvas id="chartC"></canvas></div>
       <div class="chart-footnote">示例数据，用于教学演示，非真实业务数据。</div>
     </div>
 
     <div class="callout bad">
-      <span class="label">图C 说明了什么</span>
+      <span class="label">图D 说明了什么</span>
       最近一月的 M1→M2 迁徙率从历史均值 50% 跳到 65%——这是所有环节里恶化幅度最大的一级，说明催收在"早期逾期"这个环节明显失效了。结合第④节 2025-10批次的曲线异常，两条证据指向同一个结论：这批客户不仅进件质量差，逾期后也更难被追回，双重风险叠加（案例详解见第⑥节）。
     </div>
   </div>
@@ -263,7 +265,7 @@
     <div class="case-step">
       <div class="step-body" style="margin-left:38px;">
         <h4>查迁徙率，确认催收端也在失守</h4>
-        M1→M2 迁徙率从历史 50% 升到 65%（图C）。<span class="result">→ 说明不只是"进件质量差"，逾期后催收也拉不住，问题是复合型的，不是单一环节能解决的。</span>
+        M1→M2 迁徙率从历史 50% 升到 65%（图D）。<span class="result">→ 说明不只是"进件质量差"，逾期后催收也拉不住，问题是复合型的，不是单一环节能解决的。</span>
       </div>
     </div>
 
@@ -301,7 +303,7 @@
     </div>
 
     <div class="chart-card">
-      <div class="chart-title">图D · 参考：2025-01批次核销率成熟曲线</div>
+      <div class="chart-title">图E · 参考：2025-01批次核销率成熟曲线</div>
       <div class="chart-sub">用于案例第5步"成熟曲线百分比法"外推损失，虚线为假定的最终稳定值</div>
       <div class="chart-wrap short"><canvas id="chartD"></canvas></div>
       <div class="chart-footnote">示例数据，用于教学演示，非真实业务数据。实际业务中，"最终稳定值"需要基于历史多批次的收敛规律估计，不同产品的成熟期差异很大。</div>
@@ -485,7 +487,7 @@ plt.plot(v['MOB'], v['M1+逾期率_pct'], marker='o')</code></pre>
 
     <div class="figure">
       <img src="../figures/fig04-vintage-single-2025-06-annotated.png" alt="2025-06批次单批Vintage曲线，13个观测点">
-      <div class="fig-cap">图E · 2025-06批次单批Vintage曲线，每个点标注了具体数值，能跟上面13行原始数据逐一对上。</div>
+      <div class="fig-cap">图F · 2025-06批次单批Vintage曲线，每个点标注了具体数值，能跟上面13行原始数据逐一对上。</div>
     </div>
 
     <p>做多批次对比/光谱图时，唯一区别是把筛选条件从"放款时间=='2025-06'"换成对全部121个批次循环，每次重复步骤1-4得到一条曲线，再用放款时间早晚映射成颜色叠加到同一张图——下面10.3节的两张图就是这么来的。</p>
@@ -518,12 +520,12 @@ plt.plot(v['MOB'], v['M1+逾期率_pct'], marker='o')</code></pre>
     <p>挑7个有代表性的批次，按MOB对齐：</p>
     <div class="figure">
       <img src="../figures/fig04-vintage-curve-real.png" alt="消费贷产品A代表性批次Vintage曲线">
-      <div class="fig-cap">图F · 老批次(2019-06)收敛最低~1.25%；2025-06是全数据集最差批次，MOB12时已到3.51%且尚未走平；2026年最新批次早期表现反而是近三年最优。</div>
+      <div class="fig-cap">图G · 老批次(2019-06)收敛最低~1.25%；2025-06是全数据集最差批次，MOB12时已到3.51%且尚未走平；2026年最新批次早期表现反而是近三年最优。</div>
     </div>
     <p>再把<strong>全部121个批次</strong>叠加同框，用颜色深浅表示放款时间早晚：</p>
     <div class="figure">
       <img src="../figures/fig04-vintage-spectrum-real.png" alt="消费贷产品A全部121批次Vintage光谱图">
-      <div class="fig-cap">图G · 冷色(2016-2018)收敛在0.6%~1.0%，暖色(2022-2024)收敛在2.0%~2.9%，最新12个月(粗红线)在MOB10附近就冲到3.0%~3.5%。</div>
+      <div class="fig-cap">图H · 冷色(2016-2018)收敛在0.6%~1.0%，暖色(2022-2024)收敛在2.0%~2.9%，最新12个月(粗红线)在MOB10附近就冲到3.0%~3.5%。</div>
     </div>
     <div class="callout bad">
       <span class="label">这不是一次性异常，是十年趋势的最新极值</span>
@@ -542,7 +544,7 @@ plt.plot(v['MOB'], v['M1+逾期率_pct'], marker='o')</code></pre>
     <p><strong>指标二：不良转化比</strong>（不良率÷M1+逾期率，衡量"进了逾期的钱最终有多大比例真滑向不良"，同一行两个字段直接相除，不需要跨期）：</p>
     <div class="figure">
       <img src="../figures/fig04-npl-conversion-ratio.png" alt="不良转化比：左图成熟曲线，右图跨批次趋势对比">
-      <div class="fig-cap">图H · 左图：转化比本身也是一条随MOB收敛的成熟曲线，2024-04最终收敛在92.1%，2019-06收敛在81.6%。右图：以2023-01为基期=100，MOB12时点的M1+逾期率(红线)在90~193之间大幅波动，但不良转化比(蓝线)几乎全程贴着100不动。</div>
+      <div class="fig-cap">图I · 左图：转化比本身也是一条随MOB收敛的成熟曲线，2024-04最终收敛在92.1%，2019-06收敛在81.6%。右图：以2023-01为基期=100，MOB12时点的M1+逾期率(红线)在90~193之间大幅波动，但不良转化比(蓝线)几乎全程贴着100不动。</div>
     </div>
     <div class="callout good">
       <span class="label">两个指标互相印证：问题在准入端，不在催收端</span>
@@ -714,6 +716,15 @@ plt.plot(v['MOB'], v['M1+逾期率_pct'], marker='o')</code></pre>
 </div>
 
 <script>
+if (!window.Chart) {
+  // 本地 vendor 与 CDN 都取不到时，给出可读的降级提示，而不是留空白框
+  document.querySelectorAll('.chart-wrap').forEach(function (el) {
+    el.innerHTML = '<div style="display:flex;align-items:center;justify-content:center;height:100%;'
+      + 'color:#9A8F82;font-size:13.5px;line-height:1.8;text-align:center;padding:0 24px;">'
+      + '图表库 Chart.js 未能加载<br>请检查网络，或确认 design-system/vendor/chart.umd.min.js 存在</div>';
+  });
+} else {
+
 const inkFaint = '#8C8177';
 const gridColor = '#EFE7DA';
 Chart.defaults.font.family = "-apple-system,BlinkMacSystemFont,'PingFang SC','Microsoft YaHei',sans-serif";
@@ -769,7 +780,7 @@ new Chart(document.getElementById('chartB'), {
   }
 });
 
-// 图C：迁徙率对比
+// 图D：迁徙率对比
 new Chart(document.getElementById('chartC'), {
   type: 'bar',
   data: {
@@ -789,7 +800,7 @@ new Chart(document.getElementById('chartC'), {
   }
 });
 
-// 图D：核销率成熟曲线
+// 图E：核销率成熟曲线
 new Chart(document.getElementById('chartD'), {
   type: 'line',
   data: {
@@ -808,6 +819,7 @@ new Chart(document.getElementById('chartD'), {
     }
   }
 });
+}
 </script>
 
 </body>

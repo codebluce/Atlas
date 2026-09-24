@@ -1,0 +1,75 @@
+{
+  "slug": "red-chip",
+  "title": "红筹架构学习手册",
+  "prototype": "concept-frame",
+  "status": "active",
+  "root_index_card": {
+    "progress": "7 / 7",
+    "tag": "tag-good"
+  },
+  "modules": [
+    {
+      "id": "01",
+      "order": 1,
+      "title": "红筹是什么",
+      "file": "manual/01-concepts.html",
+      "alias": "地图",
+      "emoji": "🧭",
+      "state": "done"
+    },
+    {
+      "id": "02",
+      "order": 2,
+      "title": "架构解剖",
+      "file": "manual/02-anatomy.html",
+      "alias": "积木",
+      "emoji": "🧱",
+      "state": "done"
+    },
+    {
+      "id": "03",
+      "order": 3,
+      "title": "VIE 协议控制",
+      "file": "manual/03-vie.html",
+      "alias": "契约",
+      "emoji": "🔗",
+      "state": "done"
+    },
+    {
+      "id": "04",
+      "order": 4,
+      "title": "搭建与合规手续",
+      "file": "manual/04-compliance.html",
+      "alias": "施工",
+      "emoji": "📋",
+      "state": "done"
+    },
+    {
+      "id": "05",
+      "order": 5,
+      "title": "规则与监管变迁",
+      "file": "manual/05-regulation.html",
+      "alias": "闸门",
+      "emoji": "🛂",
+      "state": "done"
+    },
+    {
+      "id": "06",
+      "order": 6,
+      "title": "保留或拆除",
+      "file": "manual/06-unwind.html",
+      "alias": "拆迁",
+      "emoji": "🔧",
+      "state": "done"
+    },
+    {
+      "id": "07",
+      "order": 7,
+      "title": "路径决策",
+      "file": "manual/07-decisions.html",
+      "alias": "罗盘",
+      "emoji": "🧭",
+      "state": "done"
+    }
+  ]
+}

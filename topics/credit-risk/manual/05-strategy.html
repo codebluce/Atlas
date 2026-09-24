@@ -6,7 +6,9 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>模块五 · 决策与策略（额度/定价/AB/阈值）| 信贷风控学习手册</title>
 <link rel="stylesheet" href="../../../design-system/style.css">
-<script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.4/dist/chart.umd.min.js"></script>
+<!-- Chart.js：本地优先，CDN 兜底（离线也能出图） -->
+<script src="../../../design-system/vendor/chart.umd.min.js"></script>
+<script>window.Chart||document.write('<script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.4/dist/chart.umd.min.js"><\/script>');</script>
 </head>
 <body>
 
@@ -54,16 +56,16 @@
 
     <h3>痛点一：KS 最高的切点 ≠ 利润最高的切点</h3>
     <p>模块③说过：KS 峰值 = 累计坏客户占比和累计好客户占比差距最大的位置。它是**模型区分度**最高的切点，不是**业务赚钱**最高的切点。如果你按 KS 峰值切，就把"模型最分得开"的地方误当成了"业务最该切"的地方。</p>
-    <div class="compare-cards">
-      <div class="compare-card">
-        <div class="compare-hd" style="color:var(--good);">📗 按 KS 峰值切（分而治之）</div>
-        <p>切第 6 十分位——此处"累坏-累好"差距最大，最能把好客户留下、坏客户挡在外。</p>
-        <p class="compare-ft">KS ≈ 0.46，"账面完美"。但在利率 18% + LGD 45% 的盘面下，从第 6 档再往后每放一档，新增利息 180 元/人、新增 ECL 只约 8.4 元/人，<strong>放着利润不赚</strong>。</p>
+    <div class="concept-grid">
+      <div class="concept-card">
+        <div class="c-name" style="color:var(--good);">📗 按 KS 峰值切（放到第 6 档）</div>
+        <div class="c-def">模块③的表按高风险端排列，KS 峰值在第 4 十分位（累计坏 84.0% − 累计好 37.7% = 0.46）——相当于从低风险端放款放到第 6 档。</div>
+        <div class="c-mnemonic">在利率 18% + LGD 45% 的盘面下，从这里再往后放一档（第 7 档）：新增 1000 人，新增利息 900 万，新增 ECL 只 135 万，<strong>净增 760 万——放着不赚</strong>。</div>
       </div>
-      <div class="compare-card">
-        <div class="compare-hd" style="color:var(--bad);">📕 按"全放"切（粗放到 100%）</div>
-        <p>把本金一秒放完——"反正好客户多，坏账多半亏损能接受"。</p>
-        <p class="compare-ft">第 10 档积累下，利息收入被越来越差的坏账侵蚀，<strong>接触现金流的高风险客群也给出了钱</strong>，触碰贷后红线的风险直线上升。</p>
+      <div class="concept-card">
+        <div class="c-name" style="color:var(--bad);">📕 按"全放"切（粗放到 100%）</div>
+        <div class="c-def">把本金一秒放完——"反正好客户多，坏账多半亏损能接受"。</div>
+        <div class="c-mnemonic">全放能拿 +7825 万（数学上最大），但把高风险客群的钱也给了出去，<strong>监管与资金三条红线会全部触发</strong>——赚得到，批不了。</div>
       </div>
     </div>
     <p>真正的切点，是<strong>在监管和业务红线内，把"再往后放一档还值不值"逐档画出来的那条曲线的最高处</strong>。它不是 KS 告诉你的位置——是本模块 Part 4 会算的那个位置。</p>
@@ -83,9 +85,10 @@
 
     <h3>痛点三：模型已经 9 个月，没人能说清"新策略是不是真的好"</h3>
     <p>这正是本模块要收口的模块③悬案：9 个月后 KS 掉到 0.38、PSI 飙到 0.179（模块③图 K4）。大家决定上线个新模型，但<strong>"怎么试、试多久、按什么标准判谁赢"</strong>没人说得清——大多数人会说"看看实验组是不是比对照组好"，这个"看看"本身就是被坑的地方。</p>
-    <blockquote class="quote">
+    <div class="analogy">
+      <span class="label">🏭 一个类比</span>
       评分卡不是终点，是信号：<strong>一个工厂的 "良品率测量仪" 造了 9 个月后，要决定的是"用更好的测量仪换它"还是"继续用"，而不是把测量仪精度调到最高就算赢</strong>。
-    </blockquote>
+    </div>
     <p>本模块目标：把"打分"→"做决定"这段路补齐——利率怎么定（Part 3）、额度<em>和</em>切点怎么权衡（Part 4）、新策略怎么科学地试（Part 5–6）、被拒之门外的人怎么用（拒绝推断） + 营销怎么省（增益模型，Part 7）。</p>
   </div>
 
@@ -95,48 +98,50 @@
     <p class="part-lede">利率、额度、AB 测试、拒绝推断、增益……名词多，但<strong>归根结底一句话</strong>：<strong>在一组硬约束（监管、资金流、用户体验）内，选择一个期望净利润最大的决策</strong>。先把这个"期望利润"式子记熟，后面所有内容都是它的展开。</p>
 
     <h3>期望利润的底层公式（本模块贯穿公式）</h3>
-    <div class="formula">
-      <div class="formula-main">净利润（期望） = 利息收入 − 预期信用损失（ECL） − 固定成本</div>
-      <ul>
-        <li><strong>利息收入</strong> = 通过人数 × 人均额度（EAD）× 名义利率 × 期限</li>
-        <li><strong>ECL</strong>（预期信用损失） = 通过人数 × 当期通过人群的坏账率（PD） × 敞口（EAD） × 违约损失率（LGD）</li>
-        <li><strong>固定成本</strong> = 获客 + 资金 + 运营 + 渠道成本的每人分摊额</li>
-      </ul>
+    <div class="calc-box">
+      <span class="eq">净利润（期望） = 利息收入 − 预期信用损失（ECL） − 固定成本</span>
     </div>
+    <ul>
+      <li><strong>利息收入</strong> = 通过人数 × 人均额度（EAD）× 名义利率 × 期限</li>
+      <li><strong>ECL</strong>（预期信用损失） = 通过人数 × 当期通过人群的坏账率（PD） × 敞口（EAD） × 违约损失率（LGD）</li>
+      <li><strong>固定成本</strong> = 获客 + 资金 + 运营 + 渠道成本的每人分摊额</li>
+    </ul>
     <p>式子里每一项<strong>都不是随便填的</strong>：利率有 24% 法律保护上限（24%~36% 自然债务、36% 以上无效）、LGD 用历史坏账回收到账的回收率倒推（行业消费贷 LGD 介于 30%~60%，后文一律用 45%）、固定成本因产品而异（后文设定 50 元/人）。</p>
 
     <h3>四个和"决策"直接相关的概念</h3>
-    <div class="def-list">
-      <div class="def">
-        <div class="def-term">期望净利润 <span class="chip">curve</span></div>
-        <p>本模块的目标函数。做每一个决策（切几分、给多少额度、定多大利率）都不是问"好不好"，而是问"它的期望净利润哪一档最大"。</p>
+    <div class="concept-grid">
+      <div class="concept-card">
+        <div class="c-name">期望净利润</div>
+        <div class="c-en">expected net profit · curve</div>
+        <div class="c-def">本模块的目标函数。做每一个决策（切几分、给多少额度、定多大利率）都不是问"好不好"，而是问"它的期望净利润哪一档最大"。</div>
       </div>
-      <div class="def">
-        <div class="def-term">额度/利率双杠杆 <span class="chip">two levers</span></div>
-        <p>两个都能独立影响上面式子的工具：<strong>额度影响 EAD</strong>（敞口），<strong>利率影响利息收入</strong>。利率越高，能覆盖的坏账空间（风险溢价）也越高。这也是"为什么高风险客群的利率反而要高"——不是坑他们，是<strong>风险溢价</strong>。</p>
+      <div class="concept-card">
+        <div class="c-name">额度/利率双杠杆</div>
+        <div class="c-en">two levers</div>
+        <div class="c-def">两个都能独立影响上面式子的工具：<strong>额度影响 EAD</strong>（敞口），<strong>利率影响利息收入</strong>。利率越高，能覆盖的坏账空间（风险溢价）也越高。这也是"为什么高风险客群的利率反而要高"——不是坑他们，是<strong>风险溢价</strong>。</div>
       </div>
-      <div class="def">
-        <div class="def-term">AB / 准实验 <span class="chip">experiment</span></div>
-        <p>"客户被随机指派进实验组 / 对照组，实验组用新策略、对照组用旧策略" 是<strong>AB 实验</strong>；如果做不到完全随机（历史自然流量、时间切片）叫<strong>准实验</strong>。本模块 Part 5 的 DID 就是<strong>用来纠正准实验中"基线不均"造成的伪效果</strong>。</p>
+      <div class="concept-card">
+        <div class="c-name">AB / 准实验</div>
+        <div class="c-en">experiment</div>
+        <div class="c-def">"客户被随机指派进实验组 / 对照组，实验组用新策略、对照组用旧策略" 是<strong>AB 实验</strong>；如果做不到完全随机（历史自然流量、时间切片）叫<strong>准实验</strong>。本模块 Part 5 的 DID 就是<strong>用来纠正准实验中"基线不均"造成的伪效果</strong>。</div>
       </div>
-      <div class="def">
-        <div class="def-term">拒绝推断 & 增益模型 <span class="chip">label scarcity</span></div>
-        <p>只有"放款的人"才有表现标签，被拒绝的 90% 人"如果放了会怎样"<strong>永远不知道</strong>——这叫<strong>标签缺失</strong>。补全方法叫<strong>拒绝推断（Reject Inference）</strong>；增益模型（Uplift Model）更进一步问"不打扰他他也会借，那这次投放到底多影响了几个？"，它是在"已经知道哪种客户会响应"之上再问"谁的响应<em>只因为</em>我打扰了他"。</p>
+      <div class="concept-card">
+        <div class="c-name">拒绝推断 &amp; 增益模型</div>
+        <div class="c-en">label scarcity</div>
+        <div class="c-def">只有"放款的人"才有表现标签，被拒绝的 90% 人"如果放了会怎样"<strong>永远不知道</strong>——这叫<strong>标签缺失</strong>。补全方法叫<strong>拒绝推断（Reject Inference）</strong>；增益模型（Uplift Model）更进一步问"不打扰他他也会借，那这次投放到底多影响了几个？"，它是在"已经知道哪种客户会响应"之上再问"谁的响应<em>只因为</em>我打扰了他"。</div>
       </div>
     </div>
   </div>
   <!-- ============ PART 3 手算案例：利率 + 额度 = 期望净利润 ============ -->
   <div class="part" id="p3">
     <div class="part-head"><span class="part-num">03</span><h2>手算：给一个 628 分的客户定额度，值不值？</h2></div>
-    <p class="part-lede">还是模块①里那个客户（<a href="01-scorecard.html">模块①算过：450 基准分 + 178 加减 → 628 分</a>）。这次要做的是"给他批多少额度收多少息，才能让这笔业务<strong>期望净利润</strong>最大"。</p>
+    <p class="part-lede">还是模块①里那个客户（<a href="01-scorecard.html">模块①算过：基准分 600 + 年龄 8 + 婚姻 8 + 学历 12 + 申请次数 0 = 628 分</a>）。这次要做的是"给他批多少额度收多少息，才能让这笔业务<strong>期望净利润</strong>最大"。</p>
 
     <h3>第一步：把分数换算成违约概率 PD</h3>
-    <div class="formula">
-      <div class="formula-main">从模块①公式：分数每高 PDO 点，odds 翻一倍。600 分对应 odds=1:20，PDO=20。</div>
-      <ul>
-        <li>628 分 → 高 28 分 → 翻 2<sup>(28/20)</sup>=2<sup>1.4</sup> ≈ 2.639 倍，odds = 20 × 2.639 ≈ 52.79 : 1</li>
-        <li>PD = 1/(1+52.79) ≈ <strong>1.86%</strong></li>
-      </ul>
+    <p>从模块①公式：分数每高 PDO 点，odds 翻一倍。600 分对应 odds=1:20，PDO=20。</p>
+    <div class="calc-box">
+      <div>628 分 → 高 28 分 → 翻 2<sup>(28/20)</sup>=2<sup>1.4</sup> ≈ 2.639 倍，odds = 20 × 2.639 ≈ 52.79 : 1</div>
+      <div>PD = 1/(1+52.79) ≈ <span class="eq">1.86%</span></div>
     </div>
     <div class="callout info">
       <span class="label">锚点数字便于记忆</span>
@@ -144,30 +149,28 @@
     </div>
 
     <h3>第二步：把利息和 ECL 排进同一张账</h3>
-    <div class="calc-steps">
-      <div class="calc-step">
-        <div class="calc-step-num">①</div>
-        <div class="calc-step-body">
-          <strong>利息收入（充分批情景）</strong>：人均 EAD 50000 元 × 年利率 18% = <strong>9000 元/人/年</strong>
-        </div>
+    <div class="method-step">
+      <div class="m-num">1</div>
+      <div class="m-body">
+        <strong>利息收入（充分批情景）</strong>：人均 EAD 50000 元 × 年利率 18% = <strong>9000 元/人/年</strong>
       </div>
-      <div class="calc-step">
-        <div class="calc-step-num">②</div>
-        <div class="calc-step-body">
-          <strong>预期信用损失 ECL</strong> = PD × EAD × LGD = 1.86% × 50000 × 45% = <strong>419 元/人/年</strong>
-        </div>
+    </div>
+    <div class="method-step">
+      <div class="m-num">2</div>
+      <div class="m-body">
+        <strong>预期信用损失 ECL</strong> = PD × EAD × LGD = 1.86% × 50000 × 45% = <strong>419 元/人/年</strong>
       </div>
-      <div class="calc-step">
-        <div class="calc-step-num">③</div>
-        <div class="calc-step-body">
-          <strong>运营成本</strong>：放贷一笔约 50 元/人
-        </div>
+    </div>
+    <div class="method-step">
+      <div class="m-num">3</div>
+      <div class="m-body">
+        <strong>运营成本</strong>：放贷一笔约 50 元/人
       </div>
-      <div class="calc-step">
-        <div class="calc-step-num">④</div>
-        <div class="calc-step-body">
-          <strong>期望净利润</strong> = 9000 − 419 − 50 = <strong>8531 元/人/年</strong>（满批 5 万的情景）
-        </div>
+    </div>
+    <div class="method-step">
+      <div class="m-num">4</div>
+      <div class="m-body">
+        <strong>期望净利润</strong> = 9000 − 419 − 50 = <strong>8531 元/人/年</strong>（满批 5 万的情景）
       </div>
     </div>
 
@@ -199,9 +202,11 @@
     </div>
 
     <h3>第四步：加上利率红线，才是一张能用的"利率-额度组合图"</h3>
-    <div class="figure">
+    <div class="chart-card">
+      <div class="chart-title">图 D1 · 利率 vs 期望净利润：利率越高，并不是越赚</div>
+      <div class="chart-sub">横轴是名义年利率，纵轴是 EAD 的期望净利润（已扣 ECL 与 50 元固定成本），红色虚线是监管 24% 红线。曲线在红线附近见顶——<strong>高利率本身会筛出更差的人群（逆向选择），又推高 PD，两者一并吞掉利润</strong>。这是简化示意：利率每厘提升，都需要对应的 PD 下降来买单。</div>
       <div class="chart-wrap"><canvas id="chartD1"></canvas></div>
-      <div class="figure-note"><strong>图 D1：利率多少年利率终于扛得住</strong>。横轴是名义年利率，纵轴是 EAD 的期望净利润（扣掉 ECL、扣除 50 元固定成本），红线是监管 24% 红线。<strong>利率越高并不是净利润越高，因为高利率本身会筛选出更差的人群（逆向选择），且高利率会推高 PD，两者一并吞掉利润</strong>。这是简化示意，旨在告诉你"利率不是越高越好"，利率有红线，且利率的每厘提升都需要对应 PD 下降的"真实客户质量改善"来买单。</div>
+      <div class="chart-footnote">示例数据，用于教学演示，非真实业务数据。</div>
     </div>
     <p>关键认知：<strong>利率是定价工具，不是填补"坏账 = PD 没估准"的工具</strong>。利率脱离风险实际定价会触发两大反噬：其一是合规（24% / 36% / LPR 4 倍红线），其二是高息吸来的客群质量以可预见的方式变差（逆向选择模型）。</p>
   </div>
@@ -212,54 +217,61 @@
     <p class="part-lede">Part 1 说 KS 峰值 ≠ 利润峰值，Part 3 算了单客户期望利润——现在把这两件事拿到 <strong>10,000 人的真实申请盘子</strong>上看：每往后放一档，到底值不值？</p>
 
     <h3>一步选定样本口径：模块③ K1/K2 的同一批 10,000 申请人</h3>
-    <p>模块③里 KS 计算用的就是这个盘子：共 10,000 人，其中 500 是坏客户（坏账率 5%），按分数从高到低切 10 档（十分位），每档 1000 人。KS 峰值出现在<strong>第 6 档（累计好 82%、累计坏 28%、KS≈0.54）</strong>，模块③的结论是"切这里最能区分开"。</p>
+    <p>模块③里 KS 计算用的就是这个盘子：共 10,000 人，其中 500 是坏客户（坏账率 5%），每档 1000 人。注意③的 KS 表是<strong>按高风险往低风险排列</strong>的，KS 峰值出现在<strong>第 4 十分位（累计坏 84.0% − 累计好 37.7% = 46.3%，即 KS≈0.46）</strong>，模块③的结论是"切这里最能区分开"。本模块是放款视角，我们从低风险端往后放——用③的同一张表，把方向翻过来即可。</p>
 
-    <h3>10 档的"面值账"排一排</h3>
+    <h3>10 档的"面值账"排一排（从低风险端放款）</h3>
     <table class="tbl">
-      <thead><tr><th>切点档</th><th>通过人数（累计）</th><th>当期坏客户占比</th><th>当期通过人群坏账率 PD</th><th>利息收入（万元）</th><th>ECL（万元）</th><th>固定成本（万元）</th><th>期望净利润（万元）</th></tr></thead>
+      <thead><tr><th>放款到第几档</th><th>通过人数（累计）</th><th>累计坏客户</th><th>累计坏账率 PD</th><th>利息收入（万元）</th><th>ECL（万元）</th><th>固定成本（万元）</th><th>期望净利润（万元）</th></tr></thead>
       <tbody>
-        <tr><td class="num">第 1 档</td><td class="num">1000</td><td class="num">0.4%</td><td class="num">0.4%</td><td class="num">2160</td><td class="num">3.6</td><td class="num">5</td><td class="num"><strong>+2151</strong></td></tr>
-        <tr><td class="num">第 2 档</td><td class="num">2000</td><td class="num">1.0%</td><td class="num">1.0%</td><td class="num">4320</td><td class="num">18.0</td><td class="num">10</td><td class="num"><strong>+4292</strong></td></tr>
-        <tr><td class="num">第 3 档</td><td class="num">3000</td><td class="num">1.6%</td><td class="num">1.6%</td><td class="num">6480</td><td class="num">43.2</td><td class="num">15</td><td class="num"><strong>+6422</strong></td></tr>
-        <tr class="row-hl"><td class="num">第 4 档</td><td class="num">4000</td><td class="num">2.2%</td><td class="num">2.2%</td><td class="num">8640</td><td class="num">79.2</td><td class="num">20</td><td class="num"><strong>+8541</strong></td></tr>
-        <tr><td class="num">第 5 档</td><td class="num">5000</td><td class="num">2.8%</td><td class="num">2.8%</td><td class="num">10800</td><td class="num">126.0</td><td class="num">25</td><td class="num"><strong>+10649</strong></td></tr>
-        <tr class="row-hl"><td class="num">第 6 档 ★</td><td class="num">6000</td><td class="num">3.4%</td><td class="num">3.4%</td><td class="num">12960</td><td class="num">183.6</td><td class="num">30</td><td class="num"><strong>+12746</strong></td></tr>
-        <tr><td class="num">第 7 档</td><td class="num">7000</td><td class="num">4.4%</td><td class="num">4.4%</td><td class="num">15120</td><td class="num">277.2</td><td class="num">35</td><td class="num"><strong>+14808</strong></td></tr>
-        <tr><td class="num">第 8 档</td><td class="num">8000</td><td class="num">6.0%</td><td class="num">6.0%</td><td class="num">17280</td><td class="num">432.0</td><td class="num">40</td><td class="num"><strong>+16808</strong></td></tr>
-        <tr><td class="num">第 9 档</td><td class="num">9000</td><td class="num">9.0%</td><td class="num">9.0%</td><td class="num">19440</td><td class="num">810.0</td><td class="num">45</td><td class="num"><strong>+18585</strong></td></tr>
-        <tr><td class="num">第 10 档（全放）</td><td class="num">10000</td><td class="num">16%</td><td class="num">5%（5=500/10000）</td><td class="num">21600</td><td class="num">2160.0</td><td class="num">50</td><td class="num"><strong>+19390</strong></td></tr>
+        <tr><td class="num">第 1 档</td><td class="num">1000</td><td class="num">2</td><td class="num">0.20%</td><td class="num">900</td><td class="num">4.5</td><td class="num">5</td><td class="num"><strong>+891</strong></td></tr>
+        <tr><td class="num">第 2 档</td><td class="num">2000</td><td class="num">5</td><td class="num">0.25%</td><td class="num">1800</td><td class="num">11.3</td><td class="num">10</td><td class="num"><strong>+1779</strong></td></tr>
+        <tr><td class="num">第 3 档</td><td class="num">3000</td><td class="num">10</td><td class="num">0.33%</td><td class="num">2700</td><td class="num">22.5</td><td class="num">15</td><td class="num"><strong>+2663</strong></td></tr>
+        <tr><td class="num">第 4 档</td><td class="num">4000</td><td class="num">20</td><td class="num">0.50%</td><td class="num">3600</td><td class="num">45.0</td><td class="num">20</td><td class="num"><strong>+3535</strong></td></tr>
+        <tr><td class="num">第 5 档</td><td class="num">5000</td><td class="num">40</td><td class="num">0.80%</td><td class="num">4500</td><td class="num">90.0</td><td class="num">25</td><td class="num"><strong>+4385</strong></td></tr>
+        <tr><td class="num">第 6 档（KS 峰值切点）</td><td class="num">6000</td><td class="num">80</td><td class="num">1.33%</td><td class="num">5400</td><td class="num">180.0</td><td class="num">30</td><td class="num"><strong>+5190</strong></td></tr>
+        <tr class="hl"><td class="num">第 7 档 ★</td><td class="num">7000</td><td class="num">140</td><td class="num">2.00%</td><td class="num">6300</td><td class="num">315.0</td><td class="num">35</td><td class="num"><strong>+5950</strong></td></tr>
+        <tr><td class="num">第 8 档 ✕ 资金红线</td><td class="num">8000</td><td class="num">230</td><td class="num">2.88%</td><td class="num">7200</td><td class="num">517.5</td><td class="num">40</td><td class="num"><strong>+6643</strong></td></tr>
+        <tr><td class="num">第 9 档 ✕ 资金红线</td><td class="num">9000</td><td class="num">350</td><td class="num">3.89%</td><td class="num">8100</td><td class="num">787.5</td><td class="num">45</td><td class="num"><strong>+7268</strong></td></tr>
+        <tr><td class="num">第 10 档（全放）</td><td class="num">10000</td><td class="num">500</td><td class="num">5.00%</td><td class="num">9000</td><td class="num">1125.0</td><td class="num">50</td><td class="num"><strong>+7825</strong></td></tr>
       </tbody>
     </table>
-    <p>看到这个表时是不是有点意外——<strong>期望净利润单调递增，全放最好</strong>。这就是 Part 1 埋下的"财务公式告诉你要全放"的数学事实：在 18% 利率 + 45% LGD 的盘面下，即便是第 10 档坏人聚集的地方，新增利息依然碾压新增 ECL。</p>
+    <p>口径与 Part 3 一致：EAD 5 万、利率 18%、LGD 45%、固定成本 50 元/人；累计列就是模块③十分位表从低风险端累计。看到这个表时是不是有点意外——<strong>期望净利润单调递增，全放最高（+7825 万）</strong>。这就是 Part 1 埋下的"财务公式告诉你要全放"的数学事实：在 18% 利率 + 45% LGD 的盘面下，即便放到第 10 档，新增利息也碾压新增 ECL。</p>
 
     <div class="callout bad">
       <span class="label">📌 真实业务里，为什么不会全放？——因为有红线</span>
       <p style="margin-top:6px;">下面三条是本案例设定的<strong>业务红线</strong>（学习案例，不是行业通用数值）：</p>
       <ul style="margin:6px 0 0 0;">
-        <li><strong>红线①：监管合规</strong>——面向"明显无还款能力人群、明显特征为高风险人群的批量放贷"会被认定为违规；切在第 1~3 档（坏账率 ≤1.6% 的低风险客群）内部合规不批，视为"对高风险顾客的过度放款"，本例一律不得切在 1~3 档。</li>
+        <li><strong>红线①：监管合规</strong>——切在第 1~3 档（通过人群坏账率 <0.5%）意味着产品放弃了它本应服务的主客群、只在超低风险的边缘挑人做，属于"规避式经营"；本案例设定的合规口径要求产品必须覆盖其定价所面向的客群，因此本例一律不得切在 1~3 档。</li>
         <li><strong>红线②：内部风控委员会章程</strong>——本产品的坏账率红线设在 4.5%；通过人群坏账率超过 4.5% 的切法需要额外审批，本例不予通过。</li>
         <li><strong>红线③：资金与流动性</strong>——本产品单笔授信部门可用资金 7 亿，合计表内贷款余额不能超 5 亿；切在第 8 档起（通过 8000 人 × 50000 = 4 亿，加上存量即超），因此 8 档及以上不可行。</li>
       </ul>
       <p style="margin-top:6px;">三条红线叠加，<strong>可选切点只剩第 4、5、6、7 档</strong>。</p>
     </div>
 
-    <h3>红线内再看这几档：净利润有起有伏，这就是业务</h3>
-    <div class="figure">
+    <h3>红线内再看这几档：峰值正好卡在可行区的边缘上</h3>
+    <div class="chart-card">
+      <div class="chart-title">图 D2 · 可选切点区间（第 4~7 档）的期望净利润：红线内峰值落在第 7 档</div>
+      <div class="chart-sub">纵轴是期望净利润（万元），横轴是切点档。区间内净利润<strong>单调上升、峰值落在第 7 档（+5,950 万）</strong>；蓝色柱是 KS 峰值切点（第 6 档，+5,190 万）——<strong>两个点错开一档，这一档值 760 万</strong>。业务红线（资金 5 亿上限）一松，峰值就往 8、 9、10 档爬，不会像 KS 曲线那样给出唯一最优点。这就是"切点是红线内的业务权衡"的全部含义。</div>
       <div class="chart-wrap"><canvas id="chartD2"></canvas></div>
-      <div class="figure-note"><strong>图 D2：可选切点区间（第 4~7 档）的期望净利润”权衡曲线“</strong>。纵轴是期望净利润（万元），横轴是切点档。可以看到在可选区间内，净利润<strong>先升后稳，峰值落在第 6 档</strong>（+12,746 万元）；再往第 7 档走，利息增长已开始放缓而 ECL 快速增长，净利润增长变缓——<strong>业务红线（①风控章程 4.5% 上限、②资金 5 亿上限）一松，曲线就往右爬，峰值就往右移，不会像 KS 曲线那样得出唯一最优点</strong>。这就是"切点是红线内的业务权衡"的全部含义。</div>
+      <div class="legend-note">
+        <span><span class="dot" style="background:#C9BFB2"></span>可选区间其它档</span>
+        <span><span class="dot" style="background:#3E7E96"></span>KS 峰值切点（第 6 档）</span>
+        <span><span class="dot" style="background:#3E8362"></span>红线内净利润峰值（第 7 档 ★）</span>
+      </div>
+      <div class="chart-footnote">示例数据，用模块③十分位表按 Part 3 统一口径（EAD 5 万、利率 18%、LGD 45%、固定成本 50 元/人）复算生成，非真实业务数据。</div>
     </div>
 
-    <div class="compare-cards">
-      <div class="compare-card">
-        <div class="compare-hd" style="color:var(--good);">📗 选第 6 档：+12,746 万，风控安心</div>
-        <p>累计坏账率 3.4%，低于红线（4.5%）有余量；放款 3 亿，资金充裕；红线内。事实上模块③的 KS 峰值也在这里——这是个"刚好"：当业务红线恰好和 KS 峰值对准，就选它；但要知道，<strong>这两个点重合是巧合，不是必然</strong>。</p>
+    <div class="concept-grid">
+      <div class="concept-card">
+        <div class="c-name" style="color:var(--good);">📗 选第 7 档：+5,950 万，正好撑到红线的边</div>
+        <div class="c-def">累计坏账率 2.0%，离风控章程的 4.5% 还有一倍以上余量；放款 7,000 人 × 5 万 = 3.5 亿，几乎摸到资金红线——这是可行区里能走到的最远一步。<strong>数学上第 8 档还能再赚 693 万，但那是给"红线一松"的世界准备的</strong>。</div>
       </div>
-      <div class="compare-card">
-        <div class="compare-hd" style="color:var(--bad);">📕 再往第 7 档：+14,808 万，但触线</div>
-        <p>累计坏账率 4.4%，压在红线边缘；再挪 1000 人就 6.0% 直线越线；资金 3.5 亿已在临界。数学上净利润更高（+14,808 万），业务上踩线——<strong>如果只是想多挣 2000 万而扛"越线即关停整条线"的风险，没人会这么用</strong>。</p>
+      <div class="concept-card">
+        <div class="c-name" style="color:var(--info);">📕 KS 峰值切点只敢放到第 6 档：+5,190 万</div>
+        <div class="c-def">累计坏账率 1.33%，风控上当然更安心——但代价是<strong>少赚 760 万</strong>。KS 峰值的工作是把好坏分得开；决定生意该做到哪里的，是红线和利润表。两个答案错开一档，这就是痛点一的完整证据。</div>
       </div>
     </div>
-    <p>结论：<strong>切点不是公式给的，是"业务红线"筛选后剩下的几档里</strong>，选期望净利润最大的那一档。KS 只是告诉我们"这里分得开"，不是"这里该切"。</p>
+    <p>结论：<strong>切点不是公式给的，是"业务红线"筛选后剩下的几档里</strong>，选期望净利润最大的那一档。本案例里 KS 峰值切点（第 6 档）位于红线内的次优点——它是巧合般地<em>接近</em>最优点，但方向是保守而不是精准命中。KS 只告诉我们"哪里分得开"，不告诉我们"哪里该收钱"。</p>
   </div>
   <!-- ============ PART 5 AB 测试 ============ -->
   <div class="part" id="p5">
@@ -269,23 +281,24 @@
     <h3>案例背景：经理想在"高风险段"把额度从 5000 提到 10000，行不行？</h3>
     <p>模块③的 K6 分箱已经告诉你：[300,500) 这个高风险段的客群在 9 个月里从 10% 涨到 22%（PSI 贡献 63%）。业务经理的想法很直接：这部分人正在变多，把他们的额度从 5000 升到 10000，能多做一批生意。</p>
     <p>风控部否决了"一刀切升额全量上线"的做法，要求<strong>先小流量 AB 验</strong>。最后定下来：</p>
-    <div class="def-list">
-      <div class="def">
-        <div class="def-term">分流方式</div>
-        <p>按客户 ID 的哈希值，把评分 [300,500) 段内客群按 <strong>80% 对照（沿用 5000 额度）/ 20% 实验（提额到 10000）</strong> 分流，跑 3 个月看坏账率。</p>
+    <div class="concept-grid">
+      <div class="concept-card">
+        <div class="c-name">分流方式</div>
+        <div class="c-def">按客户 ID 的哈希值，把评分 [300,500) 段内客群按 <strong>80% 对照（沿用 5000 额度）/ 20% 实验（提额到 10000）</strong> 分流，跑 3 个月看坏账率。</div>
       </div>
-      <div class="def">
-        <div class="def-term">目标口径</div>
-        <p>主指标跟 Part 3 一致——<strong>期望净利润/人</strong>；辅助看坏账率和单均余额。如果"实验组坏账率 ≤ 对照组 + 0.1pp，且人均期望净利润不降"，判升额可行。</p>
+      <div class="concept-card">
+        <div class="c-name">目标口径</div>
+        <div class="c-def">主指标跟 Part 3 一致——<strong>期望净利润/人</strong>；辅助看坏账率和单均余额。如果"实验组坏账率 ≤ 对照组 + 0.1pp，且人均期望净利润不降"，判升额可行。</div>
       </div>
     </div>
 
     <h3>3 个月之后的两张报表：哪个是对的？</h3>
     <p>两种"读法"，结论相反：</p>
 
-    <div class="compare-cards">
-      <div class="compare-card">
-        <div class="compare-hd" style="color:var(--bad);">📊 朴素对比：实验组 vs 对照组</div>
+    <div class="concept-grid">
+      <div class="concept-card">
+        <div class="c-name" style="color:var(--bad);">📊 朴素对比：实验组 vs 对照组</div>
+        <div class="table-scroll">
         <table class="tbl" style="margin-top:8px;">
           <thead><tr><th></th><th>基线（实验前 1 个月）</th><th>实验后 3 个月</th><th>幅度</th></tr></thead>
           <tbody>
@@ -293,10 +306,12 @@
             <tr><td>实验组（10000 额度）</td><td class="num">1.85%</td><td class="num">2.18%</td><td class="num">+0.33pp</td></tr>
           </tbody>
         </table>
-        <p style="margin-top:8px;">读法："实验组比对照组高 0.33pp，升额让坏账率变差了 0.33pp——<strong>不升额</strong>。"</p>
+        </div>
+        <div class="c-def">读法："实验组比对照组高 0.33pp，升额让坏账率变差了 0.33pp——<strong>不升额</strong>。"</div>
       </div>
-      <div class="compare-card">
-        <div class="compare-hd" style="color:var(--info);">🔬 DID 对比：差分中的差分</div>
+      <div class="concept-card">
+        <div class="c-name" style="color:var(--info);">🔬 DID 对比：差分中的差分</div>
+        <div class="table-scroll">
         <table class="tbl" style="margin-top:8px;">
           <thead><tr><th></th><th>实验前</th><th>实验后</th><th>幅度</th></tr></thead>
           <tbody>
@@ -304,21 +319,22 @@
             <tr><td>实验组（10000 额度）</td><td class="num"><strong>2.40%</strong></td><td class="num">2.18%</td><td class="num">−0.22pp</td></tr>
           </tbody>
         </table>
-        <p style="margin-top:8px;">读法："实验组基线本来就比对照组高 0.55pp（2.40% vs 1.85%），这 0.55pp 是<strong>分流不均</strong>带来的，跟策略无关；实验组实验后<strong>降</strong>了 0.22pp，所以升额<strong>实际让坏账率降低了 0.22pp</strong>——<strong>升额其实是好事</strong>。"</p>
+        </div>
+        <div class="c-def">读法："实验组基线本来就比对照组高 0.55pp（2.40% vs 1.85%），这 0.55pp 是<strong>分流不均</strong>带来的，跟策略无关；实验组实验后<strong>降</strong>了 0.22pp，所以升额<strong>实际让坏账率降低了 0.22pp</strong>——<strong>升额其实是好事</strong>。"</div>
       </div>
     </div>
 
-    <div class="figure">
+    <div class="chart-card">
+      <div class="chart-title">图 D3 · DID 反李逵：竖着的 0.55pp 是分流偏差，不是策略要背的锅</div>
+      <div class="chart-sub">灰虚线是<em>被朴素对比错误读出的</em>"实验组比对照组差 0.33pp"——这部分是<em>初始分流不均</em>，不是策略效果；蓝实线是<em>扣掉基线不均之后</em>的策略真效果（实验组 −0.22pp）。</div>
       <div class="chart-wrap"><canvas id="chartD3"></canvas></div>
-      <div class="figure-note"><strong>图 D3：DID 反李逵</strong>。灰虚线是<em>被朴素对比错误读出的</em>"实验组比对照组差 0.33pp"——这部分是<em>初始分流不均</em>、不是策略效果；蓝实线是<em>扣掉基线不均之后</em>的策略真效果（实验组 −0.22pp）。<strong>竖着的 0.55pp 是分流偏差，不是策略要背的锅</strong>。</div>
+      <div class="chart-footnote">示例数据，用于教学演示，非真实业务数据。</div>
     </div>
 
-    <div class="formula">
-      <div class="formula-main">DID 平均处理效应 = (E<sub>post</sub> − E<sub>pre</sub>) − (C<sub>post</sub> − C<sub>pre</sub>)</div>
-      <ul>
-        <li>= (2.18% − 2.40%) − (1.85% − 1.85%)</li>
-        <li>= (−0.22%) − 0 = <strong>−0.22pp</strong>（负号表示坏账率下降，实验组变好）</li>
-      </ul>
+    <div class="calc-box">
+      <div>DID 平均处理效应 = (E<sub>post</sub> − E<sub>pre</sub>) − (C<sub>post</sub> − C<sub>pre</sub>)</div>
+      <div>= (2.18% − 2.40%) − (1.85% − 1.85%)</div>
+      <div>= (−0.22%) − 0 = <span class="eq">−0.22pp</span>（负号表示坏账率下降，实验组变好）</div>
     </div>
 
     <h3>哪条路在实质走偏？</h3>
@@ -338,28 +354,33 @@
     <p class="part-lede">模块③的悬念在这里收口。当时的局面是：<strong>老冠军</strong>（KS=0.46 的评分卡）上线 9 个月后 KS 掉到 0.38、PSI 飙到 0.179；<strong>新模型（挑战者）</strong>（KS=0.51，某个团队默默在后台跑的一个新模型）账面上比老冠军高 0.05。你该怎么决定"切不切换"？</p>
 
     <h3>标准动作：10% 流量、跑 2 个月、两条线判</h3>
-    <div class="def-list">
-      <div class="def">
-        <div class="def-term">流量切法</div>
-        <p><strong>90% 流量 → 冠军策略（老模型）</strong>，<strong>10% 流量 → 挑战者策略（新模型接入后的切点+额度）</strong>。跑 2 个月（一个完整的"还款周期 + 一个完整月"）。</p>
+    <div class="concept-grid">
+      <div class="concept-card">
+        <div class="c-name">流量切法</div>
+        <div class="c-def"><strong>90% 流量 → 冠军策略（老模型）</strong>，<strong>10% 流量 → 挑战者策略（新模型接入后的切点+额度）</strong>。跑 2 个月（一个完整的"还款周期 + 一个完整月"）。</div>
       </div>
-      <div class="def">
-        <div class="def-term">判决标准（两条都要过）</div>
-        <ul>
-          <li><strong>坏账率</strong>：挑战者组 <em>显著低于</em> 冠军组（或持平但揭示更高的核准率/余额）</li>
-          <li><strong>误伤率</strong>：挑战者组 <em>显著低于</em> 冠军组——误伤率 = "好客户被模型错杀拒绝"的比例，它直接决定放款金额体量</li>
-        </ul>
+      <div class="concept-card">
+        <div class="c-name">判决标准（两条都要过）</div>
+        <div class="c-def">
+          <ul style="margin:0; padding-left:18px;">
+            <li><strong>坏账率</strong>：挑战者组 <em>显著低于</em> 冠军组（或持平但揭示更高的核准率/余额）</li>
+            <li><strong>误伤率</strong>：挑战者组 <em>显著低于</em> 冠军组——误伤率 = "好客户被模型错杀拒绝"的比例，它直接决定放款金额体量</li>
+          </ul>
+        </div>
       </div>
     </div>
 
-    <div class="figure">
+    <div class="chart-card">
+      <div class="chart-title">图 D4 · 冠军挑战者比的是"坏账率 − 误伤率"的距离（越小越好）</div>
+      <div class="chart-sub">蓝线是新挑战者（坏账率 1.62%、误伤率 12%），红线是老冠军（坏账率 1.85%、误伤率 20%）。挑战者坏账率更低且误伤更少，双优——<strong>判冠军退位</strong>。</div>
       <div class="chart-wrap"><canvas id="chartD4"></canvas></div>
-      <div class="figure-note"><strong>图 D4：冠军挑战者比的是“坏账率 − 误伤率” 距离（越小越好）</strong>。蓝线是新挑战者（坏账率 1.62%、误伤率 12%）、红线是老冠军（坏账率 1.85%、误伤率 20%）。挑战者坏账率更低且误伤更少，双优——<strong>判冠军退位</strong>。</div>
+      <div class="chart-footnote">示例数据，用于教学演示，非真实业务数据。</div>
     </div>
 
-    <div class="compare-cards">
-      <div class="compare-card">
-        <div class="compare-hd" style="color:var(--good);">📗 2 个月后：挑战者双优</div>
+    <div class="concept-grid">
+      <div class="concept-card">
+        <div class="c-name" style="color:var(--good);">📗 2 个月后：挑战者双优</div>
+        <div class="table-scroll">
         <table class="tbl" style="margin-top:8px;">
           <thead><tr><th>指标</th><th>冠军（90%）</th><th>挑战者（10%）</th><th>差距</th></tr></thead>
           <tbody>
@@ -368,14 +389,17 @@
             <tr><td>核准后余额</td><td class="num">5000 元</td><td class="num">7200 元</td><td class="num">+2200 元</td></tr>
           </tbody>
         </table>
+        </div>
       </div>
-      <div class="compare-card">
-        <div class="compare-hd" style="color:var(--info);">📋 接下来三选一</div>
-        <ul style="margin-top:6px;">
-          <li><strong>挑战者显著双优</strong> → 用 2~4 周时间把流量从 10% → 50% → 100% 平滑切换；老冠军降级为"影子模式"继续跑以做漂移回溯</li>
-          <li><strong>挑战者单优</strong>（比如坏账率好但误伤率差）→ 不换，但把挑战者的 SW 当作"特征迭代需求"回传给建模团队</li>
-          <li><strong>差异不明显</strong>（<0.1pp 或 ±8% 以内）→ 继续 10% 跑 1 个月再判</li>
-        </ul>
+      <div class="concept-card">
+        <div class="c-name" style="color:var(--info);">📋 接下来三选一</div>
+        <div class="c-def">
+          <ul style="margin:0; padding-left:18px;">
+            <li><strong>挑战者显著双优</strong> → 用 2~4 周时间把流量从 10% → 50% → 100% 平滑切换；老冠军降级为"影子模式"继续跑以做漂移回溯</li>
+            <li><strong>挑战者单优</strong>（比如坏账率好但误伤率差）→ 不换，但把挑战者的 SW 当作"特征迭代需求"回传给建模团队</li>
+            <li><strong>差异不明显</strong>（&lt;0.1pp 或 ±8% 以内）→ 继续 10% 跑 1 个月再判</li>
+          </ul>
+        </div>
       </div>
     </div>
 
@@ -419,44 +443,35 @@
 
   <!-- ============ PART 8 三个坑 ============ -->
   <div class="part" id="p8">
-    <div class="part-head"><span class="part-num">08</span><h2>策略决策阶段最容易踩的 3 个坑</h2></div>
+    <div class="part-head"><span class="part-num">08</span><h2>三个坑：分流不干净、误把趋势当效果、阈值定死不复盘</h2></div>
     <p class="part-lede">每个坑都给出一个"为什么坑"和"避开它的动作"。Part 1 到 Part 7 的方法论学全了，掉过其中任何一个，全盘皆输。</p>
 
-    <div class="trap">
-      <div class="trap-num">坑 1</div>
-      <div class="trap-body">
-        <h4>AB 分流不干净 → DID 前提失效</h4>
-        <p>DID 前提只有两条：<strong>两组来自同一批客户、只差随机抽签，并且在实验区前平稳可比</strong>。分流"不干净"的三种情况：</p>
-        <ul>
-          <li><strong>同一用户跨设备 / 跨浏览器串组</strong>：ID 哈希在 app 端和 H5 端不一致，同一客户被同时算进实验组和对照组</li>
-          <li><strong>团体性传染</strong>：高风险客群在社交媒体上交流"利率 / 额度"信息，导致实验组的行为会通过社交渠道扩散到对照组</li>
-          <li><strong>哈希本身有偏</strong>：哈希函数选了不均匀的密钥，或哈希值依赖设备信息等</li>
-        </ul>
-        <p><strong>避开它</strong>：上线 AB 前先跑一次 <strong>A/A 测试</strong>——两个组都用同一策略，若两组的坏账率、额度利用、客群画像都显著不同，说明分流不均，<strong>AB 框架本身坏了</strong>，先修框架再跑 A/B。</p>
-      </div>
+    <div class="pitfall">
+      <div class="pit-title">坑一 · AB 分流不干净 → DID 前提失效</div>
+      <p>DID 前提只有两条：<strong>两组来自同一批客户、只差随机抽签，并且在实验区前平稳可比</strong>。分流"不干净"的三种情况：</p>
+      <ul>
+        <li><strong>同一用户跨设备 / 跨浏览器串组</strong>：ID 哈希在 app 端和 H5 端不一致，同一客户被同时算进实验组和对照组</li>
+        <li><strong>团体性传染</strong>：高风险客群在社交媒体上交流"利率 / 额度"信息，导致实验组的行为会通过社交渠道扩散到对照组</li>
+        <li><strong>哈希本身有偏</strong>：哈希函数选了不均匀的密钥，或哈希值依赖设备信息等</li>
+      </ul>
+      <p><strong>避开它</strong>：上线 AB 前先跑一次 <strong>A/A 测试</strong>——两个组都用同一策略，若两组的坏账率、额度利用、客群画像都显著不同，说明分流不均，<strong>AB 框架本身坏了</strong>，先修框架再跑 A/B。</p>
     </div>
 
-    <div class="trap">
-      <div class="trap-num">坑 2</div>
-      <div class="trap-body">
-        <h4>DID 忽略了"平行趋势检验" → 把"本来就在收敛的差距"误读成策略效果</h4>
-        <p>Part 5 的 DID 之所以能把 −0.22pp 读作策略效果，前提是"如果没有任何干预，实验组和对照组的坏账率应当保持平行变化"。但如果实验组基线本身就比对照组高 0.55pp、并且这 0.55pp <em>本来就是来实验区前半年里就在不断收敛的</em>（比如营销经理已经注意到高风险段跑冒滴漏，实验区前三个月已经在收紧人工审核），那么 Part 5 的"策略让坏账率 −0.22pp" 其实有相当一部分是"实验区前就已经开始的收敛趋势"的延续，而不是策略的功劳。</p>
-        <p><strong>避开它</strong>：DID 之前先画"实验区前 3 个月"的坏账率走勢图。如果两组的差在实验区前是<strong>稳定的</strong>（平行），DID 成立；如果在<strong>收敛</strong>，DID 会把"本来就在收敛的趋势"误读为策略效果。此时要用的是<strong>Synthetic Control 合成对照组</strong>（给对照组加权，使其在<strong>实验区前与实验组完全重合</strong>，再应用 DID 公式）。</p>
-      </div>
+    <div class="pitfall">
+      <div class="pit-title">坑二 · DID 忽略了"平行趋势检验" → 把"本来就在收敛的差距"误读成策略效果</div>
+      <p>Part 5 的 DID 之所以能把 −0.22pp 读作策略效果，前提是"如果没有任何干预，实验组和对照组的坏账率应当保持平行变化"。但如果实验组基线本身就比对照组高 0.55pp、并且这 0.55pp <em>本来就是来实验区前半年里就在不断收敛的</em>（比如营销经理已经注意到高风险段跑冒滴漏，实验区前三个月已经在收紧人工审核），那么 Part 5 的"策略让坏账率 −0.22pp" 其实有相当一部分是"实验区前就已经开始的收敛趋势"的延续，而不是策略的功劳。</p>
+      <p><strong>避开它</strong>：DID 之前先画"实验区前 3 个月"的坏账率走勢图。如果两组的差在实验区前是<strong>稳定的</strong>（平行），DID 成立；如果在<strong>收敛</strong>，DID 会把"本来就在收敛的趋势"误读为策略效果。此时要用的是<strong>Synthetic Control 合成对照组</strong>（给对照组加权，使其在<strong>实验区前与实验组完全重合</strong>，再应用 DID 公式）。</p>
     </div>
 
-    <div class="trap">
-      <div class="trap-num">坑 3</div>
-      <div class="trap-body">
-        <h4>阈值定死不复盘 → 半年后再看，峰值点已经漂走</h4>
-        <p>Part 4 在 10 万分样本上算出"第 6 档"是红线内的最优点。但这个"最优点"<strong>绑定的是当时的客群分布、利率、LGD、资金成本</strong>——而这些都在变：</p>
-        <ul>
-          <li>客群漂移（模块③ K3 / K6 高分段占比涨 12%）</li>
-          <li>资金成本涨（同业拆借利率上调）/ 降（内部资金充裕）</li>
-          <li>利率产品政策（监管对 "首贷利率优惠" 开口子）</li>
-        </ul>
-        <p>任何一个变，"第 6 档最优"就可能变成"第 5 档最优"或"第 7 档最优"。<strong>避开它</strong>：把"阈值复盘"做成季度例行工作——每 3 个月在<strong>最新 3 个月的样本</strong>上重新跑一次 Part 4 的 D2 权衡曲线，看看峰值是否漂移；漂移超过内部定的阈值（常见做法：<em>期望净利润下降超过 5% 或红线内涵盖档数变化</em>）就启动阈值调整评审。<strong>定了阈值不上监控，等于永远在用昨天的最优阈值赚今天的钱</strong>——这也是模块③坑三在策略层的对应版本。</p>
-      </div>
+    <div class="pitfall">
+      <div class="pit-title">坑三 · 阈值定死不复盘 → 半年后再看，峰值点已经漂走</div>
+      <p>Part 4 在 1 万人样本上算出"第 7 档"是红线内的最优点。但这个"最优点"<strong>绑定的是当时的客群分布、利率、LGD、资金成本</strong>——而这些都在变：</p>
+      <ul>
+        <li>客群漂移（模块③ K3 / K6 高分段占比涨 12%）</li>
+        <li>资金成本涨（同业拆借利率上调）/ 降（内部资金充裕）</li>
+        <li>利率产品政策（监管对 "首贷利率优惠" 开口子）</li>
+      </ul>
+      <p>任何一个变，"第 7 档最优"就可能变成"第 5 档最优"或"第 8 档最优"。<strong>避开它</strong>：把"阈值复盘"做成季度例行工作——每 3 个月在<strong>最新 3 个月的样本</strong>上重新跑一次 Part 4 的 D2 权衡曲线，看看峰值是否漂移；漂移超过内部定的阈值（常见做法：<em>期望净利润下降超过 5% 或红线内涵盖档数变化</em>）就启动阈值调整评审。<strong>定了阈值不上监控，等于永远在用昨天的最优阈值赚今天的钱</strong>——这也是模块③坑三在策略层的对应版本。</p>
     </div>
   </div>
   <!-- ============ PART 9 速查表 ============ -->
@@ -466,58 +481,40 @@
 
     <div class="cheat-grid">
       <div class="cheat-card">
-        <div class="cheat-tag">期望利润 1/3</div>
-        <h4>净利润公式</h4>
-        <p><b>净利润</b>=利息收入−ECL−成本；<b>ECL</b>=PD×EAD×LGD；<b>成本</b>=获客+资金+运营</p>
-        <p>一笔策略、一个切点、一个利率——拿不准先算这三项，不要凭直觉</p>
+        <div class="cc-name">净利润公式</div>
+        <div class="cc-detail"><b>分类：</b>期望利润 1/3<br><b>公式：</b>净利润=利息收入−ECL−成本；ECL=PD×EAD×LGD；成本=获客+资金+运营<br><b>用途：</b>一笔策略、一个切点、一个利率——拿不准先算这三项，不要凭直觉</div>
       </div>
       <div class="cheat-card">
-        <div class="cheat-tag">期望利润 2/3</div>
-        <h4>利率红线</h4>
-        <p><b>24%</b>=法律保护上限；<b>24%~36%</b>=自然债务；<b>&gt;36%</b>=无效</p>
-        <p>LPR4 倍 = 民间借贷利息上限；网络小贷单户消费贷 ≤20 万（内部通常 5 万）</p>
+        <div class="cc-name">利率红线</div>
+        <div class="cc-detail"><b>分类：</b>期望利润 2/3<br><b>阈值：</b>24%=法律保护上限；24%~36%=自然债务；&gt;36%=无效<br><b>口径：</b>LPR4 倍 = 民间借贷利息上限；网络小贷单户消费贷 ≤20 万（内部通常 5 万）</div>
       </div>
       <div class="cheat-card">
-        <div class="cheat-tag">期望利润 3/3</div>
-        <h4>切点在红线内挑</h4>
-        <p><b>KS 峰值</b>=区分度最大；<b>利润峰值</b>=红线内净利润最大；二者<strong>不必然重合</strong></p>
-        <p>红线=监管 / 风控章程 / 资金上限 / 流动性——<strong>先把红线摆上再选</strong></p>
+        <div class="cc-name">切点在红线内挑</div>
+        <div class="cc-detail"><b>分类：</b>期望利润 3/3<br><b>定义：</b>KS 峰值=区分度最大；利润峰值=红线内净利润最大；二者<b>不必然重合</b><br><b>用途：</b>红线=监管 / 风控章程 / 资金上限 / 流动性——<b>先把红线摆上再选</b></div>
       </div>
       <div class="cheat-card">
-        <div class="cheat-tag">AB 1/3</div>
-        <h4>AB 三要素</h4>
-        <p>目标（判据是"期望净利润不降"）；<strong>分流</strong>；判据（两线都要过）</p>
-        <p>分流前必跑 A/A：<strong>同策略两组若坏账显著不同，AB 框架坏了，先修</strong></p>
+        <div class="cc-name">AB 三要素</div>
+        <div class="cc-detail"><b>分类：</b>AB 1/3<br><b>定义：</b>目标（判据是"期望净利润不降"）、分流、判据（两线都要过）<br><b>用途：</b>分流前必跑 A/A——<b>同策略两组若坏账显著不同，AB 框架坏了，先修</b></div>
       </div>
       <div class="cheat-card">
-        <div class="cheat-tag">AB 2/3</div>
-        <h4>DID 式</h4>
-        <p><b>(E<sub>post</sub>−E<sub>pre</sub>) − (C<sub>post</sub>−C<sub>pre</sub>)</b></p>
-        <p>AB 对比 ≠ 增量；<strong>增量要看"两组实验区内的变化量差多少"</strong></p>
+        <div class="cc-name">DID 式</div>
+        <div class="cc-detail"><b>分类：</b>AB 2/3<br><b>公式：</b>(E<sub>post</sub>−E<sub>pre</sub>) − (C<sub>post</sub>−C<sub>pre</sub>)<br><b>用途：</b>AB 对比 ≠ 增量；<b>增量要看"两组实验区内的变化量差多少"</b></div>
       </div>
       <div class="cheat-card">
-        <div class="cheat-tag">AB 3/3</div>
-        <h4>平行趋势</h4>
-        <p>实验区前，两组指标应当<strong>平行，不收敛不发散</strong>；收敛/发散 → DID 不可用</p>
-        <p>不平行时改用 <strong>合成对照组</strong> 再做 DID</p>
+        <div class="cc-name">平行趋势</div>
+        <div class="cc-detail"><b>分类：</b>AB 3/3<br><b>定义：</b>实验区前，两组指标应当<b>平行，不收敛不发散</b>；收敛/发散 → DID 不可用<br><b>对策：</b>不平行时改用<b>合成对照组</b>再做 DID</div>
       </div>
       <div class="cheat-card">
-        <div class="cheat-tag">策略 1/3</div>
-        <h4>冠军挑战者</h4>
-        <p><b>10% 流量 × 2 个月 × 两条线（坏账 + 误伤）判</b></p>
-        <p>"显著双优"→ 切；差异 &lt;0.1pp 或 ±8% 内 → 继续跑</p>
+        <div class="cc-name">冠军挑战者</div>
+        <div class="cc-detail"><b>分类：</b>策略 1/3<br><b>阈值：</b>10% 流量 × 2 个月 × 两条线（坏账 + 误伤）判<br><b>判据：</b>"显著双优"→ 切；差异 &lt;0.1pp 或 ±8% 内 → 继续跑</div>
       </div>
       <div class="cheat-card">
-        <div class="cheat-tag">策略 2/3</div>
-        <h4>拒绝推断</h4>
-        <p>90% 被拒客群的"表现"<strong>永远未知</strong>——模型学的是"上一模型筛过的世界"</p>
-        <p>对策：随机放小流量 + 虚拟表现标签；<strong>但绝不"全靠拒绝推断"再搞一个模型</strong></p>
+        <div class="cc-name">拒绝推断</div>
+        <div class="cc-detail"><b>分类：</b>策略 2/3<br><b>定义：</b>90% 被拒客群的"表现"<b>永远未知</b>——模型学的是"上一模型筛过的世界"<br><b>用途：</b>随机放小流量 + 虚拟表现标签；<b>但绝不"全靠拒绝推断"再搞一个模型</b></div>
       </div>
       <div class="cheat-card">
-        <div class="cheat-tag">策略 3/3</div>
-        <h4>增益模型四象限</h4>
-        <p>Persuadables(🎯) / Sure things(😐) / Lost causes(🚶) / Sleeping dogs(🐶)</p>
-        <p>营销预算<strong>只放 🎯</strong>；"不打扰也会来的 Sure thing"以及"一打扰就跑的睡狗"都<strong>别花钱</strong></p>
+        <div class="cc-name">增益模型四象限</div>
+        <div class="cc-detail"><b>分类：</b>策略 3/3<br><b>定义：</b>Persuadables(🎯) / Sure things(😐) / Lost causes(🚶) / Sleeping dogs(🐶)<br><b>用途：</b>营销预算<b>只放 🎯</b>；"不打扰也会来的 Sure thing"以及"一打扰就跑的睡狗"都<b>别花钱</b></div>
       </div>
     </div>
   </div>
@@ -526,62 +523,61 @@
   <div class="part" id="p10">
     <div class="part-head"><span class="part-num">10</span><h2>自测 5 题：能不能把"评分→决策"这条路走下来</h2></div>
 
-    <div class="quiz-list">
-      <div class="quiz">
-        <div class="quiz-q">
-          <div class="quiz-no">Q1</div>
-          <div>模块③的 KS 峰值在第 6 十分位。按 KS 峰值切，期望净利润是不是最高？为什么？</div>
-        </div>
-        <details class="quiz-a">
-          <summary>点我参考答案</summary>
-          <p>不是。<strong>KS 峰值是区分度最高的位置，不是净利润最高的位置</strong>。在本模块 Part 4 的口径下，净利润随着切点后移会持续爬升，因为 18% 利率 + 45% LGD 的盘面下"新增一档带来的利息 &gt; 新增 ECL"。真正的业务最优点取决于一系列业务红线（监管、风控章程、资金）划定之后的可选区间——本案例中是 4~7 档，其中净利润为 6 档最高。<strong>KS 峰值和业务净利润峰值是巧合，不是必然</strong>。</p>
-        </details>
-      </div>
-
-      <div class="quiz">
-        <div class="quiz-q">
-          <div class="quiz-no">Q2</div>
-          <div>628 分、PD≈1.86%、LGD=45%、EAD=5 万、利率 18%、固定成本 50 元的客户，期望净利润是多少元？（元）</div>
-        </div>
-        <details class="quiz-a">
-          <summary>点我参考答案</summary>
-          <p>+8531 元/年。ECL = 1.86% × 50000 × 45% = 419 元；利息 = 50000 × 18% = 9000 元；净利润 = 9000 − 419 − 50 = <strong>8531 元</strong>。提示：这也是为什么"单客户满批 5 万看似稳赚"——但<strong>单客户期望不是业务全盘期望</strong>，监管上限 + 风险偏好 + "PD 随 EAD 上升" 都会把"给满"打回去。</p>
-        </details>
-      </div>
-
-      <div class="quiz">
-        <div class="quiz-q">
-          <div class="quiz-no">Q3</div>
-          <div>AB 结果：对照组基线 1.85% / 实验后 1.85%；实验组基线 <strong>2.40%</strong> / 实验后 2.18%。用 DID 计算策略效应，方向是"升额让坏账变好"还是"升额让坏账变差"？</div>
-        </div>
-        <details class="quiz-a">
-          <summary>点我参考答案</summary>
-          <p>策略效应 = (2.18%−2.40%) − (1.85%−1.85%) = <strong>−0.22pp</strong> —— <strong>升额让坏账率下降了 0.22pp，策略是好的</strong>。朴素对比看到的"实验组 2.18% vs 对照组 1.85%，差 +0.33pp" 是被分流偏差骗的——那 0.55pp 是<strong>两组实验区前就不一样的基线差</strong>，不是实验组被策略推上来的。这就是"AB 对比 ≠ 增量"在风控里最有名的一次反李逵。</p>
-        </details>
-      </div>
-
-      <div class="quiz">
-        <div class="quiz-q">
-          <div class="quiz-no">Q4</div>
-          <div>冠军-挑战者测试判定"挑战者可以切 100%"需要的两条线是？如果两条线一好一坏（比如坏账更低但误伤更高），怎么办？</div>
-        </div>
-        <details class="quiz-a">
-          <summary>点我参考答案</summary>
-          <p>两条线是<strong>坏账率</strong>和<strong>误伤率</strong>（好客户被错杀拒绝的比例），"双优"或"坏账率持平稳但放款余额显著提升"才能判切换。一好一坏（挑战者坏账更低、误伤更高）<strong>意味着模型更严——拒绝了更多坏但也拒绝了更多好</strong>——这不是升级而是<strong>权衡的偏差</strong>，直接切换 100% 会以牺牲放款体量为代价；正确做法是把挑战者的"更严的分布"当作研究团队<strong>继续催特征的信号</strong>，先保持 10% 流量并给团队 1~2 个迭代的窗口期。</p>
-        </details>
-      </div>
-
-      <div class="quiz">
-        <div class="quiz-q">
-          <div class="quiz-no">Q5</div>
-          <div>为什么说"拒绝推断只能在小流量随机放少部分被拒客群上做校准"，绝不能"全靠拒绝推断再训练一个模型"？</div>
-        </div>
-        <details class="quiz-a">
-          <summary>点我参考答案</summary>
-          <p>拒绝推断的"构造虚拟表现"本质是<strong>人为强加标签</strong>——你给被拒客群"如果批了他们会坏账率多少"这个数字，基于的假设（比如"和同特征被批的邻居一样"）对不对没人知道。如果整个模型都建立在这种假设上，假设一错全盘皆错。所以正确用法是<strong>用 0.1% 的随机放行人被拒样本做真实观察</strong>，反过来校准"虚拟表现"的假设，再把这个被校准过的假设应用到被拒域。<strong>拒绝推断是"校准被错误标签污染的空间"的工具，不是"用幻想标签重建世界"的工具</strong>。</p>
-        </details>
-      </div>
+    <div class="quiz-item">
+      <div class="q-title">第 1 题</div>
+      <p style="margin:0;">模块③的 KS 峰值在第 4 十分位（按高风险端排列）。按 KS 峰值的位置切——相当于从低风险端放款放到第 6 档——期望净利润是不是最高？为什么？</p>
+      <details>
+        <summary>查看解析</summary>
+        <div class="answer">不是。红线内净利润峰值落在<strong>第 7 档（+5,950 万）</strong>，比 KS 峰值切点（第 6 档，+5,190 万）<strong>多赚 760 万</strong>。原因：KS 峰值的工作是把好坏<strong>分得开</strong>（区分度最大），而放款要还的是"新增一档的利息能不能盖过新增 ECL"——在第 7 档，新增利息 900 万、新增 ECL 只 135 万，净增 760 万。<strong>两峰值错开一档，方向是 KS 切点偏保守——"分得开"从来不等于"该收钱"</strong>。</div>
+      </details>
     </div>
+
+    <div class="quiz-item">
+      <div class="q-title">第 2 题</div>
+      <p style="margin:0;">628 分、PD≈1.86%、LGD=45%、EAD=5 万、利率 18%、固定成本 50 元的客户，期望净利润是多少元？</p>
+      <details>
+        <summary>查看解析</summary>
+        <div class="answer">+8531 元/年。ECL = 1.86% × 50000 × 45% = 419 元；利息 = 50000 × 18% = 9000 元；净利润 = 9000 − 419 − 50 = <strong>8531 元</strong>。提示：这也是为什么"单客户满批 5 万看似稳赚"——但<strong>单客户期望不是业务全盘期望</strong>，监管上限 + 风险偏好 + "PD 随 EAD 上升" 都会把"给满"打回去。</div>
+      </details>
+    </div>
+
+    <div class="quiz-item">
+      <div class="q-title">第 3 题</div>
+      <p style="margin:0;">AB 结果：对照组基线 1.85% / 实验后 1.85%；实验组基线 <strong>2.40%</strong> / 实验后 2.18%。用 DID 计算策略效应，方向是"升额让坏账变好"还是"升额让坏账变差"？</p>
+      <details>
+        <summary>查看解析</summary>
+        <div class="answer">策略效应 = (2.18%−2.40%) − (1.85%−1.85%) = <strong>−0.22pp</strong> —— <strong>升额让坏账率下降了 0.22pp，策略是好的</strong>。朴素对比看到的"实验组 2.18% vs 对照组 1.85%，差 +0.33pp" 是被分流偏差骗的——那 0.55pp 是<strong>两组实验区前就不一样的基线差</strong>，不是实验组被策略推上来的。这就是"AB 对比 ≠ 增量"在风控里最有名的一次反李逵。</div>
+      </details>
+    </div>
+
+    <div class="quiz-item">
+      <div class="q-title">第 4 题</div>
+      <p style="margin:0;">冠军-挑战者测试判定"挑战者可以切 100%"需要的两条线是？如果两条线一好一坏（比如坏账更低但误伤更高），怎么办？</p>
+      <details>
+        <summary>查看解析</summary>
+        <div class="answer">两条线是<strong>坏账率</strong>和<strong>误伤率</strong>（好客户被错杀拒绝的比例），"双优"或"坏账率持平稳但放款余额显著提升"才能判切换。一好一坏（挑战者坏账更低、误伤更高）<strong>意味着模型更严——拒绝了更多坏但也拒绝了更多好</strong>——这不是升级而是<strong>权衡的偏差</strong>，直接切换 100% 会以牺牲放款体量为代价；正确做法是把挑战者的"更严的分布"当作研究团队<strong>继续催特征的信号</strong>，先保持 10% 流量并给团队 1~2 个迭代的窗口期。</div>
+      </details>
+    </div>
+
+    <div class="quiz-item">
+      <div class="q-title">第 5 题</div>
+      <p style="margin:0;">为什么说"拒绝推断只能在小流量随机放少部分被拒客群上做校准"，绝不能"全靠拒绝推断再训练一个模型"？</p>
+      <details>
+        <summary>查看解析</summary>
+        <div class="answer">拒绝推断的"构造虚拟表现"本质是<strong>人为强加标签</strong>——你给被拒客群"如果批了他们会坏账率多少"这个数字，基于的假设（比如"和同特征被批的邻居一样"）对不对没人知道。如果整个模型都建立在这种假设上，假设一错全盘皆错。所以正确用法是<strong>用 0.1% 的随机放行人被拒样本做真实观察</strong>，反过来校准"虚拟表现"的假设，再把这个被校准过的假设应用到被拒域。<strong>拒绝推断是"校准被错误标签污染的空间"的工具，不是"用幻想标签重建世界"的工具</strong>。</div>
+      </details>
+    </div>
+  </div>
+
+  <!-- ============ 小结 ============ -->
+  <div class="summary-box">
+    <h3>回头看看：这一模块只讲了一件事——把"分数"翻译成"决定"</h3>
+    <p>模块①到模块④解决的是"分数准不准"，这一模块解决的是"分数怎么变成钱"。三个决定串成一条链：</p>
+    <p><strong>第一环 · 定价（利率）。</strong>利率是<strong>定价工具</strong>，不是填补坏账的工具。它有自己的红线（24% 保护上限 / 36% 无效），而且利率越高、逆向选择越强——提价换来的人群质量下降，会把利润吃回去。</p>
+    <p><strong>第二环 · 定额（额度 + 切点）。</strong>正确问法不是"KS 最大在哪"，而是"在监管、风控章程、资金三条红线之内，期望净利润最大在哪"。本案例三条红线砍掉了 1~3 档和 8 档以上，只剩 4~7 档可选，<strong>峰值落在第 7 档（+5,950 万）——比 KS 峰值切点（第 6 档）多赚 760 万</strong>，两个答案错开一档，而方向永远是偏保守那一侧。</p>
+    <p><strong>第三环 · 验证（AB / 冠军挑战者）。</strong>"实验组比对照组好"不等于策略有效——分流不均会把 0.55pp 的基线差算到策略头上。DID 扣掉基线差之后，升额其实是改善坏账率的好策略。<strong>AB 对比 ≠ 增量，增量 = 实验组变化 − 对照组变化</strong>。</p>
+    <p>再加两个"看不见"：被拒的 90% 永远没有表现标签（拒绝推断只能小流量校准，不能凭空重建世界）；还有一类客户一打扰就跑（增益模型把预算只压在 🎯 Persuadables 上，而不是按响应度排名撒钱）。</p>
+    <div class="mnemonic-line">先算期望利润，再用红线筛，最后靠 DID 验——别让 KS 替你做决定</div>
   </div>
 
   <!-- ============ 下一模块卡 ============ -->
@@ -602,8 +598,20 @@
 </div>
 
 <script>
-const gridColor = 'rgba(0,0,0,0.06)';
-const axisFont = { family:"'Songti SC','STSong',Georgia,serif", size: 11 };
+if (!window.Chart) {
+  // 本地 vendor 与 CDN 都取不到时，给出可读的降级提示，而不是留空白框
+  document.querySelectorAll('.chart-wrap').forEach(function (el) {
+    el.innerHTML = '<div style="display:flex;align-items:center;justify-content:center;height:100%;'
+      + 'color:#9A8F82;font-size:13.5px;line-height:1.8;text-align:center;padding:0 24px;">'
+      + '图表库 Chart.js 未能加载<br>请检查网络，或确认 design-system/vendor/chart.umd.min.js 存在</div>';
+  });
+} else {
+
+const gridColor = '#EFE7DA';
+Chart.defaults.font.family = "-apple-system,BlinkMacSystemFont,'PingFang SC','Microsoft YaHei',sans-serif";
+Chart.defaults.font.size = 12.5;
+Chart.defaults.color = '#5B5147';
+const axisFont = { family:"-apple-system,BlinkMacSystemFont,'PingFang SC','Microsoft YaHei',sans-serif", size: 12.5 };
 const COLORS = { good:'#3E8362', bad:'#C0433D', info:'#3E7E96', warn:'#C1892A', gray:'#C9BFB2' };
 
 // 图 D1：利率 vs 期望净利润（红线标注 24%）
@@ -637,15 +645,15 @@ new Chart(document.getElementById('chartD1'), {
   }
 });
 
-// 图 D2：可选切点区间（第 4~7 档）期望净利润权衡，峰值第 6 档；第 1-3 档暗示不可用（合规红线）
+// 图 D2：可选切点区间（第 4~7 档）期望净利润权衡，峰值第 7 档；蓝柱=KS 切点（第 6 档）
 new Chart(document.getElementById('chartD2'), {
   type: 'bar',
   data: {
-    labels: ['切第 4 档','切第 5 档','切第 6 档 ★','切第 7 档'],
+    labels: ['切第 4 档','切第 5 档','KS 切点=第 6 档','切第 7 档 ★'],
     datasets: [{
       label: '期望净利润（万元）',
-      data: [8541, 10649, 12746, 14808],
-      backgroundColor: ['#C9BFB2', '#C9BFB2', '#3E8362', '#B85B3A'],
+      data: [3535, 4385, 5190, 5950],
+      backgroundColor: ['#C9BFB2', '#C9BFB2', '#3E7E96', '#3E8362'],
       borderRadius: 6, borderSkipped: false
     }]
   },
@@ -656,7 +664,7 @@ new Chart(document.getElementById('chartD2'), {
       tooltip: { callbacks: { label: ctx => ` +${ctx.parsed.y} 万元` } }
     },
     scales: {
-      y: { min: 0, max: 16000, title:{ display:true, text:'期望净利润（万元）', font: axisFont }, ticks:{ callback:v=>v/1000+'k' }, grid:{ color: gridColor } },
+      y: { min: 0, max: 6600, title:{ display:true, text:'期望净利润（万元）', font: axisFont }, ticks:{ callback:v=>v/1000+'k' }, grid:{ color: gridColor } },
       x: { grid:{ display:false }, ticks:{ font: axisFont } }
     }
   }
@@ -723,6 +731,7 @@ new Chart(document.getElementById('chartD4'), {
     }
   }
 });
+}
 </script>
 </body>
 </html>
