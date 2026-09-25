@@ -50,7 +50,7 @@
 
   <div class="callout info">
     <span class="label">怎么新增一个课题</span>
-    在 <code>topics/</code> 下新建英文 slug 文件夹（如 <code>topics/xxx-analysis/</code>），复制 <code>design-system/module-skeleton.html</code> 为新课题的首个模块页，再到本页面 <code>roadmap-grid</code> 里加一张 <code>module-card</code> 即可。
+    运行 <code>python3 tools/new_topic.py &lt;slug&gt; "显示名"</code> 生成课题骨架；写完章节后更新该课题的 <code>topic.json</code>，运行 <code>python3 tools/check_handbook.py</code> 校验。合并到 main 后，网站和全站索引会自动重新发布。
   </div>
 
   <div class="page-footer">
