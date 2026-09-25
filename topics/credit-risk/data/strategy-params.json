@@ -5,8 +5,9 @@
   "LGD": 0.45,
   "fixed_cost_per_capita_yuan": 50,
   "red_lines": {
-    "compliance_min_cutoff_decile": 4,
+    "business_min_cutoff_decile": 4,
     "pd_cap": 0.045,
-    "balance_cap_yi_yuan": 5.0
+    "balance_cap_yi_yuan": 5.0,
+    "existing_balance_yi_yuan": 1.5
   }
 }

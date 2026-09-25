@@ -8,13 +8,13 @@
 </head>
 <body>
 <header class="masthead"><div class="container">
-  <div class="breadcrumb"><a href="../index.html">红筹架构</a> › 模块①</div>
+  <nav class="breadcrumb" aria-label="当前位置"><ol><li><a href="../../../index.html">Atlas</a></li><li><a href="../index.html">红筹架构学习手册</a></li><li aria-current="page">模块 01 · 红筹是什么</li></ol></nav>
   <span class="eyebrow">🧭 从零开始 · 先画地图</span>
   <h1>同一家中国公司去香港上市，为什么有时叫 H 股、有时叫红筹？</h1>
   <p class="sub">先别记 BVI 和 VIE。只问一个问题：拿着上市公司股票的那家公司，注册在哪里？</p>
 </div></header>
 <nav class="local-nav"><div class="container">
-<a href="#p1">① 痛点</a><a href="#p2">② 两条路</a><a href="#p3">③ 控制方式</a><a href="#p4">④ 为何绕路</a><a href="#p5">⑤ 云帆案例</a><a href="#p6">⑥ 三个坑</a><a href="#p7">⑦ 速查</a><a href="#p8">⑧ 自测</a>
+<a href="#p1">① 痛点</a><a href="#p2">② 两条路</a><a href="#p3">③ 控制方式</a><a href="#p4">④ 为何绕路</a><a href="#p5">⑤ 核验清单</a><a href="#p6">⑥ 速查</a><a href="#p7">⑦ 自测</a>
 </div></nav>
 <div class="wrap">
 <div class="checklist" style="margin-top:32px"><h4>读完本节，你能做到</h4><ul>
@@ -23,7 +23,7 @@
 <li>用“财务占比 + 经营重心”两道尺，判断一家境外发行人是否算境内企业间接境外上市。</li>
 <li>说出企业选红筹而非 H 股的常见动机与代价。</li>
 <li>解释红筹、VIE、中概股为什么不能画等号。</li>
-<li>用一份虚构融资表算出投前、投后估值与稀释后的持股比例。</li>
+<li>指出有真实投资额与投后股比时如何计算估值，并查证券条款和稀释条件。</li>
 </ul></div>
 <div class="part" id="p1"><div class="part-head"><span class="part-num">01</span><h2>先说痛点：业务在中国，就一定是“中国公司上市”吗？</h2></div>
 <p class="part-lede">同一家店可以由不同的“房东”收租；业务在哪里，与股票由谁发行，是两件事。</p>
@@ -35,10 +35,10 @@
 <div class="part" id="p2"><div class="part-head"><span class="part-num">02</span><h2>先看门牌：上市主体在哪儿注册？</h2></div>
 <p class="part-lede">给读者一把最简单的尺：不要先追问几十层股权，从发股票的公司开始。</p>
 <div class="chart-card"><div class="chart-title">图RC1 · 同在香港交易：两条路的发行人不同</div>
-<div class="table-scroll"><table class="tbl"><thead><tr><th>问题</th><th>直接境外上市：H 股</th><th>间接境外上市：红筹</th></tr></thead><tbody>
-<tr><td>谁发股票？</td><td>境内依法设立的股份有限公司</td><td>境外控股公司（例如开曼主体）</td></tr>
-<tr><td>业务在哪里？</td><td>可以主要在境内</td><td>可以主要在境内</td></tr>
-<tr><td>两者差别</td><td>投资人直接买境内发行人股份</td><td>投资人买境外发行人股份，境外主体再控制境内权益</td></tr>
+<div class="table-scroll"><table class="tbl mobile-stack"><thead><tr><th>问题</th><th>直接境外上市：H 股</th><th>间接境外上市：红筹</th></tr></thead><tbody>
+<tr><td data-label="问题">谁发股票？</td><td data-label="直接境外上市：H 股">境内依法设立的股份有限公司</td><td data-label="间接境外上市：红筹">境外控股公司（例如开曼主体）</td></tr>
+<tr><td data-label="问题">业务在哪里？</td><td data-label="直接境外上市：H 股">可以主要在境内</td><td data-label="间接境外上市：红筹">可以主要在境内</td></tr>
+<tr><td data-label="问题">两者差别</td><td data-label="直接境外上市：H 股">投资人直接买境内发行人股份</td><td data-label="间接境外上市：红筹">投资人买境外发行人股份，境外主体再控制境内权益</td></tr>
 </tbody></table></div><div class="chart-footnote">示意主体均为教学演示，非真实业务数据。这里说的是常见赴港路径，并非穷尽所有上市类别。</div></div>
 <div class="concept-grid">
 <div class="concept-card"><div class="c-name">H 股</div><div class="c-en">DIRECT OVERSEAS LISTING</div><div class="c-def">境内股份有限公司以自身为发行人，在境外发行上市。</div><div class="c-mnemonic">公司在境内，股票“走出去”。</div></div>
@@ -46,11 +46,11 @@
 </div>
 <p>2023 年 3 月 31 日起施行的《境内企业境外发行证券和上市管理试行办法》建立了备案制度，覆盖直接和符合条件的间接境外上市；<strong>红筹不是天然免备案</strong>。这点正是起点文章想提醒你的变化之一。那么“符合条件”到底是什么条件？</p>
 <div class="chart-card"><div class="chart-title">图RC2 · 两道尺：境外发行人何时被认定为“境内企业间接境外上市”</div>
-<div class="table-scroll"><table class="tbl"><thead><tr><th>尺子</th><th>试行办法的表述（概括）</th><th>怎么读</th></tr></thead><tbody>
-<tr><td>① 财务占比</td><td>境内企业最近一个会计年度的营业收入、利润总额、总资产或净资产，<strong>任一</strong>指标占发行人同期经审计合并报表相应数据的比例超过 50%</td><td>四项里有一项过半就算踩线，不是四项都要过半</td></tr>
-<tr><td>② 经营重心</td><td>经营活动的主要环节在境内开展或主要场所位于境内，<strong>或</strong>负责经营管理的高级管理人员多数为中国公民或经常居住地位于境内</td><td>看业务和管理层实际在哪，不看注册地</td></tr>
-<tr><td>结论</td><td>两项<strong>同时</strong>符合，即认定为间接境外发行上市；认定遵循“实质重于形式”</td><td>在开曼注册、在香港上市，都不改变这个判断</td></tr>
-</tbody></table></div><div class="chart-footnote"><span class="tag tag-info">生效法规</span> 依据《境内企业境外发行证券和上市管理试行办法》第十五条概括，非原文照录，非真实业务数据；个案适用以原文、证监会配套指引与专业意见为准。</div></div>
+<div class="table-scroll"><table class="tbl mobile-stack"><thead><tr><th>尺子</th><th>试行办法的表述（概括）</th><th>怎么读</th></tr></thead><tbody>
+<tr><td data-label="尺子">① 财务占比</td><td data-label="试行办法的表述（概括）">境内企业最近一个会计年度的营业收入、利润总额、总资产或净资产，<strong>任一</strong>指标占发行人同期经审计合并报表相应数据的比例超过 50%</td><td data-label="怎么读">四项里有一项过半就算踩线，不是四项都要过半</td></tr>
+<tr><td data-label="尺子">② 经营重心</td><td data-label="试行办法的表述（概括）">经营活动的主要环节在境内开展或主要场所位于境内，<strong>或</strong>负责经营管理的高级管理人员多数为中国公民或经常居住地位于境内</td><td data-label="怎么读">看业务和管理层实际在哪，不看注册地</td></tr>
+<tr><td data-label="尺子">结论</td><td data-label="试行办法的表述（概括）">两项<strong>同时</strong>符合，即认定为间接境外发行上市；认定遵循“实质重于形式”</td><td data-label="怎么读">在开曼注册、在香港上市，都不改变这个判断</td></tr>
+</tbody></table></div><div class="chart-footnote"><span class="tag tag-info">生效法规</span> 依据《境内企业境外发行证券和上市管理试行办法》第十五条概括；制度示意，非真实业务数据。个案适用须核对证监会现行文件及具体事实。</div></div>
 </div>
 <div class="part" id="p3"><div class="part-head"><span class="part-num">03</span><h2>再看绳子：境外主体怎样连接境内业务？</h2></div>
 <div class="concept-grid">
@@ -62,31 +62,20 @@
 </div>
 <div class="part" id="p4"><div class="part-head"><span class="part-num">04</span><h2>为什么要绕这一圈：红筹和 H 股各图什么？</h2></div>
 <p class="part-lede">红筹要多搭几家境外公司、多办几道登记。企业仍然选它，是因为换来了一些 H 股给不了的灵活性。</p>
-<div class="table-scroll"><table class="tbl"><thead><tr><th>比较项</th><th>H 股</th><th>红筹</th></tr></thead><tbody>
-<tr><td>发行人适用的公司法</td><td>中国《公司法》，须为股份有限公司</td><td>注册地公司法（如开曼），股份类别设计空间较大</td></tr>
-<tr><td>优先股、同股不同权等条款</td><td>受境内公司法框架约束</td><td>美元基金熟悉的优先股、多类别股份更易落地</td></tr>
-<tr><td>早期美元融资与退出</td><td>境外投资人需投资境内公司</td><td>投资人直接持有境外公司股份，转让与退出路径更熟悉</td></tr>
-<tr><td>员工期权</td><td>按境内规则设计</td><td>常在境外层面设期权池，但境内员工仍涉外汇登记</td></tr>
-<tr><td>搭建与维护成本</td><td>无需境外控股链</td><td>多家境外实体的设立、年审、审计、外汇与税务合规</td></tr>
-<tr><td>境内监管</td><td>直接境外上市，须备案</td><td>符合认定条件的间接境外上市，同样须备案；另有 37 号文、ODI 等搭建环节</td></tr>
+<div class="table-scroll"><table class="tbl mobile-stack"><thead><tr><th>比较项</th><th>H 股</th><th>红筹</th></tr></thead><tbody>
+<tr><td data-label="比较项">发行人适用的公司法</td><td data-label="H 股">中国《公司法》，须为股份有限公司</td><td data-label="红筹">注册地公司法（如开曼），股份类别设计空间较大</td></tr>
+<tr><td data-label="比较项">优先股、同股不同权等条款</td><td data-label="H 股">受境内公司法框架约束</td><td data-label="红筹">美元基金熟悉的优先股、多类别股份更易落地</td></tr>
+<tr><td data-label="比较项">早期美元融资与退出</td><td data-label="H 股">境外投资人需投资境内公司</td><td data-label="红筹">投资人直接持有境外公司股份，转让与退出路径更熟悉</td></tr>
+<tr><td data-label="比较项">员工期权</td><td data-label="H 股">按境内规则设计</td><td data-label="红筹">常在境外层面设期权池，但境内员工仍涉外汇登记</td></tr>
+<tr><td data-label="比较项">搭建与维护成本</td><td data-label="H 股">无需境外控股链</td><td data-label="红筹">多家境外实体的设立、年审、审计、外汇与税务合规</td></tr>
+<tr><td data-label="比较项">境内监管</td><td data-label="H 股">直接境外上市，须备案</td><td data-label="红筹">符合认定条件的间接境外上市，同样须备案；另有 37 号文、ODI 等搭建环节</td></tr>
 </tbody></table></div>
 <div class="callout warn"><span class="label">别只看好处</span>表中的“灵活”是结构上的可能性，不是必然结果。股份类别能否被交易所接受、期权如何合规授予、跨境资金能否顺利进出，都需要逐项核查。模块④⑥⑦会分别展开登记、拆除和路径比较。</div>
 </div>
-<div class="part" id="p5"><div class="part-head"><span class="part-num">05</span><h2>把抽象词放进云帆科技：先算钱，再看路</h2></div>
-<p class="part-lede">以下全是虚构教学案例；比例只用于学会辨认股东与发行人，不代表现实交易安排。</p>
-<div class="case-step"><div class="step-badge">1</div><div class="step-body"><h4>先定角色</h4>云帆科技做企业软件。以下比例都按<strong>本轮融资完成后</strong>计：老周持股 60%，老沈持股 15%，远山资本持股 25%。<span class="result">→ 谁是股东，与未来谁做上市发行人，是两张不同的表。</span></div></div>
-<div class="case-step"><div class="step-badge">2</div><div class="step-body"><h4>看资金条件</h4>假设远山资本投 1,500 万美元，换 25% 的投后股权；公司与各方需要评估境内直接持股、境外融资和监管条件，不能只因为它是美元基金就断言必须红筹。<span class="result">→ 资金来源是商业动机之一，不是法定捷径。</span></div></div>
-<div class="method-step"><div class="m-num">3</div><div class="m-body"><h4>算一笔你能复核的账</h4>假设投资人投后占 25%，投后估值 = 投资额 ÷ 投后占比。<div class="calc-box">1,500 万美元 ÷ 25% <span class="eq">= 6,000 万美元</span></div>云帆投后估值 6,000 万美元，仅为教学假设。真实交易还要看证券类别、优先权、期权池和汇率，此处只练基础算术。</div></div>
-<div class="method-step"><div class="m-num">4</div><div class="m-body"><h4>倒推投前：融资前两位创始人各占多少？</h4>投前估值 = 投后估值 − 本轮投资额：<div class="calc-box">6,000 − 1,500 <span class="eq">= 4,500 万美元（投前）</span></div>创始人合计的投后占比是 60% + 15% = 75%，这 75% 就是由融资前的 100% 按 (1 − 25%) 稀释而来。所以融资前老周占 60% ÷ 75% = 80%，老沈占 15% ÷ 75% = 20%。<strong>看到一个股比，先问它是投前还是投后口径。</strong></div></div>
-<div class="method-step"><div class="m-num">5</div><div class="m-body"><h4>用数字识别“稀释”</h4>另一轮融资若新投资人拿走投后 20%，且所有老股东同比例稀释，老周原来的 60% 会变成 <span class="eq">60% × (1 − 20%) = 48%</span>。这是条件假设，不是现有融资事实。</div></div>
-<div class="callout info"><span class="label">把故事拉回主线</span>接下来我们要追问：假如选择境外发行人，它下面具体通过哪些法律实体与云帆的中国业务相连？进入<a href="02-anatomy.html">模块②：架构解剖</a>。</div>
+<div class="part" id="p5"><div class="part-head"><span class="part-num">05</span><h2>把三个判断分开：谁发行、谁持有、钱怎么流</h2></div>
+<p class="part-lede">先拿招股书上的发行人和股权图说话；没有交易文件，就不编创始人和估值。</p><div class="case-step"><div class="step-badge">1</div><div class="step-body"><h4>核发行人</h4>看发行证券的法律主体注册在哪里，境内经营公司是不是同一个主体。<span class="result">→ 在香港上市，也可能是 H 股发行人或境外红筹发行人。</span></div></div><div class="case-step"><div class="step-badge">2</div><div class="step-body"><h4>核最终持股</h4>顺着招股书中的持股图追实际控制人、投资人及期权池，再标每笔交易发生在投前还是投后。<span class="result">→ 有美元基金是商业背景，不能据此推断一定要搭红筹。</span></div></div><div class="case-step"><div class="step-badge">3</div><div class="step-body"><h4>核估值口径</h4>融资估值只在披露投资额、证券权利和投后占比时才能计算：投后估值＝投资额÷投后占比；投前估值＝投后估值−新投资额。没有同口径真实合同，就停在公式，不编金额。<span class="result">→ 股比变化还要核期权池、优先权与稀释条款。</span></div></div><p>接着沿发行人向下看它如何依法连接境内业务：<a href="02-anatomy.html">模块② · 架构解剖</a>。</p>
 </div>
-<div class="part" id="p6"><div class="part-head"><span class="part-num">06</span><h2>三个坑：你以为看懂了，其实看错了标签</h2></div>
-<div class="pitfall"><div class="pit-title">坑一 · 用上市地点猜公司身份</div>港股可以买 H 股，也可以买境外发行人的股票。先查发行人注册地，别用交易所地址代替股权结构。</div>
-<div class="pitfall"><div class="pit-title">坑二 · 把 VIE 当成红筹的同义词</div>股权控制与协议控制是两种连接方式；协议控制并不让境外主体自动拥有境内公司的股权。</div>
-<div class="pitfall"><div class="pit-title">坑三 · 以为红筹自动免国内监管</div>直接与符合条件的间接境外上市均可能触及境内备案及行业、外汇、数据等要求；具体适用不能只凭架构图判断。</div>
-</div>
-<div class="part" id="p7"><div class="part-head"><span class="part-num">07</span><h2>一眼认路：本节速查表</h2></div><div class="cheat-grid">
+<div class="part" id="p6"><div class="part-head"><span class="part-num">06</span><h2>一眼认路：本节速查表</h2></div><div class="cheat-grid">
 <div class="cheat-card"><div class="cc-name">判断顺序</div><div class="cc-detail">先问发行人是谁，再看注册地，最后看控制链。</div></div>
 <div class="cheat-card"><div class="cc-name">H 股</div><div class="cc-detail">境内股份有限公司自己赴境外发行上市。</div></div>
 <div class="cheat-card"><div class="cc-name">红筹</div><div class="cc-detail">境外主体做发行人，连接境内权益。</div></div>
@@ -95,17 +84,17 @@
 <div class="cheat-card"><div class="cc-name">中概股</div><div class="cc-detail">市场称呼，不是严格的架构类别。</div></div>
 <div class="cheat-card"><div class="cc-name">认定两道尺</div><div class="cc-detail">任一财务指标超 50% + 经营或高管在境内，两项同时满足即间接境外上市。</div></div>
 <div class="cheat-card"><div class="cc-name">融资算术</div><div class="cc-detail">投后＝投资额÷投后占比；投前＝投后−投资额。</div></div>
-<div class="cheat-card"><div class="cc-name">三个坑</div><div class="cc-detail">地点≠主体；VIE≠红筹；红筹≠免备案。</div></div>
+<div class="cheat-card"><div class="cc-name">核验要点</div><div class="cc-detail">地点≠主体；VIE≠红筹；红筹≠免备案。</div></div>
 </div></div>
-<div class="part" id="p8"><div class="part-head"><span class="part-num">08</span><h2>自测：不用背术语，试着给别人解释</h2></div>
+<div class="part" id="p7"><div class="part-head"><span class="part-num">07</span><h2>自测：不用背术语，试着给别人解释</h2></div>
 <div class="quiz-item"><div class="q-title">第 1 题 · 概念辨析</div><p>一家注册在开曼的发行人去香港上市，境内有主营业务：一定是 H 股吗？</p><details><summary>先自己说，再看解析</summary><div class="answer"><b>不是。</b>香港是交易地点；H 股的发行人是境内公司，应继续核对控制链与境内上市备案适用条件。</div></details></div>
 <div class="quiz-item"><div class="q-title">第 2 题 · 定义复述</div><p>向朋友解释：“红筹”和“VIE”各回答哪一个问题？</p><details><summary>先自己说，再看解析</summary><div class="answer"><b>红筹回答谁在境外发行；VIE回答用什么协议连接境内经营主体。</b>回看 <a href="#p2">Part 02</a>、<a href="#p3">Part 03</a>。</div></details></div>
-<div class="quiz-item"><div class="q-title">第 3 题 · 算一笔</div><p>假设投入 1,500 万美元换投后 25%，投后估值和投前估值各是多少？</p><details><summary>先列式，再看解析</summary><div class="answer"><b>投后 6,000 万美元，投前 4,500 万美元。</b>投资额除以投后持股比例得投后，再减去投资额得投前。回看 <a href="#p5">Part 05</a>。</div></details></div>
+<div class="quiz-item"><div class="q-title">第 3 题 · 算一笔</div><p>实际融资披露了投资额和投后股比，怎样分别计算投后与投前估值？</p><details><summary>先列式，再看解析</summary><div class="answer"><b>投后＝新投资额÷投后占比；投前＝投后−新投资额。</b>有优先权、期权池或多轮交易时，先核同一证券与时间口径。回看 <a href="#p5">Part 05</a>。</div></details></div>
 <div class="quiz-item"><div class="q-title">第 4 题 · 信号判读</div><p>一家开曼公司说“我选红筹，因此中国证监会不管我”。它的境内子公司贡献了集团 70% 的营收，管理层都常驻上海。你怎么回应？</p><details><summary>先自己说，再看解析</summary><div class="answer"><b>两道尺都踩线，应认定为境内企业间接境外发行上市，需要备案。</b>营收占比已超过 50%，经营与高管也在境内；注册地和上市地不改变判断。回看 <a href="#p2">Part 02</a>。</div></details></div>
 <div class="quiz-item"><div class="q-title">第 5 题 · 开放排查</div><p>一家外资准入受限制的企业说“签 VIE 协议就能上市”，还缺哪些核查？</p><details><summary>先自己说，再看解析</summary><div class="answer"><b>先看具体行业与外资准入、合同安排效力、境内备案与境外交易所要求、数据等专项监管。</b>不能从一张图推出法律结论。回看 <a href="#p3">Part 03</a>、<a href="#p4">Part 04</a>。</div></details></div>
 </div>
 <div class="summary-box"><h3>本节小结</h3><p>学会拆开三件事：股票由谁发行、业务由谁经营、两者怎样连接。是否算间接境外上市，看财务占比和经营重心，不看注册地。市场称呼和交易地点只是旁边的标签。案例数字全为教学假设。</p><div class="mnemonic-line">先看发行人，再看控制链；先分 H 股与红筹，再问有没有 VIE。</div></div>
 <a class="next-card" href="02-anatomy.html"><div><div class="n-label">下一步 · 模块②</div><div class="n-title">架构解剖：每一层到底在做什么？</div></div><div class="n-arrow">→</div></a>
 <p style="text-align:center"><a href="../index.html">← 返回红筹手册总目录</a></p>
-<div class="page-footer"><span>红筹架构 · 概念入门；云帆科技为虚构教学案例，非真实业务数据</span><span>据起点文章作独立教学改写；非法律、税务或投资意见。<a href="../reading-guide.html">阅读与来源</a></span></div>
+<div class="page-footer"><span>红筹架构 · 概念入门；示意结构不是个案结论</span><span>非法律、税务或投资意见。<a href="../reading-guide.html">阅读与来源</a></span></div>
 </div></body></html>

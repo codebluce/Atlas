@@ -14,10 +14,10 @@
 <!-- ===== SLOT 1: 页眉（必填） ===== -->
 <header class="masthead">
   <div class="container">
-    <div class="breadcrumb"><a href="../index.html">{{课题名}}</a> › 模块N</div>
+    <nav class="breadcrumb" aria-label="当前位置"><ol><li><a href="../../../index.html">Atlas</a></li><li><a href="../index.html">{{课题名}}</a></li><li aria-current="page">模块N · {{主题}}</li></ol></nav>
     <span class="eyebrow">{{emoji}} 模块N · {{主题}}</span>
     <h1>{{问题式/断言式标题}}</h1>
-    <p class="sub">{{钩子文案：用具体数字抛出一个认知冲突}}</p>
+    <p class="sub">{{钩子文案：用有资料支持的事实提出一个认知冲突}}</p>
   </div>
 </header>
 
@@ -27,7 +27,6 @@
     <a href="#p1">① 痛点</a>
     <a href="#p2">② 概念</a>
     <a href="#pN">…</a>
-    <a href="#pN">… 坑</a>
     <a href="#pN">… 速查</a>
     <a href="#pN">… 自测</a>
   </div>
@@ -108,7 +107,7 @@
 </div>
 
 <div class="part" id="pN">
-  <div class="part-head"><span class="part-num">0N</span><h2>实战案例：{{故事标题}}</h2></div>
+  <div class="part-head"><span class="part-num">0N</span><h2>{{资料核验/模型计算标题}}</h2></div>
   <div class="case-step">
     <div class="step-badge">1</div>
     <div class="step-body"><h4>{{第一步}}</h4>{{描述}} <span class="result">→ {{结论}}</span></div>
@@ -116,24 +115,7 @@
   <!-- 复制成 5~6 步，只在第一步显示 .step-badge -->
 </div>
 
-<!-- ===== SLOT 6: 三个坑（恰好 3 个） ===== -->
-<div class="part" id="pN">
-  <div class="part-head"><span class="part-num">0N</span><h2>三个容易踩的坑</h2></div>
-  <div class="pitfall">
-    <div class="pit-title">坑一 · {{标题}}</div>
-    {{内容：什么坑、为什么坑、怎么绕}}
-  </div>
-  <div class="pitfall">
-    <div class="pit-title">坑二 · {{标题}}</div>
-    {{内容}}
-  </div>
-  <div class="pitfall">
-    <div class="pit-title">坑三 · {{标题}}</div>
-    {{内容}}
-  </div>
-</div>
-
-<!-- ===== SLOT 7: 速查表（8~9 张，最后一张恒为"三个坑"汇总） ===== -->
+<!-- ===== SLOT 7: 速查表（目前校验器检查 8~9 张；不凑重复提醒） ===== -->
 <div class="part" id="pN">
   <div class="part-head"><span class="part-num">0N</span><h2>本节速查表</h2></div>
   <div class="cheat-grid">
@@ -142,10 +124,7 @@
       <div class="cc-detail"><b>定义：</b>…<br><b>用途：</b>…</div>
     </div>
     <!-- 复制 8~9 张 -->
-    <div class="cheat-card">
-      <div class="cc-name">三个坑</div>
-      <div class="cc-detail">坑1/坑2/坑3 各一句</div>
-    </div>
+    <!-- 不固定最后一张内容；选择本章最有用的速查项 -->
   </div>
 </div>
 

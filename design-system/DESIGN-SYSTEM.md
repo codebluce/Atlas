@@ -8,7 +8,7 @@
 
 - 纯静态、零构建：HTML + 单一共享 CSS + CDN/本地 vendor 的 Chart.js；除图表外无 JS 逻辑。
 - 风格：暖色手写笔记感（米白底 + 赭橙主色 + 衬线标题），与"仪表盘/深度报告"风刻意区分。
-- 教学层与真实层分离：教学图 = Chart.js + 教学脚注；真实数据图 = 静态 PNG（figures/）+ `tag-real`。
+- 教学层与真实层分离：必要的计算示意图 = Chart.js + 教学脚注；真实数据图 = 静态 PNG（figures/）+ `tag-real`。没有来源或明确计算输入时可以不配图，禁止为填槽位虚构行情与业务曲线。
 
 ## 2. Design tokens（`style.css:6-30`）
 
@@ -33,6 +33,8 @@
 
 ## 3. 组件库（全站通用）
 
+**顶部路径导航（必备）**：每页 masthead 顶部用 `<nav class="breadcrumb" aria-label="当前位置"><ol>…</ol></nav>`；每层一个 `<li>`，上级目录为真实可访问链接，当前页为 `<li aria-current="page">`。首页显示 Atlas；课题目录显示 Atlas → 当前课题；正文/伴读页显示 Atlas → 课题目录 → 当前模块/伴读页。章节名从 `topic.json` 取简短模块标题，完整标题放在 h1。文档阅读器、全站索引同样显示完整路径。窄屏自动换行，不省略中间层，也不靠横向滚动。
+
 声明式表格，详见 `style.css`。骨架层级：
 
 ```
@@ -47,7 +49,7 @@ masthead(breadcrumb+eyebrow+h1+sub) → local-nav → wrap
 |---|---|---|
 | 类比框 | `.analogy` | 新概念首次出现前的生活类比 |
 | 提示框 | `.callout.good/bad/warn/info` | 反直觉点、落地方案、案例备注 |
-| 坑卡 | `.pitfall` > `.pit-title` | 「三个坑」part |
+| 提醒卡（可选） | `.pitfall` > `.pit-title` | 实质风险不能在正文自然交代时使用；不必凑成独立“三个坑”part |
 | 概念卡 | `.concept-grid` > `.concept-card` > `.c-name/.c-en/.c-def/.c-formula/.c-mnemonic` | 名词速览、双方案对比 |
 | 手算步骤 | `.method-step` > `.m-num/.m-body`（可含 `.calc-box > .eq`） | 手算案例 |
 | 案例步骤 | `.case-step` > `.step-badge/.step-body`（`.result` 为结果行） | 实战案例流水 |
@@ -55,6 +57,7 @@ masthead(breadcrumb+eyebrow+h1+sub) → local-nav → wrap
 | 自测卡 | `.quiz-item` > `.q-title` + details/summary + `.answer` | 自测 |
 | 速查卡 | `.cheat-grid` > `.cheat-card` > `.cc-name/.cc-detail` | 速查表 |
 | 表格 | `table.tbl`（`td.num` 数字右对齐；`tr.hl` 高亮行；`.table-scroll` 包裹） | 数据表 |
+| 手机纵向数据卡 | `table.tbl.mobile-stack` + 每个数据格 `data-label` | 桌面保留表格，640px 以下逐行纵向；行中有合并格的表应先重构，不机械加类 |
 | 时间轴 | `.mob-timeline` > `.mob-step`（账龄/阶段示意） | MOB 型图示 |
 | 真实数据图 | `.figure`（`.fig-cap`）/`.figure-pair` | 静态 PNG |
 
@@ -85,7 +88,7 @@ Chart.defaults.color = '#5B5147';
 
 ### 4.4 教学脚注（硬规则）
 
-每张教学图 `.chart-footnote` 必须含「示例数据，用于教学演示，非真实业务数据」；真实数据页用 `tag-real` + 来源声明。`.chart-card` 兼作非图表图示容器（mob-timeline 等），只有含 `.chart-title` 的才计为图表。
+每张教学图 `.chart-footnote` 必须含「示例数据，用于教学演示，非真实业务数据」；真实数据页用 `tag-real` + 来源声明。没有图表的章节合规；优先使用已披露且明确标注日期、单位、序列的读数，纯示意图也须说明输入如何得到。`.chart-card` 兼作非图表图示容器（mob-timeline 等），只有含 `.chart-title` 的才计为图表。
 
 ## 5. 工程约束
 

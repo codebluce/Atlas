@@ -36,7 +36,8 @@ TOPIC_INDEX = """<!DOCTYPE html>
 
 <header class="masthead">
   <div class="container">
-    <span class="eyebrow"><a href="../../index.html">Atlas</a> / {slug} · 📓 个人学习手册 · 持续更新</span>
+    <nav class="breadcrumb" aria-label="当前位置"><ol><li><a href="../../index.html">Atlas</a></li><li aria-current="page">{display}</li></ol></nav>
+    <span class="eyebrow">🗂️ 课题目录 · 学习路线</span>
     <h1>{display}</h1>
     <p class="sub">{{用一句话写清这本手册的知识主线和学习方式}}</p>
   </div>

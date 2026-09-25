@@ -217,7 +217,7 @@ def render_catalog(topics: list[dict], docs: list[dict], built: str) -> str:
 </head>
 <body>
 <header class="masthead"><div class="container">
-  <div class="breadcrumb"><a href="index.html">Atlas</a> › 全站索引</div>
+  <nav class="breadcrumb" aria-label="当前位置"><ol><li><a href="index.html">Atlas</a></li><li aria-current="page">全站索引</li></ol></nav>
   <span class="eyebrow">🔎 所有课题 · 所有模块 · 一处检索</span>
   <h1>全站索引</h1>
   <p class="sub">按课题列出每个模块的状态与更新时间；上方搜索框可检索全部正文。</p>
@@ -299,7 +299,7 @@ MD_VIEWER = """<!DOCTYPE html>
 </head>
 <body>
 <header class="masthead"><div class="container">
-  <div class="breadcrumb"><a href="index.html">Atlas</a> › <a href="catalog.html#docs">文档</a> › <span id="crumb"></span></div>
+  <nav class="breadcrumb" aria-label="当前位置"><ol><li><a href="index.html">Atlas</a></li><li><a href="catalog.html#docs">文档目录</a></li><li id="doc-topic" hidden></li><li id="crumb" aria-current="page">文档</li></ol></nav>
   <h1 id="title">文档</h1>
 </div></header>
 <div class="wrap"><div id="doc" class="md-body">加载中…</div>
@@ -308,15 +308,22 @@ MD_VIEWER = """<!DOCTYPE html>
 <script src="design-system/vendor/purify.min.js"></script>
 <script>
 (function(){
+  /* DOC_BREADCRUMB_METADATA */
   var f=new URLSearchParams(location.search).get('f')||'';
   var doc=document.getElementById('doc');
   if(!/^[\\w\\-\\/\\u4e00-\\u9fa5.]+\\.md$/.test(f)||f.indexOf('..')>=0){doc.textContent='无效的文档路径。';return;}
-  document.getElementById('crumb').textContent=f;
+  var entry=docsMeta[f], crumb=document.getElementById('crumb');
+  crumb.textContent=entry?entry.title:f;
+  if(entry&&entry.topic&&topicsMeta[entry.topic]){
+    var parent=document.getElementById('doc-topic'), link=document.createElement('a');
+    link.href='topics/'+entry.topic+'/index.html';
+    link.textContent=topicsMeta[entry.topic]; parent.appendChild(link); parent.hidden=false;
+  }
   document.getElementById('raw').href=f;
   var base=f.replace(/[^\\/]*$/,'');
   fetch(f).then(function(r){if(!r.ok)throw 0;return r.text();}).then(function(t){
     doc.innerHTML=DOMPurify.sanitize(marked.parse(t));
-    var h=doc.querySelector('h1'); if(h){document.getElementById('title').textContent=h.textContent;document.title=h.textContent+' | Atlas';h.remove();}
+    var h=doc.querySelector('h1'); if(h){document.getElementById('title').textContent=h.textContent;document.title=h.textContent+' | Atlas';crumb.textContent=h.textContent;h.remove();}
     doc.querySelectorAll('a[href],img[src]').forEach(function(el){
       var attr=el.tagName==='A'?'href':'src', v=el.getAttribute(attr);
       if(/^(https?:|#|mailto:|\\/)/.test(v)) return;
@@ -330,6 +337,19 @@ MD_VIEWER = """<!DOCTYPE html>
 </body>
 </html>
 """
+
+
+def render_md_viewer(topics: list[dict], docs: list[dict]) -> str:
+    """在静态阅读器中登记文档标题与所属课题，不通过路径猜页面层级。"""
+    index = {d["path"]: {
+        "title": d["title"],
+        "topic": d["path"].split("/")[1] if d["path"].startswith("topics/") else None,
+    } for d in docs}
+    titles = {t["slug"]: t["title"] for t in topics}
+    # JSON is embedded into a <script> tag, so escape '<' to avoid closing the tag.
+    metadata = ("var docsMeta=" + json.dumps(index, ensure_ascii=False) + ";\n"
+                "  var topicsMeta=" + json.dumps(titles, ensure_ascii=False) + ";")
+    return MD_VIEWER.replace("/* DOC_BREADCRUMB_METADATA */", metadata.replace("<", "\\u003c"))
 
 
 def rewrite_md_links(site: Path) -> int:
@@ -368,6 +388,20 @@ def inject_catalog_link(site: Path) -> None:
     idx.write_text(src, encoding="utf-8")
 
 
+def adapt_published_template(site: Path) -> None:
+    """模板源文件按 topics/<slug>/manual/ 写；发布目录位于 design-system/。"""
+    page = site / "design-system" / "page-template.html"
+    src = page.read_text(encoding="utf-8")
+    src = src.replace('href="../../../design-system/style.css"', 'href="style.css"')
+    src = src.replace('src="../../../design-system/vendor/chart.umd.min.js"',
+                      'src="vendor/chart.umd.min.js"')
+    src = src.replace(
+        '<nav class="breadcrumb" aria-label="当前位置"><ol><li><a href="../../../index.html">Atlas</a></li><li><a href="../index.html">{{课题名}}</a></li><li aria-current="page">模块N · {{主题}}</li></ol></nav>',
+        '<nav class="breadcrumb" aria-label="当前位置"><ol><li><a href="../index.html">Atlas</a></li><li><a href="../catalog.html#docs">文档目录</a></li><li aria-current="page">章节页面模板</li></ol></nav>',
+    )
+    page.write_text(src, encoding="utf-8")
+
+
 # ---------------------------------------------------------------- 主流程
 
 def main(argv: list[str]) -> int:
@@ -390,12 +424,13 @@ def main(argv: list[str]) -> int:
     built = datetime.now(timezone.utc).strftime("%Y-%m-%d %H:%M UTC")
 
     (out / "catalog.html").write_text(render_catalog(topics, docs, built), encoding="utf-8")
-    (out / "md.html").write_text(MD_VIEWER, encoding="utf-8")
+    (out / "md.html").write_text(render_md_viewer(topics, docs), encoding="utf-8")
     (out / "search-index.json").write_text(
         json.dumps(collect_search(topics), ensure_ascii=False), encoding="utf-8")
     (out / ".nojekyll").write_text("", encoding="utf-8")
     n_md = rewrite_md_links(out)
     inject_catalog_link(out)
+    adapt_published_template(out)
 
     n_pages = sum(1 for _ in out.rglob("*.html"))
     print(f"已构建 {out.relative_to(REPO) if out.is_relative_to(REPO) else out}："

@@ -1,23 +1,24 @@
 <!DOCTYPE html><html lang="zh-CN"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1">
 <title>③ VIE：签了合同，不等于拥有股份 | 红筹架构学习手册</title><link rel="stylesheet" href="../../../design-system/style.css"></head><body>
-<header class="masthead"><div class="container"><div class="breadcrumb"><a href="../index.html">红筹架构</a> › 模块③</div><span class="eyebrow">🔗 模块③ · 契约</span><h1>不持有境内公司股权，境外发行人还能怎样连接它？</h1><p class="sub">VIE 不是一份神奇合同，而是一组法律关系；会计上合并、法律上持股、监管上允许，是三道不同的题。</p></div></header>
-<nav class="local-nav"><div class="container"><a href="#p1">① 痛点</a><a href="#p2">② 工具箱</a><a href="#p3">③ 三道题</a><a href="#p4">④ 历史与风险</a><a href="#p5">⑤ 云帆案例</a><a href="#p6">⑥ 来源</a><a href="#p7">⑦ 三个坑</a><a href="#p8">⑧ 速查</a><a href="#p9">⑨ 自测</a></div></nav><div class="wrap">
-<div class="checklist" style="margin-top:32px"><h4>读完本节，你能做到</h4><ul><li>用股权和租约作类比说明协议控制与持股的差别。</li><li>辨认服务、表决、担保与购买权安排各试图解决的问题。</li><li>说出为什么并表不能证明协议必然有效或行业准入合规。</li><li>说出法律、会计、监管三道题各自依据的规则与判断标准。</li><li>用三类真实风险事件说明 VIE 可能怎样失灵。</li><li>针对云帆科技列出用 VIE 前必须核查的事实。</li></ul></div>
+<header class="masthead"><div class="container"><nav class="breadcrumb" aria-label="当前位置"><ol><li><a href="../../../index.html">Atlas</a></li><li><a href="../index.html">红筹架构学习手册</a></li><li aria-current="page">模块 03 · VIE 协议控制</li></ol></nav><span class="eyebrow">🔗 模块③ · 契约</span><h1>不持有境内公司股权，境外发行人还能怎样连接它？</h1><p class="sub">VIE 不是一份神奇合同，而是一组法律关系；会计上合并、法律上持股、监管上允许，是三道不同的题。</p></div></header>
+<nav class="local-nav"><div class="container"><a href="#p1">① 痛点</a><a href="#p2">② 工具箱</a><a href="#p3">③ 三道题</a><a href="#p4">④ 历史与风险</a><a href="#p5">⑤ 核验清单</a><a href="#p6">⑥ 来源</a><a href="#p7">⑦ 速查</a><a href="#p8">⑧ 自测</a></div></nav><div class="wrap">
+<div class="checklist" style="margin-top:32px"><h4>读完本节，你能做到</h4><ul><li>用股权和租约作类比说明协议控制与持股的差别。</li><li>辨认服务、表决、担保与购买权安排各试图解决的问题。</li><li>说出为什么并表不能证明协议必然有效或行业准入合规。</li><li>说出法律、会计、监管三道题各自依据的规则与判断标准。</li><li>用三类真实风险事件说明 VIE 可能怎样失灵。</li><li>针对拟上市企业列出用 VIE 前必须核查的事实。</li></ul></div>
 <section class="part" id="p1"><div class="part-head"><span class="part-num">01</span><h2>先说痛点：签了合同，就是公司的主人吗？</h2></div><p class="part-lede">营业执照上的股东，与经营活动受到谁影响，可能不是同一人。</p>
 <div class="analogy"><span class="label">🏠 一张房本和一份租约</span>买房拿房本，签租约只拿合同权利；即使租约让你长期经营一家店，你也没有自动变成房产所有者。<strong>股权与合同，权利来源不同。</strong></div>
-<p>VIE（可变利益实体）在红筹语境中通常指境外上市链通过其境内子公司与境内运营主体及股东订立协议，试图取得经营决策权和经济利益。在满足会计准则等条件时，相关经营主体可能纳入合并报表；是否可以并表由审计判断，<strong>不是任何合同一签就自动并表</strong>。“可变利益实体”这个名字本身来自美国会计准则：安然事件后，美国财务会计准则委员会出台 FIN 46R（现并入 ASC 810），要求企业合并那些“不靠股权、靠其他安排控制”的实体。</p>
+<p><strong class="para-lead">VIE 的关键不在股权登记，而在协议试图安排的权利。</strong>境外上市链通常通过境内子公司与境内运营主体及其股东订立协议，试图取得经营决策权和经济利益；在符合相应会计准则条件时，相关主体可能并表。<strong>合同签署不等于自动并表</strong>，还须核对实际控制、风险与收益以及审计判断。</p>
+<p><strong class="para-lead">“可变利益实体”这个名称有美国会计准则的背景。</strong>安然事件后，FASB 推出 FIN 46R，后来相关规定并入 ASC 810，用以判断仅靠股权比例不足以识别控制方时是否需要合并。红筹业务中的协议控制安排与具体会计并表结论仍应分别判断。</p>
 <p>先核对行业准入：允许依法直接持股时，未必有必要引入协议结构；限制或禁止外资进入的领域也不能凭合同绕开监管要求。</p>
 <div class="callout bad"><span class="label">一句话纠偏</span><strong>协议控制 ≠ 法律上持股 ≠ 必然并表 ≠ 合法准入。</strong>这四个等号都要分别论证。</div>
 </section>
 <section class="part" id="p2"><div class="part-head"><span class="part-num">02</span><h2>四类常见合同，各自想解决什么？</h2></div><p class="part-lede">不是法定的“固定六份协议”：项目文件结构由事实、法律和审计要求决定。</p>
-<div class="chart-card"><div class="chart-title">图R031 · 别背合同名称，按要解决的问题分类</div><div class="chart-sub">教学分类不是交易文件清单。</div><div class="table-scroll"><table class="tbl"><thead><tr><th>工具（示意）</th><th>想取得的权利</th><th>不能代替什么</th></tr></thead><tbody>
-<tr><td>独家业务合作／服务</td><td>安排服务与费用结算</td><td>不能仅凭收费约定取得股权</td></tr>
-<tr><td>表决权委托</td><td>让他人按约行使表决权</td><td>不自动变更股东名册</td></tr>
-<tr><td>股权质押</td><td>为履约提供担保</td><td>质押不等于现在拥有股份</td></tr>
-<tr><td>独家购买权</td><td>约定在法律允许时，WFOE 或其指定方可以购买境内公司股权或资产</td><td>能否行使仍受准入与法律限制</td></tr>
-<tr><td>借款协议</td><td>WFOE 借钱给名义股东，用于向境内公司出资</td><td>借款不等于股权，还款安排常与购买权挂钩</td></tr>
-<tr><td>配偶同意函</td><td>名义股东的配偶承诺不就相关股权主张权利</td><td>只能降低婚姻财产争议风险，不能消除</td></tr>
-<tr><td>知识产权许可</td><td>商标、技术等由 WFOE 持有并许可境内公司使用</td><td>许可费同样面临定价与税务审视</td></tr>
+<div class="chart-card"><div class="chart-title">图R031 · 别背合同名称，按要解决的问题分类</div><div class="chart-sub">教学分类不是交易文件清单。</div><div class="table-scroll"><table class="tbl mobile-stack"><thead><tr><th>工具（示意）</th><th>想取得的权利</th><th>不能代替什么</th></tr></thead><tbody>
+<tr><td data-label="工具（示意）">独家业务合作／服务</td><td data-label="想取得的权利">安排服务与费用结算</td><td data-label="不能代替什么">不能仅凭收费约定取得股权</td></tr>
+<tr><td data-label="工具（示意）">表决权委托</td><td data-label="想取得的权利">让他人按约行使表决权</td><td data-label="不能代替什么">不自动变更股东名册</td></tr>
+<tr><td data-label="工具（示意）">股权质押</td><td data-label="想取得的权利">为履约提供担保</td><td data-label="不能代替什么">质押不等于现在拥有股份</td></tr>
+<tr><td data-label="工具（示意）">独家购买权</td><td data-label="想取得的权利">约定在法律允许时，WFOE 或其指定方可以购买境内公司股权或资产</td><td data-label="不能代替什么">能否行使仍受准入与法律限制</td></tr>
+<tr><td data-label="工具（示意）">借款协议</td><td data-label="想取得的权利">WFOE 借钱给名义股东，用于向境内公司出资</td><td data-label="不能代替什么">借款不等于股权，还款安排常与购买权挂钩</td></tr>
+<tr><td data-label="工具（示意）">配偶同意函</td><td data-label="想取得的权利">名义股东的配偶承诺不就相关股权主张权利</td><td data-label="不能代替什么">只能降低婚姻财产争议风险，不能消除</td></tr>
+<tr><td data-label="工具（示意）">知识产权许可</td><td data-label="想取得的权利">商标、技术等由 WFOE 持有并许可境内公司使用</td><td data-label="不能代替什么">许可费同样面临定价与税务审视</td></tr>
 </tbody></table></div><div class="chart-footnote">示例数据，用于教学演示，非真实业务数据；示意表不能代替个案法律或财税意见。</div></div>
 <p>画图时把协议签约各方、义务和违约后果逐一写在箭头旁：谁向谁提供服务？谁握有表决权？谁能提起诉讼？只画一根“控制 100%”粗箭头会隐藏合同有效性与执行风险。</p>
 <div class="callout info"><span class="label">合同之间怎样互相堵漏洞</span>借款给名义股东出资 → 股权质押担保还款和履约 → 表决权委托拿走决策 → 独家服务把利润转到 WFOE → 独家购买权留出将来“转正”的通道 → 配偶同意函防止股权因离婚被分割。拿掉任何一环，其余合同的保障力都会变弱。</div>
@@ -30,33 +31,23 @@
 <div class="method-step"><div class="m-num">3</div><div class="m-body"><h4>监管题</h4>行业主管部门、境外上市备案和拟上市地对架构、业务资质与风险披露分别有什么要求？<a href='https://www.csrc.gov.cn/csrc/c100028/c7124479/content.shtml' target='_blank' rel='noopener noreferrer'>证监会备案制度说明</a>明确直接与间接境外上市统一备案。<br><em>三方现状：</em>证监会在 2023 年备案制度答记者问中表示，对满足合规要求的协议控制架构企业境外上市予以备案，备案材料须说明协议控制安排；港交所上市指引（原 GL77-14，现并入《新上市申请人指南》）要求协议控制“严格限定”，只能用于解决外资准入限制；美国 SEC 自 2021 年起要求中国背景发行人在招股书显著位置披露 VIE 结构及其风险。</div></div>
 </section>
 <section class="part" id="p4"><div class="part-head"><span class="part-num">04</span><h2>历史与风险：VIE 为什么让人又用又怕？</h2></div><p class="part-lede">VIE 在中国已经使用了二十多年，至今没有专门立法确认或否定它。</p>
-<div class="chart-card"><div class="chart-title">图R032 · 几个关键节点</div><div class="table-scroll"><table class="tbl"><thead><tr><th>时间</th><th>事件</th><th>说明了什么</th></tr></thead><tbody>
-<tr><td>2000 年</td><td>新浪以协议控制结构赴美上市，通常被视为首例</td><td>互联网业务受外资限制，催生了这一安排</td></tr>
-<tr><td>2011 年</td><td>支付宝控制权转移事件：境内运营公司股权脱离原协议控制安排</td><td><strong>控制方违约风险</strong>：名义股东或经营方可以打破合同</td></tr>
-<tr><td>2011 年</td><td>土豆网创始人离婚诉讼涉及境内公司股权，上市进程受影响</td><td><strong>名义股东个人事务风险</strong>，配偶同意函由此成为常见文件</td></tr>
-<tr><td>2015–2019 年</td><td>《外商投资法》草案曾写入“协议控制”的认定，2019 年正式文本删除</td><td>立法上悬而未决，只能依靠个案和监管实践</td></tr>
-<tr><td>2021 年</td><td>校外培训新规禁止学科类培训机构通过协议控制等方式由外资控制</td><td><strong>政策变化风险</strong>：相关境外上市公司被迫剥离业务</td></tr>
+<div class="chart-card"><div class="chart-title">图R032 · 几个关键节点</div><div class="table-scroll"><table class="tbl mobile-stack"><thead><tr><th>时间</th><th>事件</th><th>说明了什么</th></tr></thead><tbody>
+<tr><td data-label="时间">2000 年</td><td data-label="事件">新浪以协议控制结构赴美上市，通常被视为首例</td><td data-label="说明了什么">互联网业务受外资限制，催生了这一安排</td></tr>
+<tr><td data-label="时间">2011 年</td><td data-label="事件">支付宝控制权转移事件：境内运营公司股权脱离原协议控制安排</td><td data-label="说明了什么"><strong>控制方违约风险</strong>：名义股东或经营方可以打破合同</td></tr>
+<tr><td data-label="时间">2011 年</td><td data-label="事件">土豆网创始人离婚诉讼涉及境内公司股权，上市进程受影响</td><td data-label="说明了什么"><strong>名义股东个人事务风险</strong>，配偶同意函由此成为常见文件</td></tr>
+<tr><td data-label="时间">2015–2019 年</td><td data-label="事件">《外商投资法》草案曾写入“协议控制”的认定，2019 年正式文本删除</td><td data-label="说明了什么">立法上悬而未决，只能依靠个案和监管实践</td></tr>
+<tr><td data-label="时间">2021 年</td><td data-label="事件">校外培训新规禁止学科类培训机构通过协议控制等方式由外资控制</td><td data-label="说明了什么"><strong>政策变化风险</strong>：相关境外上市公司被迫剥离业务</td></tr>
 </tbody></table></div><div class="chart-footnote"><span class="tag tag-warn">市场观察</span> 事件按公开报道概括，属定性描述，非真实业务数据；细节与结论以当事方公告和裁判文书为准。</div></div>
 <div class="callout warn"><span class="label">司法与仲裁怎么看</span>2010–2011 年，上海国际仲裁中心在网络游戏相关案件中，以“以合法形式掩盖非法目的”为由认定整套协议无效（当时依据原《合同法》第 52 条）；最高人民法院在 2015 年的一起教育类案件中，也涉及协议控制安排效力的讨论。这些案例说明，合同被认定无效的风险是真实存在的。<span class="tag tag-warn">市场观察</span></div>
 </section>
-<section class="part" id="p5"><div class="part-head"><span class="part-num">05</span><h2>云帆真的需要 VIE 吗？先把问题问对</h2></div><p class="part-lede">云帆科技是教学虚构公司，真实行业边界必须按实际经营范围查。</p>
-<p>假设云帆打算搭境外发行人并在国内经营软件业务，<strong>先不要</strong>预设 WFOE 无法持股。把产品拆成主营服务、牌照业务、数据业务，再按当期外商投资负面清单和行业许可核查。</p>
-<p>如果某项业务确有外资准入限制，仍不能从“外资不能持股”直接推出“VIE 一定可以”：要分析合同效力、业务资质、会计并表、备案与拟上市地披露，必要时设计不使用该安排的方案。</p>
-<div class="case-step"><div class="step-badge">1</div><div class="step-body"><h4>拆业务：主营 SaaS 软件</h4>企业软件开发与销售，一般不在负面清单限制范围内。<span class="result">→ WFOE 通常可以直接持股，不需要 VIE。</span></div></div>
-<div class="case-step"><div class="step-badge">2</div><div class="step-body"><h4>拆业务：新增在线信息服务</h4>若云帆要面向公众提供需要 ICP 许可证的经营性互联网信息服务，这属于增值电信业务；负面清单规定外资股比不超过 50%（电子商务、国内多方通信、存储转发、呼叫中心除外）。<span class="result">→ 这时才出现“要不要用 VIE、能不能用”的问题。</span></div></div>
-<div class="case-step"><div class="step-badge">3</div><div class="step-body"><h4>比较替代方案</h4>把受限业务单独放在一家外资持股不超过 50% 的合资公司；或者调整业务模式，避开受限业务；最后才考虑协议控制，并按港交所“严格限定”原则，只覆盖受限的那部分。<span class="result">→ VIE 是最后的选项，不是默认选项。</span></div></div>
-<p style="font-size:.9em">负面清单条目以当年施行版本为准<span class="tag tag-info">生效法规</span>。</p><div class="callout good"><span class="label">学习任务</span>在纸上画两张图：一张写“谁拥有云帆的股权”，另一张写“谁有权发指令、分利润”。对不上时，标问号，不要补一个看起来好看的箭头。</div>
+<section class="part" id="p5"><div class="part-head"><span class="part-num">05</span><h2>先核行业准入，再决定是否需要协议安排</h2></div>
+<p class="part-lede">没有企业的牌照和产品清单，无法判断某家企业应不应该采用 VIE；先核可直接持股的业务，再看受限部分。</p><div class="case-step"><div class="step-badge">1</div><div class="step-body"><h4>可直接持股的业务</h4>一般企业软件开发与销售不能因为“可能要上市”就预设必须协议控制；按当前负面清单和经营范围核查 WFOE 能否直接持股。</div></div><div class="case-step"><div class="step-badge">2</div><div class="step-body"><h4>确有准入限制的业务</h4>经营性互联网信息服务涉及增值电信业务；外资股比和电子商务等例外须按当期负面清单与牌照类型核。即便限制直接持股，也不能因此断言 VIE 必然有效或获准。</div></div><div class="case-step"><div class="step-badge">3</div><div class="step-body"><h4>比较真正能执行的路径</h4>核业务隔离、合资持股、调整服务范围及协议安排各自的准入、合同效力、并表和上市披露条件；仅在确需且适用时讨论协议控制的范围。</div></div><div class="callout good"><span class="label">学习任务</span>用实际公司的公开股权资料画两条线：谁登记持股、谁依据合同享有决策与收益；没有合同原件的地方标“待核”。</div>
 </section>
 <section class="part" id="p6"><div class="part-head"><span class="part-num">06</span><h2>到哪里查真实边界？</h2></div><p class="part-lede">本章只介绍识别问题的方法，不提供任何行业的 VIE 可行性意见。协议将来如何终止、境内公司如何“转正”，见<a href="06-unwind.html">模块⑥</a>。</p>
 <p>先用<a href='https://www.ndrc.gov.cn/xxgk/zcfb/fzggwl/202409/P020240907514493057643.pdf' target='_blank' rel='noopener noreferrer'>政府公开的外商投资准入负面清单</a>核对行业，再看主管部门的资质规定；境外发行上市还要阅读<a href='https://www.csrc.gov.cn/csrc/c101954/c7124478/content.shtml' target='_blank' rel='noopener noreferrer'>《境内企业境外发行证券和上市管理试行办法》</a>（2023 年 3 月 31 日施行）及配套指引。具体文件版本以官网查询结果为准。</p>
 <p><a href='https://www.gov.cn/zhengce/content/2018-03/30/content_5278689.htm' target='_blank' rel='noopener noreferrer'>国务院办公厅转发《关于开展创新企业境内发行股票或存托凭证试点的若干意见》</a>（2018 年 3 月）<span class="tag tag-info">生效法规</span>对存在协议控制安排的境内发行或存托凭证项目提出审慎处理与充分披露要求；它不是允许任何行业采用 VIE 的普遍许可证。</p>
 </section>
-<section class="part" id="p7"><div class="part-head"><span class="part-num">07</span><h2>三个坑：看到这句话要停下来</h2></div>
-<div class="pitfall"><div class="pit-title">坑1 · 并表等于持股</div>并表是财务报告判断，登记股东和合同主体仍需分别识别。</div>
-<div class="pitfall"><div class="pit-title">坑2 · 有协议就能绕过限制</div>行业准入和监管条件仍适用；协议效力与披露不能凭口号保证。</div>
-<div class="pitfall"><div class="pit-title">坑3 · 网上有六份模板，照签就行</div>合同相互衔接、签约主体及实际履行都要逐项核查，模板数量不是合法性标准。</div>
-</section>
-<section class="part" id="p8"><div class="part-head"><span class="part-num">08</span><h2>速查卡：一句话认清每个东西</h2></div><div class="cheat-grid">
+<section class="part" id="p7"><div class="part-head"><span class="part-num">07</span><h2>速查卡：一句话认清每个东西</h2></div><div class="cheat-grid">
 <div class="cheat-card"><div class="cc-name">股权</div><div class="cc-detail">法律上的持股关系。</div></div>
 <div class="cheat-card"><div class="cc-name">VIE</div><div class="cc-detail">常指以一组协议连接境内经营主体。</div></div>
 <div class="cheat-card"><div class="cc-name">服务协议</div><div class="cc-detail">尝试约定服务与经济利益。</div></div>
@@ -65,16 +56,16 @@
 <div class="cheat-card"><div class="cc-name">选择权</div><div class="cc-detail">行使仍受法律与准入条件约束。</div></div>
 <div class="cheat-card"><div class="cc-name">并表</div><div class="cc-detail">ASC 810 看主要受益人：有主导权，并承担损失或享有收益。</div></div>
 <div class="cheat-card"><div class="cc-name">三类风险</div><div class="cc-detail">控制方违约、名义股东个人事务、政策变化。</div></div>
-<div class="cheat-card"><div class="cc-name">三个坑</div><div class="cc-detail">并表非持股；协议非豁免；模板非标准。</div></div>
+<div class="cheat-card"><div class="cc-name">核验要点</div><div class="cc-detail">并表非持股；协议非豁免；模板非标准。</div></div>
 </div></section>
-<section class="part" id="p9"><div class="part-head"><span class="part-num">09</span><h2>自测：先说答案，再展开</h2></div>
+<section class="part" id="p8"><div class="part-head"><span class="part-num">08</span><h2>自测：先说答案，再展开</h2></div>
 <div class="quiz-item"><div class="q-title">第 1 题 · 区分概念</div><p>WFOE 与境内运营公司签协议，WFOE 就成为运营公司股东了吗？</p><details><summary>先写下答案，再查看解析</summary><div class="answer"><b>不会。</b>合同权利不直接改变登记股东；回看 <a href='#p1'>Part 01</a>。</div></details></div>
 <div class="quiz-item"><div class="q-title">第 2 题 · 解释流程</div><p>业务合作、表决委托和股权质押试图解决同一个问题吗？</p><details><summary>先写下答案，再查看解析</summary><div class="answer"><b>不是。</b>分别涉及利益安排、决策行使和履约担保；回看 <a href='#p2'>Part 02</a>。</div></details></div>
 <div class="quiz-item"><div class="q-title">第 3 题 · 观察数字</div><p>一家公司的 VIE 协议很完整，但名义股东正在离婚，配偶没有签同意函。这属于哪类风险？会不会动摇并表？</p><details><summary>先写下答案，再查看解析</summary><div class="answer"><b>名义股东个人事务风险，可能动摇并表。</b>如果股权被分割、合同无法执行，主导权和收益权可能落空，审计师就要重新评估是否仍为主要受益人。回看 <a href='#p3'>Part 03</a>、<a href='#p4'>Part 04</a>。</div></details></div>
 <div class="quiz-item"><div class="q-title">第 4 题 · 信号判读</div><p>有人说“行业外资不准入，所以签一份协议就能合规上市”，错在哪里？</p><details><summary>先写下答案，再查看解析</summary><div class="answer"><b>跳过了准入、合同效力、行业许可和备案审查。</b>合同可能因违反强制性规定被认定无效，港交所也要求协议控制“严格限定”。回看 <a href='#p1'>Part 01</a>、<a href='#p3'>Part 03</a>。</div></details></div>
-<div class="quiz-item"><div class="q-title">第 5 题 · 迁移应用</div><p>云帆新增一项需许可的业务，画 VIE 图之前先索取哪些资料？</p><details><summary>先写下答案，再查看解析</summary><div class="answer"><b>实际业务与收入、牌照、外资准入、拟签合同和控制链。</b>再请合规、审计分别分析；回看 <a href='#p5'>Part 05</a>。</div></details></div>
+<div class="quiz-item"><div class="q-title">第 5 题 · 迁移应用</div><p>拟上市企业新增一项需许可的业务，画 VIE 图之前先索取哪些资料？</p><details><summary>先写下答案，再查看解析</summary><div class="answer"><b>实际业务与收入、牌照、外资准入、拟签合同和控制链。</b>再请合规、审计分别分析；回看 <a href='#p5'>Part 05</a>。</div></details></div>
 </section>
 <div class="summary-box"><h3>本节小结</h3><p>VIE 是协议关系的组合，不是红筹的同义词，更不是外资准入的通行证。先分清持股、合同、并表和监管四本账。</p><div class="mnemonic-line">股权看登记，控制看合同，并表看准则，能否用看监管。</div></div>
 <a class="next-card" href="04-compliance.html"><div><div class="n-label">下一步</div><div class="n-title">个人登记、机构 ODI：人和钱怎样过境？</div></div><div class="n-arrow">→</div></a>
 <p style="text-align:center"><a href="../index.html">← 返回红筹总目录</a></p>
-<div class="page-footer"><span>红筹架构手册 · 模块③ · 教学示例非真实业务数据</span><span>资料状态：截至 2026-09-24 · 非法律、税务或投资建议 · <a href="../reading-guide.html">起点文章</a></span></div></div></body></html>
+<div class="page-footer"><span>红筹架构手册 · 模块③ · 结构示意不构成个案判断</span><span>资料核对日期：2026-09-24 · 非法律、税务或投资建议 · <a href="../reading-guide.html">阅读与来源</a></span></div></div></body></html>

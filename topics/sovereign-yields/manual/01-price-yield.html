@@ -3,64 +3,45 @@
 <head><meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>国债“安全”，为什么买入后还会亏？ | 主权债与利率分化学习手册</title>
 <link rel="stylesheet" href="../../../design-system/style.css">
-<script src="../../../design-system/vendor/chart.umd.min.js"></script>
 </head><body>
 <header class="masthead"><div class="container">
-<div class="breadcrumb"><a href="../index.html">主权债与利率分化学习手册</a> › 模块 01</div>
+<nav class="breadcrumb" aria-label="当前位置"><ol><li><a href="../../../index.html">Atlas</a></li><li><a href="../index.html">主权债与利率分化学习手册</a></li><li aria-current="page">模块 01 · 价格与收益率</li></ol></nav>
 <span class="eyebrow">📉 模块 01 · 价格与收益率</span>
 <h1>国债“安全”，为什么买入后还会亏？</h1><p class="sub">名义本金与利息有约定，不代表中途卖出的价格被保证。先把价格和收益率算明白。</p>
 </div></header>
-<nav class="local-nav"><div class="container"><a href="#p1">痛点</a><a href="#p2">概念</a><a href="#p3">手算</a><a href="#p4">案例</a><a href="#p5">三个坑</a><a href="#p6">速查</a><a href="#p7">自测</a></div></nav>
+<nav class="local-nav"><div class="container"><a href="#p1">痛点</a><a href="#p2">概念</a><a href="#p3">手算</a><a href="#p4">资料</a><a href="#p5">速查</a><a href="#p6">自测</a></div></nav>
 <div class="wrap"><div class="checklist" style="margin-top:32px"><h4>本节读完，你能做到</h4>
 <ul><li>解释：票面利率 与 到期收益率 的区别。</li>
 <li>手算：一张一年期债的交易价。</li><li>判断：收益率上升 0.5 个百分点 情景应追查哪条数据。</li>
-<li>辨别教学假设、原报告陈述和可核验的市场读数。</li></ul></div>
+<li>辨别可核验的观察值、计算式和仍需查证的观点。</li></ul></div>
 <div class="part" id="p1"><div class="part-head"><span class="part-num">01</span><h2>先说痛点：把低违约风险误当成“无价格波动”</h2></div>
 <p class="part-lede">你用 100 元买一张到期给 103 元的债；今天新债可以给出更高收益率，老债若仍卖 100 元就没人买。</p><div class="analogy"><span class="label">一个类比</span>电影院旧票写着固定座位，新片上映后座位不变，转卖的票价却会变；票面现金流是座位，交易价格是转卖价。</div>
-<p>原报告展示多国收益率的分岔；讨论原因前，必须先明确比较的是同种券、同期限的到期收益率，还是发行时票息。上涨 1 个百分点等于 100 个基点，不等于债券价格只跌 1%。</p><div class="callout warn"><span class="label">先划清边界</span>原报告中的国别归因和政策展望是观点，不等于因果证明；跨国收益率须同期限、同日期、同币种与可比口径。</div></div>
+<p>资料展示多国收益率的分岔；讨论原因前，必须先明确比较的是同种券、同期限的到期收益率，还是发行时票息。上涨 1 个百分点等于 100 个基点，不等于债券价格只跌 1%。</p><div class="callout warn"><span class="label">先划清边界</span>资料中的国别归因和政策展望是观点，不等于因果证明；跨国收益率须同期限、同日期、同币种与可比口径。</div></div>
 <div class="part" id="p2"><div class="part-head"><span class="part-num">02</span><h2>票息不动，市场收益率会动</h2></div>
 <p class="part-lede">把三种“率”拆开，后面的国别比较才不会串线。</p><div class="concept-grid"><div class="concept-card"><div class="c-name">票面利率</div><div class="c-def">发行时约定的息票，不随二级市场报价同步改写。</div><div class="c-mnemonic">记合同里写了什么。</div></div>
 <div class="concept-card"><div class="c-name">到期收益率</div><div class="c-def">在给定价格和未来现金流下倒算的年化收益率；买入时点和剩余期限会改变结果。</div><div class="c-mnemonic">记今天多少钱买。</div></div></div><p>对零息债，收益率越高，未来一笔钱折现后的现价越低；有息债也遵循这个方向，但要逐期折现。</p></div>
-<div class="part" id="p3"><div class="part-head"><span class="part-num">03</span><h2>手算一遍：一张一年期债的交易价</h2></div>
-<div class="method-step"><div class="m-num">1</div><div class="m-body"><h4>先定口径</h4>假设一年后固定收到 103 元，当前要求年化收益率从 3% 升到 4%。不考虑税费与违约。<div class="calc-box"><span class="eq">P = 103 ÷ (1+4%) = 99.04 元；原来 103 ÷ 1.03 = 100 元</span></div></div></div>
-<p>到期拿到 103 不等于中途能卖 103。长债通常对同等收益率变化更敏感，可用久期近似“收益率升 0.5 个百分点 × 修正久期 8 ≈ 价格跌 4%”；这是线性近似，还要考虑凸性和票息。</p>
-<h3>读数 → 下一步，不靠拍脑袋</h3><table class="tbl"><thead><tr><th>教学情景</th><th>应做什么</th></tr></thead><tbody><tr><td>收益率不变</td><td>核对票息、剩余期限与购买价格，仍有信用/流动性/通胀风险。</td></tr>
-<tr><td>收益率上升 0.5 个百分点</td><td>先按久期估算价格影响，再查政策预期、供给和期限溢价。</td></tr>
-<tr><td>不同期限同涨</td><td>对照曲线斜率：短端政策预期与长端供需可能混在一起。</td></tr></tbody></table></div>
-<div class="part" id="p4"><div class="part-head"><span class="part-num">04</span><h2>演练案例：海岚国的一张旧债如何重新定价</h2></div>
-<p class="part-lede">海岚国基准收益率 4.0%。这是贯穿本课题的教学起点，不是任何国家或公司的真实事实。</p>
-<div class="case-step"><div class="step-badge">1</div><div class="step-body"><h4>先钉住现金流</h4>合同到期支付 103 元；此数字不因二级市场涨跌而改变。</div></div>
-<div class="case-step"><div class="step-badge">2</div><div class="step-body"><h4>再换市场要求</h4>要求收益率从 3% 上到 4%，价格从 100 元变为约 99.04 元；先有价格变化，才能说持仓浮亏。</div></div><div class="chart-card"><div class="chart-title">图J1 · 同一笔到期现金流：要求收益率越高，现价越低</div>
-<div class="chart-sub">103 元一年后支付；单位：元／张</div><div class="chart-wrap short"><canvas id="chartJ1"></canvas></div>
-<div class="chart-footnote">100、99.52、99.04 均由 103÷(1+r) 计算。示例数据，用于教学演示，非真实业务数据。</div></div>
-<div class="callout good"><span class="label">把图读成一句话</span>上图横轴是要求收益率，不是票面利率；价格的变化来自同一现金流的重新折现。</div></div>
-<div class="part" id="p5"><div class="part-head"><span class="part-num">05</span><h2>三个容易踩的坑</h2></div><div class="pitfall"><div class="pit-title">坑一 · 把票息当最新收益率</div>看到“3% 票息”不能推断今天买入的到期收益率也是 3%；先看市价。</div>
-<div class="pitfall"><div class="pit-title">坑二 · 把收益率百分点当价格百分点</div>涨 50bp 不意味着价格跌 0.5%；要看修正久期和凸性。</div>
-<div class="pitfall"><div class="pit-title">坑三 · 把国债当零风险</div>低违约风险也不免除久期、通胀、汇率及交易流动性风险。</div></div>
-<div class="part" id="p6"><div class="part-head"><span class="part-num">06</span><h2>本节速查表</h2></div><div class="cheat-grid"><div class="cheat-card"><div class="cc-name">票息</div><div class="cc-detail">合同约定；不追随报价变。</div></div>
+<div class="part" id="p3"><div class="part-head"><span class="part-num">03</span><h2>固定现金流如何映射交易价</h2></div>
+<div class="method-step"><div class="m-num">1</div><div class="m-body"><h4>先定口径</h4>先找具体债券下一期或到期现金流、剩余期限及市场要求收益率。<div class="calc-box"><span class="eq">一年期单笔支付的现值＝约定到期现金流÷(1+当期要求收益率)</span></div></div></div>
+<p>券种、票息、期限和税费不同，不能用这条单期公式替代实际十年期债券价格。</p><h3>遇到以下真实读数，下一步查什么</h3><table class="tbl mobile-stack"><thead><tr><th>核验情形</th><th>应做什么</th></tr></thead><tbody><tr><td data-label="核验情形">收益率不变</td><td data-label="应做什么">核对票息、剩余期限与购买价格，仍有信用/流动性/通胀风险。</td></tr>
+<tr><td data-label="核验情形">收益率上升 0.5 个百分点</td><td data-label="应做什么">先按久期估算价格影响，再查政策预期、供给和期限溢价。</td></tr>
+<tr><td data-label="核验情形">不同期限同涨</td><td data-label="应做什么">对照曲线斜率：短端政策预期与长端供需可能混在一起。</td></tr></tbody></table></div>
+<div class="part" id="p4"><div class="part-head"><span class="part-num">04</span><h2>用固定现金流解释真实收益率变动</h2></div><p><strong>用固定现金流解释真实收益率变动。</strong>债券未来票息与到期偿还按契约约定，交易价则随着市场要求回报变化。美国十年期收益率的 Wind G0000891 有 2026-09 的历史观察值，但它不是任何一张具体债券的发行价。</p><p><strong>查证路径。</strong>分析真实债价时找券号、剩余期限、票息与当日成交价格；收益率上行通常压低已有固定现金流的现值，久期越长价格敏感性越强。</p></div>
+<div class="part" id="p5"><div class="part-head"><span class="part-num">05</span><h2>本节速查表</h2></div><div class="cheat-grid"><div class="cheat-card"><div class="cc-name">票息</div><div class="cc-detail">合同约定；不追随报价变。</div></div>
 <div class="cheat-card"><div class="cc-name">市价</div><div class="cc-detail">未来现金流的现值。</div></div>
 <div class="cheat-card"><div class="cc-name">收益率</div><div class="cc-detail">使现值等于当前价格的折现率。</div></div>
 <div class="cheat-card"><div class="cc-name">基点</div><div class="cc-detail">1bp = 0.01 个百分点。</div></div>
 <div class="cheat-card"><div class="cc-name">久期</div><div class="cc-detail">对收益率小变动的价格敏感度近似。</div></div>
 <div class="cheat-card"><div class="cc-name">凸性</div><div class="cc-detail">解释大幅波动时线性近似误差。</div></div>
 <div class="cheat-card"><div class="cc-name">同口径</div><div class="cc-detail">同币种、期限、日期再比较。</div></div>
-<div class="cheat-card"><div class="cc-name">三个坑</div><div class="cc-detail">把票息当最新收益率 / 把收益率百分点当价格百分点 / 把国债当零风险</div></div></div></div>
-<div class="part" id="p7"><div class="part-head"><span class="part-num">07</span><h2>自测：合上答案试一试</h2></div><div class="quiz-item"><div class="q-title">第 1 题 · 辨析</div><p>票息固定，持有期间市价能变吗？</p><details><summary>先写下答案，再展开</summary><div class="answer"><b>能。</b>二级市场要求收益率变化会改变折现价格。 <a href="#p1">↩ 回看方法或案例</a></div></details></div>
-<div class="quiz-item"><div class="q-title">第 2 题 · 定义</div><p>到期收益率是央行当日直接发布的政策利率吗？</p><details><summary>先写下答案，再展开</summary><div class="answer"><b>不是。</b>它由当前交易价格和该债未来现金流倒算。 <a href="#p2">↩ 回看方法或案例</a></div></details></div>
-<div class="quiz-item"><div class="q-title">第 3 题 · 计算</div><p>一年后收 103 元，要求收益率 4%，现价是多少？</p><details><summary>先写下答案，再展开</summary><div class="answer"><b>103÷1.04≈99.04 元。</b> <a href="#p3">↩ 回看方法或案例</a></div></details></div>
-<div class="quiz-item"><div class="q-title">第 4 题 · 读信号</div><p>长端涨 50bp、短端几乎不动，可直接断定央行加息吗？</p><details><summary>先写下答案，再展开</summary><div class="answer"><b>不能。</b>应查期限溢价、通胀预期、发债和需求。 <a href="#p4">↩ 回看方法或案例</a></div></details></div>
-<div class="quiz-item"><div class="q-title">第 5 题 · 迁移</div><p>比较中美10Y时还需注明什么？</p><details><summary>先写下答案，再展开</summary><div class="answer"><b>同日、币种、收益率口径及汇率风险。</b>“两国谁高”不是套利结论。 <a href="#p4">↩ 回看方法或案例</a></div></details></div></div>
+<div class="cheat-card"><div class="cc-name">核验要点</div><div class="cc-detail">把票息当最新收益率 / 把收益率百分点当价格百分点 / 把国债当零风险</div></div></div></div>
+<div class="part" id="p6"><div class="part-head"><span class="part-num">06</span><h2>自测：合上答案试一试</h2></div><div class="quiz-item"><div class="q-title">第 1 题 · 辨析</div><p>票息固定，持有期间市价能变吗？</p><details><summary>先写下答案，再展开</summary><div class="answer"><b>能。</b>二级市场要求收益率变化会改变折现价格。 <a href="#p1">↩ 回看方法或资料</a></div></details></div>
+<div class="quiz-item"><div class="q-title">第 2 题 · 定义</div><p>到期收益率是央行当日直接发布的政策利率吗？</p><details><summary>先写下答案，再展开</summary><div class="answer"><b>不是。</b>它由当前交易价格和该债未来现金流倒算。 <a href="#p2">↩ 回看方法或资料</a></div></details></div>
+<div class="quiz-item"><div class="q-title">第 3 题 · 计算</div><p>一张固定现金流的债券，市场要求收益率升高时，今天的价格怎样变化？</p><details><summary>先写下答案，再展开</summary><div class="answer"><b>约定到期现金流不变，现值＝未来现金流/(1+要求收益率)；分母变大时价格下降。</b> <a href="#p3">↩ 回看方法或资料</a></div></details></div>
+<div class="quiz-item"><div class="q-title">第 4 题 · 读信号</div><p>长端涨 50bp、短端几乎不动，可直接断定央行加息吗？</p><details><summary>先写下答案，再展开</summary><div class="answer"><b>不能。</b>应查期限溢价、通胀预期、发债和需求。 <a href="#p4">↩ 回看方法或资料</a></div></details></div>
+<div class="quiz-item"><div class="q-title">第 5 题 · 迁移</div><p>比较中美10Y时还需注明什么？</p><details><summary>先写下答案，再展开</summary><div class="answer"><b>同日、币种、收益率口径及汇率风险。</b>“两国谁高”不是套利结论。 <a href="#p4">↩ 回看方法或资料</a></div></details></div></div>
 <div class="summary-box"><h3>本节小结</h3><p>债券现金流固定不等于持仓价格固定。先辨票息、市价、到期收益率，再看期限与分解机制。</p><div class="mnemonic-line">债券先看谁付钱，再看何时付，最后看今天值几钱。</div></div>
 <div class="next-card"><div><div class="n-label">下一步 · 模块 2</div><div class="n-title"><a href="02-three-engines.html">三国收益率都涨，原因却是同一件事吗？ →</a></div></div><div class="n-arrow">→</div></div>
 <p style="text-align:center"><a href="../index.html">← 返回主权债与利率分化学习手册目录</a></p>
-<div class="page-footer"><span>主权债与利率分化学习手册 · 模块 01 · 虚构案例与教学图均非真实业务数据</span>
-<span>原材料截至 2026-09-11 · 来源与核验范围见 <a href="../TOPIC.md">课题说明</a> · 不构成投资建议</span></div></div>
-<script>
-if (window.Chart) {
-const gridColor='#EFE7DA';
-Chart.defaults.font.family="-apple-system,BlinkMacSystemFont,'PingFang SC','Microsoft YaHei',sans-serif";
-Chart.defaults.font.size=12.5;Chart.defaults.color='#5B5147';
-new Chart(document.getElementById('chartJ1'), {type:'bar', data:{"labels": ["要求 3%", "要求 3.5%", "要求 4%"], "datasets": [{"label": "一年期理论价格", "data": [100, 99.52, 99.04], "backgroundColor": ["#C9BFB2", "#3E7E96", "#C1892A"], "borderRadius": 5}]}, options:{responsive:true,maintainAspectRatio:false,
-plugins:{legend:{display:false}},scales:{y:{beginAtZero:true,grid:{color:gridColor},title:{display:true,text:"债券现价（元）"},ticks:{callback:v=>v+"\u5143"}},x:{grid:{display:false}}}}});
-} else { document.getElementById('chartJ1').replaceWith(document.createTextNode('图表库未加载；请看上方情景表与下方读图结论。')); }
-</script></body></html>
+<div class="page-footer"><span>主权债与利率分化学习手册 · 模块 01 · 数值与口径按本章资料说明核验</span>
+<span>数据观察截止 2026-09-11 · 来源与核验范围见 <a href="../TOPIC.md">课题说明</a> · 不构成投资建议</span></div></div>
+</body></html>

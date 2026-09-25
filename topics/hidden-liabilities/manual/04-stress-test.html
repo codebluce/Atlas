@@ -3,64 +3,45 @@
 <head><meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>算力资产只用五年，二十年贷款谁来接？ | 表外融资与风险转移学习手册</title>
 <link rel="stylesheet" href="../../../design-system/style.css">
-<script src="../../../design-system/vendor/chart.umd.min.js"></script>
 </head><body>
 <header class="masthead"><div class="container">
-<div class="breadcrumb"><a href="../index.html">表外融资与风险转移学习手册</a> › 模块 04</div>
+<nav class="breadcrumb" aria-label="当前位置"><ol><li><a href="../../../index.html">Atlas</a></li><li><a href="../index.html">表外融资与风险转移学习手册</a></li><li aria-current="page">模块 04 · 折旧与私募信贷压力</li></ol></nav>
 <span class="eyebrow">🧪 模块 04 · 折旧与私募信贷压力</span>
 <h1>算力资产只用五年，二十年贷款谁来接？</h1><p class="sub">设备更新快、贷款回收慢，会形成资产与负债期限错配；要看持续现金流和回收顺位。</p>
 </div></header>
-<nav class="local-nav"><div class="container"><a href="#p1">痛点</a><a href="#p2">概念</a><a href="#p3">手算</a><a href="#p4">案例</a><a href="#p5">三个坑</a><a href="#p6">速查</a><a href="#p7">自测</a></div></nav>
+<nav class="local-nav"><div class="container"><a href="#p1">痛点</a><a href="#p2">概念</a><a href="#p3">手算</a><a href="#p4">资料</a><a href="#p5">速查</a><a href="#p6">自测</a></div></nav>
 <div class="wrap"><div class="checklist" style="margin-top:32px"><h4>本节读完，你能做到</h4>
 <ul><li>解释：债务服务覆盖倍数 DSCR 与 期限错配 的区别。</li>
 <li>手算：租金覆盖利息还是覆盖本息。</li><li>判断：DSCR 跌至0.75 情景应追查哪条数据。</li>
-<li>辨别教学假设、原报告陈述和可核验的市场读数。</li></ul></div>
+<li>辨别可核验的观察值、计算式和仍需查证的观点。</li></ul></div>
 <div class="part" id="p1"><div class="part-head"><span class="part-num">01</span><h2>先说痛点：把评级或抵押物看成永久保险</h2></div>
 <p class="part-lede">机房土地、建筑与 GPU 的寿命不一样；合同租金也可能取决于续租和技术迭代。不能只看初始抵押估值和票息。</p><div class="analogy"><span class="label">一个类比</span>用未来二十年的租金买一辆五年要换代的车：不是必然亏，但得写清第六年靠什么继续付月供。</div>
-<p>原报告将 AI 项目与历史次贷类比。类比只帮助寻找脆弱点，不意味着规模、银行敞口和传染机制已经相同；要按资金来源和偿付顺序做压力测试。</p><div class="callout warn"><span class="label">先划清边界</span>原报告对真实公司交易、评级、现金流和养老金资金链的陈述尚未逐项核对监管申报；课程不据此指称某公司隐瞒债务。“表外”只描述列报位置，不代表经济风险消失，也不自动等于违规。</div></div>
+<p>资料将 AI 项目与历史次贷类比。类比只帮助寻找脆弱点，不意味着规模、银行敞口和传染机制已经相同；要按资金来源和偿付顺序做压力测试。</p><div class="callout warn"><span class="label">先划清边界</span>资料对真实公司交易、评级、现金流和养老金资金链的陈述尚未逐项核对监管申报；课程不据此指称某公司隐瞒债务。“表外”只描述列报位置，不代表经济风险消失，也不自动等于违规。</div></div>
 <div class="part" id="p2"><div class="part-head"><span class="part-num">02</span><h2>风险从项目走向谁</h2></div>
 <p class="part-lede">资产侧是使用率、租约、残值；负债侧是利息、本金、期限；中间是担保和再融资。</p><div class="concept-grid"><div class="concept-card"><div class="c-name">债务服务覆盖倍数 DSCR</div><div class="c-def">可用于偿债的现金流÷当期本息；低于1说明当期现金流不足以覆盖约定偿债额（仍可另行融资）。</div><div class="c-mnemonic">只算利息会高估安全垫。</div></div>
 <div class="concept-card"><div class="c-name">期限错配</div><div class="c-def">资产价值/合同现金流的可靠期限短于债务回收期限，需换设备、续约或再融资。</div><div class="c-mnemonic">问第六年怎么办。</div></div></div><p>最终出资人可能经私募信贷基金、保险、养老金等多个节点承担风险，实际链条需查基金持仓和资金来源披露，不能由行业归属推断每个养老金都有敞口。</p></div>
-<div class="part" id="p3"><div class="part-head"><span class="part-num">03</span><h2>手算一遍：租金覆盖利息还是覆盖本息</h2></div>
-<div class="method-step"><div class="m-num">1</div><div class="m-body"><h4>先定口径</h4>虚构青藤云项目债务 50 亿元、年息 7%（3.5亿元），当期还本 2.5亿元，项目可用于偿债的租金现金 6亿元。<div class="calc-box"><span class="eq">只看利息覆盖=6/3.5≈1.71；真正DSCR=6/(3.5+2.5)=1.00</span></div></div></div>
-<p>若续租失败、可用租金降到 4.5，DSCR=4.5/6=0.75，现金缺口1.5亿元；可用现金储备或再融资补，但不能声称偿付风险已消除。残值与担保另按合同及顺位测算。</p>
-<h3>读数 → 下一步，不靠拍脑袋</h3><table class="tbl"><thead><tr><th>教学情景</th><th>应做什么</th></tr></thead><tbody><tr><td>DSCR 高于1但设备即将换代</td><td>检查未来技术投入、续租条款、残值与期末大额本金。</td></tr>
-<tr><td>DSCR 跌至0.75</td><td>拆违约/补现金/再融资三种路径，追最终承担者。</td></tr>
-<tr><td>基金遇赎回但贷款尚未违约</td><td>区分流动性风险和底层信用损失，关注资产折价出售。</td></tr></tbody></table></div>
-<div class="part" id="p4"><div class="part-head"><span class="part-num">04</span><h2>演练案例：青藤云项目在租金下滑时怎么办</h2></div>
-<p class="part-lede">青藤云资金缺口 50亿元。这是贯穿本课题的教学起点，不是任何国家或公司的真实事实。</p>
-<div class="case-step"><div class="step-badge">1</div><div class="step-body"><h4>测当期覆盖</h4>租金6亿元刚好覆盖利息3.5＋本金2.5；仅报利息覆盖1.71会显得过于安全。</div></div>
-<div class="case-step"><div class="step-badge">2</div><div class="step-body"><h4>加入折旧冲击</h4>租金降至4.5亿元时，DSCR 0.75；还要检查担保是否触发、债权人是否能延长贷款。</div></div><div class="chart-card"><div class="chart-title">图T1 · 租金下滑：同一债务的偿债覆盖迅速变薄</div>
-<div class="chart-sub">项目债务50亿，息3.5亿、本2.5亿</div><div class="chart-wrap short"><canvas id="chartT1"></canvas></div>
-<div class="chart-footnote">未考虑运营费用变化、续租担保与再融资。示例数据，用于教学演示，非真实业务数据。</div></div>
-<div class="callout good"><span class="label">把图读成一句话</span>看两条线是否相交：资产现金流能否按期覆盖本息，而非只看债券拿了什么评级。</div></div>
-<div class="part" id="p5"><div class="part-head"><span class="part-num">05</span><h2>三个容易踩的坑</h2></div><div class="pitfall"><div class="pit-title">坑一 · 只算利息不算本金</div>气球债到期本金尤其容易被忽略。</div>
-<div class="pitfall"><div class="pit-title">坑二 · 拿今天残值线性外推二十年</div>技术替代、残值市场与租约续签要做情景。</div>
-<div class="pitfall"><div class="pit-title">坑三 · 把行业风险等同系统性危机</div>系统性还要看集中度、杠杆、赎回链与跨机构传染。</div></div>
-<div class="part" id="p6"><div class="part-head"><span class="part-num">06</span><h2>本节速查表</h2></div><div class="cheat-grid"><div class="cheat-card"><div class="cc-name">租金现金</div><div class="cc-detail">先扣必要运营支出。</div></div>
+<div class="part" id="p3"><div class="part-head"><span class="part-num">03</span><h2>偿债覆盖率要包含当期本金</h2></div>
+<div class="method-step"><div class="m-num">1</div><div class="m-body"><h4>先定口径</h4>从真实项目的现金流和偿债计划提取同一期数值。<div class="calc-box"><span class="eq">DSCR＝可用于偿债的现金流÷（当期应付利息＋应还本金）</span></div></div></div>
+<p>借款到期是否能续、租户能否续租和残值能回收多少，均不能由单期 DSCR 直接推断。</p><h3>遇到以下真实读数，下一步查什么</h3><table class="tbl mobile-stack"><thead><tr><th>核验情形</th><th>应做什么</th></tr></thead><tbody><tr><td data-label="核验情形">DSCR 高于1但设备即将换代</td><td data-label="应做什么">检查未来技术投入、续租条款、残值与期末大额本金。</td></tr>
+<tr><td data-label="核验情形">DSCR 跌至0.75</td><td data-label="应做什么">拆违约/补现金/再融资三种路径，追最终承担者。</td></tr>
+<tr><td data-label="核验情形">基金遇赎回但贷款尚未违约</td><td data-label="应做什么">区分流动性风险和底层信用损失，关注资产折价出售。</td></tr></tbody></table></div>
+<div class="part" id="p4"><div class="part-head"><span class="part-num">04</span><h2>先沿合同做压力测试，再问谁承担损失</h2></div><p><strong class="para-lead">先沿合同做压力测试，再问谁承担损失。</strong>比较承租人现金流、债务本息、资产处置值与担保触发条款；GPU 使用周期与长期项目债期限可能错配，评级也不能代替实际现金回款。</p><p><strong class="para-lead">查证路径。</strong>分别追租金不足、项目 SPV 违约、担保执行及基金赎回路径。基金流动性问题与底层债权违约可以同时存在但不是同一事件；看<a href="../../ai-credit-chain/manual/04-contagion.html">传导链与反方理由</a>。</p><p><strong class="para-lead">压力从设备寿命与债券期限不匹配开始。</strong>若 GPU 迭代快于项目债到期，园区租金、续租与设备残值未必同时支持偿本；“科技企业能赚钱”只能解释租金来源，不能保证每一种压力情景的再融资价格。</p><p><strong class="para-lead">风险沿项目公司、私募基金再到最终出资人传递。</strong>项目违约先看合同下租户、担保人及债权人的顺位；基金投资者的赎回压力是另一条流动性链，保险和养老金是否最终持有某笔债还须查基金文件及实际持仓，不能仅凭管理人名单宣称公众已承担损失。</p></div>
+<div class="part" id="p5"><div class="part-head"><span class="part-num">05</span><h2>本节速查表</h2></div><div class="cheat-grid"><div class="cheat-card"><div class="cc-name">租金现金</div><div class="cc-detail">先扣必要运营支出。</div></div>
 <div class="cheat-card"><div class="cc-name">DSCR</div><div class="cc-detail">可偿债现金／当期本息。</div></div>
 <div class="cheat-card"><div class="cc-name">设备寿命</div><div class="cc-detail">不同资产拆开估。</div></div>
 <div class="cheat-card"><div class="cc-name">气球债</div><div class="cc-detail">期末大额本金须再融资。</div></div>
 <div class="cheat-card"><div class="cc-name">担保</div><div class="cc-detail">看上限与触发。</div></div>
 <div class="cheat-card"><div class="cc-name">私募信贷</div><div class="cc-detail">看资金来源、杠杆与赎回安排。</div></div>
 <div class="cheat-card"><div class="cc-name">压力测试</div><div class="cc-detail">收入↓、残值↓、利率↑组合。</div></div>
-<div class="cheat-card"><div class="cc-name">三个坑</div><div class="cc-detail">只算利息不算本金 / 拿今天残值线性外推二十年 / 把行业风险等同系统性危机</div></div></div></div>
-<div class="part" id="p7"><div class="part-head"><span class="part-num">07</span><h2>自测：合上答案试一试</h2></div><div class="quiz-item"><div class="q-title">第 1 题 · 辨析</div><p>项目有投资级评级就没有现金流风险吗？</p><details><summary>先写下答案，再展开</summary><div class="answer"><b>不是。</b>评级不是未来回款保证。 <a href="#p1">↩ 回看方法或案例</a></div></details></div>
-<div class="quiz-item"><div class="q-title">第 2 题 · 定义</div><p>DSCR为何要把本金也算进去？</p><details><summary>先写下答案，再展开</summary><div class="answer"><b>合同约定的本息都需要现金偿付。</b> <a href="#p2">↩ 回看方法或案例</a></div></details></div>
-<div class="quiz-item"><div class="q-title">第 3 题 · 计算</div><p>租金6、本息6，DSCR多少？降至4.5又是多少？</p><details><summary>先写下答案，再展开</summary><div class="answer"><b>1.00 与 0.75。</b> <a href="#p3">↩ 回看方法或案例</a></div></details></div>
-<div class="quiz-item"><div class="q-title">第 4 题 · 信号</div><p>租金下降但贷款未违约，基金大额赎回，先看哪两类风险？</p><details><summary>先写下答案，再展开</summary><div class="answer"><b>底层信用和基金流动性。</b>不可混为一谈。 <a href="#p4">↩ 回看方法或案例</a></div></details></div>
-<div class="quiz-item"><div class="q-title">第 5 题 · 迁移</div><p>“AI版次贷”类比至少需额外比较哪三个维度？</p><details><summary>先写下答案，再展开</summary><div class="answer"><b>市场规模、杠杆集中、跨机构传染机制。</b> <a href="#p4">↩ 回看方法或案例</a></div></details></div></div>
+<div class="cheat-card"><div class="cc-name">核验要点</div><div class="cc-detail">只算利息不算本金 / 拿今天残值线性外推二十年 / 把行业风险等同系统性危机</div></div></div></div>
+<div class="part" id="p6"><div class="part-head"><span class="part-num">06</span><h2>自测：合上答案试一试</h2></div><div class="quiz-item"><div class="q-title">第 1 题 · 辨析</div><p>项目有投资级评级就没有现金流风险吗？</p><details><summary>先写下答案，再展开</summary><div class="answer"><b>不是。</b>评级不是未来回款保证。 <a href="#p1">↩ 回看方法或资料</a></div></details></div>
+<div class="quiz-item"><div class="q-title">第 2 题 · 定义</div><p>DSCR为何要把本金也算进去？</p><details><summary>先写下答案，再展开</summary><div class="answer"><b>合同约定的本息都需要现金偿付。</b> <a href="#p2">↩ 回看方法或资料</a></div></details></div>
+<div class="quiz-item"><div class="q-title">第 3 题 · 计算</div><p>如何区分利息覆盖率与包含还本的 DSCR？</p><details><summary>先写下答案，再展开</summary><div class="answer"><b>DSCR＝可用于偿债的现金÷同一期应付利息与本金；若只用利息作分母会高估覆盖。</b> <a href="#p3">↩ 回看方法或资料</a></div></details></div>
+<div class="quiz-item"><div class="q-title">第 4 题 · 信号</div><p>租金下降但贷款未违约，基金大额赎回，先看哪两类风险？</p><details><summary>先写下答案，再展开</summary><div class="answer"><b>底层信用和基金流动性。</b>不可混为一谈。 <a href="#p4">↩ 回看方法或资料</a></div></details></div>
+<div class="quiz-item"><div class="q-title">第 5 题 · 迁移</div><p>“AI版次贷”类比至少需额外比较哪三个维度？</p><details><summary>先写下答案，再展开</summary><div class="answer"><b>市场规模、杠杆集中、跨机构传染机制。</b> <a href="#p4">↩ 回看方法或资料</a></div></details></div></div>
 <div class="summary-box"><h3>本节小结</h3><p>资产变旧和贷款到期是两只不同的时钟；当它们不合拍时，用覆盖倍数、残值和资金链追到最终持有人。</p><div class="mnemonic-line">别只看抵押品今天值多少，要算每年能还多少。</div></div>
 <div class="next-card"><div><div class="n-label">下一步 · 模块 完结</div><div class="n-title"><a href="../index.html">回到本课题目录 →</a></div></div><div class="n-arrow">→</div></div>
 <p style="text-align:center"><a href="../index.html">← 返回表外融资与风险转移学习手册目录</a></p>
-<div class="page-footer"><span>表外融资与风险转移学习手册 · 模块 04 · 虚构案例与教学图均非真实业务数据</span>
-<span>原材料截至 2026-08-22 · 来源与核验范围见 <a href="../TOPIC.md">课题说明</a> · 不构成投资建议</span></div></div>
-<script>
-if (window.Chart) {
-const gridColor='#EFE7DA';
-Chart.defaults.font.family="-apple-system,BlinkMacSystemFont,'PingFang SC','Microsoft YaHei',sans-serif";
-Chart.defaults.font.size=12.5;Chart.defaults.color='#5B5147';
-new Chart(document.getElementById('chartT1'), {type:'bar', data:{"labels": ["初始现金6亿", "冲击后4.5亿", "最低本息6亿"], "datasets": [{"label": "年度现金", "data": [6, 4.5, 6], "backgroundColor": ["#C9BFB2", "#3E7E96", "#C1892A"], "borderRadius": 5}]}, options:{responsive:true,maintainAspectRatio:false,
-plugins:{legend:{display:false}},scales:{y:{beginAtZero:true,grid:{color:gridColor},title:{display:true,text:"现金（亿元）"},ticks:{callback:v=>v+"\u4ebf"}},x:{grid:{display:false}}}}});
-} else { document.getElementById('chartT1').replaceWith(document.createTextNode('图表库未加载；请看上方情景表与下方读图结论。')); }
-</script></body></html>
+<div class="page-footer"><span>表外融资与风险转移学习手册 · 模块 04 · 数值与口径按本章资料说明核验</span>
+<span>数据观察截止 2026-08-22 · 来源与核验范围见 <a href="../TOPIC.md">课题说明</a> · 不构成投资建议</span></div></div>
+</body></html>

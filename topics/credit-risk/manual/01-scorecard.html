@@ -13,10 +13,10 @@
 
 <header class="masthead">
   <div class="container">
-    <div class="breadcrumb"><a href="../index.html">信贷风控学习手册</a> › 模块一</div>
+    <nav class="breadcrumb" aria-label="当前位置"><ol><li><a href="../../../index.html">Atlas</a></li><li><a href="../index.html">信贷风控学习手册</a></li><li aria-current="page">模块 01 · 评分卡体系</li></ol></nav>
     <span class="eyebrow">🏗️ 模块一 · 评分卡体系</span>
     <h1>A卡 / B卡 / C卡：评分卡怎么从"概率"变成"分数"</h1>
-    <p class="sub">评分卡诞生于上世纪50年代的FICO，70多年过去，深度学习都快把传统机器学习卷完了，风控核心决策还是离不开这张"卡"。这一节讲清楚它是什么、为什么是它、以及一个分数具体是怎么算出来的。</p>
+    <p class="sub">信贷决策除了估计违约概率，还需要解释分数怎样影响额度与审批。逻辑回归评分卡是其中一种可逐项拆解的工具；这一节讲清它的业务阶段、计算方法和适用边界。</p>
   </div>
 </header>
 
@@ -29,10 +29,9 @@
     <a href="#p5">⑤ 分数转换</a>
     <a href="#p6">⑥ 算一个分数</a>
     <a href="#p7">⑦ 规则与模型</a>
-    <a href="#p8">⑧ 实战案例</a>
-    <a href="#p9">⑨ 三个坑</a>
-    <a href="#p10">⑩ 速查表</a>
-    <a href="#p11">⑪ 自测</a>
+    <a href="#p8">⑧ 核验流程</a>
+    <a href="#p9">⑨ 速查表</a>
+    <a href="#p10">⑩ 自测</a>
   </div>
 </nav>
 
@@ -47,14 +46,14 @@
       <li>手算一遍"概率→Odds→分数"的转换公式，理解 PDO、基准分是什么</li>
       <li>给一个具体客户，从头到尾算出他的评分卡总分</li>
       <li>理解规则和模型该怎么分层，避免相互打架</li>
-      <li>避开评分卡建模最容易踩的三个坑</li>
+      <li>检查入模变量的共线性与采集时点，避免目标泄露</li>
     </ul>
   </div>
 
   <!-- ============ PART 1 痛点 ============ -->
-  <div class="part" id="p1">
-    <div class="part-head"><span class="part-num">01</span><h2>先说痛点：为什么不直接用"概率"，非要转成"分数"</h2></div>
-    <p class="part-lede">模型输出一个 0~1 之间的违约概率，技术上已经足够了，为什么整个行业还要多绕一步，把它转换成一个 300~850 的"分数"？</p>
+
+    <div class="part" id="p1"><div class="part-head"><span class="part-num">01</span><h2>先说痛点：为什么不直接用"概率"，非要转成"分数"</h2></div>
+    <p class="part-lede">模型可输出 0～1 的违约概率；<strong>为什么还要按约定的刻度把概率转换成分数？</strong>300～850 只是常见评分刻度之一，不是所有机构或模型的通用范围。</p>
 
     <div class="analogy">
       <span class="label">🌡️ 一个类比</span>
@@ -62,22 +61,22 @@
     </div>
 
     <p>除了直觉好懂，还有三个更硬的理由：</p>
-    <table class="tbl">
-      <tr><th>理由</th><th>具体表现</th></tr>
-      <tr><td>可解释性</td><td>评分卡能拆解成"每个变量的每个分箱贡献多少分"，一笔一笔说清楚，监管和客户都能问、都能答</td></tr>
-      <tr><td>监管认可度高</td><td>欧盟GDPR第22条、中国《个人信息保护法》第24条都要求自动化决策"可解释"，黑盒模型即使AUC更高，也可能因为"拒绝解释不过合规评审"而无法上线</td></tr>
-      <tr><td>好落地、好维护</td><td>转成分数后可以直接设定拒绝线、分层定价，业务规则、系统实现都更简单，出问题也容易定位是哪个变量、哪个分箱在起作用</td></tr>
-    </table>
+    <table class="tbl mobile-stack">
+      <thead><tr><th>理由</th><th>具体表现</th></tr></thead><tbody>
+      <tr><td data-label="理由">可解释性</td><td data-label="具体表现">评分卡能拆解成"每个变量的每个分箱贡献多少分"，一笔一笔说清楚，监管和客户都能问、都能答</td></tr>
+      <tr><td data-label="理由">便于审查决策</td><td data-label="具体表现">需要说明拒贷或定价依据时，可逐项回溯分箱、系数与版本；自动化决策的适用条件和当事人权利应分别按当地法规核查，<strong>法规不按模型名称直接批准或禁止上线</strong></td></tr>
+      <tr><td data-label="理由">好落地、好维护</td><td data-label="具体表现">转成分数后可以直接设定拒绝线、分层定价，业务规则、系统实现都更简单，出问题也容易定位是哪个变量、哪个分箱在起作用</td></tr>
+    </tbody></table>
 
     <div class="callout">
       <span class="label">这也解释了为什么逻辑回归到今天还没被淘汰</span>
-      树模型、深度学习的排序能力（KS/AUC，见<a href="03-metrics.html">模块三</a>）经常更强，但风控模型要兼顾"准不准"和"能不能解释清楚"——这个取舍会在第④节详细展开。
+      树模型等方法可以拟合更复杂的关系；是否更准必须在同一人群和观察窗比较。模型还要兼顾<strong>验证、解释和运维</strong>——这个取舍会在第④节展开。
     </div>
   </div>
 
   <!-- ============ PART 2 A/B/C卡 ============ -->
-  <div class="part" id="p2">
-    <div class="part-head"><span class="part-num">02</span><h2>三张卡：贷前、贷中、贷后</h2></div>
+
+    <div class="part" id="p2"><div class="part-head"><span class="part-num">02</span><h2>三张卡：贷前、贷中、贷后</h2></div>
     <p class="part-lede">评分卡不是一张卡，是一整套体系，按业务阶段分成三张。</p>
 
     <div class="concept-grid">
@@ -101,12 +100,12 @@
       </div>
     </div>
 
-    <table class="tbl">
-      <tr><th></th><th>A卡</th><th>B卡</th><th>C卡</th></tr>
-      <tr><td>使用阶段</td><td>贷前</td><td>贷中</td><td>贷后（已逾期）</td></tr>
-      <tr><td>数据积累要求</td><td>低（0~1年）</td><td>中（3~5年行为数据）</td><td>高（需要催收反馈数据）</td></tr>
-      <tr><td>决策用途</td><td>是否放款、初始额度</td><td>提额/降额/复借</td><td>催收策略分层</td></tr>
-    </table>
+    <table class="tbl mobile-stack">
+      <thead><tr><th>比较项</th><th>A卡</th><th>B卡</th><th>C卡</th></tr></thead><tbody>
+      <tr><td data-label="比较项">使用阶段</td><td data-label="A卡">贷前</td><td data-label="B卡">贷中</td><td data-label="C卡">贷后（已逾期）</td></tr>
+      <tr><td data-label="比较项">数据积累要求</td><td data-label="A卡">低（0~1年）</td><td data-label="B卡">中（3~5年行为数据）</td><td data-label="C卡">高（需要催收反馈数据）</td></tr>
+      <tr><td data-label="比较项">决策用途</td><td data-label="A卡">是否放款、初始额度</td><td data-label="B卡">提额/降额/复借</td><td data-label="C卡">催收策略分层</td></tr>
+    </tbody></table>
 
     <div class="callout warn">
       <span class="label">C卡分数高≠该少催</span>
@@ -115,8 +114,8 @@
   </div>
 
   <!-- ============ PART 3 建模流程 ============ -->
-  <div class="part" id="p3">
-    <div class="part-head"><span class="part-num">03</span><h2>评分卡建模全流程，一共几步</h2></div>
+
+    <div class="part" id="p3"><div class="part-head"><span class="part-num">03</span><h2>评分卡建模全流程，一共几步</h2></div>
     <p class="part-lede">不管A卡B卡C卡，走的都是同一套流程骨架。</p>
 
     <div class="chart-card">
@@ -134,12 +133,12 @@
     </div>
 
     <p>三类数据来源支撑第①~④步：</p>
-    <table class="tbl">
-      <tr><th>数据来源</th><th>包含内容</th><th>特点</th></tr>
-      <tr><td>机构内部账户与行为数据</td><td>交易、消费、存款、理财、逾期记录</td><td>只有存量客户才有，A卡阶段基本没有</td></tr>
-      <tr><td>央行征信报告</td><td>近5年信贷记录、房贷车贷、逾期、查询记录</td><td>可衍生上千维特征，A卡阶段最主力的数据源</td></tr>
-      <tr><td>第三方信用分</td><td>芝麻分、微信支付分、百融分等</td><td>作为补充，权威性通常弱于前两类</td></tr>
-    </table>
+    <table class="tbl mobile-stack">
+      <thead><tr><th>数据来源</th><th>包含内容</th><th>特点</th></tr></thead><tbody>
+      <tr><td data-label="数据来源">机构内部账户与行为数据</td><td data-label="包含内容">交易、消费、存款、理财、逾期记录</td><td data-label="特点">只有存量客户才有，A卡阶段基本没有</td></tr>
+      <tr><td data-label="数据来源">央行征信报告</td><td data-label="包含内容">近5年信贷记录、房贷车贷、逾期、查询记录</td><td data-label="特点">可衍生上千维特征，A卡阶段最主力的数据源</td></tr>
+      <tr><td data-label="数据来源">第三方信用分</td><td data-label="包含内容">芝麻分、微信支付分、百融分等</td><td data-label="特点">作为补充，权威性通常弱于前两类</td></tr>
+    </tbody></table>
 
     <div class="callout">
       <span class="label">这份手册怎么串起来</span>
@@ -148,28 +147,28 @@
   </div>
 
   <!-- ============ PART 4 为什么LR ============ -->
-  <div class="part" id="p4">
-    <div class="part-head"><span class="part-num">04</span><h2>为什么是逻辑回归，不是更强的树模型/神经网络</h2></div>
+
+    <div class="part" id="p4"><div class="part-head"><span class="part-num">04</span><h2>为什么是逻辑回归，不是更强的树模型/神经网络</h2></div>
     <p class="part-lede">不是"不知道"更强的模型，是权衡之后的选择。</p>
 
-    <table class="tbl">
-      <tr><th>维度</th><th>逻辑回归</th><th>树模型/神经网络</th></tr>
-      <tr><td>可解释性</td><td>每个变量的贡献能拆到"每一分"，业务、监管都能看懂</td><td>黑盒，即使有SHAP之类的工具也是"事后解释"，不是天生可解释</td></tr>
-      <tr><td>区分能力（KS/AUC）</td><td>够用但不是最强</td><td>通常更强，尤其能自动捕捉非线性和交互关系</td></tr>
-      <tr><td>转评分卡</td><td>系数直接对应到WOE，可以无缝转换成"每箱一个分数"</td><td>没有天然对应关系，很难转成一张能手算的卡</td></tr>
-      <tr><td>监管认可度</td><td>70多年历史，行业和监管都熟悉、认可</td><td>新兴，合规评审阻力更大</td></tr>
-      <tr><td>稳定性</td><td>配合WOE分箱后，对异常值、缺失值天然免疫</td><td>对特征分布变化相对更敏感，需要更频繁监控</td></tr>
-    </table>
+    <table class="tbl mobile-stack">
+      <thead><tr><th>维度</th><th>逻辑回归</th><th>树模型/神经网络</th></tr></thead><tbody>
+      <tr><td data-label="维度">可解释性</td><td data-label="逻辑回归">在线性、分箱稳定等条件下较易拆分贡献；仍需审查数据来源、适用人群与规则</td><td data-label="树模型/神经网络">解释方法和可验证性随模型、特征与部署方式而变；可采用 SHAP 等方法但须检验解释是否适用</td></tr>
+      <tr><td data-label="维度">区分能力（KS/AUC）</td><td data-label="逻辑回归">取决于数据与任务，不存在天然高低次序</td><td data-label="树模型/神经网络">可拟合非线性与交互，是否优于基线须在同窗样本验证</td></tr>
+      <tr><td data-label="维度">转评分卡</td><td data-label="逻辑回归">系数直接对应到WOE，可以无缝转换成"每箱一个分数"</td><td data-label="树模型/神经网络">没有天然对应关系，很难转成一张能手算的卡</td></tr>
+      <tr><td data-label="维度">治理工作</td><td data-label="逻辑回归">通常便于记录系数和分箱版本，但仍须核查自动化决策的具体适用条件</td><td data-label="树模型/神经网络">同样可以进入评估流程，需准备相应的验证、解释、监控及复核材料</td></tr>
+      <tr><td data-label="维度">稳定性</td><td data-label="逻辑回归">WOE 分箱能控制部分异常值影响，不能免疫数据漂移或缺失口径变化</td><td data-label="树模型/神经网络">稳定性依赖数据、约束与更新机制，也要持续监控</td></tr>
+    </tbody></table>
 
     <div class="callout bad">
-      <span class="label">一个真实的取舍案例</span>
-      一个在 AUC 上赢 2 个百分点的黑盒深度模型，完全可能因为"拒绝解释不过合规评审"而无法上线——排序能力不是唯一的评审标准。这也是为什么树模型/神经网络在风控里更多是<strong>辅助角色</strong>：用来做特征挖掘、做"挑战者模型"验证方向，最终拍板上线的主模型，大多数机构仍然是逻辑回归评分卡。
+      <span class="label">一个常见的模型取舍</span>
+      <strong>排序能力只是选模条件之一。</strong>逻辑回归适合本章这种可手算的分箱评分卡；树模型也可作为主模型或挑战者，具体取舍取决于可用数据、解释方案、稳定性、监控与适用法规。欧盟 GDPR 第 22 条针对特定的仅基于自动化处理且具有法律或类似重大影响的决定，并设有条件与保障；《个人信息保护法》第 24 条规定自动化决策的透明、公平等要求，并对影响重大者的说明及拒绝仅通过自动化决策作出决定等权利作出规定。<strong>两条都不能概括为“黑盒模型一律不能上线”</strong>。
     </div>
   </div>
 
   <!-- ============ PART 5 分数转换 ============ -->
-  <div class="part" id="p5">
-    <div class="part-head"><span class="part-num">05</span><h2>手算一遍：概率怎么变成分数</h2></div>
+
+    <div class="part" id="p5"><div class="part-head"><span class="part-num">05</span><h2>手算一遍：概率怎么变成分数</h2></div>
     <p class="part-lede">这是整个模块最核心的公式，务必跟着数字走一遍。</p>
 
     <div class="method-step">
@@ -186,8 +185,8 @@
       <div class="m-num">2</div>
       <div class="m-body">
         <h4>定义 Score 与 ln(odds) 的线性关系</h4>
-        <div class="calc-box">Score = A − B × ln(odds)</div>
-        odds 越大（客户越好），ln(odds) 越大，Score 也越大——分数高=风险低，符合业界默认习惯。A、B 是两个待定常数，接下来用两个业务设定把它们解出来。
+        <div class="calc-box">Score = A + B × ln(odds)</div>
+        odds 越大（好客户相对更多），ln(odds) 越大，Score 也越大——分数高=风险低，符合业界默认习惯。A、B 是两个待定常数，接下来用两个业务设定把它们解出来。
       </div>
     </div>
 
@@ -196,8 +195,8 @@
       <div class="m-body">
         <h4>设定两个业务锚点：基准分 P0，和 PDO</h4>
         <ul style="margin:6px 0; padding-left:20px; font-size:14.5px;">
-          <li><strong>基准分 P0</strong>：约定某个 odds 水平对应的分数。这里设 P0=600 分，对应 odds₀=1:20（好坏比20:1，约5%坏账率）</li>
-          <li><strong>PDO（Points to Double the Odds）</strong>：odds 翻一倍（客户变差一倍），分数要扣多少分。这里设 PDO=20</li>
+          <li><strong>基准分 P0</strong>：约定某个 odds 水平对应的分数。这里设 P0=600 分，对应 odds₀=20:1（好坏比20:1，对应违约概率约4.76%）</li>
+          <li><strong>PDO（Points to Double the Odds）</strong>：好坏比翻一倍（客户相对变好），分数增加多少。这里设 PDO=20</li>
         </ul>
       </div>
     </div>
@@ -208,13 +207,13 @@
         <h4>解出 A、B</h4>
         <div class="calc-box">
           由 PDO 定义：B × ln(2) = PDO　→　<span class="eq">B = 20 / ln(2) ≈ 28.85</span><br>
-          由基准分定义：P0 = A − B×ln(odds₀)　→　<span class="eq">A = 600 + 28.85 × ln(20) ≈ 513.56</span>
+          由基准分定义：P0 = A + B×ln(odds₀)　→　<span class="eq">A = 600 − 28.85 × ln(20) ≈ 513.56</span>
         </div>
       </div>
     </div>
 
     <div class="chart-card">
-      <div class="chart-title">图S1 · Odds 每翻一倍，分数刚好扣 20 分（PDO）</div>
+      <div class="chart-title">图S1 · 好坏比每翻一倍，分数增加 20 分（PDO）</div>
       <div class="chart-sub">用刚解出的 A=513.56，B=28.85 代入公式画出来</div>
       <div class="chart-wrap short"><canvas id="chartS1"></canvas></div>
       <div class="chart-footnote">示例数据，用于教学演示，非真实业务数据。</div>
@@ -222,39 +221,29 @@
 
     <div class="callout good">
       <span class="label">读懂这张图</span>
-      odds 从 1:20（基准，600分）变差一倍到 1:10，分数刚好降到580；再变差一倍到1:5，降到560——<strong>每次 odds 翻倍，分数严格扣 20 分，这正是 PDO 的字面意思</strong>。反过来，odds 从1:20变好一倍到1:40，分数涨到620。这条"等差"关系就是评分卡好用的地方：分数差多少，业务上能直接换算成风险差了几倍。
+      好坏比从 20:1（基准，600分）减半到 10:1，分数降到580；再减半到 5:1，降到560。反过来，<strong>好坏比翻倍到 40:1，分数涨到620</strong>；这正是 PDO 的含义。这条"等差"关系就是评分卡好用的地方：分数差多少，业务上能直接换算成风险差了几倍。
     </div>
   </div>
 
   <!-- ============ PART 6 算一个分数 ============ -->
-  <div class="part" id="p6">
-    <div class="part-head"><span class="part-num">06</span><h2>给一个真实客户，算出他的总分</h2></div>
+
+    <div class="part" id="p6"><div class="part-head"><span class="part-num">06</span><h2>用一组分箱得分，算出总分</h2></div>
     <p class="part-lede">逻辑回归训练完之后，每个变量的每个分箱都会对应一个具体分值——这一步的原理是"分箱WOE值 × 该变量回归系数 × (−B)"，公式细节交给模块二，这里直接用算好的结果做一次完整演算。</p>
 
-    <p>假设这张 A 卡最终入模 4 个变量，转换出来的分箱得分如下：</p>
-    <table class="tbl">
-      <tr><th>变量</th><th>分箱</th><th>得分</th></tr>
-      <tr><td rowspan="4">年龄</td><td>&lt;25岁</td><td class="num">−5</td></tr>
-      <tr><td>25~35岁</td><td class="num">+8</td></tr>
-      <tr><td>35~50岁</td><td class="num">+15</td></tr>
-      <tr><td>50岁以上</td><td class="num">+10</td></tr>
-      <tr><td rowspan="3">婚姻状况</td><td>未婚</td><td class="num">−3</td></tr>
-      <tr><td>已婚</td><td class="num">+8</td></tr>
-      <tr><td>离异</td><td class="num">−6</td></tr>
-      <tr><td rowspan="3">学历</td><td>高中及以下</td><td class="num">−8</td></tr>
-      <tr><td>本科</td><td class="num">+12</td></tr>
-      <tr><td>硕士及以上</td><td class="num">+18</td></tr>
-      <tr><td rowspan="3">近3个月申请次数</td><td>0次</td><td class="num">+15</td></tr>
-      <tr><td>1~2次</td><td class="num">0</td></tr>
-      <tr><td>3次以上</td><td class="num">−20</td></tr>
-    </table>
+    <p><strong class="para-lead">下面只演示分箱得分的加总。</strong>变量得分是为计算练习设定的输入，并非从下文 10,000 人教学表拟合出的真实模型；实际投产还要按训练系数、分箱定义和校准口径重算。</p>
+    <div class="concept-grid">
+      <div class="concept-card"><div class="c-name">年龄</div><div class="c-def">&lt;25岁 −5；25~35岁 +8；35~50岁 +15；50岁以上 +10。</div><div class="c-mnemonic">本次取 25~35岁：+8</div></div>
+      <div class="concept-card"><div class="c-name">婚姻状况</div><div class="c-def">未婚 −3；已婚 +8；离异 −6。</div><div class="c-mnemonic">本次取已婚：+8</div></div>
+      <div class="concept-card"><div class="c-name">学历</div><div class="c-def">高中及以下 −8；本科 +12；硕士及以上 +18。</div><div class="c-mnemonic">本次取本科：+12</div></div>
+      <div class="concept-card"><div class="c-name">近3个月申请次数</div><div class="c-def">0次 +15；1~2次 0；3次以上 −20。</div><div class="c-mnemonic">本次取 1次：0</div></div>
+    </div>
 
     <div class="callout">
       <span class="label">留意最后这个变量</span>
       "近3个月申请次数"越多，扣分越狠——这跟直觉一致：短期内到处申请贷款（多头借贷），通常意味着资金紧张、风险更高。这个变量在<a href="02-woe.html">模块二</a>会被详细拆解怎么算出WOE/IV，在<a href="03-metrics.html">模块三</a>的监控案例里，它也是后来导致模型失效的那个"元凶"——同一个变量，贯穿了建模、特征工程、上线监控三个环节。
     </div>
 
-    <p>某客户：32岁，已婚，本科，近3个月申请1次：</p>
+    <p>计算练习：取年龄25~35岁、已婚、本科、近3个月申请1次四个分箱的得分：</p>
     <div class="calc-box">
       总分 = 基准分600 + 年龄(25~35岁,+8) + 婚姻(已婚,+8) + 学历(本科,+12) + 申请次数(1~2次,0)<br>
       <span class="eq">= 600 + 8 + 8 + 12 + 0 = 628</span>
@@ -270,16 +259,16 @@
   </div>
 
   <!-- ============ PART 7 规则与模型 ============ -->
-  <div class="part" id="p7">
-    <div class="part-head"><span class="part-num">07</span><h2>规则和模型，该怎么分层不打架</h2></div>
+
+    <div class="part" id="p7"><div class="part-head"><span class="part-num">07</span><h2>规则和模型，该怎么分层不打架</h2></div>
     <p class="part-lede">评分卡上线后最常见的争执：业务部门坚持用一套人工规则，说规则是"保底"，风控部门觉得规则在"破坏模型"。</p>
 
-    <table class="tbl">
-      <tr><th>层级</th><th>作用</th><th>示例</th></tr>
-      <tr><td>前置规则</td><td>硬性拒绝，样本<strong>不进入</strong>模型评估</td><td>身份证黑名单、失信被执行人</td></tr>
-      <tr><td>模型打分</td><td>对通过前置规则的样本评分</td><td>本节的评分卡</td></tr>
-      <tr><td>后置规则</td><td>可以调整分数阈值，<strong>不能直接覆盖</strong>模型结果</td><td>近3个月申请次数≥5次的，即使分数达标也降档处理</td></tr>
-    </table>
+    <table class="tbl mobile-stack">
+      <thead><tr><th>层级</th><th>作用</th><th>示例</th></tr></thead><tbody>
+      <tr><td data-label="层级">前置规则</td><td data-label="作用">硬性拒绝，样本<strong>不进入</strong>模型评估</td><td data-label="示例">身份证黑名单、失信被执行人</td></tr>
+      <tr><td data-label="层级">模型打分</td><td data-label="作用">对通过前置规则的样本评分</td><td data-label="示例">本节的评分卡</td></tr>
+      <tr><td data-label="层级">后置规则</td><td data-label="作用">可以调整分数阈值，<strong>不能直接覆盖</strong>模型结果</td><td data-label="示例">近3个月申请次数≥5次的，即使分数达标也降档处理</td></tr>
+    </tbody></table>
 
     <div class="callout warn">
       <span class="label">规则和模型必须分层，且互不干扰</span>
@@ -288,9 +277,9 @@
   </div>
 
   <!-- ============ PART 8 实战案例 ============ -->
-  <div class="part" id="p8">
-    <div class="part-head"><span class="part-num">08</span><h2>实战案例：从零建一版 A 卡</h2></div>
-    <p class="part-lede">把前面几节串成一次完整的建模决策过程。</p>
+
+    <div class="part" id="p8"><div class="part-head"><span class="part-num">08</span><h2>建模流程：从样本口径到投产验证</h2></div>
+    <p class="part-lede">按实际建模的先后次序核对输入、验证和投产条件；本课题的数值只用于展示计算方法，不代表一项已经投产的业务。</p>
 
     <div class="case-step">
       <div class="step-badge">1</div>
@@ -302,7 +291,7 @@
     <div class="case-step">
       <div class="step-body" style="margin-left:38px;">
         <h4>特征筛选</h4>
-        候选特征做IV初筛（详见<a href="02-woe.html">模块二</a>），"近3个月申请次数"（IV≈0.56）、"历史逾期次数"（IV≈0.41）等强特征入选，同时排查单调性和特征层PSI，剔除不稳定的高IV特征。<span class="result">→ 最终入模变量：年龄、婚姻状况、学历、近3个月申请次数等。</span>
+        候选特征须先检查<strong>采集时点、相关性与VIF</strong>：贷后才形成的数据不得进入申请时模型，高度相关的变量不能不经处理同时入模；再做IV初筛（详见<a href="02-woe.html">模块二</a>），"近3个月申请次数"（IV≈0.56）、"历史逾期次数"（IV≈0.41）等强特征入选，同时排查单调性和特征层PSI，剔除不稳定的高IV特征。<span class="result">→ 最终入模变量：年龄、婚姻状况、学历、近3个月申请次数等。</span>
       </div>
     </div>
     <div class="case-step">
@@ -314,45 +303,23 @@
     <div class="case-step">
       <div class="step-body" style="margin-left:38px;">
         <h4>模型评估达标</h4>
-        测试集（跨时间样本）验证：KS=0.46，AUC=0.79（评估方法见<a href="03-metrics.html">模块三</a>），达到内部投产标准。<span class="result">→ 准备上线。</span>
+        教学数据给出的 KS=0.46、AUC=0.79（评估方法见<a href="03-metrics.html">模块三</a>），不等于通过真实机构的投产审查。<span class="result">→ 真实投产需先验证跨时间测试集、数据授权和稳定性。</span>
       </div>
     </div>
     <div class="case-step">
       <div class="step-body" style="margin-left:38px;">
         <h4>叠加业务规则，冠军/挑战者验证后上线</h4>
-        业务部门要求对"近3个月申请次数≥5次"的客户加一道后置规则直接拒绝，不管模型分数多高。用冠军/挑战者小流量AB测试验证"模型+规则"组合的通过率和坏账率优于纯模型，确认后切全量。
+        若拟加“申请次数≥5次”后置规则，应先登记覆盖范围、监控通过率与坏账率，并以随机分流验证增量效果；未取得实际实验结果前，不能预告“模型+规则”优于纯模型。
       </div>
     </div>
 
     <div class="callout bad">
       <span class="label">留一个悬念</span>
-      这张卡上线9个月后会发生什么？"近3个月申请次数"这个特征后来的分布漂移，直接触发了模型衰退预警——完整的监控排查过程见<a href="03-metrics.html">模块三·实战案例</a>。
+      教学参数中，评分卡在第9个月的分布如何变化？"近3个月申请次数"这个特征后来的分布漂移，直接触发了模型衰退预警——完整的监控排查过程见<a href="03-metrics.html">模块三·实战案例</a>。
     </div>
   </div>
 
-  <!-- ============ PART 9 三个坑 ============ -->
-  <div class="part" id="p9">
-    <div class="part-head"><span class="part-num">09</span><h2>三个容易踩的坑</h2></div>
-
-    <div class="pitfall">
-      <div class="pit-title">坑一 · 拒绝推断没做，模型越用越窄</div>
-      线上模型只见得到"被通过"的样本——被模型拒绝的申请人，永远不知道他们实际会不会还款。训练集的分布跟真实申请人群系统性偏离，模型会越跑越保守、通过率持续下降。应对：拒绝样本外推（强制通过一小部分随机样本做探索）、用外部数据给拒绝样本打标签、Heckman两阶段校正等方法（详见模块五）。
-    </div>
-
-    <div class="pitfall">
-      <div class="pit-title">坑二 · 共线性：被忽视的"隐形杀手"</div>
-      多个高度相关的特征同时入模（比如"总负债"和"负债收入比"），会导致回归系数不稳定，甚至出现方向跟业务直觉相反的情况（本该扣分的变量系数却是正的）。逻辑回归对共线性特别敏感，入模前要做相关性/VIF检查，高度相关的特征只留一个。
-    </div>
-
-    <div class="pitfall">
-      <div class="pit-title">坑三 · 用"贷后特征"冒充"贷前特征"（目标泄露）</div>
-      常见错误：把"贷后还款次数""最后一次逾期天数"这类事后才会产生的特征，当成"申请时刻"就能拿到的特征放进A卡模型——训练时效果好得不真实，上线后发现这些特征在审批那一刻根本不存在。<strong>IV异常高（比如&gt;0.8）的变量都应该人肉审查</strong>，这往往是穿越变量的信号。
-    </div>
-  </div>
-
-  <!-- ============ PART 10 速查表 ============ -->
-  <div class="part" id="p10">
-    <div class="part-head"><span class="part-num">10</span><h2>本节速查表</h2></div>
+    <div class="part" id="p9"><div class="part-head"><span class="part-num">09</span><h2>本节速查表</h2></div>
     <div class="cheat-grid">
       <div class="cheat-card">
         <div class="cc-name">A卡/B卡/C卡</div>
@@ -360,18 +327,18 @@
       </div>
       <div class="cheat-card">
         <div class="cc-name">Odds</div>
-        <div class="cc-detail">好坏比 = P(好)/P(坏)。<br><b>用途：</b>连接概率和评分卡分数的桥梁</div>
+        <div class="cc-detail">好坏比 = P(好)/P(坏)。本章基准为20:1。<br><b>用途：</b>连接概率和评分卡分数的桥梁</div>
       </div>
       <div class="cheat-card">
         <div class="cc-name">PDO</div>
-        <div class="cc-detail">Odds翻倍，分数变化的幅度。<br><b>用途：</b>定义分数和风险的换算关系</div>
+        <div class="cc-detail">好坏比翻倍，分数增加的幅度。<br><b>用途：</b>定义分数和风险的换算关系</div>
       </div>
       <div class="cheat-card">
         <div class="cc-name">基准分 P0</div>
         <div class="cc-detail">约定某个odds水平对应的分数。<br><b>用途：</b>配合PDO解出A、B两个常数</div>
       </div>
       <div class="cheat-card">
-        <div class="cc-name">Score=A−B×ln(odds)</div>
+        <div class="cc-name">Score=A+B×ln(odds)</div>
         <div class="cc-detail">评分卡核心公式。<br><b>用途：</b>把逻辑回归输出转换成可解释的分数</div>
       </div>
       <div class="cheat-card">
@@ -383,15 +350,15 @@
         <div class="cc-detail">AB测试验证新策略/新模型。<br><b>用途：</b>用数据决定要不要切全量</div>
       </div>
       <div class="cheat-card">
-        <div class="cc-name">三个坑</div>
-        <div class="cc-detail">拒绝推断缺失/共线性/目标泄露</div>
+        <div class="cc-name">核验要点</div>
+        <div class="cc-detail">只观察获批样本会产生选择偏差；入模前检查相关性和采集时点。</div>
       </div>
     </div>
   </div>
 
   <!-- ============ PART 11 自测 ============ -->
-  <div class="part" id="p11">
-    <div class="part-head"><span class="part-num">11</span><h2>自测：检验一下是不是真的懂了</h2></div>
+
+    <div class="part" id="p10"><div class="part-head"><span class="part-num">10</span><h2>自测：检验一下是不是真的懂了</h2></div>
 
     <div class="quiz-item">
       <div class="q-title">Q1. A卡、B卡、C卡最核心的区别是什么？</div>
@@ -403,14 +370,14 @@
     <div class="quiz-item">
       <div class="q-title">Q2. 为什么风控模型至今仍以逻辑回归为主，而不是更强的树模型/神经网络？</div>
       <details><summary>查看解析</summary>
-        <div class="answer">不是排序能力（KS/AUC）更强就能用——逻辑回归<b>可解释性强、能无缝转成评分卡、监管认可度高</b>，这几点树模型/神经网络天生欠缺。一个AUC高2个点的黑盒模型，可能因为解释不清楚而通不过合规评审，这在信贷这种强监管行业是硬约束。</div>
+        <div class="answer"><b>本章选择逻辑回归，是为了能逐箱手算并追溯贡献</b>，不代表树模型不能作主模型，也不代表线性模型天然合规。比较模型还要看同窗验证、稳定性、解释、监控和具体自动化决策规则；不能从 AUC 的单一差值直接作上线决定。↩ 回看 <a href="#p4">Part 04</a>。</div>
       </details>
     </div>
 
     <div class="quiz-item">
-      <div class="q-title">Q3. 计算题：基准分600，odds₀=1:20，PDO=15，求B和A（保留2位小数）。</div>
+      <div class="q-title">Q3. 计算题：基准分600，odds₀=20:1，PDO=15，求B和A（保留2位小数）。</div>
       <details><summary>查看解析</summary>
-        <div class="answer">B = PDO/ln(2) = 15/0.693 ≈ <b>21.64</b>；A = P0 + B×ln(odds₀的倒数,即20) = 600 + 21.64×ln(20) ≈ 600+64.83 ≈ <b>664.83</b>。（本节正文用的是PDO=20的例子，这里换成15演示同样的解法）</div>
+        <div class="answer">B = PDO/ln(2) = 15/0.693 ≈ <b>21.64</b>；A = P0 − B×ln(odds₀) = 600 − 21.64×ln(20) ≈ 600−64.83 ≈ <b>535.17</b>。（本节正文用的是PDO=20的例子，这里换成15演示同样的解法）</div>
       </details>
     </div>
 
@@ -471,7 +438,7 @@ Chart.defaults.color = '#5B5147';
 new Chart(document.getElementById('chartS1'), {
   type: 'line',
   data: {
-    labels: ['1:80(很低风险)','1:40','1:20(基准)','1:10','1:5(较高风险)'],
+    labels: ['80:1(很低风险)','40:1','20:1(基准)','10:1','5:1(较高风险)'],
     datasets: [{
       label: 'Score',
       data: [640,620,600,580,560],
@@ -489,7 +456,7 @@ new Chart(document.getElementById('chartS1'), {
     plugins: { legend: { display:false } },
     scales: {
       y: { min:540, max:660, ticks:{ stepSize:20 }, grid:{ color: gridColor }, title:{ display:true, text:'评分卡分数' } },
-      x: { grid:{ display:false }, title:{ display:true, text:'Odds（好:坏）' } }
+      x: { grid:{ display:false }, title:{ display:true, text:'好坏比（好:坏）' } }
     }
   }
 });

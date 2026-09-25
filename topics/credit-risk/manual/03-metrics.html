@@ -13,7 +13,7 @@
 
 <header class="masthead">
   <div class="container">
-    <div class="breadcrumb"><a href="../index.html">信贷风控学习手册</a> › 模块三</div>
+    <nav class="breadcrumb" aria-label="当前位置"><ol><li><a href="../../../index.html">Atlas</a></li><li><a href="../index.html">信贷风控学习手册</a></li><li aria-current="page">模块 03 · 模型评估指标</li></ol></nav>
     <span class="eyebrow">📏 模块三 · 模型评估指标</span>
     <h1>KS / AUC / PSI / Lift：怎么判断一个模型好不好、稳不稳</h1>
     <p class="sub">"准确率99%"听起来很厉害，但如果坏客户本来就只占2%，一个"无论如何都预测好客户"的懒模型也能到98%——风控评估从来不用准确率，这一节讲清楚该用什么、怎么算、多少算合格。</p>
@@ -28,10 +28,9 @@
     <a href="#p4">④ KS曲线</a>
     <a href="#p5">⑤ ROC/AUC</a>
     <a href="#p6">⑥ PSI监控</a>
-    <a href="#p7">⑦ 实战案例</a>
-    <a href="#p8">⑧ 三个坑</a>
-    <a href="#p9">⑨ 速查表</a>
-    <a href="#p10">⑩ 自测</a>
+    <a href="#p7">⑦ 指标排查</a>
+    <a href="#p8">⑧ 速查表</a>
+    <a href="#p9">⑨ 自测</a>
   </div>
 </nav>
 
@@ -45,13 +44,13 @@
       <li>看懂 ROC 曲线，理解 AUC 和 KS 的关系与区别</li>
       <li>算一遍 PSI：知道它在监控什么、临界值怎么定、分箱漂移怎么定位</li>
       <li>走一遍完整案例：模型从上线达标到指标衰退触发迭代的全过程</li>
-      <li>避开三个评估阶段最容易踩的坑</li>
+      <li>同时核查跨时间验证、分箱表现与特征层漂移</li>
     </ul>
   </div>
 
   <!-- ============ PART 1 痛点 ============ -->
-  <div class="part" id="p1">
-    <div class="part-head"><span class="part-num">01</span><h2>先说痛点：为什么不能用"准确率"</h2></div>
+
+    <div class="part" id="p1"><div class="part-head"><span class="part-num">01</span><h2>先说痛点：为什么不能用"准确率"</h2></div>
     <p class="part-lede">这是整个模块的出发点。风控建模第一课，往往不是学怎么调模型，而是学怎么正确地评价一个模型。</p>
 
     <div class="analogy">
@@ -60,12 +59,12 @@
     </div>
 
     <p>风控真正关心的问题不是"猜没猜对"，而是：</p>
-    <table class="tbl">
-      <tr><th>业务问题</th><th>该用的指标</th></tr>
-      <tr><td>模型能不能把好客户和坏客户<strong>排序区分开</strong>？</td><td>KS、AUC</td></tr>
-      <tr><td>模型上线之后，<strong>还准不准</strong>，是不是在悄悄失效？</td><td>PSI</td></tr>
-      <tr><td>只批最高风险的一批人不放款，能<strong>拦住多少坏账</strong>？</td><td>Lift / Gini</td></tr>
-    </table>
+    <table class="tbl mobile-stack">
+      <thead><tr><th>业务问题</th><th>该用的指标</th></tr></thead><tbody>
+      <tr><td data-label="业务问题">模型能不能把好客户和坏客户<strong>排序区分开</strong>？</td><td data-label="该用的指标">KS、AUC</td></tr>
+      <tr><td data-label="业务问题">模型上线之后，<strong>还准不准</strong>，是不是在悄悄失效？</td><td data-label="该用的指标">PSI</td></tr>
+      <tr><td data-label="业务问题">只批最高风险的一批人不放款，能<strong>拦住多少坏账</strong>？</td><td data-label="该用的指标">Lift / Gini</td></tr>
+    </tbody></table>
 
     <div class="callout bad">
       <span class="label">准确率错在哪</span>
@@ -74,8 +73,8 @@
   </div>
 
   <!-- ============ PART 2 核心概念 ============ -->
-  <div class="part" id="p2">
-    <div class="part-head"><span class="part-num">02</span><h2>两个必须先搞清楚的概念</h2></div>
+
+    <div class="part" id="p2"><div class="part-head"><span class="part-num">02</span><h2>两个必须先搞清楚的概念</h2></div>
     <p class="part-lede">后面所有指标的计算，都建立在这两件事之上。</p>
 
     <div class="concept-grid">
@@ -110,8 +109,8 @@
   </div>
 
   <!-- ============ PART 3 指标图鉴 ============ -->
-  <div class="part" id="p3">
-    <div class="part-head"><span class="part-num">03</span><h2>指标图鉴：4 个最常用的模型评估指标</h2></div>
+
+    <div class="part" id="p3"><div class="part-head"><span class="part-num">03</span><h2>指标图鉴：4 个最常用的模型评估指标</h2></div>
     <p class="part-lede">分成两组：KS、AUC、Gini 回答"模型准不准"；PSI 回答"模型还稳不稳"。</p>
 
     <div class="concept-grid">
@@ -147,8 +146,8 @@
   </div>
 
   <!-- ============ PART 4 KS曲线 ============ -->
-  <div class="part" id="p4">
-    <div class="part-head"><span class="part-num">04</span><h2>手算一遍 KS：从十分位表到 KS 曲线</h2></div>
+
+    <div class="part" id="p4"><div class="part-head"><span class="part-num">04</span><h2>手算一遍 KS：从十分位表到 KS 曲线</h2></div>
     <p class="part-lede">用一个 10,000 人的示例样本（500个坏客户，坏账率5%）走一遍完整计算，这是评分卡验证报告里最常见的一张表。</p>
 
     <div class="method-step">
@@ -167,19 +166,19 @@
     </div>
 
     <div class="table-scroll">
-    <table class="tbl">
-      <tr><th>十分位</th><th>好客户数</th><th>坏客户数</th><th>累计坏%</th><th>累计好%</th><th>KS=|差值|</th></tr>
-      <tr><td>1（最高风险）</td><td class="num">850</td><td class="num">150</td><td class="num">30.0%</td><td class="num">8.9%</td><td class="num">21.1%</td></tr>
-      <tr><td>2</td><td class="num">880</td><td class="num">120</td><td class="num">54.0%</td><td class="num">18.2%</td><td class="num">35.8%</td></tr>
-      <tr><td>3</td><td class="num">910</td><td class="num">90</td><td class="num">72.0%</td><td class="num">27.8%</td><td class="num">44.2%</td></tr>
-      <tr class="hl"><td>4（KS峰值）</td><td class="num">940</td><td class="num">60</td><td class="num">84.0%</td><td class="num">37.7%</td><td class="num">46.3%</td></tr>
-      <tr><td>5</td><td class="num">960</td><td class="num">40</td><td class="num">92.0%</td><td class="num">47.8%</td><td class="num">44.2%</td></tr>
-      <tr><td>6</td><td class="num">980</td><td class="num">20</td><td class="num">96.0%</td><td class="num">58.1%</td><td class="num">37.9%</td></tr>
-      <tr><td>7</td><td class="num">990</td><td class="num">10</td><td class="num">98.0%</td><td class="num">68.5%</td><td class="num">29.5%</td></tr>
-      <tr><td>8</td><td class="num">995</td><td class="num">5</td><td class="num">99.0%</td><td class="num">79.0%</td><td class="num">20.0%</td></tr>
-      <tr><td>9</td><td class="num">997</td><td class="num">3</td><td class="num">99.6%</td><td class="num">89.5%</td><td class="num">10.1%</td></tr>
-      <tr><td>10（最低风险）</td><td class="num">998</td><td class="num">2</td><td class="num">100.0%</td><td class="num">100.0%</td><td class="num">0.0%</td></tr>
-    </table>
+    <table class="tbl mobile-stack">
+      <thead><tr><th>十分位</th><th>好客户数</th><th>坏客户数</th><th>累计坏%</th><th>累计好%</th><th>KS=|差值|</th></tr></thead><tbody>
+      <tr><td data-label="十分位">1（最高风险）</td><td class="num" data-label="好客户数">850</td><td class="num" data-label="坏客户数">150</td><td class="num" data-label="累计坏%">30.0%</td><td class="num" data-label="累计好%">8.9%</td><td class="num" data-label="KS=|差值|">21.1%</td></tr>
+      <tr><td data-label="十分位">2</td><td class="num" data-label="好客户数">880</td><td class="num" data-label="坏客户数">120</td><td class="num" data-label="累计坏%">54.0%</td><td class="num" data-label="累计好%">18.2%</td><td class="num" data-label="KS=|差值|">35.8%</td></tr>
+      <tr><td data-label="十分位">3</td><td class="num" data-label="好客户数">910</td><td class="num" data-label="坏客户数">90</td><td class="num" data-label="累计坏%">72.0%</td><td class="num" data-label="累计好%">27.8%</td><td class="num" data-label="KS=|差值|">44.2%</td></tr>
+      <tr class="hl"><td data-label="十分位">4（KS峰值）</td><td class="num" data-label="好客户数">940</td><td class="num" data-label="坏客户数">60</td><td class="num" data-label="累计坏%">84.0%</td><td class="num" data-label="累计好%">37.7%</td><td class="num" data-label="KS=|差值|">46.3%</td></tr>
+      <tr><td data-label="十分位">5</td><td class="num" data-label="好客户数">960</td><td class="num" data-label="坏客户数">40</td><td class="num" data-label="累计坏%">92.0%</td><td class="num" data-label="累计好%">47.8%</td><td class="num" data-label="KS=|差值|">44.2%</td></tr>
+      <tr><td data-label="十分位">6</td><td class="num" data-label="好客户数">980</td><td class="num" data-label="坏客户数">20</td><td class="num" data-label="累计坏%">96.0%</td><td class="num" data-label="累计好%">58.1%</td><td class="num" data-label="KS=|差值|">37.9%</td></tr>
+      <tr><td data-label="十分位">7</td><td class="num" data-label="好客户数">990</td><td class="num" data-label="坏客户数">10</td><td class="num" data-label="累计坏%">98.0%</td><td class="num" data-label="累计好%">68.5%</td><td class="num" data-label="KS=|差值|">29.5%</td></tr>
+      <tr><td data-label="十分位">8</td><td class="num" data-label="好客户数">995</td><td class="num" data-label="坏客户数">5</td><td class="num" data-label="累计坏%">99.0%</td><td class="num" data-label="累计好%">79.0%</td><td class="num" data-label="KS=|差值|">20.0%</td></tr>
+      <tr><td data-label="十分位">9</td><td class="num" data-label="好客户数">997</td><td class="num" data-label="坏客户数">3</td><td class="num" data-label="累计坏%">99.6%</td><td class="num" data-label="累计好%">89.5%</td><td class="num" data-label="KS=|差值|">10.1%</td></tr>
+      <tr><td data-label="十分位">10（最低风险）</td><td class="num" data-label="好客户数">998</td><td class="num" data-label="坏客户数">2</td><td class="num" data-label="累计坏%">100.0%</td><td class="num" data-label="累计好%">100.0%</td><td class="num" data-label="KS=|差值|">0.0%</td></tr>
+    </tbody></table>
     </div>
 
     <div class="chart-card">
@@ -195,13 +194,13 @@
 
     <div class="callout good">
       <span class="label">KS = 0.46，在第4个十分位达到峰值</span>
-      意味着只要模型拒绝掉分数最差的前 40% 客户，就能拦住 84% 的坏账，只误伤 37.7% 的好客户——两者相差 46.3 个百分点，这就是这个模型的区分能力。<strong>KS 对应的那个十分位本身也有业务意义</strong>：它暗示了"模型区分力最强"的分数点在哪，可以作为设定初始拒绝阈值的参考起点。
+      在这份教学频数表中，拒绝风险最高的前 40% 样本，可拦住约 84% 的坏样本，但同时也会拒绝约 37.7% 的好样本——两者相差 46.3 个百分点，这就是这个模型的区分能力。<strong>KS 对应的那个十分位本身也有业务意义</strong>：它暗示了"模型区分力最强"的分数点在哪，可以作为设定初始拒绝阈值的参考起点。
     </div>
   </div>
 
   <!-- ============ PART 5 ROC/AUC ============ -->
-  <div class="part" id="p5">
-    <div class="part-head"><span class="part-num">05</span><h2>ROC 曲线怎么读，AUC 怎么算</h2></div>
+
+    <div class="part" id="p5"><div class="part-head"><span class="part-num">05</span><h2>ROC 曲线怎么读，AUC 怎么算</h2></div>
     <p class="part-lede">用第④节完全同一份十分位数据，换一种画法。</p>
 
     <div class="analogy">
@@ -221,13 +220,13 @@
       <span class="eq">AUC ≈ 0.79</span>　（对应 Gini = 2×0.79−1 = 0.58）
     </div>
 
-    <table class="tbl">
-      <tr><th>AUC 区间</th><th>业务判断</th></tr>
-      <tr><td>&lt; 0.6</td><td>基本没有区分能力，别用</td></tr>
-      <tr><td>0.6 ~ 0.7</td><td>较弱，可作辅助特征但别独立上线</td></tr>
-      <tr><td>0.7 ~ 0.8</td><td>可用，互联网小额贷常见水平</td></tr>
-      <tr><td>0.8 以上</td><td>业内经验上可以考虑投产</td></tr>
-    </table>
+    <table class="tbl mobile-stack">
+      <thead><tr><th>AUC 区间</th><th>业务判断</th></tr></thead><tbody>
+      <tr><td data-label="AUC 区间">&lt; 0.6</td><td data-label="业务判断">基本没有区分能力，别用</td></tr>
+      <tr><td data-label="AUC 区间">0.6 ~ 0.7</td><td data-label="业务判断">较弱，可作辅助特征但别独立上线</td></tr>
+      <tr><td data-label="AUC 区间">0.7 ~ 0.8</td><td data-label="业务判断">可用，互联网小额贷常见水平</td></tr>
+      <tr><td data-label="AUC 区间">0.8 以上</td><td data-label="业务判断">业内经验上可以考虑投产</td></tr>
+    </tbody></table>
 
     <div class="callout warn">
       <span class="label">KS 和 AUC 出现矛盾时怎么看</span>
@@ -236,8 +235,8 @@
   </div>
 
   <!-- ============ PART 6 PSI监控 ============ -->
-  <div class="part" id="p6">
-    <div class="part-head"><span class="part-num">06</span><h2>PSI：模型上线后的"体检指标"</h2></div>
+
+    <div class="part" id="p6"><div class="part-head"><span class="part-num">06</span><h2>PSI：模型上线后的"体检指标"</h2></div>
     <p class="part-lede">KS、AUC 回答"模型准不准"，但一个模型上线时准，半年后可能因为客群变了而悄悄失效——这就要靠 PSI 来盯着。</p>
 
     <div class="analogy">
@@ -245,16 +244,16 @@
       PSI 就像"这件衣服还合不合身"。模型是照着建模时的客群"量体裁衣"的，如果半年后来申请的客群结构变了（比如某个新渠道大量导流进来一批完全不同的人），这件"衣服"哪怕本身没坏，穿在新客群身上也会不合适。PSI 不管衣服本身好不好，只管"人变了没有"。
     </div>
 
-    <p><strong>用评分区间分布做一次真实计算</strong>——对比"建模时的基准分布"和"上线9个月后的当前分布"：</p>
-    <table class="tbl">
-      <tr><th>评分区间</th><th>建模时占比(预期)</th><th>9个月后占比(实际)</th><th>该箱PSI贡献</th></tr>
-      <tr class="hl"><td>[300,500) 高风险</td><td class="num">10%</td><td class="num">22%</td><td class="num">0.0946</td></tr>
-      <tr><td>[500,580)</td><td class="num">20%</td><td class="num">25%</td><td class="num">0.0112</td></tr>
-      <tr><td>[580,650)</td><td class="num">30%</td><td class="num">27%</td><td class="num">0.0032</td></tr>
-      <tr><td>[650,720)</td><td class="num">25%</td><td class="num">14%</td><td class="num">0.0638</td></tr>
-      <tr><td>[720,850] 低风险</td><td class="num">15%</td><td class="num">12%</td><td class="num">0.0067</td></tr>
-      <tr><td><strong>PSI 总计</strong></td><td colspan="2"></td><td class="num"><strong>0.179</strong></td></tr>
-    </table>
+    <p><strong>用明确列出的两期教学频数做一次可复算计算</strong>——对比"建模时的基准分布"和"上线9个月后的当前分布"：</p>
+    <table class="tbl mobile-stack">
+      <thead><tr><th>评分区间</th><th>建模时占比(预期)</th><th>9个月后占比(实际)</th><th>该箱PSI贡献</th></tr></thead><tbody>
+      <tr class="hl"><td data-label="评分区间">[300,500) 高风险</td><td class="num" data-label="建模时占比(预期)">10%</td><td class="num" data-label="9个月后占比(实际)">22%</td><td class="num" data-label="该箱PSI贡献">0.0946</td></tr>
+      <tr><td data-label="评分区间">[500,580)</td><td class="num" data-label="建模时占比(预期)">20%</td><td class="num" data-label="9个月后占比(实际)">25%</td><td class="num" data-label="该箱PSI贡献">0.0112</td></tr>
+      <tr><td data-label="评分区间">[580,650)</td><td class="num" data-label="建模时占比(预期)">30%</td><td class="num" data-label="9个月后占比(实际)">27%</td><td class="num" data-label="该箱PSI贡献">0.0032</td></tr>
+      <tr><td data-label="评分区间">[650,720)</td><td class="num" data-label="建模时占比(预期)">25%</td><td class="num" data-label="9个月后占比(实际)">14%</td><td class="num" data-label="该箱PSI贡献">0.0638</td></tr>
+      <tr><td data-label="评分区间">[720,850] 低风险</td><td class="num" data-label="建模时占比(预期)">15%</td><td class="num" data-label="9个月后占比(实际)">12%</td><td class="num" data-label="该箱PSI贡献">0.0067</td></tr>
+    </tbody></table>
+    <p><strong>PSI 总计：0.179</strong>（以未四舍五入的原始占比计算；表中展示值为阅读用近似数）。</p>
 
     <div class="calc-box">
       单箱PSI贡献 = (实际占比−预期占比) × ln(实际占比/预期占比)<br>
@@ -274,12 +273,12 @@
       最高风险分段 [300,500) 的客户占比从 10% 涨到 22%，几乎翻倍，单这一箱就贡献了总PSI的一半以上（0.0946/0.179≈53%）——<strong>这是判断"漂移发生在哪里"的关键动作：不能只看总PSI一个数字，要拆到分箱才知道问题出在客群的哪一段</strong>。这个发现会在第⑦节案例里被进一步追查。
     </div>
 
-    <table class="tbl">
-      <tr><th>PSI 区间</th><th>业务判断</th></tr>
-      <tr><td>&lt; 0.1</td><td>稳定，正常监控</td></tr>
-      <tr><td>0.1 ~ 0.25</td><td>有一定漂移，需要排查原因</td></tr>
-      <tr><td>&gt; 0.25</td><td>严重漂移，模型很可能已经不适用，考虑重新建模</td></tr>
-    </table>
+    <table class="tbl mobile-stack">
+      <thead><tr><th>PSI 区间</th><th>业务判断</th></tr></thead><tbody>
+      <tr><td data-label="PSI 区间">&lt; 0.1</td><td data-label="业务判断">稳定，正常监控</td></tr>
+      <tr><td data-label="PSI 区间">0.1 ~ 0.25</td><td data-label="业务判断">有一定漂移，需要排查原因</td></tr>
+      <tr><td data-label="PSI 区间">&gt; 0.25</td><td data-label="业务判断">严重漂移，模型很可能已经不适用，考虑重新建模</td></tr>
+    </tbody></table>
 
     <div class="callout">
       <span class="label">评分PSI 和 特征PSI，要两层都监控</span>
@@ -288,13 +287,13 @@
   </div>
 
   <!-- ============ PART 7 实战案例 ============ -->
-  <div class="part" id="p7">
-    <div class="part-head"><span class="part-num">07</span><h2>实战案例：从上线达标到触发模型迭代</h2></div>
-    <p class="part-lede">把前面三节的指标串成一个模型全生命周期的监控故事。</p>
+
+    <div class="part" id="p7"><div class="part-head"><span class="part-num">07</span><h2>用同一组教学数据排查评分与特征漂移</h2></div>
+    <p class="part-lede">这组教学数据把 KS、AUC 和 PSI 放在同一条计算链上；“九个月后”是人为设定的对照窗口，不是已发生的机构投产记录。</p>
 
     <div class="chart-card">
-      <div class="chart-title">图K4 · 模型上线后9个月的指标监控趋势</div>
-      <div class="chart-sub">KS、AUC 缓慢下滑，PSI 持续攀升——三条线同时在报警</div>
+      <div class="chart-title">图K4 · 构造的 T0 至第九个月：KS、AUC 与 PSI 如何变化</div>
+      <div class="chart-sub">教学设定里 KS、AUC 下滑、PSI 上升；PSI 只表示分布变化，不单独证明风险恶化</div>
       <div class="chart-wrap"><canvas id="chartK4"></canvas></div>
       <div class="chart-footnote">示例数据，用于教学演示，非真实业务数据。</div>
     </div>
@@ -302,22 +301,22 @@
     <div class="case-step">
       <div class="step-badge">1</div>
       <div class="step-body">
-        <h4>上线时基线达标</h4>
-        模型上线（T0）时验证指标：KS=0.46，AUC=0.79，均达到内部投产标准，正式切流上线。
+        <h4>教学基线：T0</h4>
+        假定评分卡模型在 T0 的 KS=0.46、AUC=0.79。<strong>这两个数字没有对应的真实机构投产记录或内部标准</strong>，此处只是用来演示后续变化。
       </div>
     </div>
 
     <div class="case-step">
       <div class="step-body" style="margin-left:38px;">
-        <h4>月度监控例行检查，发现指标在缓慢下滑</h4>
-        上线9个月后，KS 降到 0.38，AUC 降到 0.74，PSI 从上线初期的 0.02 爬升到 0.179（图K4）。<span class="result">→ 三项都触发了预警阈值：KS降幅(0.46→0.38)达17.4%（阈值10%）、AUC降幅6.3%（阈值5%）、PSI 0.179（阈值0.1），一致指向"模型在衰退"。</span>
+        <h4>第九个月的教学观察值</h4>
+        KS 设为 0.38，AUC 设为 0.74，PSI 从 0.02 变成 0.179（图K4）。<span class="result">→ KS 相对降幅约 17.4%，AUC 约 6.3%；值得复核样本、标签和漂移原因，<strong>不能套用 10% / 5% / 0.1 的统一投产阈值</strong>，更不能仅凭 PSI 判定坏账变差。</span>
       </div>
     </div>
 
     <div class="case-step">
       <div class="step-body" style="margin-left:38px;">
         <h4>拆分箱定位漂移发生在哪里</h4>
-        评分分布对比显示，最高风险分段 [300,500) 客户占比从10%涨到22%（第⑥节图K3）。<span class="result">→ 说明流入了大量高风险客户，不是随机噪音。</span>
+        教学评分分布中，[300,500) 段占比从 10% 涨到 22%（第⑥节图K3）。<span class="result">→ 在既定评分方向下，该低分段占比抬升；但它是<strong>构造的分布变化</strong>，尚不能证明真实渠道引来了更多坏客户。</span>
       </div>
     </div>
 
@@ -333,15 +332,15 @@
         </div>
 
         <p><strong>第一步：给6个入模特征各自算一遍PSI，排出来看</strong>：</p>
-        <table class="tbl">
-          <tr><th>入模特征</th><th>该特征自身的PSI</th><th>判断</th></tr>
-          <tr><td>学历</td><td class="num">0.01</td><td>稳定</td></tr>
-          <tr><td>婚姻状况</td><td class="num">0.03</td><td>稳定</td></tr>
-          <tr><td>年龄</td><td class="num">0.02</td><td>稳定</td></tr>
-          <tr><td>月收入</td><td class="num">0.04</td><td>稳定</td></tr>
-          <tr><td>历史逾期次数</td><td class="num">0.05</td><td>稳定</td></tr>
-          <tr class="hl"><td>近3个月申请次数</td><td class="num">0.19</td><td>严重漂移，明显异常</td></tr>
-        </table>
+        <table class="tbl mobile-stack">
+          <thead><tr><th>入模特征</th><th>该特征自身的PSI</th><th>判断</th></tr></thead><tbody>
+          <tr><td data-label="入模特征">学历</td><td class="num" data-label="该特征自身的PSI">0.01</td><td data-label="判断">稳定</td></tr>
+          <tr><td data-label="入模特征">婚姻状况</td><td class="num" data-label="该特征自身的PSI">0.03</td><td data-label="判断">稳定</td></tr>
+          <tr><td data-label="入模特征">年龄</td><td class="num" data-label="该特征自身的PSI">0.02</td><td data-label="判断">稳定</td></tr>
+          <tr><td data-label="入模特征">月收入</td><td class="num" data-label="该特征自身的PSI">0.04</td><td data-label="判断">稳定</td></tr>
+          <tr><td data-label="入模特征">历史逾期次数</td><td class="num" data-label="该特征自身的PSI">0.05</td><td data-label="判断">稳定</td></tr>
+          <tr class="hl"><td data-label="入模特征">近3个月申请次数</td><td class="num" data-label="该特征自身的PSI">0.19</td><td data-label="判断">严重漂移，明显异常</td></tr>
+        </tbody></table>
 
         <div class="chart-card">
           <div class="chart-title">图K5 · 6个入模特征各自的PSI排行</div>
@@ -353,14 +352,14 @@
         <p>6个特征里5个都稳定在0.05以下，<strong>只有"近3个月申请次数"一个特征PSI=0.19，一下子就跳出来了</strong>——这就是"逐个检查"定位到具体特征的过程：不是靠猜，是把每个特征都单独算一遍PSI，再排序，异常值自己会露出来。</p>
 
         <p><strong>第二步：把这一个特征拆到它自己的分箱，看漂移具体发生在哪一段</strong>——跟第⑥节对评分做的事情一样，只是这次拆的是"近3个月申请次数"自己的5个分箱（跟模块二算WOE用的是同一套分箱）：</p>
-        <table class="tbl">
-          <tr><th>分箱</th><th>建模时占比(预期)</th><th>现在占比(实际)</th></tr>
-          <tr><td>[0,1]次</td><td class="num">38.8%</td><td class="num">25%</td></tr>
-          <tr><td>[2,3]次</td><td class="num">29.0%</td><td class="num">26%</td></tr>
-          <tr><td>[4,5]次</td><td class="num">16.1%</td><td class="num">17%</td></tr>
-          <tr class="hl"><td>[6,8]次</td><td class="num">10.3%</td><td class="num">17%</td></tr>
-          <tr class="hl"><td>[9,+)次</td><td class="num">5.8%</td><td class="num">15%</td></tr>
-        </table>
+        <table class="tbl mobile-stack">
+          <thead><tr><th>分箱</th><th>建模时占比(预期)</th><th>现在占比(实际)</th></tr></thead><tbody>
+          <tr><td data-label="分箱">[0,1]次</td><td class="num" data-label="建模时占比(预期)">38.8%</td><td class="num" data-label="现在占比(实际)">25%</td></tr>
+          <tr><td data-label="分箱">[2,3]次</td><td class="num" data-label="建模时占比(预期)">29.0%</td><td class="num" data-label="现在占比(实际)">26%</td></tr>
+          <tr><td data-label="分箱">[4,5]次</td><td class="num" data-label="建模时占比(预期)">16.1%</td><td class="num" data-label="现在占比(实际)">17%</td></tr>
+          <tr class="hl"><td data-label="分箱">[6,8]次</td><td class="num" data-label="建模时占比(预期)">10.3%</td><td class="num" data-label="现在占比(实际)">17%</td></tr>
+          <tr class="hl"><td data-label="分箱">[9,+)次</td><td class="num" data-label="建模时占比(预期)">5.8%</td><td class="num" data-label="现在占比(实际)">15%</td></tr>
+        </tbody></table>
 
         <div class="chart-card">
           <div class="chart-title">图K6 · "近3个月申请次数"自身的分箱分布：建模时 vs 现在</div>
@@ -371,12 +370,12 @@
 
         <div class="callout bad">
           <span class="label">定位到了：高值段占比几乎翻倍</span>
-          "6次以上"这个高值段（[6,8]次+[9,+)次两箱合计）的占比，从建模时的 10.3%+5.8%=16.1%，涨到现在的 17%+15%=32%——<strong>几乎翻了一倍</strong>。而这个高值段在模块二里正是WOE最高（最risky）的那一段。<span class="result">→ 结合业务背景排查，判断是某个新引流渠道带来了大量"多头申请"客群，这类客群本身的申请行为特征跟建模时的主力客群系统性不同。</span>
+          "6次以上"高值段的教学占比，从 10.3%+5.8%=16.1% 增至 17%+15%=32%——<strong>几乎翻倍</strong>。在模块二的分箱里这一段风险特征更强，但具体来源不明。<span class="result">→ 下一步应分渠道和时间窗口核查，不能把变动直接归因于“新引流渠道”。</span>
         </div>
 
         <div class="callout">
           <span class="label">串起来看这三步下钻</span>
-          评分PSI(0.179，第⑥节) 告诉你"整体在变差" → 特征PSI排行(图K5) 告诉你"是这一个特征在变差，不是别的" → 该特征自己的分箱分布(图K6) 告诉你"具体是它的哪一段客群变多了"。<strong>每一步都是同一个PSI公式，只是拿去对比的"分布"从"评分"换成"某个特征"、再换成"该特征的某一段"</strong>，颗粒度一层层变细，问题也就一层层被锁定。
+          评分 PSI 0.179 提醒<strong>分布发生变化</strong>；特征 PSI 排行(图K5)把关注点指向“近3个月申请次数”，分箱(图K6)再显示“6次以上”段占比增大。<strong>这是本组教学输入的排查顺序</strong>，真实业务还需核查标签、渠道与取数时点，不能从 PSI 读出单一原因。
         </div>
       </div>
     </div>
@@ -385,38 +384,15 @@
       <div class="step-body" style="margin-left:38px;">
         <h4>决策与行动</h4>
         <ul style="margin:6px 0 0; padding-left:20px; font-size:14.5px;">
-          <li>短期：对"近3个月申请次数"高值段客户临时加严准入规则，止住风险敞口扩大</li>
-          <li>中期：启动模型迭代，把新渠道客群纳入训练样本重新建模，或对新老客群分别建模</li>
-          <li>用冠军/挑战者框架小流量测试新模型，比较新老模型的KS/AUC/坏账率，确认新模型显著优于老模型后再切全量</li>
-          <li>复盘引流渠道的准入口径，评估是否要在渠道侧就做拦截，而不是全部指望模型兜底</li>
+          <li>先核实标签成熟度、取数时点、渠道构成与审批规则是否同期变化，再判断是否需调整准入</li>
+          <li>若验证集显示分层表现不稳定，再评估重训、分群建模或调整规则；不能从构造的 PSI 直接下指令</li>
+          <li>用随机、同窗的冠军—挑战者对照比较成熟坏账、核准与完整净收益，比例和周期由风险预算及样本量确定</li>
         </ul>
       </div>
     </div>
   </div>
 
-  <!-- ============ PART 8 三个坑 ============ -->
-  <div class="part" id="p8">
-    <div class="part-head"><span class="part-num">08</span><h2>三个容易踩的坑</h2></div>
-
-    <div class="pitfall">
-      <div class="pit-title">坑一 · 训练集指标漂亮，测试集大幅跳水</div>
-      比如 KS_训练集=0.58，KS_测试集=0.35——差距接近40%，这是典型的<strong>过拟合</strong>信号：模型在训练数据上学到了噪音而不是真实规律。<strong>验证报告永远要同时报训练集和测试集（最好是跨时间的测试集）的指标，只看训练集的漂亮数字毫无意义</strong>。
-    </div>
-
-    <div class="pitfall">
-      <div class="pit-title">坑二 · 极端样本不平衡下，指标会"看起来还行"但没业务价值</div>
-      当坏样本占比极低（比如&lt;1%）时，个别指标可能因为多数类主导计算而显得"过得去"，但模型实际可能毫无区分力。<strong>务必配合分箱后坏账率是否单调递减、KS曲线形状是否合理一起判断</strong>，不能只看一个汇总数字。
-    </div>
-
-    <div class="pitfall">
-      <div class="pit-title">坑三 · 只监控评分总PSI，不监控入模特征PSI</div>
-      评分是多个特征加权算出来的，<strong>多个特征可能朝相反方向漂移、互相抵消</strong>，导致评分PSI看起来平稳，但某个关键特征早就大幅偏移，业务风险已经在积累。第⑦节案例正是靠"评分PSI预警→拆分箱→下钻到特征PSI"这条链路才找到真实原因——评分层的监控不能替代特征层的监控。
-    </div>
-  </div>
-
-  <!-- ============ PART 9 速查表 ============ -->
-  <div class="part" id="p9">
-    <div class="part-head"><span class="part-num">09</span><h2>本节速查表</h2></div>
+    <div class="part" id="p8"><div class="part-head"><span class="part-num">08</span><h2>本节速查表</h2></div>
     <div class="cheat-grid">
       <div class="cheat-card">
         <div class="cc-name">KS</div>
@@ -447,15 +423,15 @@
         <div class="cc-detail">测试集用建模时间之后的新数据。<br><b>用途：</b>比随机切分更能反映真实上线效果</div>
       </div>
       <div class="cheat-card">
-        <div class="cc-name">三个坑</div>
+        <div class="cc-name">核验要点</div>
         <div class="cc-detail">训练测试差距大/样本不平衡假象/只看评分PSI不看特征PSI</div>
       </div>
     </div>
   </div>
 
   <!-- ============ PART 10 自测 ============ -->
-  <div class="part" id="p10">
-    <div class="part-head"><span class="part-num">10</span><h2>自测：检验一下是不是真的懂了</h2></div>
+
+    <div class="part" id="p9"><div class="part-head"><span class="part-num">09</span><h2>自测：检验一下是不是真的懂了</h2></div>
 
     <div class="quiz-item">
       <div class="q-title">Q1. 一个模型准确率98%，为什么风控团队还是拒绝上线？</div>

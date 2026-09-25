@@ -28,7 +28,6 @@ VOID = {"area", "base", "br", "col", "embed", "hr", "img", "input",
 # §7.7「泛化用：本手册的设计参数」——硬性数值约定
 PARAMS = {
     "quiz": (5, 5),          # 自测题：恰好 5
-    "pitfall": (3, 3),       # 坑：恰好 3
     "cheat_card": (8, 9),    # 速查卡：8~9
 }
 
@@ -135,6 +134,29 @@ def parse(path: Path) -> Node:
     dom = Dom()
     dom.feed(path.read_text(encoding="utf-8"))
     return dom.root
+
+
+def check_breadcrumb(page: Path, root: Node, ancestors: list[Path], rep: "Report"):
+    """每一层可回到真实目录，末级明确标记当前页。"""
+    navs = [n for n in root.find_all("breadcrumb") if n.tag == "nav"]
+    if len(navs) != 1 or navs[0].attrs.get("aria-label") != "当前位置":
+        rep.add("FAIL", page.name, "路径导航", "页眉须有唯一的 nav.breadcrumb[aria-label=当前位置]")
+        return
+    ol = navs[0].find_tag("ol")
+    entries = [n for n in ol.children if n.tag == "li"] if ol else []
+    if len(entries) != len(ancestors) + 1:
+        rep.add("FAIL", page.name, "路径导航", f"应有 {len(ancestors)} 层上级目录和 1 层当前页")
+        return
+    errors = []
+    for item, target in zip(entries, ancestors):
+        links = item.find_all_tag("a")
+        href = links[0].attrs.get("href", "") if len(links) == 1 else ""
+        if not href or (page.parent / href).resolve() != target.resolve():
+            errors.append(f"上级 {target.name} 链接不是对应目录")
+    last = entries[-1]
+    if last.attrs.get("aria-current") != "page" or not last.text() or last.find_all_tag("a"):
+        errors.append("末级须标记 aria-current=page 且不可链接自身")
+    rep.add("FAIL" if errors else "PASS", page.name, "路径导航", "；".join(errors) if errors else "层级与链接正确")
 
 
 # ---------------------------------------------------------------- 报告
@@ -246,36 +268,37 @@ def check_rendering(page: Path, root: Node, defined: set[str],
         rep.add("PASS", page.name, "渲染完整性", "所有 class 均有样式定义且在正确语境")
 
 
-def check_params(page: Path, root: Node, rep: Report, *, allow_absent_pitfall: bool = False):
-    """B. §7.7 硬参数：恰好 5 题 / 默认恰好 3 坑 / 8~9 速查卡。"""
-    # 坑只数「三个坑」那一 Part 里的——否则会把别处复用 .pitfall 的中性卡片算进来
-    pitfall_part = next((p for p in root.find_all("part")
-                         if (h := p.find_tag("h2")) and "坑" in h.text()), None)
-    n_pitfall = len(pitfall_part.find_all("pitfall")) if pitfall_part else 0
-    n_total_pitfall = len(root.find_all("pitfall"))
-
+def check_params(page: Path, root: Node, rep: Report):
+    """自测和速查数量仍检查；独立坑板块不再是必备槽位。"""
     actual = {
         "quiz": len(root.find_all("quiz-item")) or len(root.find_all("quiz")),
-        "pitfall": n_pitfall,
         "cheat_card": len(root.find_all("cheat-card")),
     }
-    label = {"quiz": "自测题", "pitfall": "坑", "cheat_card": "速查卡"}
-
+    labels = {"quiz": "自测题", "cheat_card": "速查卡"}
     for key, (lo, hi) in PARAMS.items():
-        got, name = actual[key], label[key]
-        if key == "pitfall" and got == 0 and allow_absent_pitfall:
-            rep.add("PASS", page.name, "§7.7 坑", "本事件课题明确省略重复的坑卡")
-            continue
+        got = actual[key]
         if lo <= got <= hi:
-            detail = f"{got}（要求 {lo}~{hi}）"
-            if key == "pitfall" and n_total_pitfall != n_pitfall:
-                detail += f"；另有 {n_total_pitfall - n_pitfall} 处 .pitfall 在其它 Part（疑似中性卡片复用）"
-            rep.add("PASS", page.name, f"§7.7 {name}", detail)
-        elif got == 0:
-            rep.add("FAIL", page.name, f"§7.7 {name}", f"0 个——完全缺失（要求 {lo}~{hi}）")
+            rep.add("PASS", page.name, f"§7.7 {labels[key]}", f"{got}（要求 {lo}~{hi}）")
         else:
-            rep.add("FAIL", page.name, f"§7.7 {name}", f"{got} 个，要求 {lo}~{hi}")
+            rep.add("FAIL", page.name, f"§7.7 {labels[key]}", f"{got} 个，要求 {lo}~{hi}")
+    redundant = [p for p in root.find_all("part")
+                 if (h := p.find_tag("h2")) and (h.text().startswith("三个坑") or h.text().startswith("三个容易踩的坑"))]
+    if redundant:
+        rep.add("WARN", page.name, "叙事结构", "独立的‘三个坑’可能复述正文，建议融入相关段落")
+    else:
+        rep.add("PASS", page.name, "叙事结构", "未为凑数设置独立坑板块")
 
+
+def check_mobile_tables(page: Path, root: Node, rep: Report):
+    """手机纵向卡片隐藏表头时，每个数据格必须自带可见列名。"""
+    tables = root.find_all_tag("table")
+    stacked = [t for t in tables if "mobile-stack" in t.classes]
+    missing = sum(1 for t in stacked for cell in t.find_all_tag("td")
+                  if not cell.attrs.get("data-label"))
+    if missing:
+        rep.add("FAIL", page.name, "手机表格", f"{missing} 个纵向表格数据格缺少 data-label")
+    elif stacked:
+        rep.add("PASS", page.name, "手机表格", f"{len(stacked)} 张纵向表格具备列名")
 
 
 def check_skeleton(page: Path, root: Node, rep: Report):
@@ -286,7 +309,14 @@ def check_skeleton(page: Path, root: Node, rep: Report):
         for m in missing:
             rep.add("FAIL", page.name, "§3.1 骨架", f"缺少 {m}")
     else:
-        rep.add("PASS", page.name, "§3.1 骨架", "13 段槽位齐全")
+        rep.add("PASS", page.name, "§3.1 骨架", "必备槽位齐全")
+
+    ids = [n.attrs["id"] for n in root.walk() if n.attrs.get("id")]
+    duplicated = sorted({v for v in ids if ids.count(v) > 1})
+    if duplicated:
+        rep.add("FAIL", page.name, "页内锚点", f"重复 ID：{duplicated}")
+    else:
+        rep.add("PASS", page.name, "页内锚点", "ID 唯一")
 
     parts = root.find_all("part")
     if parts:
@@ -315,8 +345,7 @@ def check_data_disclosure(page: Path, root: Node, rep: Report, source_driven: bo
     """
     charts = [c for c in root.find_all("chart-card") if c.find("chart-title")]
     if not charts:
-        rep.add("PASS" if source_driven else "WARN", page.name, "§6 图表",
-                "事件驱动章节按需使用图表" if source_driven else "无教学图表（若本模块确实不含图表可忽略）")
+        rep.add("PASS", page.name, "§6 图表", "本章无需图表；不为凑配图编数字")
         return
 
     is_real = root.find("tag-real") is not None
@@ -590,6 +619,9 @@ def main(argv: list[str]) -> int:
     defined, contextual = parse_css(css.read_text(encoding="utf-8"))
 
     rep = Report()
+    if not args:
+        home = REPO / "index.html"
+        check_breadcrumb(home, parse(home), [], rep)
     for topic in targets:
         manual = topic / "manual"
         if not manual.is_dir():
@@ -600,11 +632,18 @@ def main(argv: list[str]) -> int:
         except json.JSONDecodeError:
             meta = {}  # check_state_sync reports malformed metadata below
         source_driven = meta.get("source_driven", False)
-        allow_absent_pitfall = source_driven and "pitfall" in meta.get("optional_sections", [])
+        topic_index = topic / "index.html"
+        if topic_index.exists():
+            check_breadcrumb(topic_index, parse(topic_index), [REPO / "index.html"], rep)
+        for extra in sorted(topic.glob("*.html")):
+            if extra.name != "index.html":
+                check_breadcrumb(extra, parse(extra), [REPO / "index.html", topic_index], rep)
         for page in sorted(manual.glob("*.html")):
             root = parse(page)
+            check_breadcrumb(page, root, [REPO / "index.html", topic_index], rep)
             check_rendering(page, root, defined, contextual, rep)
-            check_params(page, root, rep, allow_absent_pitfall=allow_absent_pitfall)
+            check_params(page, root, rep)
+            check_mobile_tables(page, root, rep)
             check_skeleton(page, root, rep)
             check_data_disclosure(page, root, rep, source_driven)
             if source_driven:

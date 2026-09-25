@@ -6,15 +6,12 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>模块七 · 进阶与外延（反欺诈/团伙识别/反洗钱/联合贷红线）| 信贷风控学习手册</title>
 <link rel="stylesheet" href="../../../design-system/style.css">
-<!-- Chart.js：本地优先，CDN 兜底（离线也能出图） -->
-<script src="../../../design-system/vendor/chart.umd.min.js"></script>
-<script>window.Chart||document.write('<script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.4/dist/chart.umd.min.js"><\/script>');</script>
 </head>
 <body>
 
 <header class="masthead">
   <div class="container">
-    <div class="breadcrumb"><a href="../index.html">信贷风控学习手册</a> › 模块七</div>
+    <nav class="breadcrumb" aria-label="当前位置"><ol><li><a href="../../../index.html">Atlas</a></li><li><a href="../index.html">信贷风控学习手册</a></li><li aria-current="page">模块 07 · 进阶与外延</li></ol></nav>
     <span class="eyebrow">🔭 模块七 · 进阶与外延</span>
     <h1>"模型没问题，为什么还是亏了？"——信用风险之外的那些风险</h1>
     <p class="sub">前六个模块解决的都是同一个问题：<strong>这个人还不还得上</strong>。但真实业务里亏钱的方式不止一种——有人根本不打算还，有人压根不是本人，有人借钱是为了洗钱，还有的时候业务被叫停不是因为坏账，而是因为资金方的一条比例红线。这一模块讲的是<strong>信用风险之外的那三类风险</strong>，以及它们各自需要完全不同的武器。</p>
@@ -26,13 +23,12 @@
     <a href="#p1">① 痛点</a>
     <a href="#p2">② 风险地图</a>
     <a href="#p3">③ 反欺诈武器库</a>
-    <a href="#p4">④ 团伙识别手算</a>
-    <a href="#p5">⑤ 看图</a>
+    <a href="#p4">④ 设备线索</a>
+    <a href="#p5">⑤ 阈值取舍</a>
     <a href="#p6">⑥ 反洗钱与资金侧</a>
-    <a href="#p7">⑦ 完整案例</a>
-    <a href="#p8">⑧ 三个坑</a>
-    <a href="#p9">⑨ 速查表</a>
-    <a href="#p10">⑩ 自测</a>
+    <a href="#p7">⑦ 核验与处置</a>
+    <a href="#p8">⑧ 速查表</a>
+    <a href="#p9">⑨ 自测</a>
   </div>
 </nav>
 
@@ -42,11 +38,11 @@
     <h4>本节读完，你能做到</h4>
     <ul>
       <li>画出一张风险地图：信用风险 / 欺诈风险 / 操作风险 / 洗钱与合规风险各管什么，为什么不能混着治</li>
-      <li>只用一个指标（FPD30）就快速判断"坏账上升"到底是信用问题还是欺诈问题</li>
+      <li>用首期逾期指标定位异常，再结合身份与还款证据区分信用问题和欺诈线索</li>
       <li>说清第一方欺诈与第三方欺诈的区别，以及为什么后者要靠核身、前者只能靠关系网络</li>
-      <li>亲手做一遍团伙识别：按共用设备聚簇，算出团簇内坏账率、Lift、精确率与召回率</li>
-      <li>做一次反欺诈规则的阈值取舍，并用"拦下的欺诈损失 vs 误伤的利润"把它换算成钱</li>
-      <li>理解为什么反欺诈的取舍逻辑和模块⑤的 cutoff 正好相反——宁可误伤</li>
+      <li>按共用设备核查风险线索，区分首逾率与已复核的欺诈标签，再计算精确率和召回率</li>
+      <li>说出计算规则阈值所需的成熟欺诈标签、单件损失、误伤与核查成本</li>
+      <li>用盈亏平衡公式评估阈值，同时说明何时还不能做自动拦截</li>
       <li>复述《反洗钱法》三项核心义务与 2025-01-01 施行这个时间点，知道信贷场景的洗钱长什么样</li>
       <li>背下互联网贷款的三条红线（30% / 25% / 50%），明白业务量的天花板未必握在风控手里</li>
       <li>识别"坏账率"这三个字背后的三种口径差异，不再在和资金方对数时白吵一下午</li>
@@ -54,22 +50,13 @@
   </div>
 
   <!-- ============ PART 1 痛点 ============ -->
-  <div class="part" id="p1">
-    <div class="part-head"><span class="part-num">01</span><h2>先说痛点：坏账率翻了一倍，但模型指标一切正常</h2></div>
-    <p class="part-lede">模块⑤那个挑战者上线后，M3 坏账率从 1.85% 降到 1.62%，一切都很顺利。三个月后，某个月的 vintage 曲线突然翘到 <strong>2.9%</strong>。所有人第一反应都是"模型衰减了"——但打开模块③那套监控，<strong>KS 0.49、PSI 0.06，全部正常</strong>。这一节讲清楚，当指标正常而钱在亏的时候，你该往哪看。</p>
 
-    <h3>痛点一：模型只学过"还不上"，没学过"不想还"和"不是本人"</h3>
-    <p>A 卡的训练目标是"未来 MOB3 是否 30+逾期"，训练样本是历史上<strong>真实借款、真实还款</strong>的人。模型学到的规律是：收入越低越容易逾期、多头借贷越多越容易逾期、历史逾期越久越容易再逾期。这套规律面对一个<strong>从一开始就没打算还</strong>的人，几乎完全失效——因为这种人的申请资料通常填得比真实客户还漂亮。</p>
-    <div class="callout bad">
-      <span class="label">异常的形状</span>
-      拆开那个月的进件明细，问题集中在一处：<strong>渠道 C 在第 3 周集中进件 800 笔</strong>，通过 320 笔。这 320 笔里，<strong>首期就逾期 30 天以上（FPD30）的有 131 笔，占 40.9%</strong>——而全平台同期的 FPD30 基线是 <strong>1.8%</strong>。第一期就不还的人，不是"还不上"，是<strong>没打算还</strong>。
-    </div>
-
-    <h3>痛点二：真正的坏账信号，比 vintage 早三个月出现</h3>
-    <p>模块④讲过，vintage 的 MOB3 要等放款后三个月才看得到。而欺诈攻击造成的损失，<strong>在一周之内就已经发生完了</strong>——等 vintage 曲线翘起来，钱早就出去了，人也早就失联了。这不是 vintage 不好用，是<strong>它天生是个后视镜</strong>。前视镜是 FPD1 / FPD7 / FPD30 这一组首期逾期指标，T+1 就能看。</p>
-
-    <h3>痛点三：业务量的天花板，可能根本不在风控手里</h3>
-    <p>另一件事几乎同时发生：合作银行通知，<strong>下个月的联合贷放款额度要压降 40%</strong>。原因和坏账无关——该行与我方共同出资的贷款余额，已经逼近"占其全部贷款余额 50%"这条监管线。风控把坏账做到了 1.62%，但业务量被另一套完全不同的约束卡住了。<strong>这套约束不在模型里，在文件里。</strong></p>
+    <div class="part" id="p1"><div class="part-head"><span class="part-num">01</span><h2>先说痛点：模型指标平稳，资产变差还可能在哪里？</h2></div>
+    <p class="part-lede">KS 和 PSI 只能回答“模型如何排序、输入分布是否变化”，无法直接证明申请人身份真实、设备未被批量使用，也无法替代资金合作与反洗钱审查。</p>
+    <h3>先区分信用、身份与资金三类问题</h3>
+    <p><strong class="para-lead">首期逾期异常是排查入口，不是欺诈定论。</strong>先按渠道、放款日与客群切分 FPD1/FPD7/FPD30，再核对身份、设备、IP、进件路径和合同记录；部分人可能是信用能力恶化，也可能因扣款故障出现集中逾期。</p>
+    <p><strong class="para-lead">信用模型的标签覆盖不了全部风险。</strong>用“未来是否逾期”训练的 A 卡可能没有学到冒名申请、团伙共同设备、资金用途异常等机制；信用、反欺诈、反洗钱应由不同证据链判断。</p>
+    <p><strong class="para-lead">放款量还取决于资金方约束。</strong>合作方的监管指标水位、业务规模和集中度须按适用主体及现行规则逐项核查，不能把额度变化归咎于模型表现。</p>
 
     <div class="analogy">
       <span class="label">打个比方：体检指标全正常，但来体检的是替考的人</span>
@@ -77,12 +64,12 @@
       指标判读得再准，也识别不出"这个人不是这个人"。<strong>信用模型是判读器，反欺诈是身份核验，两者解决的问题正交，谁都替代不了谁。</strong>坏账上升时如果只会调 cutoff、重训模型，相当于体检中心把所有指标的阈值都调严——好人被大量拒绝，代检的人换一个身份照样进来。
     </div>
 
-    <p>本模块的顺序：先画清风险地图、分清四类风险（Part 2），再看反欺诈用的是哪一套武器（Part 3），然后亲手做一遍团伙识别和阈值取舍（Part 4–5），最后把视角往上抬一层——反洗钱义务、联合贷红线、和资金方对数时的口径差异（Part 6），并走完一次从告警到加固的完整排查（Part 7）。</p>
+    <p>本模块的顺序：先画清风险地图、分清四类风险（Part 2），再看反欺诈用的是哪一套武器（Part 3），再核设备线索、欺诈标签和阈值取舍（Part 4–5），最后把视角往上抬一层——反洗钱义务、联合贷红线、和资金方对数时的口径差异（Part 6），最后按真实业务记录的核查顺序逐项留痕（Part 7）。</p>
   </div>
 
   <!-- ============ PART 2 风险地图 ============ -->
-  <div class="part" id="p2">
-    <div class="part-head"><span class="part-num">02</span><h2>风险地图：一笔贷款可能亏在四个地方</h2></div>
+
+    <div class="part" id="p2"><div class="part-head"><span class="part-num">02</span><h2>风险地图：一笔贷款可能亏在四个地方</h2></div>
     <p class="part-lede">前六个模块反复优化的是第一类风险。这一节把另外三类摆到台面上——它们的成因、信号和处置手段都不一样，<strong>混着治的结果通常是三样都没治好</strong>。</p>
 
     <div class="concept-grid">
@@ -134,16 +121,16 @@
     <p>同样是"这个月亏了"，四类风险在监控盘上留下的痕迹截然不同。看懂这张表，排查方向基本就定了：</p>
 
     <div class="table-scroll">
-      <table class="tbl">
+      <table class="tbl mobile-stack">
         <thead>
           <tr><th>风险类型</th><th>典型信号</th><th>暴露速度</th><th>主要手段</th></tr>
         </thead>
         <tbody>
-          <tr><td>信用风险</td><td>vintage 整体缓慢抬升、KS 下降、PSI 上升</td><td>3~6 个月</td><td>重训模型、调 cutoff、收紧额度</td></tr>
-          <tr class="hl"><td>第一方欺诈</td><td>FPD30 尖峰、集中在某渠道/某时段、资料异常整齐</td><td>1~4 周</td><td>设备指纹、关系网络、团伙识别规则</td></tr>
-          <tr class="hl"><td>第三方欺诈</td><td>客户投诉"我没借过"、核身环节异常、代理 IP</td><td>1~8 周</td><td>活体核身、人脸比对、失联修复核验</td></tr>
-          <tr><td>操作风险</td><td>损失集中在某配置版本、某操作人、某接口上线后</td><td>即时~数周</td><td>变更管控、双人复核、灰度与回滚</td></tr>
-          <tr><td>洗钱风险</td><td>还款异常"完美"、快进快出、受托支付流向异常</td><td>不确定</td><td>客户尽职调查、可疑交易报告、资金用途核验</td></tr>
+          <tr><td data-label="风险类型">信用风险</td><td data-label="典型信号">vintage 整体缓慢抬升、KS 下降、PSI 上升</td><td data-label="暴露速度">3~6 个月</td><td data-label="主要手段">重训模型、调 cutoff、收紧额度</td></tr>
+          <tr class="hl"><td data-label="风险类型">第一方欺诈</td><td data-label="典型信号">FPD30 尖峰、集中在某渠道/某时段、资料异常整齐</td><td data-label="暴露速度">1~4 周</td><td data-label="主要手段">设备指纹、关系网络、团伙识别规则</td></tr>
+          <tr class="hl"><td data-label="风险类型">第三方欺诈</td><td data-label="典型信号">客户投诉"我没借过"、核身环节异常、代理 IP</td><td data-label="暴露速度">1~8 周</td><td data-label="主要手段">活体核身、人脸比对、失联修复核验</td></tr>
+          <tr><td data-label="风险类型">操作风险</td><td data-label="典型信号">损失集中在某配置版本、某操作人、某接口上线后</td><td data-label="暴露速度">即时~数周</td><td data-label="主要手段">变更管控、双人复核、灰度与回滚</td></tr>
+          <tr><td data-label="风险类型">洗钱风险</td><td data-label="典型信号">还款异常"完美"、快进快出、受托支付流向异常</td><td data-label="暴露速度">不确定</td><td data-label="主要手段">客户尽职调查、可疑交易报告、资金用途核验</td></tr>
         </tbody>
       </table>
     </div>
@@ -152,29 +139,29 @@
       <span class="label">最省事的一条分水岭：先看 FPD30</span>
       坏账上升时，先别碰模型，先把 FPD30 按<strong>渠道 × 周</strong>拆开看：<br>
       ① FPD30 基本平稳、坏账是在 MOB2–MOB3 缓慢累积的 → <strong>大概率是信用风险</strong>，走模块③④的衰减排查；<br>
-      ② FPD30 出现尖峰、且集中在某渠道某时段 → <strong>几乎一定是欺诈</strong>，走本模块 Part 4 的团伙排查。<br>
-      这一步只需要一条 SQL，却能决定后面两周的工作是做对还是做废。
+      ② FPD30 出现尖峰、且集中在某渠道某时段 → <strong>优先核查欺诈与渠道质量，不可直接定性</strong>，走本模块 Part 4 的团伙排查。<br>
+      接下来还要核对逾期定义、扣款故障、身份核验和设备共用的合理原因。
     </div>
   </div>
 
   <!-- ============ PART 3 反欺诈武器库 ============ -->
-  <div class="part" id="p3">
-    <div class="part-head"><span class="part-num">03</span><h2>反欺诈武器库：为什么这里几乎用不上 KS 和 AUC</h2></div>
+
+    <div class="part" id="p3"><div class="part-head"><span class="part-num">03</span><h2>反欺诈武器库：为什么这里几乎用不上 KS 和 AUC</h2></div>
     <p class="part-lede">很多人第一次做反欺诈，会本能地套用建模那一套：拉样本、做 WOE、训逻辑回归、看 KS。然后发现根本训不动——<strong>因为坏样本只有万分之几，而且对手每周都在换打法</strong>。这一节讲清楚反欺诈和信用评分在方法论上的六处根本差异，以及实际在用的四件武器。</p>
 
     <h3>先分清：两件事根本不是同一个问题</h3>
     <div class="table-scroll">
-      <table class="tbl">
+      <table class="tbl mobile-stack">
         <thead>
           <tr><th>维度</th><th>信用评分（A 卡）</th><th>反欺诈</th></tr>
         </thead>
         <tbody>
-          <tr><td>要回答的问题</td><td>他还不还得上</td><td>他是不是本人、想不想还</td></tr>
-          <tr><td>坏样本占比</td><td>1%~3%，可建模</td><td>万分之几，极度不平衡</td></tr>
-          <tr><td>数据分布</td><td>相对平稳，可用 PSI 监控</td><td><strong>对抗性</strong>，对手会主动适应你的规则</td></tr>
-          <tr><td>主要方法</td><td>分箱 + WOE + 逻辑回归</td><td>规则引擎 + 名单 + 图网络 + 无监督异常检测</td></tr>
-          <tr><td>时效要求</td><td>T+1 批量更新可接受</td><td><strong>毫秒级实时</strong>，且要求秒级上线新规则</td></tr>
-          <tr class="hl"><td>评估指标</td><td>KS / AUC / PSI</td><td><strong>命中率、精确率、召回率、误伤率</strong></td></tr>
+          <tr><td data-label="维度">要回答的问题</td><td data-label="信用评分（A 卡）">他还不还得上</td><td data-label="反欺诈">他是不是本人、想不想还</td></tr>
+          <tr><td data-label="维度">坏样本占比</td><td data-label="信用评分（A 卡）">1%~3%，可建模</td><td data-label="反欺诈">万分之几，极度不平衡</td></tr>
+          <tr><td data-label="维度">数据分布</td><td data-label="信用评分（A 卡）">相对平稳，可用 PSI 监控</td><td data-label="反欺诈"><strong>对抗性</strong>，对手会主动适应你的规则</td></tr>
+          <tr><td data-label="维度">主要方法</td><td data-label="信用评分（A 卡）">分箱 + WOE + 逻辑回归</td><td data-label="反欺诈">规则引擎 + 名单 + 图网络 + 无监督异常检测</td></tr>
+          <tr><td data-label="维度">时效要求</td><td data-label="信用评分（A 卡）">T+1 批量更新可接受</td><td data-label="反欺诈"><strong>毫秒级实时</strong>，且要求秒级上线新规则</td></tr>
+          <tr class="hl"><td data-label="维度">评估指标</td><td data-label="信用评分（A 卡）">KS / AUC / PSI</td><td data-label="反欺诈"><strong>命中率、精确率、召回率、误伤率</strong></td></tr>
         </tbody>
       </table>
     </div>
@@ -189,7 +176,7 @@
       <div class="m-num">1</div>
       <div class="m-body">
         <h4>设备指纹与环境核验：判断"这台机器是不是正常的人在用"</h4>
-        在 App / H5 端采集设备特征（机型、系统版本、分辨率、传感器、字体列表、网络环境等）合成一个稳定 ID。关键信号不是设备本身，而是<strong>设备与人的关系异常</strong>：同一设备短期内关联多个申请人、模拟器 / 改机 / 群控特征、IP 归属地与 GPS 定位不一致、申请时长异常短（自动化脚本填表）。<strong>渠道接入时如果没做设备埋点，这一整层防线等于不存在</strong>——Part 7 的案例根因就在这里。
+        在 App / H5 端采集设备特征（机型、系统版本、分辨率、传感器、字体列表、网络环境等）合成一个稳定 ID。关键信号不是设备本身，而是<strong>设备与人的关系异常</strong>：同一设备短期内关联多个申请人、模拟器 / 改机 / 群控特征、IP 归属地与 GPS 定位不一致、申请时长异常短（自动化脚本填表）。<strong>渠道接入时如果没做设备埋点，这一整层防线等于不存在</strong>；必要时还要评估采集授权和设备指纹误识别。
       </div>
     </div>
     <div class="method-step">
@@ -202,167 +189,45 @@
     <div class="method-step">
       <div class="m-num">3</div>
       <div class="m-body">
-        <h4>关系网络与团伙识别：打第一方欺诈的唯一有效武器</h4>
-        把申请人、设备、手机号、收款银行卡、紧急联系人、GPS 网格、WiFi MAC 都当成图上的节点，申请行为就是边。<strong>单看一个人毫无异常，放到图里就会发现他和另外 11 个人共用一台设备</strong>。第一方欺诈的本质是规模化作业，而规模化必然留下共享痕迹——这正是 Part 4 要手算的东西。
+        <h4>关系网络：辅助识别第一方欺诈</h4>
+        把申请人、设备、手机号、收款银行卡、紧急联系人、GPS 网格、WiFi MAC 都当成图上的节点，申请行为就是边。<strong>单看一个申请人可能毫无异常，设备关联分析却可能提示共享设备</strong>。共享设备只是一个线索，家庭共用或柜台代办也可能造成聚集，须按 Part 4 逐项核验。
       </div>
     </div>
     <div class="method-step">
       <div class="m-num">4</div>
       <div class="m-body">
         <h4>规则引擎与名单体系：把识别结果变成可执行的动作</h4>
-        黑名单（直接拒绝）、灰名单（转人工 / 降额 / 加验证）、白名单（放宽）。规则引擎的价值在于<strong>上线速度</strong>：发现攻击后，新规则要能在小时级甚至分钟级生效，而模型重训至少要几天。每条规则必须登记四项元信息：<strong>命中量、精确率、生效期、复评日期</strong>——漏了后两项，就会踩进 Part 8 的坑三。
+        黑名单（直接拒绝）、灰名单（转人工 / 降额 / 加验证）、白名单（放宽）。规则引擎的价值在于<strong>上线速度</strong>：发现攻击后，规则可较快调整，但生效速度取决于审批、测试与系统发布流程。每条规则必须登记四项元信息：<strong>命中量、精确率、生效期、复评日期</strong>；定期复评误伤、申诉和边际收益。
       </div>
     </div>
 
     <div class="callout good">
       <span class="label">一条实用的分工原则</span>
-      <strong>第三方欺诈靠核身，第一方欺诈靠网络，信用风险靠模型。</strong>三者串联部署、各管一段：核身过不了的根本进不到模型；网络规则命中的直接拒绝或转人工；剩下的才交给 A 卡打分。<strong>顺序反了会很贵</strong>——用模型去拦团伙，等于用血压计去查代检。
+      <strong>第三方欺诈靠核身，第一方欺诈靠网络，信用风险靠模型。</strong>三者串联部署、各管一段：核身失败按流程处理；网络规则命中的先加强核验或转人工，符合相应条件时才可拒绝；信用评分另行评估。<strong>顺序反了会很贵</strong>——用模型去拦团伙，等于用血压计去查代检。
     </div>
   </div>
 
   <!-- ============ PART 4 团伙识别手算 ============ -->
-  <div class="part" id="p4">
-    <div class="part-head"><span class="part-num">04</span><h2>手算一遍：从 320 笔放款里把团伙挖出来</h2></div>
-    <p class="part-lede">现在回到 Part 1 那个异常：渠道 C 第 3 周进件 800 笔、放款 320 笔、FPD30 高达 40.9%。这一节不用任何模型，只用一张"申请人—设备"关系表和四则运算，把团伙的形状算出来，并把规则阈值定下来。</p>
 
-    <div class="calc-box">
-      <div><span class="calc-label">第 1 步 · 按共用设备聚簇</span></div>
-      <p style="margin:6px 0 0;">把这 320 笔放款按<strong>设备指纹 ID</strong> 做 group by，得到 <strong>148 个设备簇</strong>。每个簇记录两个数：簇内关联了几个申请人（<strong>簇规模</strong>），以及这些人里有几笔 FPD30。</p>
-      <p class="eq" style="margin:10px 0 0;">簇规模 = 同一设备指纹在观察窗内关联的不同申请人数</p>
-      <p style="margin:10px 0 0;">为什么选设备而不是手机号？因为<strong>手机号可以一人一个（黑卡很便宜），设备却很难一人一台</strong>——群控设备、二手机循环使用、同一台机器反复填表，都是规模化作业绕不开的成本。设备是团伙最难摆脱的那根绳子。</p>
+    <div class="part" id="p4"><div class="part-head"><span class="part-num">04</span><h2>共用设备能提示什么，不能证明什么？</h2></div>
+    <p class="part-lede">同一设备关联多人，是调查入口，不是“团伙已被抓到”的结论；首期逾期 FPD30 也不是经复核的欺诈标签。</p>
+    <div class="method-step"><div class="m-num">1</div><div class="m-body"><h4>先确定分母与观察窗</h4>在合法取得设备信息的前提下，按设备指纹和申请时点聚合，记录关联的不同申请人数、已到首期账单日的放款笔数及 FPD30 笔数。同一设备可能来自家庭共用、柜台代办或标识误合并，先核查用途，再谈阈值。</div></div>
+    <div class="calc-box"><span class="calc-label">先算指标，不急着定性</span><p class="eq">簇内 FPD30 率 = 簇内首期逾期 30+ 笔数 ÷ 已成熟放款笔数</p><p class="eq">相对提升 = 簇内 FPD30 率 ÷ 同期、同渠道、同账龄基线</p></div>
+    <div class="method-step"><div class="m-num">2</div><div class="m-body"><h4>再拿独立证据核验欺诈</h4>复核身份、合同、申请设备及网络、回访与申诉材料，明确哪些是确认欺诈，哪些仅是逾期或待核。以 FPD30 代替欺诈标签，会把还款困难的真实借款人误写成欺诈者。</div></div>
+    <div class="calc-box"><span class="calc-label">标签成熟后才能算规则效果</span><p class="eq">精确率 = 命中且确认欺诈 ÷ 全部命中；召回率 = 命中且确认欺诈 ÷ 全部确认欺诈</p><p>比较阈值还要看未命中的欺诈、命中后复核为正常的客户，以及申诉处理的成本；分组越大并不自动证明风险单调。</p></div>
     </div>
 
-    <h3>按簇规模分档，坏账率的差异一眼可见</h3>
-    <div class="table-scroll">
-      <table class="tbl">
-        <thead>
-          <tr><th>簇规模</th><th class="num">簇数</th><th class="num">放款笔数</th><th class="num">FPD30 笔数</th><th class="num">FPD30 率</th><th class="num">相对基线 Lift</th></tr>
-        </thead>
-        <tbody>
-          <tr><td>1 人（独立设备）</td><td class="num">74</td><td class="num">74</td><td class="num">10</td><td class="num">13.5%</td><td class="num">7.5×</td></tr>
-          <tr><td>2 人</td><td class="num">39</td><td class="num">78</td><td class="num">13</td><td class="num">16.7%</td><td class="num">9.3×</td></tr>
-          <tr><td>3~4 人</td><td class="num">21</td><td class="num">72</td><td class="num">37</td><td class="num">51.4%</td><td class="num">28.6×</td></tr>
-          <tr class="hl"><td>5~7 人</td><td class="num">10</td><td class="num">58</td><td class="num">39</td><td class="num">67.2%</td><td class="num">37.3×</td></tr>
-          <tr class="hl"><td>≥8 人</td><td class="num">4</td><td class="num">38</td><td class="num">32</td><td class="num">84.2%</td><td class="num">46.8×</td></tr>
-          <tr><td><strong>合计</strong></td><td class="num"><strong>148</strong></td><td class="num"><strong>320</strong></td><td class="num"><strong>131</strong></td><td class="num"><strong>40.9%</strong></td><td class="num">22.7×</td></tr>
-        </tbody>
-      </table>
-    </div>
-    <p style="margin-top:10px;">Lift 的分母取<strong>全平台 FPD30 基线 1.8%</strong>。最后一档 <span class="tag tag-bad">≥8 人共用一台设备，FPD30 = 84.2%</span>——这已经不需要任何统计检验了，<strong>4 台设备撑起了 38 笔放款，其中 32 笔第一期就不还</strong>，这是一个正在作业的团伙的标准形状。</p>
-
-    <div class="callout info">
-      <span class="label">注意这张表最有价值的地方：单调性</span>
-      簇规模从 1 → ≥8，FPD30 率从 13.5% 单调爬到 84.2%，中间没有任何反转。这说明<strong>"共用设备人数"是一个干净、可分箱、方向明确的强信号</strong>——它完全具备做成入模变量的资格（模块②的 WOE 单调性要求）。Part 7 的最后一步正是把它固化成变量，而不是永远停留在临时规则上。
+    <div class="part" id="p5"><div class="part-head"><span class="part-num">05</span><h2>规则阈值怎么算账，何时不能上线？</h2></div>
+    <p class="part-lede">阈值的金额比较只适用于有成熟欺诈标签、可验证拦截效果和可核算的单件损益的机构；不能用首期逾期笔数直接计算“拦下的欺诈损失”。</p>
+    <div class="calc-box"><span class="calc-label">边际计算的输入与条件</span>
+    <p class="eq">新增净收益 = 新增确认可拦截欺诈 × 单件可避免损失 − 新增误伤 × 单件误伤成本 − 核查与申诉成本</p>
+    <p class="eq">若单件收益为 B、误伤成本为 C 且其他成本暂不计：盈亏平衡精确率 = C ÷ (B + C)</p>
+    <p>只为演示公式，令 B = 9 000 元、C = 500 元，临界精确率为 <strong>500 ÷ 9 500 ≈ 5.26%</strong>。这两个单价不是行业均值；若欺诈身份、损失回收或误伤成本未核实，5.26% 不可拿来定规则。</p></div>
+    <div class="callout warn"><span class="label">指标不能代替处置权限</span>即便某阈值的历史收益为正，也要检验样本选择、时点可用性、合法授权、可申诉性和后续漂移。设备共用通常先进入加强核验或人工复核；拒绝、名单处理、渠道暂停须走对应审批。</div>
     </div>
 
-    <h3>第 2 步：把分档变成规则，阈值定在哪</h3>
-    <div class="calc-box">
-      <div><span class="calc-label">第 2 步 · 三个候选阈值的精确率与召回率</span></div>
-      <p style="margin:6px 0 0;">候选规则形如"<strong>同设备关联申请人数 ≥ N 则拒绝</strong>"。N 取 5 / 3 / 2，把上表累加即可：</p>
-      <p class="eq" style="margin:10px 0 0;">精确率 = 命中里的真坏 ÷ 命中总数　　召回率 = 命中里的真坏 ÷ 全部真坏（131）</p>
-    </div>
-
-    <div class="table-scroll">
-      <table class="tbl">
-        <thead>
-          <tr><th>规则阈值</th><th class="num">命中笔数</th><th class="num">其中 FPD30</th><th class="num">精确率</th><th class="num">召回率</th><th class="num">误伤笔数</th></tr>
-        </thead>
-        <tbody>
-          <tr><td>同设备 ≥ 5 人</td><td class="num">96</td><td class="num">71</td><td class="num">74.0%</td><td class="num">54.2%</td><td class="num">25</td></tr>
-          <tr class="hl"><td>同设备 ≥ 3 人</td><td class="num">168</td><td class="num">108</td><td class="num">64.3%</td><td class="num">82.4%</td><td class="num">60</td></tr>
-          <tr><td>同设备 ≥ 2 人</td><td class="num">246</td><td class="num">121</td><td class="num">49.2%</td><td class="num">92.4%</td><td class="num">125</td></tr>
-        </tbody>
-      </table>
-    </div>
-
-    <p style="margin-top:10px;">这就是反欺诈里最经典的取舍：<strong>阈值放松 → 召回率上升（漏掉的坏人变少）→ 精确率下降（冤枉的好人变多）</strong>。它和模块⑤的 cutoff 取舍是同一个数学结构，只是坐标轴换了名字：那边是"通过率 vs 坏账率"，这边是"召回率 vs 误伤率"。</p>
-
-    <div class="callout warn">
-      <span class="label">别用 KS 评价一条反欺诈规则</span>
-      规则是一个<strong>二值判定</strong>，不输出连续分数，KS 无从算起；就算硬算，欺诈样本只占万分之几，KS 也会被海量好样本淹没。<strong>反欺诈规则的体检三件套是：命中量、精确率、召回率</strong>。再加一项"命中量占全量申请的比例"，用来提前预估这条规则上线后会砍掉多少业务量。
-    </div>
-
-    <h3>第 3 步：把三个阈值换算成钱，让老板能拍板</h3>
-    <p>精确率 74% 和 64.3% 谁更好？光看比例永远吵不出结果，必须换成金额。两个单价来自前面几个模块：</p>
-
-    <div class="calc-box">
-      <div><span class="calc-label">第 3 步 · 两个单价</span></div>
-      <p class="eq" style="margin:8px 0 0;">拦住一件欺诈 = 本金 10 000 元 × LGD 90% ≈ <strong>9 000 元</strong>／件</p>
-      <p class="eq" style="margin:8px 0 0;">误伤一个好客户 = 少赚的预期净利润 ≈ <strong>500 元</strong>／件</p>
-      <p style="margin:10px 0 0;">注意欺诈件的 LGD 是 <strong>90%</strong>，不是模块⑤信用坏账用的 45%。理由很硬：信用坏账的客户是真人、有真实联系方式、有还款意愿，催收能收回一半；<strong>欺诈件的"客户"根本不存在</strong>——身份是假的、设备是租的、人找不到，基本全损，只有极少数能通过司法途径追回。同一个字母 LGD，在两类风险下是两个数。</p>
-    </div>
-
-    <div class="table-scroll">
-      <table class="tbl">
-        <thead>
-          <tr><th>规则阈值</th><th class="num">拦截收益</th><th class="num">误伤成本</th><th class="num">净收益</th></tr>
-        </thead>
-        <tbody>
-          <tr><td>同设备 ≥ 5 人</td><td class="num">71 × 9 000 = 63.9 万</td><td class="num">25 × 500 = 1.25 万</td><td class="num">62.65 万</td></tr>
-          <tr><td>同设备 ≥ 3 人</td><td class="num">108 × 9 000 = 97.2 万</td><td class="num">60 × 500 = 3.0 万</td><td class="num">94.2 万</td></tr>
-          <tr class="hl"><td>同设备 ≥ 2 人</td><td class="num">121 × 9 000 = 108.9 万</td><td class="num">125 × 500 = 6.25 万</td><td class="num"><strong>102.65 万</strong></td></tr>
-        </tbody>
-      </table>
-    </div>
-
-    <p style="margin-top:10px;">结果和直觉相反：<strong>精确率最低（49.2%）的 ≥2 人规则，净收益反而最高</strong>。原因只有一条——欺诈件的单件损失是误伤成本的 18 倍，所以"宁可错杀一批"在这个价格结构下就是划算的。</p>
-
-    <div class="calc-box">
-      <div><span class="calc-label">收尾 · 盈亏平衡坏件率</span></div>
-      <p style="margin:6px 0 0;">与其对每个阈值逐一算账，不如一次性求出<strong>规则划算与否的分界线</strong>：设命中样本中真坏占比为 p，命中 1 笔的期望净收益为</p>
-      <p class="eq">9 000 × p − 500 × (1 − p) ≥ 0　⟹　p ≥ 500 ÷ (9 000 + 500) = <strong>5.26%</strong></p>
-      <p style="margin:10px 0 0;">也就是说：<strong>只要一条反欺诈规则命中人群里的坏件率超过 5.26%，这条规则就该上</strong>——而全平台基线才 1.8%，意味着 Lift 只要超过 <strong>2.9 倍</strong>就值得做。上表三个阈值的精确率分别是 74.0% / 64.3% / 49.2%，全都远在分界线之上，所以真正的问题不是"要不要上"，而是"还能不能再放松"。</p>
-    </div>
-
-    <div class="callout good">
-      <span class="label">这个 5.26% 才是你要记住的东西</span>
-      具体阈值会随样本变，但<strong>盈亏平衡坏件率 = 误伤成本 ÷（拦截收益 + 误伤成本）</strong>这个式子不会变。换个产品：本金 5 万、LGD 90%、误伤成本 2 000元，分界线就是 2 000 ÷ 47 000 = 4.3%。<strong>每次讨论要不要上一条规则，先把这个数算出来，再去看精确率</strong>，会议能短一半。
-    </div>
-  </div>
-
-  <div class="part" id="p5">
-    <div class="part-head">
-      <span class="part-num">⑤</span>
-      <h2>看图：四张图看懂欺诈风险的形状</h2>
-    </div>
-    <p class="part-lede">信用风险的图长得平滑连续（模块①的 KS 曲线、模块④的 vintage 曲线），欺诈风险的图不一样——它是<strong>陡峭的、突变的、有明确断点的</strong>。这四张图分别回答：团伙信号有多强、阈值该定在哪、晚发现一天要多付多少钱、监管红线还剩多少余量。</p>
-
-    <div class="chart-card">
-      <div class="chart-title">图 X1 · 共用设备人数越多，首期逾期率越高</div>
-      <div class="chart-sub">渠道 C 第 3 周放款 320 笔，按设备指纹聚成 148 个簇后分档统计 FPD30</div>
-      <div class="chart-wrap"><canvas id="chartX1"></canvas></div>
-      <div class="legend-note"><span class="dot" style="background:#C0433D;"></span>各档 FPD30 率　<span class="dot" style="background:#C9BFB2;"></span>全平台基线 1.8%</div>
-      <div class="chart-footnote">看两件事：一是<strong>单调</strong>——五个档位一路上升无反转，说明这是个干净信号；二是<strong>陡</strong>——从 2 人档的 16.7% 跳到 3~4 人档的 51.4%，中间有个明显的台阶。信用风险的变量很少长成这样，典型的信用变量（收入、负债率）分箱之间是缓坡；<strong>陡峭的台阶正是"人为组织"的指纹</strong>，因为团伙是按批次操作的，不是自然分布。 <span>示例数据，用于教学演示，非真实业务数据。</span></div>
-    </div>
-
-    <div class="chart-card">
-      <div class="chart-title">图 X2 · 精确率最高的阈值，不是赚钱最多的阈值</div>
-      <div class="chart-sub">三个候选规则的精确率、召回率与净收益（欺诈件 9 000 元/件，误伤 500 元/件）</div>
-      <div class="chart-wrap"><canvas id="chartX2"></canvas></div>
-      <div class="legend-note"><span class="dot" style="background:#3E7E96;"></span>精确率　<span class="dot" style="background:#C1892A;"></span>召回率　<span class="dot" style="background:#3E8362;"></span>净收益（右轴，万元）</div>
-      <div class="chart-footnote">精确率从 74.0% 一路降到 49.2%，净收益却从 62.65 万一路升到 102.65 万——<strong>两条线走反了</strong>。这是反欺诈最容易误判的地方：精确率是给算法工程师看的，净收益才是给业务负责人看的。只要单件欺诈损失远大于单件误伤成本（这里是 18 倍），最优阈值就会明显偏向"宁可错杀"。反过来，如果做的是高净值客群、误伤一个 VIP 要赔上几万元关系成本，结论会完全倒过来。 <span>示例数据，用于教学演示，非真实业务数据。</span></div>
-    </div>
-
-    <div class="chart-card">
-      <div class="chart-title">图 X3 · 晚发现 60 天，多亏 540 万</div>
-      <div class="chart-sub">同一波团伙攻击，三种发现机制下的累计欺诈放款金额（万元）</div>
-      <div class="chart-wrap"><canvas id="chartX3"></canvas></div>
-      <div class="legend-note"><span class="dot" style="background:#C0433D;"></span>靠 vintage MOB3 发现（第 120 天）　<span class="dot" style="background:#C1892A;"></span>靠 FPD30 发现（第 60 天）　<span class="dot" style="background:#3E8362;"></span>设备规则实时拦截（第 0 天）</div>
-      <div class="chart-footnote">三条线的终点是 1 200 万 / 600 万 / 30 万，乘上欺诈件 LGD 90%，实际损失是 <strong>1 080 万 / 540 万 / 27 万</strong>。这张图解释了为什么反欺诈的核心 KPI 是"<strong>响应时延</strong>"而不是"准确率"：一条精确率 60% 但当天生效的规则，价值远高于一个 AUC 0.85 但要等两个月数据才能训练的模型。<strong>在欺诈战场上，快是一种精度。</strong> <span>示例数据，用于教学演示，非真实业务数据。</span></div>
-    </div>
-
-    <div class="chart-card">
-      <div class="chart-title">图 X4 · 联合贷三条红线，还剩多少余量</div>
-      <div class="chart-sub">银保监办发〔2021〕24 号三项硬指标的当前水位（示例数据）</div>
-      <div class="chart-wrap short"><canvas id="chartX4"></canvas></div>
-      <div class="legend-note"><span class="dot" style="background:#3E7E96;"></span>当前水位　<span class="dot" style="background:#C0433D;"></span>监管红线</div>
-      <div class="chart-footnote">三条红线方向不同，不能只看"数字离 100 有多远"：<strong>出资比例 30% 是下限</strong>（合作方出资不得更低），当前 32% 只剩 2 个点缓冲；<strong>集中度 25%、总限额 50% 是上限</strong>（不得更高），总限额当前 47.5%，只剩 2.5 个点。这就是 Part 1 里合作银行突然要求压降 40% 联合贷规模的真正原因——不是嫌你风控差，是<strong>它自己的分母快撑不住了</strong>。风控同学看到这类"业务量突然被砍"的通知，第一反应应该是去查监管指标水位，而不是去查模型。 <span>示例数据，用于教学演示，非真实业务数据。</span></div>
-    </div>
-  </div>
-
-  <div class="part" id="p6">
-    <div class="part-head">
-      <span class="part-num">⑥</span>
+    <div class="part" id="p6"><div class="part-head">
+      <span class="part-num">06</span>
       <h2>反洗钱与资金侧：两份必须知道的文件</h2>
     </div>
     <p class="part-lede">前面五个 Part 都在讲"怎么判断一笔贷款会不会亏"。但有两类问题，做对了不会让你多赚一分钱，做错了会让整条业务线停摆——<strong>反洗钱</strong>和<strong>资金合作合规</strong>。它们不在模型评估报告里，却常常是决定一家机构能不能继续放贷的那个开关。</p>
@@ -385,17 +250,17 @@
     </div>
 
     <div class="table-scroll">
-      <table class="tbl">
+      <table class="tbl mobile-stack">
         <thead>
           <tr><th>对比项</th><th>信用风险</th><th>欺诈风险</th><th>洗钱风险</th></tr>
         </thead>
         <tbody>
-          <tr><td>核心问题</td><td>还得起吗</td><td>他是他吗 / 想还吗</td><td>钱从哪来、到哪去</td></tr>
-          <tr><td>典型信号</td><td>多头负债、查询次数</td><td>设备聚集、关系网络</td><td>快进快出、拆分转账</td></tr>
-          <tr><td>发生率量级</td><td>百分之几</td><td>千分之几</td><td>万分之几甚至更低</td></tr>
-          <tr><td>主要方法</td><td>评分模型</td><td>规则 + 图计算 + 核身</td><td>规则 + 名单 + 人工分析</td></tr>
-          <tr><td>做错的代价</td><td>坏账上升</td><td>集中爆损</td><td>行政处罚、业务叫停</td></tr>
-          <tr class="hl"><td>能否靠模型兜底</td><td>可以</td><td>部分可以</td><td>不行，必须有人工与流程</td></tr>
+          <tr><td data-label="对比项">核心问题</td><td data-label="信用风险">还得起吗</td><td data-label="欺诈风险">他是他吗 / 想还吗</td><td data-label="洗钱风险">钱从哪来、到哪去</td></tr>
+          <tr><td data-label="对比项">典型信号</td><td data-label="信用风险">多头负债、查询次数</td><td data-label="欺诈风险">设备聚集、关系网络</td><td data-label="洗钱风险">快进快出、拆分转账</td></tr>
+          <tr><td data-label="对比项">确认依据</td><td data-label="信用风险">账龄成熟的逾期与损失记录</td><td data-label="欺诈风险">身份与行为核验、案件复核</td><td data-label="洗钱风险">客户尽调与可疑交易核查</td></tr>
+          <tr><td data-label="对比项">主要方法</td><td data-label="信用风险">评分模型</td><td data-label="欺诈风险">规则 + 图计算 + 核身</td><td data-label="洗钱风险">规则 + 名单 + 人工分析</td></tr>
+          <tr><td data-label="对比项">做错的代价</td><td data-label="信用风险">坏账上升</td><td data-label="欺诈风险">集中爆损</td><td data-label="洗钱风险">行政处罚、业务叫停</td></tr>
+          <tr class="hl"><td data-label="对比项">模型能否替代调查</td><td data-label="信用风险">不能替代贷后监测</td><td data-label="欺诈风险">不能替代身份复核</td><td data-label="洗钱风险">不能替代尽调与报告义务</td></tr>
         </tbody>
       </table>
     </div>
@@ -438,7 +303,7 @@
 
     <div class="callout warn">
       <span class="label">"合规压降"不是风控做错了事</span>
-      回到 Part 1 的痛点三：合作银行突然要求联合贷规模压降 40%。看图 X4 就明白，它的总限额水位已经到 47.5%，距离 50% 只剩 2.5 个点——<strong>这是分母问题，不是你的模型问题</strong>。风控负责人在这种场景下要做的不是解释 KS，而是立刻算清楚：压降 40% 之后，哪些渠道、哪些客群要先停，剩下的额度怎么在收益最高的人群上重新分配。这本质上还是模块⑤那套成本收益排序，只是这一次约束条件是监管指标而不是坏账率。
+      <strong class="para-lead">业务量受资金方约束时，先核对适用范围和指标分母。</strong>不能凭一家假设银行的“47.5% 水位”推断实际合作方必须缩量。若真实项目触及有效规则，应由法务与资金合作团队确认分母、时间点和合同安排，再重算渠道、客群及额度的业务配置。
     </div>
 
     <div class="callout good">
@@ -447,102 +312,18 @@
     </div>
   </div>
 
-  <div class="part" id="p7">
-    <div class="part-head">
-      <span class="part-num">⑦</span>
-      <h2>完整案例：一次团伙攻击的 30 天处置全过程</h2>
-    </div>
-    <p class="part-lede">把前面所有工具串成一条真实时间线。故事的起点是 Part 1 那个"模型全绿但资产变差"的月份，终点是这套打法被固化成制度。注意每一步的<strong>决策依据</strong>和<strong>耗时</strong>——反欺诈的胜负往往就差那几天。</p>
 
-    <div class="case-step">
-      <div class="step-badge">D1</div>
-      <div class="step-body">
-        <h4>发现：日报里一个不该跳的数字跳了</h4>
-        <p>当月 vintage 的 MOB3 逾期率从长期稳定的 1.62% 跳到 2.90%，绝对值涨了 1.28 个百分点，相对涨幅 79%。同一张日报上，模型侧指标却一片平静：KS 0.49、PSI 0.06、通过率与上月持平。</p>
-        <div class="result">第一反应不是"模型坏了"，而是<strong>先拆分母</strong>——按渠道、按客群、按时间切片，看这 1.28 个点是均匀分布还是集中在某一块。</div>
-      </div>
-    </div>
-
-    <div class="case-step">
-      <div class="step-badge">D2</div>
-      <div class="step-body">
-        <h4>定位：切片之后，问题只在一个格子里</h4>
-        <p>按渠道 × 周次做二维切片，坏账增量的 <strong>91%</strong> 集中在"渠道 C × 第 3 周"这一个格子：当周渠道 C 进件 800 笔、放款 320 笔，FPD30 达到 131 笔，<strong>40.9%</strong>——而全平台 FPD30 基线只有 1.8%，相差 22.7 倍。其余渠道、其余周次的 FPD30 全部在 1.5%~2.1% 的正常区间。</p>
-        <div class="result">结论翻转：<strong>这不是模型失效，是样本被污染</strong>。模型对"真实客户"的排序能力完好（所以 KS 没掉），但它面对的这 320 个人里，有相当一部分根本不是来借钱的。PSI 也没报警，因为团伙刻意把资料填得很"正常"，特征分布本身没有漂移。</div>
-      </div>
-    </div>
-
-    <div class="case-step">
-      <div class="step-badge">D3</div>
-      <div class="step-body">
-        <h4>归因：设备指纹聚簇，团伙现形</h4>
-        <p>取渠道 C 第 3 周的 320 笔放款，按设备指纹聚簇（Part 4 的完整算过程）：320 笔压缩成 148 个设备簇，其中 <strong>4 个簇各关联 ≥8 个申请人</strong>，这 4 个簇贡献 38 笔放款、32 笔 FPD30，坏件率 84.2%。人工抽查其中一个 11 人簇，发现 11 份申请的居住地址分属 7 个城市，但 GPS 定位全部落在同一个小区，IP 属同一段，申请时间集中在凌晨 1:00–3:20 之间。</p>
-        <div class="result">证据链闭合：这是<strong>有组织的第三方欺诈</strong>（借用/盗用他人身份批量申请），不是一群人碰巧还不上钱。风险定性一变，处置手段就完全不同——信用风险靠调 cutoff，欺诈风险靠上规则加拉黑。</div>
-      </div>
-    </div>
-
-    <div class="case-step">
-      <div class="step-badge">D3 晚</div>
-      <div class="step-body">
-        <h4>止血：当天生效的三个动作</h4>
-        <p>不等模型重训，不等下个版本，当晚做三件事：①上线临时规则「<strong>同设备关联申请人数 ≥ 2 则拒绝</strong>」（Part 4 算出净收益最高的阈值，102.65 万）；②渠道 C <strong>暂停进件</strong>，转人工复核；③对已识别的 4 个大簇涉及的全部申请人及其设备、IP 段<strong>入黑名单</strong>，同时回溯排查近 60 天内同设备的历史放款。</p>
-        <div class="result">规则从发现到生效不到 12 小时。对照图 X3：如果等 vintage MOB3 出数再动手，要到第 120 天，累计放款 1 200 万、实际损失约 1 080 万；当天止血把敞口压在 30 万量级。<strong>反欺诈的第一 KPI 是响应时延，不是准确率。</strong></div>
-      </div>
-    </div>
-
-    <div class="case-step">
-      <div class="step-badge">W2</div>
-      <div class="step-body">
-        <h4>固化：从"临时规则"变成"资产"</h4>
-        <p>临时规则跑满两周，累计命中 412 笔，实际 FPD30 率 46.8%，远高于 5.26% 的盈亏平衡线，于是转为<strong>常设规则</strong>并登记进规则台账：命中量、精确率、召回率、生效日期、<strong>复评日期（3 个月后）</strong>、责任人，六项缺一不可。同时把"同设备关联申请人数"做成<strong>入模变量</strong>——Part 4 已验证它对 FPD30 单调（13.5% → 84.2% 无反转），满足模块②的 WOE 分箱要求，分 5 箱进入下一版模型。</p>
-        <div class="result">规则和模型分工明确：<strong>规则负责当下止血，模型负责长期承接</strong>。变量入模后，即使规则将来因误伤过高被下线，这个信号依然在模型里发挥作用，不会随着人员变动而丢失。</div>
-      </div>
-    </div>
-
-    <div class="case-step">
-      <div class="step-badge">M1</div>
-      <div class="step-body">
-        <h4>复盘：把一次救火变成一套机制</h4>
-        <p>一个月后复盘，落地四项制度改动：①<strong>FPD1/FPD7/FPD30 进日报</strong>，按渠道 × 周次自动切片，任一格子 FPD30 超基线 3 倍即触发告警；②<strong>渠道准入加试投期</strong>，新渠道前 4 周限额进件并单独监控 FPD；③设备聚簇分析<strong>固化为周报</strong>，不再依赖临时取数；④建立<strong>规则复评机制</strong>，到期未复评的规则自动进入待下线清单。</p>
-        <div class="result">这次事件真正的产出不是追回了多少钱，而是把"<strong>渠道 × 时间切片 + FPD 前视镜 + 设备聚簇</strong>"这条排查路径变成了标准动作。下一次再有类似攻击，发现时间从 D1 提前到进件当天，处置时间从 12 小时压到分钟级。</div>
-      </div>
-    </div>
-
-    <div class="callout info">
-      <span class="label">这条时间线的通用模板</span>
-      <strong>发现异常 → 拆分母定位 → 归因定性 → 当天止血 → 两周固化 → 一月成制度</strong>。换成任何一类突发风险事件，这六步都成立，变的只是第三步用什么工具归因。新人最常犯的错是跳过第二步和第三步直接调模型——结果模型越调越乱，真正的问题原封不动。
-    </div>
+    <div class="part" id="p7"><div class="part-head"><span class="part-num">07</span><h2>从异常告警到规则复评，哪些环节需要证据？</h2></div>
+    <p class="part-lede">以下顺序用于整理告警后的真实业务记录：先核口径与线索，再确定审批范围、处置和复评条件。</p>
+    <div class="method-step"><div class="m-num">1</div><div class="m-body"><h4>定位变化来自哪里</h4>将首期逾期按<strong>渠道 × 放款周 × 客群</strong>切分，同时排除账龄不一致、扣款故障和统计分母变化。若只在某组集中，再调取该组的授权设备与进件记录。</div></div>
+    <div class="method-step"><div class="m-num">2</div><div class="m-body"><h4>拿身份、设备和人工核实建立证据链</h4>设备共用只是线索，不能等同团伙认定；同设备是否由家庭共享、柜台代填，须结合申请时间、网络、身份核验、客户回访与申诉记录核对。</div></div>
+    <div class="method-step"><div class="m-num">3</div><div class="m-body"><h4>定规则与留痕</h4>比较每档阈值的真阳性、误伤和损益，记录授权依据、发布审批、生效时间、命中量与责任人。暂停渠道、名单处理及模型变更应走各自的业务和合规审批，不由未经核验的课堂计算直接决定。</div></div>
+    <div class="method-step"><div class="m-num">4</div><div class="m-body"><h4>观察成熟标签、复评与退出</h4>记录观察期、回滚或撤销条件及申诉结果；只有收集了成熟的欺诈标签和新样本，才能评价精确率、召回率及阈值的长期有效性。</div></div>
   </div>
 
-  <div class="part" id="p8">
-    <div class="part-head">
-      <span class="part-num">⑧</span>
-      <h2>三个坑：这三件事做错，前面全白做</h2>
-    </div>
-    <p class="part-lede">进阶领域的坑和基础模块不一样——基础模块的坑让你算错一个数，这三个坑让你<strong>整个判断框架用错</strong>，越努力越偏。</p>
 
-    <div class="pitfall">
-      <div class="pit-title">坑一：拿信用风控的那套指标去管反欺诈</div>
-      <p>最常见、代价最大。具体表现有三个：<strong>用 KS/AUC 评价反欺诈规则</strong>（规则是二值判定，不产生连续分数，KS 无从算起；欺诈样本占比千分之几，硬算也会被好样本淹没）；<strong>等 vintage 出数再决策</strong>（图 X3 已经算过，晚 60 天多亏 540 万）；<strong>用调 cutoff 的方式应对</strong>（团伙的分数分布是伪装过的，调阈值只会误伤大批真实客户，而团伙换一批资料就能重新绕过）。</p>
-      <p><strong>怎么避免：</strong>建立两套独立的指标体系。信用侧看 KS / AUC / PSI / vintage；欺诈侧看<strong>命中量、精确率、召回率、响应时延</strong>，外加"命中量占全量申请比例"来预估业务量影响。两套指标不混用、不互相解释。判断一件事该用哪套，就问那三个问题：还得起吗（信用）/ 他是他吗（欺诈）/ 钱从哪来（洗钱）。</p>
-    </div>
-
-    <div class="pitfall">
-      <div class="pit-title">坑二：规则只上不下，三年后没人敢动</div>
-      <p>每次出事加一条规则，是最省事的应对。三年后的典型现场是：规则库里躺着两百多条规则，一半没人知道是谁加的、为什么加、拦的是什么；几条规则互相包含，实际生效的只有最严的那条；累计误伤率悄悄爬到 15%，但因为没人统计单条规则的边际贡献，谁也不敢删——<strong>删错了要担责，不删只是慢慢失血</strong>。</p>
-      <p><strong>怎么避免：</strong>规则上线当天就登记六项信息——命中量、精确率、召回率、生效日期、<strong>复评日期</strong>、责任人。到期强制复评，复评时只看一个数：这条规则命中人群的实际坏件率还在盈亏平衡线（本例 5.26%）之上吗？在，续期；不在，下线。另外必须统计<strong>边际贡献</strong>：把这条规则单独关掉，命中量掉多少——很多老规则的独立命中量早就是 0，它拦的东西新规则全都拦了。</p>
-    </div>
-
-    <div class="pitfall">
-      <div class="pit-title">坑三：把监管指标当成"合规部的事"</div>
-      <p>典型症状：风控和业务在会上讨论明年放款目标翻倍，兴致勃勃地排渠道、算额度，没有一个人知道本行联合贷总限额水位已经 47.5%（红线 50%）。计划报上去被一票否决，或者更糟——先干起来，干到一半被监管叫停，前期投入全部沉没，团队还要背一个"合规意识淡薄"的评价。</p>
-      <p><strong>怎么避免：</strong>把三条红线的水位<strong>放进风控月报</strong>，和 KS、PSI、坏账率并列，让每个做业务规划的人都能随时看到还剩多少空间。做任何规模测算时，除了算坏账率和利润，同步算一句"这个规模下总限额水位会到多少"。<strong>监管指标是约束条件，不是事后检查项</strong>——它应该出现在方案的第一页，而不是最后一页的风险提示里。</p>
-    </div>
-  </div>
-
-  <div class="part" id="p9">
-    <div class="part-head">
-      <span class="part-num">⑨</span>
+    <div class="part" id="p8"><div class="part-head">
+      <span class="part-num">08</span>
       <h2>速查表：九张卡，合上手册也能用</h2>
     </div>
     <p class="part-lede">这一页是模块七的压缩包。开会、面试、写方案时如果只来得及看一页，看这一页。</p>
@@ -550,19 +331,19 @@
     <div class="cheat-grid">
       <div class="cheat-card">
         <div class="cc-name">FPD30</div>
-        <div class="cc-detail">首期逾期率，放款后第一期账单逾期 30 天以上的比例。<b>欺诈风险的前视镜</b>——vintage 要等 3 个月，FPD30 两个月内就能报警。全平台基线通常 1.5%~2%，超过基线 3 倍必须查。</div>
+        <div class="cc-detail">首期账单逾期 30 天以上的比例。<b>异常的早期线索</b>——vintage 要等 3 个月，FPD30 两个月内就能报警。分母须是首期已到观察日的放款笔数；比较须对齐渠道和账龄。不能把 FPD30 当作确认欺诈。</div>
       </div>
       <div class="cheat-card">
-        <div class="cc-name">盈亏平衡坏件率</div>
-        <div class="cc-detail">判断一条反欺诈规则该不该上的分界线。<b>= 误伤成本 ÷（拦截收益 + 误伤成本）</b>。本模块示例：500 ÷（9 000 + 500）= <b>5.26%</b>。命中人群坏件率超过它就该上，低于它就是在赔钱拦人。</div>
+        <div class="cc-name">盈亏平衡精确率</div>
+        <div class="cc-detail">在单件成本有依据且欺诈标签已成熟时，<b>= 误伤成本 ÷（可避免损失 + 误伤成本）</b>。仅供手算的 9 000 / 500 元输入得 <b>5.26%</b>，不构成投产线。</div>
       </div>
       <div class="cheat-card">
         <div class="cc-name">精确率 / 召回率</div>
-        <div class="cc-detail">反欺诈规则的体检指标，<b>不要用 KS/AUC</b>。精确率 = 命中里的真坏 ÷ 命中总数（衡量误伤）；召回率 = 命中里的真坏 ÷ 全部真坏（衡量漏网）。两者此消彼长，用金额定取舍。</div>
+        <div class="cc-detail">有确认欺诈标签时才可计算：精确率 = 命中且确认欺诈 ÷ 命中；召回率 = 命中且确认欺诈 ÷ 全部确认欺诈。还应复核误伤与申诉，不以 FPD30 直接替代欺诈。</div>
       </div>
       <div class="cheat-card">
         <div class="cc-name">设备聚簇</div>
-        <div class="cc-detail">团伙识别最快见效的一招：按设备指纹把申请人聚成簇，看簇规模与坏件率的关系。<b>选设备不选手机号</b>——手机号能批量买，设备要真金白银买。簇规模通常与坏件率单调正相关。</div>
+        <div class="cc-detail">按已授权设备指纹聚合申请人，比较成熟账龄的首逾率，再交叉核查身份、时间与申诉。<b>共享设备不是团伙结论</b>，不预设风险随簇规模单调变化。</div>
       </div>
       <div class="cheat-card">
         <div class="cc-name">三类风险三个问题</div>
@@ -570,7 +351,7 @@
       </div>
       <div class="cheat-card">
         <div class="cc-name">欺诈件 LGD</div>
-        <div class="cc-detail">同一个 LGD，两个数：<b>信用坏账约 45%</b>（人是真的，催收能收回一半）；<b>欺诈件约 90%</b>（人根本不存在，基本全损）。算反欺诈账时用错这个数，结论会差一倍。</div>
+        <div class="cc-detail">欺诈损失率须按案件类型、追回金额与观察窗估算；<b>不要把教学单价或信用损失率套到所有欺诈件</b>。</div>
       </div>
       <div class="cheat-card">
         <div class="cc-name">反洗钱三项义务</div>
@@ -582,57 +363,49 @@
       </div>
       <div class="cheat-card">
         <div class="cc-name">规则台账六要素</div>
-        <div class="cc-detail">规则上线当天必须登记：<b>命中量、精确率、召回率、生效日期、复评日期、责任人</b>。缺复评日期的规则库，三年后必然变成没人敢动的黑箱。复评只看一件事：命中坏件率还在盈亏平衡线之上吗。</div>
+        <div class="cc-detail">记录<b>命中量、标签成熟度、误伤及申诉、生效日期、复评日期、责任人</b>；以复核结果而非首逾代理评价规则效果。</div>
       </div>
     </div>
   </div>
 
-  <div class="part" id="p10">
-    <div class="part-head">
-      <span class="part-num">⑩</span>
+
+    <div class="part" id="p9"><div class="part-head">
+      <span class="part-num">09</span>
       <h2>自测五题：能答出来，这个模块就过了</h2>
     </div>
-    <p class="part-lede">先自己写在纸上，再展开对答案。第 1、3 题需要动笔算，别跳。</p>
+    <p class="part-lede">先自己写在纸上，再展开对答案。第 1 题是附有输入条件的公式练习。</p>
 
     <div class="quiz-item">
-      <div class="q-title">第 1 题｜某消费分期产品件均本金 3 万元，欺诈件 LGD 按 90% 估，误伤一个好客户的机会成本是 1 200 元。请算出这个产品反欺诈规则的盈亏平衡坏件率。</div>
+      <div class="q-title">第 1 题｜只为手算：若单件可避免损失 B=27 000 元、误伤成本 C=1 200 元，且已确认欺诈标签，盈亏平衡精确率是多少？</div>
       <details>
         <summary>展开答案与解析</summary>
         <div class="answer">
-          <p>拦截 1 件欺诈的收益 = 30 000 × 90% = <b>27 000 元</b>。</p>
-          <p class="eq">盈亏平衡坏件率 = 1 200 ÷ (27 000 + 1 200) = 1 200 ÷ 28 200 ≈ <b>4.26%</b></p>
-          <p>也就是说，只要规则命中人群里的实际坏件率超过 4.26%，这条规则就值得上。<b>注意件均本金越大，分界线越低</b>——大额产品对反欺诈规则的"宽容度"更高，因为拦对一件省下的钱太多了。这也解释了为什么大额消费贷、经营贷的反欺诈策略普遍比小额现金贷激进。</p>
+          <p>输入 B=27 000 元、C=1 200 元，只做代数演算，不是产品真实损益。</p>
+          <p class="eq">盈亏平衡精确率 = 1 200 ÷ (27 000 + 1 200) = 1 200 ÷ 28 200 ≈ <b>4.26%</b></p>
+          <p><b>4.26% 是这些输入对应的理论边界，不是上线许可。</b>只有成熟的欺诈标签、可避免损失与误伤成本都经复核，并通过合法性与申诉审查，才谈阈值。</p>
         </div>
       </details>
     </div>
 
     <div class="quiz-item">
-      <div class="q-title">第 2 题｜某月资产明显变差，但模型 KS 0.49、PSI 0.06 全部正常。请说出至少三个可能原因，以及你会按什么顺序排查。</div>
+      <div class="q-title">第 2 题｜资产表现恶化而模型指标稳定时，应先查哪些统计与业务环节？为什么不能直接归因于欺诈？</div>
       <details>
         <summary>展开答案与解析</summary>
         <div class="answer">
-          <p>三个常见原因：<b>①欺诈团伙攻击</b>（样本被污染，模型对真实客户的排序能力没坏，所以 KS 不掉；团伙刻意把资料填得"正常"，所以 PSI 也不动）；<b>②渠道结构变化</b>（新渠道客群天然更差，但每个渠道内部的排序仍然有效）；<b>③催收或运营侧变化</b>（催收人力削减、还款通道故障，与模型完全无关）。</p>
-          <p>排查顺序：<b>先拆分母，再定性，最后才碰模型</b>。第一步按渠道 × 时间 × 客群做多维切片，看坏账增量是均匀分布还是集中在某个格子；第二步对异常格子看 FPD1/FPD7/FPD30，判断是"一开始就不打算还"（欺诈）还是"还了几期才还不上"（信用）；第三步才是检查模型与数据链路。</p>
-          <p><b>KS 和 PSI 正常恰恰是重要信息</b>，它把"模型失效"这个最常见的假设排除掉了，剩下的可能性反而更清晰。</p>
+          <p><b>先核口径，再核业务。</b>观察窗/成熟账龄不同、扣款故障、渠道客群变化、催收或运营变化都可能导致表现变差；团伙攻击是待证实的另一种可能，不能由 KS/PSI 正常推出。</p>
+          <p>排查顺序：<b>先拆分母，再定性，最后才碰模型</b>。第一步按渠道 × 时间 × 客群做多维切片，看坏账增量是均匀分布还是集中在某个格子；第二步对异常格子看 FPD1/FPD7/FPD30 并复核身份和交易证据；第三步核模型与数据链路。首期逾期快，不代表已经定性为欺诈。</p>
+          <p><b>KS 和 PSI 正常不能排除模型问题</b>：还须检验分组表现、成熟度、标签、坏账校准及数据链路。</p>
         </div>
       </details>
     </div>
 
     <div class="quiz-item">
-      <div class="q-title">第 3 题｜某规则阈值放松后，命中从 96 笔增加到 168 笔，其中真实欺诈从 71 笔增加到 108 笔。已知欺诈件收益 9 000 元/件、误伤成本 500 元/件。放松这一步是赚了还是亏了？</div>
-      <details>
-        <summary>展开答案与解析</summary>
-        <div class="answer">
-          <p>只算<b>增量</b>，不要重算全量：新增命中 168 − 96 = <b>72 笔</b>，其中新增真坏 108 − 71 = <b>37 笔</b>，新增误伤 72 − 37 = <b>35 笔</b>。</p>
-          <p class="eq">增量净收益 = 37 × 9 000 − 35 × 500 = 333 000 − 17 500 = <b>+31.55 万元</b></p>
-          <p>赚了。再验算一次分界线：新增命中的坏件率 = 37 ÷ 72 = <b>51.4%</b>，远高于 5.26% 的盈亏平衡线，所以放松是划算的——<b>而且这个逻辑可以继续用下去</b>：每放松一档就算一次增量坏件率，直到它掉到 5.26% 以下为止，那个点就是最优阈值。</p>
-          <p>这就是模块⑤"边际思维"在反欺诈上的翻版：<b>决策永远看增量，不看总量</b>。</p>
-        </div>
-      </details>
+      <div class="q-title">第 3 题｜同设备命中群的 FPD30 很高，能否把 FPD30 当成“确认欺诈”计算规则精确率与收益？</div>
+      <details><summary>展开答案与解析</summary><div class="answer"><p><b>不能。</b>FPD30 是首期逾期，不是经调查确认的欺诈。先对齐账龄和渠道、排除扣款故障，再用合法取得的身份、设备、交易与回访证据确认标签。</p><p>只有确认欺诈与复核为非欺诈的标签足够成熟，且可避免损失和误伤成本有依据时，才可计算精确率、召回率与边际净收益；共用设备可先触发加强核验，不可单凭一个代理指标直接拒绝。</p><p><a href="#p4">↩ 回看 Part 04</a></p></div></details>
     </div>
 
     <div class="quiz-item">
-      <div class="q-title">第 4 题｜银保监办发〔2021〕24 号的三条量化红线分别是多少？哪些是上限、哪些是下限？</div>
+      <div class="q-title">第 4 题｜银保监办发〔2021〕24 号的2021 年文件列出的三项量化条件分别是多少？哪些是上限、哪些是下限？</div>
       <details>
         <summary>展开答案与解析</summary>
         <div class="answer">
@@ -645,29 +418,24 @@
     </div>
 
     <div class="quiz-item">
-      <div class="q-title">第 5 题｜你是风控负责人，早上 9 点收到报告：某渠道当周 FPD30 达到 38%（全平台基线 1.8%）。请写出你在 24 小时内的处置顺序。</div>
-      <details>
-        <summary>展开答案与解析</summary>
-        <div class="answer">
-          <p><b>上午：定位。</b>按渠道 × 周次 × 客群切片，确认异常是否集中；同时拉出该渠道当周全部放款的设备指纹、IP、GPS、申请时间，做聚簇分析。目标是在中午前回答一个问题：<b>这是信用问题还是欺诈问题</b>。</p>
-          <p><b>下午：算账定阈值。</b>如果聚簇结果显示团伙特征，按簇规模分档统计坏件率，列出 2~3 个候选阈值的精确率、召回率、净收益，并用盈亏平衡坏件率验证。同步准备渠道暂停的业务沟通口径。</p>
-          <p><b>傍晚：止血。</b>上线临时规则、暂停该渠道进件、涉事设备与 IP 入黑名单、回溯排查近 60 天同设备的历史放款。<b>不等模型重训，不等下个版本</b>。</p>
-          <p><b>次日：留痕。</b>把临时规则登记进台账（命中量、精确率、召回率、生效日期、复评日期、责任人），并把监控看板加上 FPD 按渠道自动切片告警。</p>
-          <p>评分要点：<b>先定性再定量、当天必须止血、所有动作留痕</b>。答案里如果第一步是"重新训练模型"，这一题不得分——等模型训完，钱早就出去了。</p>
-        </div>
-      </details>
+      <div class="q-title">第 5 题｜某渠道 FPD30 高于可比渠道时，哪三类证据须先核查，再考虑临时规则？</div>
+      <details><summary>展开答案与解析</summary><div class="answer">
+      <p><b>①统计口径：</b>首期账龄、分母、渠道与放款时间是否可比，并排除扣款系统问题。</p>
+      <p><b>②身份和行为：</b>在授权范围内核设备、申请时间与网络；回访并记录家庭共用等正常解释，不能由首逾直接定性欺诈。</p>
+      <p><b>③处置记录：</b>确认欺诈标签、误伤和申诉、授权审批及复评日期。若需加强核验、临时规则或暂停渠道，各按对应权限审批并留痕。<a href="#p7">↩ 回看 Part 07</a></p>
+      </div></details>
     </div>
   </div>
 
   <div class="summary-box">
     <h3>这一章说了什么</h3>
-    <p>信用风险只是风控的一个子集。当模型指标全绿、资产却在变差时，问题多半不在模型里，而在模型<strong>看不见的地方</strong>——有人在冒用身份、有团伙在批量攻击、有资金在违规流转、有监管指标在悄悄逼近红线。</p>
-    <p>这一章给了四件武器：用 <strong>FPD 当前视镜</strong>代替 vintage 后视镜，把发现时间从 120 天压到 60 天以内；用<strong>设备聚簇</strong>把散落的申请人还原成团伙，让 84.2% 的坏件率浮出水面；用<strong>盈亏平衡坏件率</strong>把"该不该上这条规则"从争论变成算术；用<strong>监管水位表</strong>把合规约束提到方案第一页，而不是事后检查项。</p>
+    <p>信用风险只是风控的一个子集。模型指标平稳但资产恶化时，仍须同时核查<strong>模型校准、首逾口径、业务流程与身份线索</strong>；单靠一项指标不能锁定原因。</p>
+    <p>这一章给出四个核查入口：<strong>首期逾期</strong>用于更早定位问题，<strong>设备聚簇</strong>提供团伙线索但不能代替身份核验，<strong>盈亏平衡精确率</strong>用于算阈值取舍，<strong>资金合作规则</strong>须按具体业务与现行法规逐项判断。</p>
     <p>贯穿其中的判断框架只有三个问句：<strong>他还得起吗（信用）、他是他吗（欺诈）、钱从哪来（洗钱）</strong>。搞清楚手上这件事属于哪一类，才知道该调 cutoff、该上规则，还是该报可疑交易。</p>
   </div>
 
   <div class="mnemonic-line">
-    前视镜看 FPD，设备聚簇找团伙，五点二六定生死，三成两成半一半。
+    先核逾期口径，再验身份与设备；成熟标签算损益，规则到期再复评。
   </div>
 
   <div class="next-card">
@@ -689,159 +457,5 @@
 
 </div>
 
-<script>
-if (!window.Chart) {
-  // 本地 vendor 与 CDN 都取不到时，给出可读的降级提示，而不是留空白框
-  document.querySelectorAll('.chart-wrap').forEach(function (el) {
-    el.innerHTML = '<div style="display:flex;align-items:center;justify-content:center;height:100%;'
-      + 'color:#9A8F82;font-size:13.5px;line-height:1.8;text-align:center;padding:0 24px;">'
-      + '图表库 Chart.js 未能加载<br>请检查网络，或确认 design-system/vendor/chart.umd.min.js 存在</div>';
-  });
-} else {
-
-const gridColor = 'rgba(0,0,0,0.06)';
-Chart.defaults.font.family = "-apple-system,BlinkMacSystemFont,'PingFang SC','Microsoft YaHei',sans-serif";
-Chart.defaults.font.size = 12.5;
-Chart.defaults.color = '#5B5147';
-
-// 图 X1：簇规模 → FPD30 率（数据同 Part 4 第 1 步分档表）
-new Chart(document.getElementById('chartX1'), {
-  type: 'bar',
-  data: {
-    labels: ['1 人\n（独立设备）', '2 人', '3~4 人', '5~7 人', '≥8 人'],
-    datasets: [
-      {
-        label: 'FPD30 率',
-        data: [13.5, 16.7, 51.4, 67.2, 84.2],
-        backgroundColor: ['#C0433D33', '#C0433D4D', '#C0433D99', '#C0433DCC', '#C0433D'],
-        borderColor: '#C0433D',
-        borderWidth: 1,
-        borderRadius: 3,
-        order: 2
-      },
-      {
-        label: '全平台基线 1.8%',
-        type: 'line',
-        data: [1.8, 1.8, 1.8, 1.8, 1.8],
-        borderColor: '#C9BFB2',
-        borderWidth: 2,
-        borderDash: [5, 4],
-        pointRadius: 0,
-        order: 1
-      }
-    ]
-  },
-  options: {
-    responsive: true, maintainAspectRatio: false,
-    plugins: {
-      legend: { display: false },
-      tooltip: { callbacks: { label: c => c.dataset.label + '：' + c.parsed.y + '%' } }
-    },
-    scales: {
-      y: { min: 0, max: 100, title: { display: true, text: 'FPD30 率' },
-           ticks: { callback: v => v + '%' }, grid: { color: gridColor } },
-      x: { title: { display: true, text: '设备簇规模（簇内关联申请人数）' }, grid: { display: false } }
-    }
-  }
-});
-
-// 图 X2：三个阈值的精确率 / 召回率 / 净收益（双轴）
-new Chart(document.getElementById('chartX2'), {
-  type: 'bar',
-  data: {
-    labels: ['同设备 ≥ 5 人', '同设备 ≥ 3 人', '同设备 ≥ 2 人'],
-    datasets: [
-      { label: '精确率', data: [74.0, 64.3, 49.2], backgroundColor: '#3E7E96',
-        borderRadius: 3, yAxisID: 'y', order: 3 },
-      { label: '召回率', data: [54.2, 82.4, 92.4], backgroundColor: '#C1892A',
-        borderRadius: 3, yAxisID: 'y', order: 3 },
-      { label: '净收益（万元）', type: 'line', data: [62.65, 94.2, 102.65],
-        borderColor: '#3E8362', backgroundColor: '#3E8362', borderWidth: 2.5,
-        pointRadius: 4, pointHoverRadius: 6, tension: 0.25, yAxisID: 'y1', order: 1 }
-    ]
-  },
-  options: {
-    responsive: true, maintainAspectRatio: false,
-    interaction: { mode: 'index', intersect: false },
-    plugins: {
-      legend: { display: false },
-      tooltip: { callbacks: { label: c => c.dataset.label + '：' + c.parsed.y
-        + (c.dataset.yAxisID === 'y1' ? ' 万元' : '%') } }
-    },
-    scales: {
-      y: { min: 0, max: 100, position: 'left', title: { display: true, text: '精确率 / 召回率' },
-           ticks: { callback: v => v + '%' }, grid: { color: gridColor } },
-      y1: { min: 0, max: 120, position: 'right', title: { display: true, text: '净收益（万元）' },
-            grid: { drawOnChartArea: false } },
-      x: { grid: { display: false } }
-    }
-  }
-});
-
-// 图 X3：三种发现机制下的累计欺诈放款金额（万元）
-// 攻击期按 10 万/天线性放款：第 60 天 600 万、第 120 天 1 200 万；发现即封停，曲线转平
-new Chart(document.getElementById('chartX3'), {
-  type: 'line',
-  data: {
-    labels: ['第0天', '15', '30', '45', '60', '75', '90', '105', '120'],
-    datasets: [
-      { label: '靠 vintage MOB3 发现（第 120 天）',
-        data: [0, 150, 300, 450, 600, 750, 900, 1050, 1200],
-        borderColor: '#C0433D', backgroundColor: '#C0433D1A',
-        borderWidth: 2.5, pointRadius: 2.5, tension: 0.1, fill: true },
-      { label: '靠 FPD30 发现（第 60 天）',
-        data: [0, 150, 300, 450, 600, 600, 600, 600, 600],
-        borderColor: '#C1892A', backgroundColor: 'transparent',
-        borderWidth: 2.5, pointRadius: 2.5, tension: 0.1 },
-      { label: '设备规则实时拦截（第 0 天）',
-        data: [30, 30, 30, 30, 30, 30, 30, 30, 30],
-        borderColor: '#3E8362', backgroundColor: 'transparent',
-        borderWidth: 2.5, pointRadius: 2.5, tension: 0.1 }
-    ]
-  },
-  options: {
-    responsive: true, maintainAspectRatio: false,
-    interaction: { mode: 'index', intersect: false },
-    plugins: {
-      legend: { display: false },
-      tooltip: { callbacks: { label: c => c.dataset.label + '：' + c.parsed.y + ' 万元' } }
-    },
-    scales: {
-      y: { min: 0, max: 1300, title: { display: true, text: '累计欺诈放款（万元）' },
-           grid: { color: gridColor } },
-      x: { title: { display: true, text: '攻击开始后天数' }, grid: { display: false } }
-    }
-  }
-});
-
-// 图 X4：联合贷三条红线水位（银保监办发〔2021〕24 号，示例数据）
-new Chart(document.getElementById('chartX4'), {
-  type: 'bar',
-  data: {
-    labels: ['出资比例\n（下限 30%）', '单一合作方集中度\n（上限 25%）', '联合贷总限额\n（上限 50%）'],
-    datasets: [
-      { label: '当前水位', data: [32, 21.3, 47.5], backgroundColor: '#3E7E96',
-        borderRadius: 3, barPercentage: 0.62 },
-      { label: '监管红线', data: [30, 25, 50], backgroundColor: '#C0433D66',
-        borderColor: '#C0433D', borderWidth: 1.5, borderRadius: 3, barPercentage: 0.62 }
-    ]
-  },
-  options: {
-    indexAxis: 'y',
-    responsive: true, maintainAspectRatio: false,
-    plugins: {
-      legend: { display: false },
-      tooltip: { callbacks: { label: c => c.dataset.label + '：' + c.parsed.x + '%' } }
-    },
-    scales: {
-      x: { min: 0, max: 60, title: { display: true, text: '水位（%）' },
-           ticks: { callback: v => v + '%' }, grid: { color: gridColor } },
-      y: { grid: { display: false } }
-    }
-  }
-});
-
-}
-</script>
 </body>
 </html>

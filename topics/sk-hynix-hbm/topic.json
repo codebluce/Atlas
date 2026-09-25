@@ -45,5 +45,8 @@
       "state": "done"
     }
   ],
-  "source_driven": true
+  "source_driven": true,
+  "optional_sections": [
+    "pitfall"
+  ]
 }

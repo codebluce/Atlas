@@ -74,8 +74,15 @@ code{
 }
 .masthead h1{ font-size:30px; margin-bottom:8px; }
 .masthead .sub{ color:var(--ink-soft); font-size:16px; max-width:640px; }
-.breadcrumb{ font-size:14px; color:var(--ink-faint); margin-bottom:14px; }
-.breadcrumb a{ color:var(--ink-faint); border-bottom:1px dotted var(--line); }
+.breadcrumb{ font-size:13px; color:var(--ink-faint); margin-bottom:18px; }
+.breadcrumb ol{ display:flex; flex-wrap:wrap; align-items:center; gap:6px 8px; list-style:none; padding:0; margin:0; }
+.breadcrumb li{ display:inline-flex; align-items:center; gap:8px; min-width:0; max-width:100%; overflow-wrap:anywhere; }
+.breadcrumb li[hidden]{ display:none; }
+.breadcrumb li+li::before{ content:"/"; color:var(--ink-faint); flex-shrink:0; }
+.breadcrumb a{ color:var(--ink-soft); text-decoration:none; border-bottom:1px solid var(--line); }
+.breadcrumb a:hover{ color:var(--brand-dark); border-color:var(--brand); }
+.breadcrumb a:focus-visible{ outline:2px solid var(--brand); outline-offset:3px; border-radius:2px; }
+.breadcrumb [aria-current="page"]{ color:var(--brand-dark); font-weight:600; }
 
 /* ---------- 徽标/标签 ---------- */
 .tag{
@@ -109,7 +116,7 @@ code{
   display:flex; align-items:center; justify-content:center; font-weight:700; font-size:13px; margin-top:2px;
 }
 .method-step .m-body h4{ font-size:15px; margin-bottom:6px; }
-.method-step .m-body{ font-size:14.5px; color:var(--ink-soft); }
+.method-step .m-body{ min-width:0; overflow-wrap:anywhere; font-size:14.5px; color:var(--ink-soft); }
 .method-step pre{
   background:#2B2622; color:#EFE7DA; border-radius:8px; padding:12px 16px; overflow-x:auto;
   font-size:13px; line-height:1.6; margin:8px 0;
@@ -300,7 +307,7 @@ table.tbl tr.hl td{ background:var(--brand-bg); font-weight:700; }
 }
 .case-step .step-badge{ margin-top:2px; }
 .case-step .step-body h4{ font-size:15px; margin-bottom:4px; }
-.case-step .step-body{ font-size:14.5px; color:var(--ink-soft); }
+.case-step .step-body{ flex:1; min-width:0; font-size:14.5px; color:var(--ink-soft); }
 .case-step .step-body .result{ color:var(--ink); font-weight:600; }
 
 /* ---------- 计算过程框 ---------- */
@@ -368,7 +375,7 @@ table.tbl tr.hl td{ background:var(--brand-bg); font-weight:700; }
 .story-prose h3{ font-size:20px; margin:0 0 16px; }
 .story-prose p{ margin:0 0 1.2em; overflow-wrap:anywhere; }
 /* 段首导读单独成行；段内 strong 仍作为荧光笔标出少量关键事实。 */
-.source-driven .para-lead{
+.para-lead{
   display:block; margin-bottom:4px; padding:0;
   background:none; color:var(--ink); line-height:1.65;
 }
@@ -401,4 +408,14 @@ table.tbl tr.hl td{ background:var(--brand-bg); font-weight:700; }
 .source-driven .local-nav .container{ flex-wrap:wrap; gap:4px; }
 @media (max-width:680px){
   .source-driven .local-nav a{ font-size:12.5px; padding:5px 8px; }
+}
+
+/* 在手机上让逐行解释型宽表成为纵向事实卡，保留桌面表格与原始表头语义。 */
+@media (max-width: 640px){
+  table.tbl.mobile-stack,table.tbl.mobile-stack tbody{ display:block; width:100%; min-width:0; }
+  table.tbl.mobile-stack thead{ position:absolute; width:1px; height:1px; overflow:hidden; clip-path:inset(50%); white-space:nowrap; }
+  table.tbl.mobile-stack tr{ display:block; min-width:0; margin:0 0 12px; padding:6px 14px; border:1px solid var(--line); border-radius:12px; background:var(--paper); }
+  table.tbl.mobile-stack td{ display:block; min-width:0; max-width:100%; width:auto; padding:9px 0; border:0; text-align:left; overflow-wrap:anywhere; white-space:normal; }
+  table.tbl.mobile-stack td+td{ border-top:1px solid var(--line-soft); }
+  table.tbl.mobile-stack td::before{ content:attr(data-label); display:block; margin-bottom:3px; font-size:12px; font-weight:700; color:var(--brand-dark); white-space:normal; }
 }

@@ -13,7 +13,7 @@
 
 <header class="masthead">
   <div class="container">
-    <div class="breadcrumb"><a href="../index.html">信贷风控学习手册</a> › 模块二</div>
+    <nav class="breadcrumb" aria-label="当前位置"><ol><li><a href="../../../index.html">Atlas</a></li><li><a href="../index.html">信贷风控学习手册</a></li><li aria-current="page">模块 02 · 特征工程四件套</li></ol></nav>
     <span class="eyebrow">🛠️ 模块二 · 特征工程四件套</span>
     <h1>分箱 / WOE / IV / 单调性：风控建模最日常的手活</h1>
     <p class="sub">逻辑回归喜欢线性关系，但原始特征几乎从不听话——年龄和风险不是直线关系，类别变量没法直接乘系数。分箱+WOE就是把任何"不听话"的特征，捏成模型能用的样子。</p>
@@ -29,10 +29,9 @@
     <a href="#p5">⑤ 算IV筛选</a>
     <a href="#p6">⑥ 单调性</a>
     <a href="#p7">⑦ 特征稳定性</a>
-    <a href="#p8">⑧ 实战案例</a>
-    <a href="#p9">⑨ 三个坑</a>
-    <a href="#p10">⑩ 速查表</a>
-    <a href="#p11">⑪ 自测</a>
+    <a href="#p8">⑧ 入模顺序</a>
+    <a href="#p9">⑨ 速查表</a>
+    <a href="#p10">⑩ 自测</a>
   </div>
 </nav>
 
@@ -47,13 +46,13 @@
       <li>识别"非单调"特征，知道遇到U型分布该怎么处理</li>
       <li>理解为什么建模阶段就要给候选特征做稳定性(PSI)体检</li>
       <li>走一遍完整案例：一个特征从原始数据到入模的全过程</li>
-      <li>避开特征工程最容易踩的三个坑</li>
+      <li>解释小样本分箱、预测力和稳定性之间的取舍</li>
     </ul>
   </div>
 
   <!-- ============ PART 1 痛点 ============ -->
-  <div class="part" id="p1">
-    <div class="part-head"><span class="part-num">01</span><h2>先说痛点：原始特征直接扔进模型会怎样</h2></div>
+
+    <div class="part" id="p1"><div class="part-head"><span class="part-num">01</span><h2>先说痛点：原始特征直接扔进模型会怎样</h2></div>
     <p class="part-lede">逻辑回归本质是在做线性加权求和，它假设每个特征和"风险"之间是一条直线关系——但现实里几乎没有变量这么听话。</p>
 
     <div class="analogy">
@@ -62,12 +61,12 @@
     </div>
 
     <p>除了非线性关系，原始特征还有几个直接入模的硬伤：</p>
-    <table class="tbl">
-      <tr><th>问题</th><th>具体表现</th></tr>
-      <tr><td>类别变量没法乘系数</td><td>"婚姻状况=已婚/未婚/离异"这种字符串，逻辑回归根本算不了</td></tr>
-      <tr><td>异常值/缺失值敏感</td><td>年龄字段里混进一个"199岁"，会把线性拟合直接带偏</td></tr>
-      <tr><td>可解释性差</td><td>系数×原始值，业务很难翻译成"这一条对客户到底意味着什么"</td></tr>
-    </table>
+    <table class="tbl mobile-stack">
+      <thead><tr><th>问题</th><th>具体表现</th></tr></thead><tbody>
+      <tr><td data-label="问题">类别变量没法乘系数</td><td data-label="具体表现">"婚姻状况=已婚/未婚/离异"这种字符串，逻辑回归根本算不了</td></tr>
+      <tr><td data-label="问题">异常值/缺失值敏感</td><td data-label="具体表现">年龄字段里混进一个"199岁"，会把线性拟合直接带偏</td></tr>
+      <tr><td data-label="问题">可解释性差</td><td data-label="具体表现">系数×原始值，业务很难翻译成"这一条对客户到底意味着什么"</td></tr>
+    </tbody></table>
 
     <div class="callout bad">
       <span class="label">分箱 + WOE 一次性解决三个问题</span>
@@ -76,8 +75,8 @@
   </div>
 
   <!-- ============ PART 2 核心概念 ============ -->
-  <div class="part" id="p2">
-    <div class="part-head"><span class="part-num">02</span><h2>先搞清楚：分箱在做什么</h2></div>
+
+    <div class="part" id="p2"><div class="part-head"><span class="part-num">02</span><h2>先搞清楚：分箱在做什么</h2></div>
     <p class="part-lede">分箱是特征工程的第一步，后面WOE、IV都建立在分箱结果之上。</p>
 
     <div class="concept-grid">
@@ -102,8 +101,8 @@
   </div>
 
   <!-- ============ PART 3 指标图鉴 ============ -->
-  <div class="part" id="p3">
-    <div class="part-head"><span class="part-num">03</span><h2>指标图鉴：4 个特征工程核心概念</h2></div>
+
+    <div class="part" id="p3"><div class="part-head"><span class="part-num">03</span><h2>指标图鉴：4 个特征工程核心概念</h2></div>
 
     <div class="concept-grid">
       <div class="concept-card">
@@ -138,23 +137,23 @@
   </div>
 
   <!-- ============ PART 4 算WOE ============ -->
-  <div class="part" id="p4">
-    <div class="part-head"><span class="part-num">04</span><h2>手算一遍 WOE：用"近3个月申请次数"这个特征</h2></div>
+
+    <div class="part" id="p4"><div class="part-head"><span class="part-num">04</span><h2>手算一遍 WOE：用"近3个月申请次数"这个特征</h2></div>
     <p class="part-lede">这个特征后面会贯穿模块一（入选评分卡）和模块三（上线后漂移失效），这里先把它的WOE/IV算清楚。样本沿用模块三同一批：9500个好客户，500个坏客户，总样本10000人。</p>
 
     <div class="method-step">
       <div class="m-num">1</div>
       <div class="m-body">
         <h4>分箱，统计每箱的好坏人数</h4>
-        <table class="tbl">
-          <tr><th>分箱</th><th>好客户数</th><th>坏客户数</th></tr>
-          <tr><td>[0,1]次</td><td class="num">3800</td><td class="num">80</td></tr>
-          <tr><td>[2,3]次</td><td class="num">2800</td><td class="num">100</td></tr>
-          <tr><td>[4,5]次</td><td class="num">1500</td><td class="num">110</td></tr>
-          <tr><td>[6,8]次</td><td class="num">900</td><td class="num">130</td></tr>
-          <tr><td>[9,+)次</td><td class="num">500</td><td class="num">80</td></tr>
-          <tr class="hl"><td>合计</td><td class="num">9500</td><td class="num">500</td></tr>
-        </table>
+        <table class="tbl mobile-stack">
+          <thead><tr><th>分箱</th><th>好客户数</th><th>坏客户数</th></tr></thead><tbody>
+          <tr><td data-label="分箱">[0,1]次</td><td class="num" data-label="好客户数">3800</td><td class="num" data-label="坏客户数">80</td></tr>
+          <tr><td data-label="分箱">[2,3]次</td><td class="num" data-label="好客户数">2800</td><td class="num" data-label="坏客户数">100</td></tr>
+          <tr><td data-label="分箱">[4,5]次</td><td class="num" data-label="好客户数">1500</td><td class="num" data-label="坏客户数">110</td></tr>
+          <tr><td data-label="分箱">[6,8]次</td><td class="num" data-label="好客户数">900</td><td class="num" data-label="坏客户数">130</td></tr>
+          <tr><td data-label="分箱">[9,+)次</td><td class="num" data-label="好客户数">500</td><td class="num" data-label="坏客户数">80</td></tr>
+          <tr class="hl"><td data-label="分箱">合计</td><td class="num" data-label="好客户数">9500</td><td class="num" data-label="坏客户数">500</td></tr>
+        </tbody></table>
       </div>
     </div>
 
@@ -169,14 +168,14 @@
       </div>
     </div>
 
-    <table class="tbl">
-      <tr><th>分箱</th><th>好客户占比</th><th>坏客户占比</th><th>WOE</th></tr>
-      <tr><td>[0,1]次</td><td class="num">40.0%</td><td class="num">16.0%</td><td class="num">−0.916</td></tr>
-      <tr><td>[2,3]次</td><td class="num">29.5%</td><td class="num">20.0%</td><td class="num">−0.388</td></tr>
-      <tr><td>[4,5]次</td><td class="num">15.8%</td><td class="num">22.0%</td><td class="num">0.332</td></tr>
-      <tr><td>[6,8]次</td><td class="num">9.5%</td><td class="num">26.0%</td><td class="num">1.010</td></tr>
-      <tr><td>[9,+)次</td><td class="num">5.3%</td><td class="num">16.0%</td><td class="num">1.112</td></tr>
-    </table>
+    <table class="tbl mobile-stack">
+      <thead><tr><th>分箱</th><th>好客户占比</th><th>坏客户占比</th><th>WOE</th></tr></thead><tbody>
+      <tr><td data-label="分箱">[0,1]次</td><td class="num" data-label="好客户占比">40.0%</td><td class="num" data-label="坏客户占比">16.0%</td><td class="num" data-label="WOE">−0.916</td></tr>
+      <tr><td data-label="分箱">[2,3]次</td><td class="num" data-label="好客户占比">29.5%</td><td class="num" data-label="坏客户占比">20.0%</td><td class="num" data-label="WOE">−0.388</td></tr>
+      <tr><td data-label="分箱">[4,5]次</td><td class="num" data-label="好客户占比">15.8%</td><td class="num" data-label="坏客户占比">22.0%</td><td class="num" data-label="WOE">0.332</td></tr>
+      <tr><td data-label="分箱">[6,8]次</td><td class="num" data-label="好客户占比">9.5%</td><td class="num" data-label="坏客户占比">26.0%</td><td class="num" data-label="WOE">1.010</td></tr>
+      <tr><td data-label="分箱">[9,+)次</td><td class="num" data-label="好客户占比">5.3%</td><td class="num" data-label="坏客户占比">16.0%</td><td class="num" data-label="WOE">1.112</td></tr>
+    </tbody></table>
 
     <div class="chart-card">
       <div class="chart-title">图W1 · WOE 分箱柱状图</div>
@@ -192,32 +191,32 @@
   </div>
 
   <!-- ============ PART 5 算IV筛选 ============ -->
-  <div class="part" id="p5">
-    <div class="part-head"><span class="part-num">05</span><h2>手算一遍 IV，再看筛选标准</h2></div>
+
+    <div class="part" id="p5"><div class="part-head"><span class="part-num">05</span><h2>手算一遍 IV，再看筛选标准</h2></div>
 
     <div class="calc-box">
       单箱IV贡献 = (坏占比−好占比) × WOE<br>
       以[0,1]次为例：<span class="eq">= (0.16−0.40) × (−0.916) = (−0.24) × (−0.916) ≈ 0.220</span>
     </div>
 
-    <table class="tbl">
-      <tr><th>分箱</th><th>坏占比−好占比</th><th>WOE</th><th>该箱IV贡献</th></tr>
-      <tr><td>[0,1]次</td><td class="num">−0.240</td><td class="num">−0.916</td><td class="num">0.220</td></tr>
-      <tr><td>[2,3]次</td><td class="num">−0.095</td><td class="num">−0.388</td><td class="num">0.037</td></tr>
-      <tr><td>[4,5]次</td><td class="num">0.062</td><td class="num">0.332</td><td class="num">0.021</td></tr>
-      <tr><td>[6,8]次</td><td class="num">0.165</td><td class="num">1.010</td><td class="num">0.167</td></tr>
-      <tr><td>[9,+)次</td><td class="num">0.107</td><td class="num">1.112</td><td class="num">0.119</td></tr>
-      <tr class="hl"><td>IV 总计</td><td colspan="2"></td><td class="num">0.563</td></tr>
-    </table>
+    <table class="tbl mobile-stack">
+      <thead><tr><th>分箱</th><th>坏占比−好占比</th><th>WOE</th><th>该箱IV贡献</th></tr></thead><tbody>
+      <tr><td data-label="分箱">[0,1]次</td><td class="num" data-label="坏占比−好占比">−0.240</td><td class="num" data-label="WOE">−0.916</td><td class="num" data-label="该箱IV贡献">0.220</td></tr>
+      <tr><td data-label="分箱">[2,3]次</td><td class="num" data-label="坏占比−好占比">−0.095</td><td class="num" data-label="WOE">−0.388</td><td class="num" data-label="该箱IV贡献">0.037</td></tr>
+      <tr><td data-label="分箱">[4,5]次</td><td class="num" data-label="坏占比−好占比">0.062</td><td class="num" data-label="WOE">0.332</td><td class="num" data-label="该箱IV贡献">0.021</td></tr>
+      <tr><td data-label="分箱">[6,8]次</td><td class="num" data-label="坏占比−好占比">0.165</td><td class="num" data-label="WOE">1.010</td><td class="num" data-label="该箱IV贡献">0.167</td></tr>
+      <tr><td data-label="分箱">[9,+)次</td><td class="num" data-label="坏占比−好占比">0.107</td><td class="num" data-label="WOE">1.112</td><td class="num" data-label="该箱IV贡献">0.119</td></tr>
+    </tbody></table>
+    <p><strong>IV 总计：0.563</strong>（逐箱贡献按未四舍五入的原数求和，显示值加总会略有差异）。</p>
 
     <p>把这个IV放进筛选标准里看看：</p>
-    <table class="tbl">
-      <tr><th>IV 区间</th><th>预测能力判断</th></tr>
-      <tr><td>&lt; 0.02</td><td>几乎无预测力，直接剔除</td></tr>
-      <tr><td>0.02 ~ 0.1</td><td>较弱</td></tr>
-      <tr><td>0.1 ~ 0.3</td><td>中等，建模主力特征</td></tr>
-      <tr class="hl"><td>&gt; 0.3</td><td>强，但要警惕过拟合或稳定性风险（本例IV=0.563就在这一档）</td></tr>
-    </table>
+    <table class="tbl mobile-stack">
+      <thead><tr><th>IV 区间</th><th>预测能力判断</th></tr></thead><tbody>
+      <tr><td data-label="IV 区间">&lt; 0.02</td><td data-label="预测能力判断">几乎无预测力，直接剔除</td></tr>
+      <tr><td data-label="IV 区间">0.02 ~ 0.1</td><td data-label="预测能力判断">较弱</td></tr>
+      <tr><td data-label="IV 区间">0.1 ~ 0.3</td><td data-label="预测能力判断">中等，建模主力特征</td></tr>
+      <tr class="hl"><td data-label="IV 区间">&gt; 0.3</td><td data-label="预测能力判断">强，但要警惕过拟合或稳定性风险（本例IV=0.563就在这一档）</td></tr>
+    </tbody></table>
 
     <div class="chart-card">
       <div class="chart-title">图W2 · 候选特征 IV 排行</div>
@@ -233,17 +232,17 @@
   </div>
 
   <!-- ============ PART 6 单调性 ============ -->
-  <div class="part" id="p6">
-    <div class="part-head"><span class="part-num">06</span><h2>非单调特征：U型分布该怎么处理</h2></div>
+
+    <div class="part" id="p6"><div class="part-head"><span class="part-num">06</span><h2>非单调特征：U型分布该怎么处理</h2></div>
     <p class="part-lede">不是所有特征都像"申请次数"这么听话。用"居住时长"这个经典反例走一遍。</p>
 
-    <table class="tbl">
-      <tr><th>分箱</th><th>WOE</th></tr>
-      <tr><td>&lt;1年</td><td class="num">0.45</td></tr>
-      <tr><td>1~3年</td><td class="num">−0.62</td></tr>
-      <tr><td>3~5年</td><td class="num">−0.18</td></tr>
-      <tr><td>5年以上</td><td class="num">0.21</td></tr>
-    </table>
+    <table class="tbl mobile-stack">
+      <thead><tr><th>分箱</th><th>WOE</th></tr></thead><tbody>
+      <tr><td data-label="分箱">&lt;1年</td><td class="num" data-label="WOE">0.45</td></tr>
+      <tr><td data-label="分箱">1~3年</td><td class="num" data-label="WOE">−0.62</td></tr>
+      <tr><td data-label="分箱">3~5年</td><td class="num" data-label="WOE">−0.18</td></tr>
+      <tr><td data-label="分箱">5年以上</td><td class="num" data-label="WOE">0.21</td></tr>
+    </tbody></table>
 
     <div class="chart-card">
       <div class="chart-title">图W3 · "居住时长"的 WOE 曲线呈 U 型</div>
@@ -258,12 +257,12 @@
     </div>
 
     <p><strong>三种处理方式：</strong></p>
-    <table class="tbl">
-      <tr><th>方法</th><th>做法</th></tr>
-      <tr><td>①合并分箱</td><td>把WOE相近的箱合并，强制让曲线变单调（可能会损失一些信息量）</td></tr>
-      <tr><td>②拆成虚拟变量</td><td>拆成"是否&lt;1年""是否&gt;3年"这类0/1变量分别入模，让模型自己组合出U型效果</td></tr>
-      <tr><td>③换用树模型</td><td>树模型能自动处理非线性关系，但会失去评分卡的可解释性（见模块一第④节的取舍）</td></tr>
-    </table>
+    <table class="tbl mobile-stack">
+      <thead><tr><th>方法</th><th>做法</th></tr></thead><tbody>
+      <tr><td data-label="方法">①合并分箱</td><td data-label="做法">把WOE相近的箱合并，强制让曲线变单调（可能会损失一些信息量）</td></tr>
+      <tr><td data-label="方法">②拆成虚拟变量</td><td data-label="做法">拆成"是否&lt;1年""是否&gt;3年"这类0/1变量分别入模，让模型自己组合出U型效果</td></tr>
+      <tr><td data-label="方法">③换用树模型</td><td data-label="做法">树模型能自动处理非线性关系，但会失去评分卡的可解释性（见模块一第④节的取舍）</td></tr>
+    </tbody></table>
 
     <div class="callout">
       <span class="label">单调性检查是入模前的必做动作</span>
@@ -272,8 +271,8 @@
   </div>
 
   <!-- ============ PART 7 特征稳定性 ============ -->
-  <div class="part" id="p7">
-    <div class="part-head"><span class="part-num">07</span><h2>建模阶段就要做的稳定性体检</h2></div>
+
+    <div class="part" id="p7"><div class="part-head"><span class="part-num">07</span><h2>建模阶段就要做的稳定性体检</h2></div>
     <p class="part-lede">IV告诉你"这个特征有没有用"，PSI告诉你"这个特征稳不稳"——两件事同等重要，但很多团队只做了前者。</p>
 
     <div class="analogy">
@@ -281,24 +280,24 @@
       用两个不同时间窗口的样本（比如建模用的近12个月 vs 更早之前的12个月），对同一个候选特征分别算一次分布，再用<a href="03-metrics.html">模块三</a>讲过的PSI公式对比这两份分布——如果PSI已经偏高，说明这个特征的分布本身随时间在变，即使当下IV很高，未来也大概率会像模块三案例里"近3个月申请次数"那样，成为模型衰退的导火索。
     </div>
 
-    <table class="tbl">
-      <tr><th>特征</th><th>IV</th><th>特征PSI（跨窗口）</th><th>入模建议</th></tr>
-      <tr><td>近3个月申请次数</td><td class="num">0.563</td><td class="num">0.18</td><td>预测力强但不稳定，需谨慎监控或做分段处理</td></tr>
-      <tr><td>历史逾期次数</td><td class="num">0.412</td><td class="num">0.04</td><td>强且稳定，优先入模</td></tr>
-      <tr><td>月收入</td><td class="num">0.156</td><td class="num">0.06</td><td>中等且稳定，主力特征</td></tr>
-      <tr><td>居住时长</td><td class="num">0.089</td><td class="num">0.09</td><td>弱，且需先解决单调性问题</td></tr>
-      <tr><td>性别</td><td class="num">0.008</td><td class="num">0.01</td><td>剔除，无预测力</td></tr>
-    </table>
+    <table class="tbl mobile-stack">
+      <thead><tr><th>特征</th><th>IV</th><th>特征PSI（跨窗口）</th><th>入模建议</th></tr></thead><tbody>
+      <tr><td data-label="特征">近3个月申请次数</td><td class="num" data-label="IV">0.563</td><td class="num" data-label="特征PSI（跨窗口）">0.18</td><td data-label="入模建议">预测力强但不稳定，需谨慎监控或做分段处理</td></tr>
+      <tr><td data-label="特征">历史逾期次数</td><td class="num" data-label="IV">0.412</td><td class="num" data-label="特征PSI（跨窗口）">0.04</td><td data-label="入模建议">强且稳定，优先入模</td></tr>
+      <tr><td data-label="特征">月收入</td><td class="num" data-label="IV">0.156</td><td class="num" data-label="特征PSI（跨窗口）">0.06</td><td data-label="入模建议">中等且稳定，主力特征</td></tr>
+      <tr><td data-label="特征">居住时长</td><td class="num" data-label="IV">0.089</td><td class="num" data-label="特征PSI（跨窗口）">0.09</td><td data-label="入模建议">弱，且需先解决单调性问题</td></tr>
+      <tr><td data-label="特征">性别</td><td class="num" data-label="IV">0.008</td><td class="num" data-label="特征PSI（跨窗口）">0.01</td><td data-label="入模建议">剔除，无预测力</td></tr>
+    </tbody></table>
 
     <div class="callout warn">
       <span class="label">这正是模块三案例的前情提要</span>
-      "近3个月申请次数"在建模阶段的特征PSI就已经是0.18（模块三讲过，0.1~0.25属于"需要关注"区间），却因为IV实在太强被保留入模——这本身是个可以接受的权衡，但意味着<strong>上线后必须对这个特征做加密监控</strong>，这也正是模块三案例里它最终被"抓到"漂移的原因：团队一直有在盯它。
+      在本课题的教学输入中，“近3个月申请次数”的特征PSI设为0.18（模块三讲过，0.1~0.25属于"需要关注"区间），却因为IV实在太强被保留入模——这本身是个可以接受的权衡，但意味着<strong>上线后必须对这个特征做加密监控</strong>，这也正是模块三案例里它最终被"抓到"漂移的原因：团队一直有在盯它。
     </div>
   </div>
 
   <!-- ============ PART 8 实战案例 ============ -->
-  <div class="part" id="p8">
-    <div class="part-head"><span class="part-num">08</span><h2>实战案例：一个特征从原始数据到入模的完整流程</h2></div>
+
+    <div class="part" id="p8"><div class="part-head"><span class="part-num">08</span><h2>按实际分箱和验证顺序决定能否入模</h2></div>
 
     <div class="case-step">
       <div class="step-badge">1</div>
@@ -310,7 +309,7 @@
     <div class="case-step">
       <div class="step-body" style="margin-left:38px;">
         <h4>分箱</h4>
-        用卡方分箱在10000人的训练样本上，找到[0,1]/[2,3]/[4,5]/[6,8]/[9,+)这5个切点，每箱样本量都在5%以上（最小的[9,+)箱有580人，占5.8%）。
+        这份 10,000 人教学频数表按 [0,1]/[2,3]/[4,5]/[6,8]/[9,+) 五箱展示，每箱占比至少 5%（末箱 580 人，占 5.8%）。实际建模要先核对每箱好坏样本绝对数，再选切点；这些切点不是从真实申请样本求得。
       </div>
     </div>
     <div class="case-step">
@@ -328,7 +327,7 @@
     <div class="case-step">
       <div class="step-body" style="margin-left:38px;">
         <h4>检查特征PSI，识别风险但不放弃</h4>
-        跨窗口PSI=0.18，落在"需要关注"区间。<span class="result">→ 团队决策：保留入模（IV太强不舍得丢），但标记为"高监控优先级特征"，纳入模块三的月度特征PSI监控清单。</span>
+        教学输入设跨窗口PSI=0.18，落在“需要关注”区间。<span class="result">→ 是否保留须依据跨时间效果和数据可用性；若保留，应列为高优先级监控特征。</span>
       </div>
     </div>
     <div class="case-step">
@@ -339,29 +338,7 @@
     </div>
   </div>
 
-  <!-- ============ PART 9 三个坑 ============ -->
-  <div class="part" id="p9">
-    <div class="part-head"><span class="part-num">09</span><h2>三个容易踩的坑</h2></div>
-
-    <div class="pitfall">
-      <div class="pit-title">坑一 · 分箱切太细，样本量撑不住</div>
-      为了让WOE曲线看起来更精细，把一个特征切成十几个箱，结果某些箱只有几十个样本——这种箱的WOE几乎就是随机噪音，换一批数据算出来的WOE可能完全不一样，甚至出现某箱全是好客户或全是坏客户导致WOE趋于正负无穷。<strong>每箱样本量至少占总量的5%左右</strong>，是业界的经验底线。
-    </div>
-
-    <div class="pitfall">
-      <div class="pit-title">坑二 · 只看IV，不看特征PSI</div>
-      IV高的特征天然更有吸引力，但正如第⑦节演示的，<strong>预测力和稳定性是两件独立的事</strong>。只用IV筛选、跳过PSI体检，等于把"未来会漂移的特征"提前混进了模型，模块三讲的衰退案例，根源往往就在这一步埋下的。
-    </div>
-
-    <div class="pitfall">
-      <div class="pit-title">坑三 · 忽视单调性，硬把非单调特征塞进逻辑回归</div>
-      第⑥节"居住时长"的U型WOE如果不处理直接入模，逻辑回归会被迫学出一个"平均化"的错误方向，对中间那段客群的评分完全不可信。<strong>分箱后先画WOE曲线看单调性，是不能省略的一步</strong>，哪怕看起来只是多花五分钟。
-    </div>
-  </div>
-
-  <!-- ============ PART 10 速查表 ============ -->
-  <div class="part" id="p10">
-    <div class="part-head"><span class="part-num">10</span><h2>本节速查表</h2></div>
+    <div class="part" id="p9"><div class="part-head"><span class="part-num">09</span><h2>本节速查表</h2></div>
     <div class="cheat-grid">
       <div class="cheat-card">
         <div class="cc-name">分箱</div>
@@ -392,15 +369,15 @@
         <div class="cc-detail">非单调特征的处理方案之一。<br><b>做法：</b>拆成多个0/1变量分别入模</div>
       </div>
       <div class="cheat-card">
-        <div class="cc-name">三个坑</div>
+        <div class="cc-name">核验要点</div>
         <div class="cc-detail">分箱太细/只看IV不看PSI/忽视单调性</div>
       </div>
     </div>
   </div>
 
   <!-- ============ PART 11 自测 ============ -->
-  <div class="part" id="p11">
-    <div class="part-head"><span class="part-num">11</span><h2>自测：检验一下是不是真的懂了</h2></div>
+
+    <div class="part" id="p10"><div class="part-head"><span class="part-num">10</span><h2>自测：检验一下是不是真的懂了</h2></div>
 
     <div class="quiz-item">
       <div class="q-title">Q1. 为什么"年龄"这种连续变量不能直接乘一个回归系数入模？</div>

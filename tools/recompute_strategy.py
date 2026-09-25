@@ -59,14 +59,14 @@ def recompute(deciles: list[dict], p: dict) -> list[dict]:
 def page_rows(page: Path) -> dict[int, dict]:
     text = page.read_text(encoding="utf-8")
     pat = re.compile(
-        r'<tr[^>]*><td class="num">第 (\d+) 档[^<]*</td>'
-        r'<td class="num">([0-9,]+)</td>'
-        r'<td class="num">([0-9,]+)</td>'
-        r'<td class="num">([0-9.]+)%</td>'
-        r'<td class="num">([0-9,]+)</td>'
-        r'<td class="num">([0-9,.]+)</td>'
-        r'<td class="num">([0-9,.]+)</td>'
-        r'<td class="num"><strong>\+?([0-9,]+)</strong></td>')
+        r'<tr[^>]*><td class="num"[^>]*>第 (\d+) 档[^<]*</td>'
+        r'<td class="num"[^>]*>([0-9,]+)</td>'
+        r'<td class="num"[^>]*>([0-9,]+)</td>'
+        r'<td class="num"[^>]*>([0-9.]+)%</td>'
+        r'<td class="num"[^>]*>([0-9,]+)</td>'
+        r'<td class="num"[^>]*>([0-9,.]+)</td>'
+        r'<td class="num"[^>]*>([0-9,.]+)</td>'
+        r'<td class="num"[^>]*><strong>\+?([0-9,]+)</strong></td>')
     found = {}
     for m in pat.finditer(text):
         k, n, bad, pd_, inte, ecl, fx, net = m.groups()
@@ -127,11 +127,19 @@ def main(argv: list[str]) -> int:
         return 1
 
     zone = [r for r in expect if 1 <= r["k"] <= 10]
-    feasible = [r for r in expect if 4 <= r["k"] <= 7]
+    limits = params["red_lines"]
+    feasible = [r for r in expect
+                if r["k"] >= limits["business_min_cutoff_decile"]
+                and r["pd"] <= limits["pd_cap"]
+                and limits["existing_balance_yi_yuan"]
+                    + r["n"] * params["EAD_yuan"] / 1e8 <= limits["balance_cap_yi_yuan"]]
+    if not feasible:
+        print("  ✗ 教学约束没有留下可选档位")
+        return 1
     fpk = max(feasible, key=lambda r: r["net"])
     kspk = 6
     print(f"✓ 10 档共 70 格全部与 data/deciles.csv + strategy-params.json 重算结果吻合")
-    print(f"  红线内（第 4~7 档）净利润峰值 = 第 {fpk['k']} 档 +{fpk['net']:.0f} 万")
+    print(f"  教学约束内（第 {feasible[0]['k']}~{feasible[-1]['k']} 档）净利润峰值 = 第 {fpk['k']} 档 +{fpk['net']:.0f} 万")
     print(f"  KS 峰值切点 = 第 {kspk} 档 +{zone[kspk-1]['net']:.0f} 万（差 {fpk['net']-zone[kspk-1]['net']:.0f} 万）")
     return 0
 
