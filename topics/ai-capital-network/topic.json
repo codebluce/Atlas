@@ -11,7 +11,7 @@
     {
       "id": "01",
       "order": 1,
-      "title": "四层产业链",
+      "title": "四层链上的真实玩家",
       "file": "manual/01-four-layers.html",
       "alias": "地图",
       "emoji": "🗺️",
@@ -20,7 +20,7 @@
     {
       "id": "02",
       "order": 2,
-      "title": "投资与订单",
+      "title": "微软、软银与多方入局",
       "file": "manual/02-deals.html",
       "alias": "合同",
       "emoji": "📝",
@@ -29,7 +29,7 @@
     {
       "id": "03",
       "order": 3,
-      "title": "资本循环",
+      "title": "AMD 权证与订单回流",
       "file": "manual/03-circular-flows.html",
       "alias": "回流",
       "emoji": "🔁",
@@ -38,7 +38,7 @@
     {
       "id": "04",
       "order": 4,
-      "title": "治理与共振",
+      "title": "Stargate 与连环船",
       "file": "manual/04-network-risk.html",
       "alias": "风险",
       "emoji": "🔥",

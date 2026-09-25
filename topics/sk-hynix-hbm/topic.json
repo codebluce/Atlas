@@ -11,7 +11,7 @@
     {
       "id": "01",
       "order": 1,
-      "title": "内存墙",
+      "title": "现代电子与 SK 接盘",
       "file": "manual/01-memory-wall.html",
       "alias": "瓶颈",
       "emoji": "🧠",
@@ -20,7 +20,7 @@
     {
       "id": "02",
       "order": 2,
-      "title": "工艺与良率",
+      "title": "AMD、HBM 与封装路线",
       "file": "manual/02-packaging.html",
       "alias": "封装",
       "emoji": "🧱",
@@ -29,7 +29,7 @@
     {
       "id": "03",
       "order": 3,
-      "title": "产能与周期",
+      "title": "三线涨价与扩产",
       "file": "manual/03-capacity-cycle.html",
       "alias": "周期",
       "emoji": "📦",
@@ -38,7 +38,7 @@
     {
       "id": "04",
       "order": 4,
-      "title": "公司史与证据",
+      "title": "离婚案的两种叙事",
       "file": "manual/04-evidence.html",
       "alias": "证据",
       "emoji": "🔎",

@@ -1,6 +1,6 @@
 {
   "slug": "political-brand",
-  "title": "政治身份、商业变现与利益冲突学习手册",
+  "title": "特朗普的赚钱 2.0：从名字到权力距离",
   "prototype": "law-rule",
   "status": "active",
   "root_index_card": {
@@ -11,7 +11,7 @@
     {
       "id": "01",
       "order": 1,
-      "title": "IP授权",
+      "title": "《学徒》与名字 1.0",
       "file": "manual/01-brand-license.html",
       "alias": "品牌",
       "emoji": "🏷️",
@@ -20,7 +20,7 @@
     {
       "id": "02",
       "order": 2,
-      "title": "收入与财富",
+      "title": "低谷、诉讼与 DJT",
       "file": "manual/02-income-vs-wealth.html",
       "alias": "口径",
       "emoji": "💰",
@@ -29,7 +29,7 @@
     {
       "id": "03",
       "order": 3,
-      "title": "新渠道与对价",
+      "title": "会所、中东与加密币",
       "file": "manual/03-new-channels.html",
       "alias": "渠道",
       "emoji": "🪙",
@@ -38,7 +38,7 @@
     {
       "id": "04",
       "order": 4,
-      "title": "披露与禁止",
+      "title": "规则、披露与争议",
       "file": "manual/04-conflicts.html",
       "alias": "规则",
       "emoji": "⚖️",

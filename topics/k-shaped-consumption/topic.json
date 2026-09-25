@@ -11,7 +11,7 @@
     {
       "id": "01",
       "order": 1,
-      "title": "K型分化",
+      "title": "产业向上、就业向下",
       "file": "manual/01-k-shape.html",
       "alias": "结构",
       "emoji": "📊",
@@ -20,7 +20,7 @@
     {
       "id": "02",
       "order": 2,
-      "title": "家庭预算",
+      "title": "十五五与保障转向",
       "file": "manual/02-household-budget.html",
       "alias": "消费",
       "emoji": "🧾",
@@ -29,7 +29,7 @@
     {
       "id": "03",
       "order": 3,
-      "title": "保障与地区比较",
+      "title": "社保消费的地区线索",
       "file": "manual/03-causal-test.html",
       "alias": "识别",
       "emoji": "🔬",
@@ -38,7 +38,7 @@
     {
       "id": "04",
       "order": 4,
-      "title": "AI冲击与政策表",
+      "title": "AI、电力与能源冲击",
       "file": "manual/04-ai-policy.html",
       "alias": "落地",
       "emoji": "🛟",

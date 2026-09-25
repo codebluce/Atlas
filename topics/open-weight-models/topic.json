@@ -11,7 +11,7 @@
     {
       "id": "01",
       "order": 1,
-      "title": "开放材料清单",
+      "title": "Meta、DeepSeek 与 Kimi",
       "file": "manual/01-artifacts.html",
       "alias": "清单",
       "emoji": "📦",
@@ -20,7 +20,7 @@
     {
       "id": "02",
       "order": 2,
-      "title": "许可证阅读",
+      "title": "四家许可红线",
       "file": "manual/02-license.html",
       "alias": "许可",
       "emoji": "📜",
@@ -29,7 +29,7 @@
     {
       "id": "03",
       "order": 3,
-      "title": "免费与收费",
+      "title": "四门收入生意",
       "file": "manual/03-economics.html",
       "alias": "商业",
       "emoji": "☁️",
@@ -38,7 +38,7 @@
     {
       "id": "04",
       "order": 4,
-      "title": "部署治理",
+      "title": "开放联盟与安全争论",
       "file": "manual/04-governance.html",
       "alias": "运维",
       "emoji": "🛡️",

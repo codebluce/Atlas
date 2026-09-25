@@ -11,7 +11,7 @@
     {
       "id": "01",
       "order": 1,
-      "title": "钱从哪里来",
+      "title": "Blue Owl 的资金来源",
       "file": "manual/01-capital-calls.html",
       "alias": "筹资",
       "emoji": "🚰",
@@ -20,7 +20,7 @@
     {
       "id": "02",
       "order": 2,
-      "title": "谁先承担损失",
+      "title": "Hyperion 与损失顺位",
       "file": "manual/02-loss-waterfall.html",
       "alias": "顺位",
       "emoji": "🪜",
@@ -29,7 +29,7 @@
     {
       "id": "03",
       "order": 3,
-      "title": "基金流动性",
+      "title": "基金赎回与 GPU 抵押",
       "file": "manual/03-redemption.html",
       "alias": "赎回",
       "emoji": "⏳",
@@ -38,7 +38,7 @@
     {
       "id": "04",
       "order": 4,
-      "title": "从个案到系统",
+      "title": "次贷论辩与退休账户",
       "file": "manual/04-contagion.html",
       "alias": "传染",
       "emoji": "🕸️",
