@@ -26,7 +26,8 @@
 字体：正文 `-apple-system, PingFang SC… sans`；标题 `Songti SC, Georgia… serif`；数字 `Menlo/Consolas`。
 
 **visual signature（改了就等于破坏了手册的脸）**：
-- `strong` = 赭橙荧光笔（`linear-gradient(transparent 60%, brand-bg 60%)`）
+- `strong` = 赭橙荧光笔（`linear-gradient(transparent 60%, brand-bg 60%)`）；一段只强调少量关键词/数字/边界，避免整段高亮。
+- `.source-driven .para-lead` = 段首总结句（写在段落内的 `<strong class="para-lead">`）：单独成行、不铺整行荧光底；后面的普通 `<strong>` 仍可高亮关键事实。桌面和手机保持相同阅读顺序，无需横向排版。
 - `cheat-card` = 暗卡（墨底 #2B2622），内部 `<b>` 用 brand 赭橙，**不要用 `<strong>`**（荧光笔压在暗底上不可读）
 - `tag-real` 只配真实数据
 

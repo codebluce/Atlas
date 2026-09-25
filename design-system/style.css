@@ -367,6 +367,11 @@ table.tbl tr.hl td{ background:var(--brand-bg); font-weight:700; }
 .story-prose{ max-width:72ch; margin:20px 0 28px; font-size:16px; line-height:1.9; }
 .story-prose h3{ font-size:20px; margin:0 0 16px; }
 .story-prose p{ margin:0 0 1.2em; overflow-wrap:anywhere; }
+/* 段首导读单独成行；段内 strong 仍作为荧光笔标出少量关键事实。 */
+.source-driven .para-lead{
+  display:block; margin-bottom:4px; padding:0;
+  background:none; color:var(--ink); line-height:1.65;
+}
 .fact-grid{ display:grid; grid-template-columns:repeat(2,minmax(0,1fr)); gap:14px; margin:20px 0; }
 .fact-card{
   min-width:0; background:var(--paper); border:1px solid var(--line);

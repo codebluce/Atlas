@@ -246,8 +246,8 @@ def check_rendering(page: Path, root: Node, defined: set[str],
         rep.add("PASS", page.name, "渲染完整性", "所有 class 均有样式定义且在正确语境")
 
 
-def check_params(page: Path, root: Node, rep: Report):
-    """B. §7.7 硬参数：恰好 5 题 / 恰好 3 坑 / 8~9 速查卡。"""
+def check_params(page: Path, root: Node, rep: Report, *, allow_absent_pitfall: bool = False):
+    """B. §7.7 硬参数：恰好 5 题 / 默认恰好 3 坑 / 8~9 速查卡。"""
     # 坑只数「三个坑」那一 Part 里的——否则会把别处复用 .pitfall 的中性卡片算进来
     pitfall_part = next((p for p in root.find_all("part")
                          if (h := p.find_tag("h2")) and "坑" in h.text()), None)
@@ -263,6 +263,9 @@ def check_params(page: Path, root: Node, rep: Report):
 
     for key, (lo, hi) in PARAMS.items():
         got, name = actual[key], label[key]
+        if key == "pitfall" and got == 0 and allow_absent_pitfall:
+            rep.add("PASS", page.name, "§7.7 坑", "本事件课题明确省略重复的坑卡")
+            continue
         if lo <= got <= hi:
             detail = f"{got}（要求 {lo}~{hi}）"
             if key == "pitfall" and n_total_pitfall != n_pitfall:
@@ -593,14 +596,15 @@ def main(argv: list[str]) -> int:
             continue
         meta_path = topic / "topic.json"
         try:
-            source_driven = (json.loads(meta_path.read_text(encoding="utf-8")).get("source_driven", False)
-                             if meta_path.is_file() else False)
+            meta = json.loads(meta_path.read_text(encoding="utf-8")) if meta_path.is_file() else {}
         except json.JSONDecodeError:
-            source_driven = False  # check_state_sync reports malformed metadata below
+            meta = {}  # check_state_sync reports malformed metadata below
+        source_driven = meta.get("source_driven", False)
+        allow_absent_pitfall = source_driven and "pitfall" in meta.get("optional_sections", [])
         for page in sorted(manual.glob("*.html")):
             root = parse(page)
             check_rendering(page, root, defined, contextual, rep)
-            check_params(page, root, rep)
+            check_params(page, root, rep, allow_absent_pitfall=allow_absent_pitfall)
             check_skeleton(page, root, rep)
             check_data_disclosure(page, root, rep, source_driven)
             if source_driven:
