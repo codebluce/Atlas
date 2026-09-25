@@ -362,3 +362,38 @@ table.tbl tr.hl td{ background:var(--brand-bg); font-weight:700; }
 .next-card .n-label{ font-size:12.5px; color:var(--ink-faint); text-transform:uppercase; letter-spacing:0.05em; }
 .next-card .n-title{ font-size:17px; font-weight:700; margin-top:2px; }
 .next-card .n-arrow{ font-size:22px; color:var(--brand); flex-shrink:0; }
+
+/* ---------- 真实叙事与事件卡：横屏可并读，窄屏纵读 ---------- */
+.story-prose{ max-width:72ch; margin:20px 0 28px; font-size:16px; line-height:1.9; }
+.story-prose h3{ font-size:20px; margin:0 0 16px; }
+.story-prose p{ margin:0 0 1.2em; overflow-wrap:anywhere; }
+.fact-grid{ display:grid; grid-template-columns:repeat(2,minmax(0,1fr)); gap:14px; margin:20px 0; }
+.fact-card{
+  min-width:0; background:var(--paper); border:1px solid var(--line);
+  border-radius:var(--radius); padding:18px 20px; box-shadow:var(--shadow);
+  overflow-wrap:anywhere;
+}
+.fact-card h4{ margin:0 0 12px; font-size:16px; line-height:1.5; }
+.fact-detail{ border-top:1px solid var(--line-soft); padding:10px 0 0; margin:10px 0 0; font-size:14px; line-height:1.7; color:var(--ink-soft); }
+.fact-label{ display:block; font-size:12px; font-weight:700; letter-spacing:.02em; color:var(--brand-dark); margin-bottom:3px; }
+.fact-card .fact-detail:last-child{ padding-bottom:0; }
+@media (max-width:680px){
+  .container,.wrap{ padding-left:16px; padding-right:16px; }
+  .masthead h1{ font-size:26px; }
+  .part{ margin:40px 0; }
+  .part h2{ font-size:21px; }
+  .part-head{ align-items:flex-start; }
+  .story-prose{ font-size:15.5px; }
+  .fact-grid{ grid-template-columns:minmax(0,1fr); gap:12px; }
+  .fact-card{ padding:16px; }
+  .quiz-item{ padding:15px 16px; }
+  .roadmap-grid .module-card{ min-width:0; }
+  .module-card .card-top{ flex-wrap:wrap; gap:6px; }
+}
+
+/* 事件手册的章节导航在手机端换行，避免把阅读入口藏在横向滚动区。 */
+.source-driven .local-nav{ overflow-x:visible; white-space:normal; }
+.source-driven .local-nav .container{ flex-wrap:wrap; gap:4px; }
+@media (max-width:680px){
+  .source-driven .local-nav a{ font-size:12.5px; padding:5px 8px; }
+}

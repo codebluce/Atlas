@@ -303,7 +303,7 @@ def check_skeleton(page: Path, root: Node, rep: Report):
         rep.add("PASS", page.name, "§7.1 记忆点", "口诀存在")
 
 
-def check_data_disclosure(page: Path, root: Node, rep: Report):
+def check_data_disclosure(page: Path, root: Node, rep: Report, source_driven: bool = False):
     """D. §7.4 / §6.1：真正的图表（含 chart-title）必须带脚注；
     教学页的脚注还须含"非真实业务数据"声明。
 
@@ -312,7 +312,8 @@ def check_data_disclosure(page: Path, root: Node, rep: Report):
     """
     charts = [c for c in root.find_all("chart-card") if c.find("chart-title")]
     if not charts:
-        rep.add("WARN", page.name, "§6 图表", "无教学图表（若本模块确实不含图表可忽略）")
+        rep.add("PASS" if source_driven else "WARN", page.name, "§6 图表",
+                "事件驱动章节按需使用图表" if source_driven else "无教学图表（若本模块确实不含图表可忽略）")
         return
 
     is_real = root.find("tag-real") is not None
@@ -386,7 +387,7 @@ def check_chart_numbering(page: Path, root: Node, rep: Report):
                 f"字母编号体系 {sorted(lettered)}，共 {len(lettered)} 张（模块④教学版特例）")
 
 
-def check_narrative(topic_dir: Path, rep: Report):
+def check_narrative(topic_dir: Path, rep: Report, source_driven: bool = False):
     """G. §7.3 叙事线数字互通：跨模块共享的权威数字，任何模块引用都必须一致。
 
     登记表在 topics/<topic>/narrative.json。只查"数字 + 锚定词"这一对，
@@ -395,7 +396,8 @@ def check_narrative(topic_dir: Path, rep: Report):
     """
     reg_path = topic_dir / "narrative.json"
     if not reg_path.exists():
-        rep.add("WARN", "narrative.json", "§7.3 叙事线", "本 topic 未建立数字登记表")
+        rep.add("PASS" if source_driven else "WARN", "narrative.json", "§7.3 叙事线",
+                "事件时间线与主体关系贯穿，无须虚构数字登记" if source_driven else "本 topic 未建立数字登记表")
         return
 
     try:
@@ -589,15 +591,30 @@ def main(argv: list[str]) -> int:
         manual = topic / "manual"
         if not manual.is_dir():
             continue
+        meta_path = topic / "topic.json"
+        try:
+            source_driven = (json.loads(meta_path.read_text(encoding="utf-8")).get("source_driven", False)
+                             if meta_path.is_file() else False)
+        except json.JSONDecodeError:
+            source_driven = False  # check_state_sync reports malformed metadata below
         for page in sorted(manual.glob("*.html")):
             root = parse(page)
             check_rendering(page, root, defined, contextual, rep)
             check_params(page, root, rep)
             check_skeleton(page, root, rep)
-            check_data_disclosure(page, root, rep)
+            check_data_disclosure(page, root, rep, source_driven)
+            if source_driven:
+                text = root.text()
+                banned = [word for word in ("原文", "原笔记", "虚构演练", "海岸品牌", "澄芯", "星环", "榕城家庭", "松河基金", "青屿月调用")
+                          if word in text]
+                tables = root.find_all_tag("table")
+                if banned or tables:
+                    rep.add("FAIL", page.name, "事件驱动页", f"剩余来源转述/演练词：{banned}，宽表：{len(tables)}")
+                else:
+                    rep.add("PASS", page.name, "事件驱动页", "无虚构案例、来源转述词或宽表")
             check_chart_numbering(page, root, rep)
         check_index(topic, rep)
-        check_narrative(topic, rep)
+        check_narrative(topic, rep, source_driven)
         check_state_sync(topic, REPO, rep)
 
     icon = {"PASS": "  ok ", "WARN": " warn", "FAIL": " FAIL"}
