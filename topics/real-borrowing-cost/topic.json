@@ -1,0 +1,48 @@
+{
+  "slug": "real-borrowing-cost",
+  "title": "中美企业实际借贷成本学习手册",
+  "prototype": "compute-model",
+  "status": "active",
+  "root_index_card": {
+    "progress": "4 / 4",
+    "tag": "tag-good"
+  },
+  "modules": [
+    {
+      "id": "01",
+      "order": 1,
+      "title": "PPI、CPI还是GDP平减",
+      "file": "manual/01-which-inflation.html",
+      "alias": "口径",
+      "emoji": "🧮",
+      "state": "done"
+    },
+    {
+      "id": "02",
+      "order": 2,
+      "title": "中国制造业视角",
+      "file": "manual/02-china.html",
+      "alias": "中国",
+      "emoji": "🏭",
+      "state": "done"
+    },
+    {
+      "id": "03",
+      "order": 3,
+      "title": "美国Baa与Prime的差别",
+      "file": "manual/03-united-states.html",
+      "alias": "美国",
+      "emoji": "🏦",
+      "state": "done"
+    },
+    {
+      "id": "04",
+      "order": 4,
+      "title": "冲击归因与数据复算",
+      "file": "manual/04-decomposition.html",
+      "alias": "归因",
+      "emoji": "🧭",
+      "state": "done"
+    }
+  ]
+}

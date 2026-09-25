@@ -1,0 +1,48 @@
+{
+  "slug": "hidden-liabilities",
+  "title": "表外融资与风险转移学习手册",
+  "prototype": "concept-frame",
+  "status": "active",
+  "root_index_card": {
+    "progress": "4 / 4",
+    "tag": "tag-good"
+  },
+  "modules": [
+    {
+      "id": "01",
+      "order": 1,
+      "title": "资金缺口从哪里来",
+      "file": "manual/01-cash-gap.html",
+      "alias": "现金",
+      "emoji": "💸",
+      "state": "done"
+    },
+    {
+      "id": "02",
+      "order": 2,
+      "title": "SPV与租赁三条路径",
+      "file": "manual/02-vehicles-and-leases.html",
+      "alias": "结构",
+      "emoji": "🧱",
+      "state": "done"
+    },
+    {
+      "id": "03",
+      "order": 3,
+      "title": "附注穿透与去重",
+      "file": "manual/03-look-through.html",
+      "alias": "穿透",
+      "emoji": "🔍",
+      "state": "done"
+    },
+    {
+      "id": "04",
+      "order": 4,
+      "title": "折旧与私募信贷压力",
+      "file": "manual/04-stress-test.html",
+      "alias": "压力",
+      "emoji": "🧪",
+      "state": "done"
+    }
+  ]
+}

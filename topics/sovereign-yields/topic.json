@@ -1,0 +1,48 @@
+{
+  "slug": "sovereign-yields",
+  "title": "主权债与利率分化学习手册",
+  "prototype": "concept-frame",
+  "status": "active",
+  "root_index_card": {
+    "progress": "4 / 4",
+    "tag": "tag-good"
+  },
+  "modules": [
+    {
+      "id": "01",
+      "order": 1,
+      "title": "价格与收益率",
+      "file": "manual/01-price-yield.html",
+      "alias": "定价",
+      "emoji": "📉",
+      "state": "done"
+    },
+    {
+      "id": "02",
+      "order": 2,
+      "title": "日美英三种上行机制",
+      "file": "manual/02-three-engines.html",
+      "alias": "机制",
+      "emoji": "🌍",
+      "state": "done"
+    },
+    {
+      "id": "03",
+      "order": 3,
+      "title": "中国为什么不同步",
+      "file": "manual/03-china-divergence.html",
+      "alias": "中国",
+      "emoji": "🧩",
+      "state": "done"
+    },
+    {
+      "id": "04",
+      "order": 4,
+      "title": "验证与监测",
+      "file": "manual/04-monitoring.html",
+      "alias": "验证",
+      "emoji": "🗒️",
+      "state": "done"
+    }
+  ]
+}

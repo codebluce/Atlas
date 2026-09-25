@@ -1,0 +1,48 @@
+{
+  "slug": "gold-pricing",
+  "title": "黄金定价与2026年阶段复盘学习手册",
+  "prototype": "concept-frame",
+  "status": "active",
+  "root_index_card": {
+    "progress": "4 / 4",
+    "tag": "tag-good"
+  },
+  "modules": [
+    {
+      "id": "01",
+      "order": 1,
+      "title": "价格路径与时间窗",
+      "file": "manual/01-price-path.html",
+      "alias": "路线",
+      "emoji": "📈",
+      "state": "done"
+    },
+    {
+      "id": "02",
+      "order": 2,
+      "title": "实际利率与美元",
+      "file": "manual/02-rates-and-dollar.html",
+      "alias": "成本",
+      "emoji": "💵",
+      "state": "done"
+    },
+    {
+      "id": "03",
+      "order": 3,
+      "title": "地缘、原油与避险",
+      "file": "manual/03-oil-geopolitics.html",
+      "alias": "冲击",
+      "emoji": "🛢️",
+      "state": "done"
+    },
+    {
+      "id": "04",
+      "order": 4,
+      "title": "阶段归因与复盘",
+      "file": "manual/04-regime-check.html",
+      "alias": "验证",
+      "emoji": "🔬",
+      "state": "done"
+    }
+  ]
+}

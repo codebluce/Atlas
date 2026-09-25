@@ -1,0 +1,13 @@
+field,value,unit,chapter,description
+operating_cash_flow,100,亿元,01,本年经营现金流
+capital_expenditure,150,亿元,01,本年全部资本开支
+cash_gap,50,亿元,01-04,150-100；示例缺口不必等于新增净债务
+spv_debt,50,亿元,02-04,SPV项目借款本金
+asset_recovery,15,亿元,02,假设抵押资产处置所得
+guarantee_cap,20,亿元,02-03,差额补偿承诺上限
+annual_rent,6,亿元/年,03-04,教学简化的年末租金和可用于偿债现金
+rent_years,3,年,03,每年年末付一次
+rent_discount_rate,5,%/年,03,现值计算的折现率
+debt_interest_rate,7,%/年,04,50亿元项目债的年度利率
+annual_principal,2.5,亿元/年,04,本期需还本金
+stressed_rent,4.5,亿元/年,04,压力情景下的年度可用现金
