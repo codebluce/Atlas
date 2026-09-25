@@ -1,0 +1,48 @@
+{
+  "slug": "ai-credit-chain",
+  "title": "算力基建私募信贷与最终出资人学习手册",
+  "prototype": "compute-model",
+  "status": "active",
+  "root_index_card": {
+    "progress": "4 / 4",
+    "tag": "tag-good"
+  },
+  "modules": [
+    {
+      "id": "01",
+      "order": 1,
+      "title": "钱从哪里来",
+      "file": "manual/01-capital-calls.html",
+      "alias": "筹资",
+      "emoji": "🚰",
+      "state": "done"
+    },
+    {
+      "id": "02",
+      "order": 2,
+      "title": "谁先承担损失",
+      "file": "manual/02-loss-waterfall.html",
+      "alias": "顺位",
+      "emoji": "🪜",
+      "state": "done"
+    },
+    {
+      "id": "03",
+      "order": 3,
+      "title": "基金流动性",
+      "file": "manual/03-redemption.html",
+      "alias": "赎回",
+      "emoji": "⏳",
+      "state": "done"
+    },
+    {
+      "id": "04",
+      "order": 4,
+      "title": "从个案到系统",
+      "file": "manual/04-contagion.html",
+      "alias": "传染",
+      "emoji": "🕸️",
+      "state": "done"
+    }
+  ]
+}

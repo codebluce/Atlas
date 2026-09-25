@@ -1,0 +1,18 @@
+# 来源与核验边界
+
+- 种子：Obsidian 深度分析《特朗普的赚钱 2.0：当「阳光」从消毒剂变成防护罩》（整理日期 2026-07-29；二手视频/演讲整理）。不随仓库发布原文或私人路径。
+- 写作与概念核对截至 2026-09-25。原文的收入、币价、财富估值和“合法/违法”断言未逐案核查；本册不评价任何现实人物的犯罪事实，法律问题须区分具体规则、适用对象、交易行为与证据。
+- 虚构的海岸品牌（不对应任何政治人物）、data/case.csv、四篇正文的图及手算均为**虚构教学情景**，不是公司财报/证券行情；不构成投资或法律建议。
+
+## 优先核对的原始材料
+
+- [美国法典第18篇第202条](https://uscode.house.gov/view.xhtml?req=granuleid:USC-prelim-title18-section202&num=0&edition=prelim)：查适用范围定义；不可据本条推出所有行为合法。
+- [美国法典第18篇第208条](https://uscode.house.gov/view.xhtml?req=granuleid:USC-prelim-title18-section208&num=0&edition=prelim)：利益冲突禁令本身及适用要件。
+- [美国法典第18篇第201条](https://uscode.house.gov/view.xhtml?req=granuleid:USC-prelim-title18-section201&num=0&edition=prelim)：与第208条不同的贿赂条款；须逐案分析。
+- [美国政府道德办公室财务披露指南](https://www.oge.gov/web/oge.nsf/Resources/Public%2BFinancial%2BDisclosure%2BGuide)：明确资产/收入披露字段与估算区间，不等于审计收入。
+
+## 引用真实案例的检查顺序
+
+查行为发生日有效条文、OGE申报具体字段、合同主体/付款路径及司法或监管原件；遇到“免责”“合法”措辞必须先看禁止的是哪一类行为，其他条款是否适用，必要时请有资质的法律顾问核查。
+
+读原文时，把“视频称”与“原始文件可复核”分开。特别是稿中带【实】的条目也仅代表视频声称有来源，**不代表 Atlas 已经独立查证**；过期的政策/条款需按发布日和版本重核。

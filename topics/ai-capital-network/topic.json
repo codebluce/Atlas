@@ -1,0 +1,48 @@
+{
+  "slug": "ai-capital-network",
+  "title": "AI巨头投资、算力订单与资本循环学习手册",
+  "prototype": "concept-frame",
+  "status": "active",
+  "root_index_card": {
+    "progress": "4 / 4",
+    "tag": "tag-good"
+  },
+  "modules": [
+    {
+      "id": "01",
+      "order": 1,
+      "title": "四层产业链",
+      "file": "manual/01-four-layers.html",
+      "alias": "地图",
+      "emoji": "🗺️",
+      "state": "done"
+    },
+    {
+      "id": "02",
+      "order": 2,
+      "title": "投资与订单",
+      "file": "manual/02-deals.html",
+      "alias": "合同",
+      "emoji": "📝",
+      "state": "done"
+    },
+    {
+      "id": "03",
+      "order": 3,
+      "title": "资本循环",
+      "file": "manual/03-circular-flows.html",
+      "alias": "回流",
+      "emoji": "🔁",
+      "state": "done"
+    },
+    {
+      "id": "04",
+      "order": 4,
+      "title": "治理与共振",
+      "file": "manual/04-network-risk.html",
+      "alias": "风险",
+      "emoji": "🔥",
+      "state": "done"
+    }
+  ]
+}

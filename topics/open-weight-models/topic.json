@@ -1,0 +1,48 @@
+{
+  "slug": "open-weight-models",
+  "title": "开放权重、许可证与模型商业化学习手册",
+  "prototype": "process-ops",
+  "status": "active",
+  "root_index_card": {
+    "progress": "4 / 4",
+    "tag": "tag-good"
+  },
+  "modules": [
+    {
+      "id": "01",
+      "order": 1,
+      "title": "开放材料清单",
+      "file": "manual/01-artifacts.html",
+      "alias": "清单",
+      "emoji": "📦",
+      "state": "done"
+    },
+    {
+      "id": "02",
+      "order": 2,
+      "title": "许可证阅读",
+      "file": "manual/02-license.html",
+      "alias": "许可",
+      "emoji": "📜",
+      "state": "done"
+    },
+    {
+      "id": "03",
+      "order": 3,
+      "title": "免费与收费",
+      "file": "manual/03-economics.html",
+      "alias": "商业",
+      "emoji": "☁️",
+      "state": "done"
+    },
+    {
+      "id": "04",
+      "order": 4,
+      "title": "部署治理",
+      "file": "manual/04-governance.html",
+      "alias": "运维",
+      "emoji": "🛡️",
+      "state": "done"
+    }
+  ]
+}

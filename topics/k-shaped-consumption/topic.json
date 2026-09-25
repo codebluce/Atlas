@@ -1,0 +1,48 @@
+{
+  "slug": "k-shaped-consumption",
+  "title": "K型分化、社会保障与居民消费学习手册",
+  "prototype": "concept-frame",
+  "status": "active",
+  "root_index_card": {
+    "progress": "4 / 4",
+    "tag": "tag-good"
+  },
+  "modules": [
+    {
+      "id": "01",
+      "order": 1,
+      "title": "K型分化",
+      "file": "manual/01-k-shape.html",
+      "alias": "结构",
+      "emoji": "📊",
+      "state": "done"
+    },
+    {
+      "id": "02",
+      "order": 2,
+      "title": "家庭预算",
+      "file": "manual/02-household-budget.html",
+      "alias": "消费",
+      "emoji": "🧾",
+      "state": "done"
+    },
+    {
+      "id": "03",
+      "order": 3,
+      "title": "保障与地区比较",
+      "file": "manual/03-causal-test.html",
+      "alias": "识别",
+      "emoji": "🔬",
+      "state": "done"
+    },
+    {
+      "id": "04",
+      "order": 4,
+      "title": "AI冲击与政策表",
+      "file": "manual/04-ai-policy.html",
+      "alias": "落地",
+      "emoji": "🛟",
+      "state": "done"
+    }
+  ]
+}

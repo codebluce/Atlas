@@ -1,0 +1,48 @@
+{
+  "slug": "political-brand",
+  "title": "政治身份、商业变现与利益冲突学习手册",
+  "prototype": "law-rule",
+  "status": "active",
+  "root_index_card": {
+    "progress": "4 / 4",
+    "tag": "tag-good"
+  },
+  "modules": [
+    {
+      "id": "01",
+      "order": 1,
+      "title": "IP授权",
+      "file": "manual/01-brand-license.html",
+      "alias": "品牌",
+      "emoji": "🏷️",
+      "state": "done"
+    },
+    {
+      "id": "02",
+      "order": 2,
+      "title": "收入与财富",
+      "file": "manual/02-income-vs-wealth.html",
+      "alias": "口径",
+      "emoji": "💰",
+      "state": "done"
+    },
+    {
+      "id": "03",
+      "order": 3,
+      "title": "新渠道与对价",
+      "file": "manual/03-new-channels.html",
+      "alias": "渠道",
+      "emoji": "🪙",
+      "state": "done"
+    },
+    {
+      "id": "04",
+      "order": 4,
+      "title": "披露与禁止",
+      "file": "manual/04-conflicts.html",
+      "alias": "规则",
+      "emoji": "⚖️",
+      "state": "done"
+    }
+  ]
+}

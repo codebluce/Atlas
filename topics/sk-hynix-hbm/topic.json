@@ -1,0 +1,48 @@
+{
+  "slug": "sk-hynix-hbm",
+  "title": "HBM、存储周期与SK海力士学习手册",
+  "prototype": "concept-frame",
+  "status": "active",
+  "root_index_card": {
+    "progress": "4 / 4",
+    "tag": "tag-good"
+  },
+  "modules": [
+    {
+      "id": "01",
+      "order": 1,
+      "title": "内存墙",
+      "file": "manual/01-memory-wall.html",
+      "alias": "瓶颈",
+      "emoji": "🧠",
+      "state": "done"
+    },
+    {
+      "id": "02",
+      "order": 2,
+      "title": "工艺与良率",
+      "file": "manual/02-packaging.html",
+      "alias": "封装",
+      "emoji": "🧱",
+      "state": "done"
+    },
+    {
+      "id": "03",
+      "order": 3,
+      "title": "产能与周期",
+      "file": "manual/03-capacity-cycle.html",
+      "alias": "周期",
+      "emoji": "📦",
+      "state": "done"
+    },
+    {
+      "id": "04",
+      "order": 4,
+      "title": "公司史与证据",
+      "file": "manual/04-evidence.html",
+      "alias": "证据",
+      "emoji": "🔎",
+      "state": "done"
+    }
+  ]
+}
