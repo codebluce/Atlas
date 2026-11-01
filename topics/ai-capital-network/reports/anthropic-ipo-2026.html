@@ -1,0 +1,557 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>2.08 是真的吗 · Anthropic 招股书的七个对抗性检验 | Atlas</title>
+<style>
+:root{
+  --bg:#FBF8F3; --paper:#FFFFFF; --ink:#2B2622; --ink-soft:#5B5147; --ink-faint:#8C8177;
+  --line:#E9E1D6; --line-soft:#F1EBE1;
+  --brand:#D9764A; --brand-dark:#B85A34; --brand-bg:#FCEBD9;
+  --good:#3E8362; --good-bg:#E7F2EB; --bad:#C0433D; --bad-bg:#FBEAE8;
+  --info:#3E7E96; --info-bg:#E8F1F5; --warn:#C1892A; --warn-bg:#FBF1DE;
+  --shadow:0 2px 10px rgba(43,38,34,.06),0 1px 2px rgba(43,38,34,.05);
+}
+*{box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{
+  margin:0;background:var(--bg);color:var(--ink);
+  font-family:-apple-system,BlinkMacSystemFont,"PingFang SC","Helvetica Neue","Microsoft YaHei",sans-serif;
+  font-size:17px;line-height:1.9;-webkit-font-smoothing:antialiased;
+}
+h1,h2,h3{font-family:"Songti SC","Noto Serif SC",Georgia,serif;line-height:1.45;letter-spacing:.01em;margin:0 0 .5em}
+p{margin:0 0 1.15em}
+strong{color:var(--ink);background:linear-gradient(transparent 62%,var(--brand-bg) 62%);padding:0 1px;font-weight:600}
+a{color:var(--brand-dark);text-decoration:none;border-bottom:1px solid var(--brand-bg)}
+a:hover{border-bottom-color:var(--brand)}
+
+.container{max-width:880px;margin:0 auto;padding:0 22px}
+.masthead{background:linear-gradient(180deg,#FFF8EF 0%,var(--bg) 100%);border-bottom:1px solid var(--line);padding:30px 0 30px}
+.breadcrumb{font-size:13px;color:var(--ink-faint);margin-bottom:16px}
+.breadcrumb ol{display:flex;flex-wrap:wrap;gap:6px 8px;list-style:none;padding:0;margin:0}
+.breadcrumb li{display:inline-flex;align-items:center;gap:8px;min-width:0;overflow-wrap:anywhere}
+.breadcrumb li+li::before{content:"›";color:var(--line);font-size:15px}
+.eyebrow{display:inline-flex;align-items:center;gap:6px;font-size:12.5px;font-weight:600;color:var(--brand-dark);background:var(--brand-bg);padding:4px 12px;border-radius:100px;margin-bottom:14px;letter-spacing:.04em}
+.masthead h1{font-size:32px;margin-bottom:12px}
+.masthead .sub{color:var(--ink-soft);font-size:16.5px;max-width:660px;margin-bottom:0}
+.meta{font-size:13px;color:var(--ink-faint);margin-top:16px}
+
+.wrap{padding:38px 0 84px}
+.lead{font-size:18px;line-height:1.95;color:var(--ink-soft)}
+.lead strong{color:var(--ink)}
+
+.stats{display:grid;grid-template-columns:repeat(3,1fr);gap:12px;margin:28px 0 6px}
+.stat{background:var(--paper);border:1px solid var(--line);border-radius:14px;padding:14px 16px;box-shadow:var(--shadow)}
+.stat .k{font-size:12.5px;color:var(--ink-faint);letter-spacing:.03em}
+.stat .v{font-family:"Songti SC",Georgia,serif;font-size:25px;line-height:1.25;margin-top:4px}
+.stat .n{font-size:12px;color:var(--ink-faint);margin-top:2px}
+
+.part{margin-top:56px}
+.part-head{display:flex;align-items:baseline;gap:14px;border-top:2px solid var(--ink);padding-top:18px;margin-bottom:10px}
+.part-num{font-family:"Songti SC",Georgia,serif;font-size:15px;color:var(--brand-dark);letter-spacing:.12em}
+.part-head h2{font-size:27px;margin:0}
+.part-lede{color:var(--ink-soft);font-size:16.5px;margin-bottom:30px}
+
+.sec{margin:0 0 46px;scroll-margin-top:20px}
+.sec h3{font-size:21.5px;display:flex;gap:10px;align-items:baseline;margin-bottom:14px}
+.sec h3 .no{font-size:13px;color:var(--brand-dark);letter-spacing:.1em;font-family:-apple-system,sans-serif;font-weight:600;flex:none;padding-top:4px}
+.say{background:var(--line-soft);border-left:3px solid var(--line);border-radius:0 10px 10px 0;padding:14px 18px;margin:0 0 20px;color:var(--ink-soft);font-size:15.5px;line-height:1.85}
+.say b{color:var(--brand-dark);font-weight:600;font-size:12.5px;letter-spacing:.08em;display:block;margin-bottom:4px}
+.verdict{background:var(--paper);border:1px solid var(--line);border-left:4px solid var(--brand);border-radius:0 12px 12px 0;padding:16px 20px;margin:22px 0 4px;box-shadow:var(--shadow)}
+.verdict b{display:block;font-size:12.5px;letter-spacing:.08em;color:var(--brand-dark);margin-bottom:6px}
+.verdict p{margin:0;font-size:16px;line-height:1.85}
+
+figure{margin:26px 0 30px;background:var(--paper);border:1px solid var(--line);border-radius:16px;padding:18px 18px 12px;box-shadow:var(--shadow)}
+figure svg{display:block;width:100%;height:auto}
+.chart{overflow-x:auto;-webkit-overflow-scrolling:touch}
+.swipe{display:none;font-size:12px;color:var(--ink-faint);margin:0 0 6px;letter-spacing:.04em}
+figcaption{font-size:13.5px;color:var(--ink-faint);line-height:1.7;margin-top:10px;padding-top:10px;border-top:1px dashed var(--line)}
+figcaption b{color:var(--ink-soft);font-weight:600}
+
+svg text{font-family:-apple-system,BlinkMacSystemFont,"PingFang SC","Microsoft YaHei",sans-serif}
+.ax{fill:#A79C90;font-size:12px}
+.axl{fill:#8C8177;font-size:12.5px}
+.val{fill:#5B5147;font-size:12.5px;font-weight:600}
+.grid{stroke:#EFE8DD;stroke-width:1}
+.bar-rev{fill:#D9764A}
+.bar-comp{fill:#D8C7B4}
+.bar-pos{fill:#3E8362}
+.bar-neg{fill:#C0433D}
+.ln{fill:none;stroke:#3E7E96;stroke-width:2.6;stroke-linecap:round;stroke-linejoin:round}
+.dot{fill:#3E7E96}
+.dash{stroke:#C1892A;stroke-width:1.4;stroke-dasharray:5 5}
+.box{fill:#FFFDF9;stroke:#E2D8CA;stroke-width:1.3;rx:10}
+.arw{stroke:#B9AB9A;stroke-width:1.6;fill:none}
+
+.note{background:var(--info-bg);border-radius:12px;padding:15px 18px;font-size:15.5px;line-height:1.85;color:#2F5F72;margin:22px 0}
+.note b{color:#24505F}
+.warnbox{background:var(--warn-bg);border-radius:12px;padding:15px 18px;font-size:15.5px;line-height:1.85;color:#7A5716;margin:22px 0}
+
+.kpis{display:grid;grid-template-columns:repeat(auto-fit,minmax(230px,1fr));gap:14px;margin-top:22px}
+.kpi{background:var(--paper);border:1px solid var(--line);border-radius:14px;padding:16px 18px;box-shadow:var(--shadow)}
+.kpi .t{font-weight:600;font-size:15.5px;margin-bottom:6px}
+.kpi .d{font-size:14.5px;color:var(--ink-soft);line-height:1.8}
+.kpi .d em{font-style:normal;color:var(--bad);font-weight:600}
+
+.src{font-size:13.5px;color:var(--ink-faint);line-height:1.85;background:var(--line-soft);border-radius:12px;padding:18px 20px;margin-top:44px}
+.src b{color:var(--ink-soft)}
+.src ul{margin:8px 0 0;padding-left:18px}
+.src li{margin-bottom:6px}
+
+@media (max-width:640px){
+  body{font-size:16.5px;line-height:1.88}
+  .container{padding:0 18px}
+  .masthead{padding:24px 0 24px}
+  .masthead h1{font-size:25px}
+  .masthead .sub{font-size:15.5px}
+  .part-head{flex-direction:column;gap:4px}
+  .part-head h2{font-size:22px}
+  .sec h3{font-size:19px}
+  figure{padding:12px 10px 8px;border-radius:12px;margin:22px 0 26px}
+  figcaption{font-size:12.5px}
+  .stats{grid-template-columns:repeat(2,1fr);gap:10px}
+  .stat .v{font-size:21px}
+  .kpis{grid-template-columns:1fr}
+  .chart svg{min-width:660px}
+  .swipe{display:block}
+}
+</style>
+</head>
+<body>
+
+<header class="masthead">
+  <div class="container">
+    <nav class="breadcrumb" aria-label="当前位置"><ol>
+      <li><a href="../../../index.html">Atlas</a></li>
+      <li><a href="../index.html">AI 资本循环手册</a></li>
+      <li aria-current="page">Anthropic 招股书辨析</li>
+    </ol></nav>
+    <span class="eyebrow">深度辨析 · 报告</span>
+    <h1>2.08 是真的吗</h1>
+    <p class="sub">Anthropic 的招股书里，有一组数字看起来像奇迹：每花 1 美元算力，能挣回 2 美元。可同一份文件里还写着，它的未来十年已经被 6,000 多亿美元的账单锁住了。这两件事必须放在一起读。</p>
+    <p class="meta">数据基准：2026 年 10 月 26 日递交的 Form S-1（财务截止 2026 年 6 月 30 日）</p>
+  </div>
+</header>
+
+<div class="wrap">
+  <div class="container">
+
+    <p class="lead">这份报告只做一件事：把 Anthropic 招股书里最容易被讲成“神话”的几处，拆成可以检验的判断。每一节都先还原一种流行的说法，再看文件里的原始口径支撑到哪一步，最后给出一个带条件的结论——在什么情况下它成立，什么情况下它会翻转。<strong>读完你应该能自己去判断：它的增长是真的，还是只在账面上像真的。</strong></p>
+
+    <div class="stats">
+      <div class="stat"><div class="k">2026 上半年收入</div><div class="v">162.86 亿</div><div class="n">美元 · 同比增 14 倍</div></div>
+      <div class="stat"><div class="k">单季经营利润</div><div class="v">+9.74 亿</div><div class="n">2026 Q2 首次转正</div></div>
+      <div class="stat"><div class="k">毛利率</div><div class="v">85.4%</div><div class="n">2024 年为 −94.8%</div></div>
+      <div class="stat"><div class="k">经营现金流</div><div class="v">+39 亿</div><div class="n">2026 上半年</div></div>
+      <div class="stat"><div class="k">已签约收入</div><div class="v">108 亿</div><div class="n">RPO，截至 6 月底</div></div>
+      <div class="stat"><div class="k">刚性算力承诺</div><div class="v">2,656 亿</div><div class="n">固定或最低担保</div></div>
+    </div>
+
+    <!-- ================= PART 3 ================= -->
+    <div class="part" id="p3">
+      <div class="part-head"><span class="part-num">PART 03</span><h2>七个值得停下来想一想的地方</h2></div>
+      <p class="part-lede">这些点不是“文章写错了”，而是“文章写对了数字，却没有把数字背后的机制说透”。每一条都藏着一个会改变判断的分岔口。</p>
+
+      <!-- 3.1 -->
+      <div class="sec" id="s1">
+        <h3><span class="no">3.1</span>那个 2.08 的拐点</h3>
+        <div class="say"><b>流行说法</b>连续四个季度，Anthropic 花 1 块钱买算力只能卖回不到 7 毛；2026 年一季度越过 1，二季度变成花 1 块挣 2 块。这说明它的单位经济已经跑通了。</div>
+
+        <p>先把这组数字摆清楚。招股书的季度表里，收入从 2025 年一季度的 3.76 亿美元一路走到 2026 年二季度的 115.55 亿美元，同期算力与基础设施支出从 9.44 亿涨到 55.58 亿。用收入除以算力支出，得到的正是那条从 0.40 爬到 2.08 的曲线。三十倍的收入增长配上六倍的算力增长，这个反差确实扎眼。</p>
+
+        <figure>
+          <p class="swipe">左右滑动查看 →</p><div class="chart"><svg viewBox="0 0 800 330" role="img" aria-label="六個季度收入与算力支出对比">
+            <line class="grid" x1="80" y1="285" x2="780" y2="285"/>
+            <line class="grid" x1="80" y1="227.5" x2="780" y2="227.5"/>
+            <line class="grid" x1="80" y1="170" x2="780" y2="170"/>
+            <line class="grid" x1="80" y1="112.5" x2="780" y2="112.5"/>
+            <line class="grid" x1="80" y1="55" x2="780" y2="55"/>
+            <text class="ax" x="72" y="289" text-anchor="end">0</text>
+            <text class="ax" x="72" y="231" text-anchor="end">3000</text>
+            <text class="ax" x="72" y="174" text-anchor="end">6000</text>
+            <text class="ax" x="72" y="116" text-anchor="end">9000</text>
+            <text class="ax" x="72" y="59" text-anchor="end">12000</text>
+
+            <rect class="bar-rev" x="92" y="277.8" width="36" height="7.2" rx="2"/>
+            <rect class="bar-comp" x="132" y="266.9" width="36" height="18.1" rx="2"/>
+            <rect class="bar-rev" x="212" y="269.9" width="36" height="15.1" rx="2"/>
+            <rect class="bar-comp" x="252" y="258.4" width="36" height="26.6" rx="2"/>
+            <rect class="bar-rev" x="332" y="258.5" width="36" height="26.5" rx="2"/>
+            <rect class="bar-comp" x="372" y="245.8" width="36" height="39.2" rx="2"/>
+            <rect class="bar-rev" x="452" y="245.9" width="36" height="39.1" rx="2"/>
+            <rect class="bar-comp" x="492" y="228.6" width="36" height="56.4" rx="2"/>
+            <rect class="bar-rev" x="572" y="194.3" width="36" height="90.7" rx="2"/>
+            <rect class="bar-comp" x="612" y="178.5" width="36" height="106.5" rx="2"/>
+            <rect class="bar-rev" x="692" y="63.5" width="36" height="221.5" rx="2"/>
+            <rect class="bar-comp" x="732" y="178.5" width="36" height="106.5" rx="2"/>
+
+            <text class="val" x="710" y="55" text-anchor="middle">11,555</text>
+            <text class="val" x="750" y="170" text-anchor="middle">5,558</text>
+            <text class="ax" x="130" y="308" text-anchor="middle">25Q1</text>
+            <text class="ax" x="250" y="308" text-anchor="middle">Q2</text>
+            <text class="ax" x="370" y="308" text-anchor="middle">Q3</text>
+            <text class="ax" x="490" y="308" text-anchor="middle">Q4</text>
+            <text class="ax" x="610" y="308" text-anchor="middle">26Q1</text>
+            <text class="ax" x="730" y="308" text-anchor="middle">Q2</text>
+            <rect x="96" y="18" width="12" height="12" rx="2" fill="#D9764A"/><text class="axl" x="114" y="28">收入</text>
+            <rect x="164" y="18" width="12" height="12" rx="2" fill="#D8C7B4"/><text class="axl" x="182" y="28">算力支出</text>
+            <text class="axl" x="80" y="325">单位：百万美元</text>
+          </svg></div>
+          <figcaption><b>图 1</b>　六个季度的收入与算力支出。2025 年四个季度里，代表算力的浅色柱子始终高于收入柱；到 2026 年二季度，橙色柱子已经是浅色柱的两倍。</figcaption>
+        </figure>
+
+        <p>问题在于，这个比值并不等于利润率。它把研发用的算力、训练下一代模型的算力、对外服务客户的算力全部塞进同一个分母，而分子只有收入。所以它衡量的是<strong>“这一整套算力资产被利用得怎么样”</strong>，而不是“卖一单赚多少”。这是它有价值的地方，也是它容易骗人的地方。</p>
+
+        <p>更能说明问题的是毛利率。招股书在附注里按功能列了成本，把对外服务客户的算力、相关人员和分摊费用归入营业成本：2024 年收入 3.86 亿、成本 7.52 亿，毛利率是负 94.8%；2025 年转正到 39.5%；2026 上半年做到 85.4%。这条曲线比 2.08 更干净，因为它只算“卖出去的那部分”花了多少钱。</p>
+
+        <figure>
+          <p class="swipe">左右滑动查看 →</p><div class="chart"><svg viewBox="0 0 800 400" role="img" aria-label="毛利率变化">
+            <line class="grid" x1="80" y1="65" x2="780" y2="65"/>
+            <line class="grid" x1="80" y1="137.5" x2="780" y2="137.5"/>
+            <line x1="80" y1="210" x2="780" y2="210" stroke="#CFC3B3" stroke-width="1.4"/>
+            <line class="grid" x1="80" y1="282.5" x2="780" y2="282.5"/>
+            <line class="grid" x1="80" y1="355" x2="780" y2="355"/>
+            <text class="ax" x="72" y="69" text-anchor="end">+100%</text>
+            <text class="ax" x="72" y="141" text-anchor="end">+50%</text>
+            <text class="ax" x="72" y="214" text-anchor="end">0</text>
+            <text class="ax" x="72" y="286" text-anchor="end">−50%</text>
+            <text class="ax" x="72" y="359" text-anchor="end">−100%</text>
+
+            <rect class="bar-neg" x="105" y="210" width="110" height="137.5" rx="3"/>
+            <rect class="bar-pos" x="275" y="152.7" width="110" height="57.3" rx="3"/>
+            <rect class="bar-pos" x="445" y="192" width="110" height="18" rx="3"/>
+            <rect class="bar-pos" x="615" y="86.2" width="110" height="123.8" rx="3"/>
+
+            <text class="val" x="160" y="366" text-anchor="middle">−94.8%</text>
+            <text class="val" x="330" y="143" text-anchor="middle">39.5%</text>
+            <text class="val" x="500" y="183" text-anchor="middle">12.4%</text>
+            <text class="val" x="670" y="77" text-anchor="middle">85.4%</text>
+            <text class="ax" x="160" y="390" text-anchor="middle">2024 全年</text>
+            <text class="ax" x="330" y="390" text-anchor="middle">2025 全年</text>
+            <text class="ax" x="500" y="390" text-anchor="middle">25 上半年</text>
+            <text class="ax" x="670" y="390" text-anchor="middle">26 上半年</text>
+          </svg></div>
+          <figcaption><b>图 2</b>　按功能口径计算的毛利率。2024 年卖得越多亏得越多，2026 年上半年则跨到 85%。转折发生在 2025 年，而不是 2026 年二季度。</figcaption>
+        </figure>
+
+        <p>那为什么 2026 年二季度突然这么好看？招股书自己给了一个很朴素的解释：<strong>算力成本在产能可用时确认，而合同通常提前 12 到 18 个月锁定。</strong>换句话说，2025 年那四个季度的 0.4 到 0.69，是“按未来需求买好的产能，收入还没长上来”；2026 年的 1.40 和 2.08，是“同一批产能被填满了”。这是真实的经营杠杆，但它衡量的是利用率，不是定价权。</p>
+
+        <figure>
+          <p class="swipe">左右滑动查看 →</p><div class="chart"><svg viewBox="0 0 800 330" role="img" aria-label="每美元算力投入换回的收入">
+            <line class="grid" x1="80" y1="285" x2="780" y2="285"/>
+            <line class="grid" x1="80" y1="237.1" x2="780" y2="237.1"/>
+            <line class="grid" x1="80" y1="141.3" x2="780" y2="141.3"/>
+            <line class="grid" x1="80" y1="93.3" x2="780" y2="93.3"/>
+            <line class="dash" x1="80" y1="189.2" x2="780" y2="189.2"/>
+            <text class="ax" x="72" y="289" text-anchor="end">0</text>
+            <text class="ax" x="72" y="241" text-anchor="end">0.5</text>
+            <text class="ax" x="72" y="193" text-anchor="end">1.0</text>
+            <text class="ax" x="72" y="145" text-anchor="end">1.5</text>
+            <text class="ax" x="72" y="97" text-anchor="end">2.0</text>
+            <text class="axl" x="786" y="186" text-anchor="end" fill="#C1892A">回本线</text>
+
+            <path class="ln" d="M130,246.7 L250,230.4 L370,219.8 L490,218.9 L610,150.8 L730,85.7"/>
+            <circle class="dot" cx="130" cy="246.7" r="4.5"/>
+            <circle class="dot" cx="250" cy="230.4" r="4.5"/>
+            <circle class="dot" cx="370" cy="219.8" r="4.5"/>
+            <circle class="dot" cx="490" cy="218.9" r="4.5"/>
+            <circle class="dot" cx="610" cy="150.8" r="4.5"/>
+            <circle class="dot" cx="730" cy="85.7" r="4.5"/>
+            <text class="val" x="130" y="264" text-anchor="middle">0.40</text>
+            <text class="val" x="250" y="222" text-anchor="middle">0.57</text>
+            <text class="val" x="370" y="211" text-anchor="middle">0.68</text>
+            <text class="val" x="490" y="210" text-anchor="middle">0.69</text>
+            <text class="val" x="610" y="142" text-anchor="middle">1.40</text>
+            <text class="val" x="730" y="76" text-anchor="middle">2.08</text>
+            <text class="ax" x="130" y="308" text-anchor="middle">25Q1</text>
+            <text class="ax" x="250" y="308" text-anchor="middle">Q2</text>
+            <text class="ax" x="370" y="308" text-anchor="middle">Q3</text>
+            <text class="ax" x="490" y="308" text-anchor="middle">Q4</text>
+            <text class="ax" x="610" y="308" text-anchor="middle">26Q1</text>
+            <text class="ax" x="730" y="308" text-anchor="middle">Q2</text>
+            <text class="axl" x="80" y="325">收入 ÷ 算力与基础设施支出</text>
+          </svg></div>
+          <figcaption><b>图 3</b>　单位算力产出比。真正越过回本线的时点是一季度；二季度再跳到 2.08，幅度之大，恰好提示它更像是产能被填满，说不上定价能力突然翻倍。</figcaption>
+        </figure>
+
+        <div class="verdict"><b>成立的条件</b><p>如果这个比值能守住 1.5 以上，它就是真实的经营杠杆；如果随着博通、Nscale、Lambda、AMD 的新产能上线而回落到 1.2 以下，它只是“预购产能被填满”的时间窗口。区分方法不复杂：看 2027 年租金和折旧集中计提时，毛利率还能不能站在 80% 上方。</p></div>
+      </div>
+
+      <!-- 3.2 -->
+      <div class="sec" id="s2">
+        <h3><span class="no">3.2</span>807 亿亏损：不花现金，但花股权</h3>
+        <div class="say"><b>流行说法</b>上半年亏了 807 亿美元，是收入的五倍。但这 807 亿里，724 亿是可转债和 SAFE 的公允价值变动，一分钱现金都不用掏。</div>
+
+        <p>这个解释是对的，而且很关键：一家公司账上亏得越多，往往说明它越值钱。因为那些可转债是早期按低估值发的“借条”，估值从 2 月的 3,800 亿涨到 5 月的 9,650 亿，借条能按老价格换股，自然水涨船高；会计准则要求把这部分增值记成公司的损失。所以二季度单季那 596 亿，本质上是<strong>给早期投资人的补偿，算不上经营上的窟窿</strong>。</p>
+
+        <p>但文章到这里就停了，少说了两层。第一层是“调整后净利润”的成分：那个正 26.71 亿，是在加回 15 亿美元 Bartz 和解金、21.85 亿股权激励、1.26 亿非现金捐赠之后得到的。Bartz 那 15 亿是真金白银付出去的，把它加回去再说“盈利”，性质就变了。</p>
+
+        <p>第二层更重要：<strong>不花现金，花的是股权。</strong>加权平均股本从 2023 年的 10.77 亿股涨到 2026 上半年的 20.25 亿股，两年半增发 88%。融资的成本没有出现在现金流量表里，而是摊到了每一股上。对老股东来说，这不是免费的。</p>
+
+        <div class="note"><b>换个角度看亏损。</b>把 807 亿拆开：约 724 亿是估值上涨的会计投影，约 15 亿是真实赔付，剩下的才是经营与研发。所以判断这家公司，不该问“亏了多少”，而该问“经营性现金还剩多少、每股被稀释了多少”。</div>
+      </div>
+
+      <!-- 3.3 -->
+      <div class="sec" id="s3">
+        <h3><span class="no">3.3</span>900% 的留存率，度量的是品类诞生</h3>
+        <div class="say"><b>流行说法</b>净收入留存率约 900%。做企业软件的人做到 120% 就算优秀，Snowflake 巅峰 178% 已被讲成传奇，这个数字离谱到让人失眠。</div>
+
+        <p>数字是真的，但它的含义和大多数人想的不一样。招股书给了定义：只统计基准期有收入的企业与按量计费客户，<strong>剔除 Claude Pro 和 Max 的订阅用户</strong>，用“当期三个月收入”除以“一年前同三个月收入”。换句话说，它衡量的是“一年前开始用的人，现在多花了多少倍”，不是“客户走没走”。</p>
+
+        <p>为什么这个区别这么大？因为分子分母都太小、太新。去年一个客户每月花 2 万美元试水，今年上生产花 18 万，比值就是 900%。这不是忠诚度，这是<strong>一条从试验到生产的爬坡曲线</strong>。再加上 2026 年三季度超过 80% 的收入来自过去六个月发布的模型版本，你会意识到这是一个产品每半年换一次代的生意，稳态软件那套留存率的含义在这里几乎不成立。</p>
+
+        <p>真正有信息量的是另一组数字：财富 500 强里超过一半是 10 万美元级客户，但这些钱平均不到它们总开支的 0.1%，用得最多的前十家也不到 1%。这句话读起来像在夸增长空间，其实也在说另一件事——<strong>这个市场现在小得可怜</strong>。企业 AI 还处在“每家都在试，但没人敢把核心预算搬过来”的阶段。</p>
+
+        <div class="verdict"><b>成立的条件</b><p>900% 能证明的是“品类在爆发”，不能证明“客户离不开”。等客户基数变大、一整轮续约走完，这个数字会自然回落到 150% 到 250% 的区间——那才是稳态软件的水位，也才看得出真实的产品黏性。</p></div>
+      </div>
+
+      <!-- 3.4 -->
+      <div class="sec" id="s4">
+        <h3><span class="no">3.4</span>照付不议：它把自己变成了一家电厂</h3>
+        <div class="say"><b>流行说法</b>谷歌、亚马逊、微软的合同里都有同一个短语：regardless of actual usage，不管用不用，钱都得付。算力在 Anthropic 心里，已经等同于能源。</div>
+
+        <p>条款读得很准。招股书里逐条写着：谷歌至少 1,145 亿美元（2026 年 4 月到 2033 年 7 月），亚马逊至少 1,100 亿（2026 年 5 月到 2036 年 4 月），微软至少 449 亿，SpaceXAI 最高 1,205 亿，博通五年租赁 1,612 亿，Nscale 446 亿，Lambda 413 亿。把这些点名的合同加起来，大约 6,370 亿美元，最长的部分延到 2045 年。</p>
+
+        <figure>
+          <p class="swipe">左右滑动查看 →</p><div class="chart"><svg viewBox="0 0 800 300" role="img" aria-label="承诺规模与已签约收入对比">
+            <text class="axl" x="10" y="52">已签约收入 RPO</text>
+            <rect x="250" y="34" width="8" height="30" rx="2" fill="#3E8362"/>
+            <text class="val" x="272" y="56" fill="#3E8362">108 亿美元</text>
+
+            <text class="axl" x="10" y="132">刚性算力承诺</text>
+            <rect x="250" y="114" width="190" height="30" rx="3" fill="#C1892A"/>
+            <text class="val" x="452" y="136">2,656 亿美元</text>
+
+            <text class="axl" x="10" y="212">点名合同合计</text>
+            <rect x="250" y="194" width="455" height="30" rx="3" fill="#C0433D"/>
+            <text class="val" x="264" y="216" fill="#FFFFFF" font-weight="700">6,370 亿美元</text>
+
+            <text class="axl" x="10" y="276">同一比例尺下，第一根柱子只有 8 像素宽</text>
+          </svg></div>
+          <figcaption><b>图 4</b>　三条柱子用同一个比例尺。已签约收入 108 亿，刚性承诺 2,656 亿，点名合同 6,370 亿。用同一把尺子量，前者只有后两者的二十五分之一和五十九分之一。</figcaption>
+        </figure>
+
+        <p>但“贵”不是最要紧的问题。变化在于<strong>成本结构换了性质</strong>：软件公司的成本随用量走，多卖一份多花一份；签了照付不议之后，成本变成了一条平地起的高台，收入在台下怎么波动，台阶都不动。这件事有三层后果，值得慢慢想。</p>
+
+        <p>第一层，毛利率的改善里有一部分是时间差送的礼物。合同签了，成本要等产能交付才进利润表，所以 2026 上半年的 85% 里，混着一部分“还没开始付的钱”。第二层，经营杠杆是双向的：收入增速从 200% 掉到 50%，那 6,370 亿一分不会少。第三层，也是最容易被忽略的一层——<strong>截至 2026 年 6 月底，固定或最低担保承诺是 2,656 亿美元，而已签约未确认收入只有 108 亿。</strong></p>
+
+        <figure>
+          <p class="swipe">左右滑动查看 →</p><div class="chart"><svg viewBox="0 0 800 340" role="img" aria-label="算力合同期限分布">
+            <line class="grid" x1="120" y1="40" x2="120" y2="300"/>
+            <line class="grid" x1="250" y1="40" x2="250" y2="300"/>
+            <line class="grid" x1="412" y1="40" x2="412" y2="300"/>
+            <line class="grid" x1="575" y1="40" x2="575" y2="300"/>
+            <line class="grid" x1="737" y1="40" x2="737" y2="300"/>
+            <text class="ax" x="120" y="318" text-anchor="middle">2026</text>
+            <text class="ax" x="250" y="318" text-anchor="middle">2030</text>
+            <text class="ax" x="412" y="318" text-anchor="middle">2035</text>
+            <text class="ax" x="575" y="318" text-anchor="middle">2040</text>
+            <text class="ax" x="737" y="318" text-anchor="middle">2045</text>
+
+            <text class="axl" x="112" y="71" text-anchor="end">谷歌 1,145</text>
+            <rect x="133" y="60" width="238" height="18" rx="9" fill="#D9764A"/>
+            <text class="axl" x="112" y="103" text-anchor="end">亚马逊 1,100</text>
+            <rect x="136" y="92" width="322" height="18" rx="9" fill="#C96A45"/>
+            <text class="axl" x="112" y="135" text-anchor="end">微软 449</text>
+            <rect x="149" y="124" width="210" height="18" rx="9" fill="#BF7B5C"/>
+            <text class="axl" x="112" y="167" text-anchor="end">SpaceXAI ≤1,205</text>
+            <rect x="133" y="156" width="114" height="18" rx="9" fill="#8FA98F"/>
+            <text class="axl" x="112" y="199" text-anchor="end">博通租赁 1,612</text>
+            <rect x="120" y="188" width="169" height="18" rx="9" fill="#7E9C8B"/>
+            <text class="axl" x="112" y="231" text-anchor="end">Nscale ≤446</text>
+            <rect x="143" y="220" width="205" height="18" rx="9" fill="#6E8FA0"/>
+            <text class="axl" x="112" y="263" text-anchor="end">Lambda 413</text>
+            <rect x="136" y="252" width="244" height="18" rx="9" fill="#5F8296"/>
+            <text class="axl" x="112" y="295" text-anchor="end">其余（推算）</text>
+            <rect x="282" y="284" width="435" height="18" rx="9" fill="#CBC0B2"/>
+            <text x="500" y="297" text-anchor="middle" font-size="12.5" fill="#6B5F52">延至 2045 年</text>
+          </svg></div>
+          <figcaption><b>图 5</b>　已披露的主要算力合同期限。注意三件事：亚马逊最长到 2036 年；SpaceXAI 虽然金额最高，但 2027 年之后可提前 90 天解约；整体账期确实拖到了 2045 年前后。</figcaption>
+        </figure>
+
+        <p>为了公平，也得说另一半：这 6,370 亿不等于 6,370 亿的刚性负债。SpaceXAI 在 2027 年 1 月、3 月之后可提前 90 天解约，Nscale 和 Lambda 以“产能交付并被接受”为计费前提，AMD 那 200 亿是“如果足额采购”的预期。真正硬的下限，是 2,656 亿。</p>
+
+        <div class="verdict"><b>成立的条件</b><p>如果需求继续翻倍，这份合同是极其聪明的锁价；如果增速掉到 50% 以下，它就是最贵的错误。判断标准不是合同总额，而是 2,656 亿这个下限，能不能被收入追上。</p></div>
+      </div>
+
+      <!-- 3.5 -->
+      <div class="sec" id="s5">
+        <h3><span class="no">3.5</span>七美元的控制权，是双锁而不是一把锁</h3>
+        <div class="say"><b>流行说法</b>七位创始人一人出 1 美元，换一股没有任何经济权利的 F 类股，投票权固定等于全公司 50.1%，永远稀释不掉。七美元买下一家万亿公司。</div>
+
+        <p>这个结构是真的：一股 F 类股，不参与利润分配，投票权恒等于全部投票权的 50.1%，公司以后再增发也稀释不了。文件里对这七个人的定位是“我们使命的守护者”。</p>
+
+        <p>但文件里还有另一半，很少有人提：公司同时设了一个 Long-Term Benefit Trust，通过 Class T 股票选举董事会多数席位，公司因此在纳斯达克被认定为“受控公司”。合起来是两道锁——<strong>信托锁董事会，创始人 LLC 锁股东投票</strong>。文章只写了后一道。</p>
+
+        <figure>
+          <p class="swipe">左右滑动查看 →</p><div class="chart"><svg viewBox="0 0 800 330" role="img" aria-label="治理结构示意">
+            <defs><marker id="arw6" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="#B9AB9A"/></marker></defs>
+            <rect class="box" x="40" y="45" width="230" height="70" rx="10"/>
+            <text x="155" y="74" text-anchor="middle" font-size="14.5" fill="#2B2622">长期利益信托 LTBT</text>
+            <text x="155" y="96" text-anchor="middle" font-size="12.5" fill="#8C8177">持有 Class T · 选多数董事</text>
+
+            <rect class="box" x="40" y="145" width="230" height="70" rx="10"/>
+            <text x="155" y="174" text-anchor="middle" font-size="14.5" fill="#2B2622">创始人 LLC</text>
+            <text x="155" y="196" text-anchor="middle" font-size="12.5" fill="#8C8177">1 股 Class F · 50.1% 投票权</text>
+
+            <rect class="box" x="330" y="100" width="170" height="70" rx="10"/>
+            <text x="415" y="129" text-anchor="middle" font-size="14.5" fill="#2B2622">董事会</text>
+            <text x="415" y="151" text-anchor="middle" font-size="12.5" fill="#8C8177">多数席位由其选出</text>
+
+            <rect class="box" x="570" y="100" width="190" height="70" rx="10"/>
+            <text x="665" y="129" text-anchor="middle" font-size="14.5" fill="#2B2622">公司决策</text>
+            <text x="665" y="151" text-anchor="middle" font-size="12.5" fill="#8C8177">战略 · 人事 · 并购</text>
+
+            <line class="arw" x1="272" y1="80" x2="326" y2="118" marker-end="url(#arw6)"/>
+            <line class="arw" x1="272" y1="180" x2="326" y2="150" marker-end="url(#arw6)"/>
+            <line class="arw" x1="501" y1="135" x2="566" y2="135" marker-end="url(#arw6)"/>
+
+
+            <rect x="330" y="250" width="430" height="58" rx="10" fill="none" stroke="#D8C7B4" stroke-width="1.3" stroke-dasharray="5 4"/>
+            <text x="545" y="274" text-anchor="middle" font-size="13" fill="#8C8177">公众股东 Class A · 战略投资人 Class N</text>
+            <text x="545" y="294" text-anchor="middle" font-size="12.5" fill="#A79C90">保留经济权利与剩余表决权，不改变控制结构</text>
+          </svg></div>
+          <figcaption><b>图 6</b>　两条控制链。信托通过董事席位锁定使命方向，创始人通过 50.1% 的一般事项投票权锁定股东会结果，公众股东留下的空间主要是经济权利。</figcaption>
+        </figure>
+
+        <p>对公开市场投资者，这件事有两面。折价的一面很直白：并购、战略转向、更换 CEO，没有创始人点头就做不成，而且这套结构没有到期日。溢价的一面常被忽略：<strong>它是一份可执行的使命承诺</strong>。七位创始人各自承诺捐出 80% 的个人股份，加上员工配捐和 5% 的公益基金，合计约 22% 的全面摊薄股本。对一家把“安全”当卖点的公司，这份结构本身就是产品的一部分。</p>
+
+        <p>还有个细节值得算一遍。文件写明 8.47 亿股等于全面摊薄股本的 5%，反推全面摊薄约 169 亿股；而加权平均普通股只有 20.25 亿股。差额主要来自早期可转债按极低估值转换。<strong>也就是说，公开市场买到的每一股，背后都压着一层历史转换权。</strong>这是定价时绕不过去的账。</p>
+      </div>
+
+      <!-- 3.6 -->
+      <div class="sec" id="s6">
+        <h3><span class="no">3.6</span>5% 到 7% 的“违规客户”：增长质量的探针</h3>
+        <div class="say"><b>流行说法</b>公司承认收入里有一部分来自后来被封号的客户，因为发现、调查、封禁都需要时间，钱先收了号后封。前九个月大约占 5% 到 7%。</div>
+
+        <p>这条在这个故事里是花边，在文件里却分量很重。招股书原文的意思是：这部分收入一直有，以后也会有，2026 年 8、9 月加大了识别和封禁力度，所以占比会降——<strong>同时可能拉低未来的收入和增速</strong>。一家公司在招股书里承认“过去的增速里有一部分来自我后来要清掉的客户”，这不是小事。</p>
+
+        <p>把它和“80% 的收入来自半年内发布的模型”放在一起看，会看到同一个结构性问题：产品迭代太快，客户结构太碎，任何一次收紧都会直接打到增速上。这也是为什么这条信息不该被当成八卦——它是观察增长质量最灵敏的一根探针。</p>
+      </div>
+
+      <!-- 3.7 -->
+      <div class="sec" id="s7">
+        <h3><span class="no">3.7</span>供应商即股东：钱在闭环里转了一圈</h3>
+        <div class="say"><b>流行说法</b>1 月封禁 xAI 员工，2 月被马斯克骂，5 月签下 1,205 亿美元算力合同。骂归骂，生意归生意。</div>
+
+        <p>时间线没错，但机制被写小了。结构其实写在文件里：谷歌除了 1,145 亿的算力承诺，还有一份 <strong>200 亿美元的票据购买协议</strong>，提款条件与第三方算力协议的里程碑、TTM 收入目标挂钩；另外授予谷歌在 IPO 同时按发行价购买最多 100 亿美元 Class N 股票的选择权，持股上限 14.99%。亚马逊的可转债则在上市时转为无投票权的 Class N。</p>
+
+        <p>把这几件事连起来看，钱的路径是这样的：谷歌和亚马逊出钱（票据、可转债、直接投资），Anthropic 拿这笔钱买它们的芯片和云，钱再以算力费的形式流回去，最后差额以股权结算。这不是普通的客户关系，<strong>而是风险共担的合资结构</strong>。</p>
+
+        <figure>
+          <p class="swipe">左右滑动查看 →</p><div class="chart"><svg viewBox="0 0 800 420" role="img" aria-label="资本与算力的闭环">
+            <defs><marker id="arw7" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="8" markerHeight="8" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="#B9AB9A"/></marker></defs>
+
+            <rect class="box" x="170" y="26" width="380" height="64" rx="11"/>
+            <text x="360" y="53" text-anchor="middle" font-size="15" fill="#2B2622">谷歌 / 亚马逊 / 微软</text>
+            <text x="360" y="75" text-anchor="middle" font-size="12.5" fill="#8C8177">既是算力供应商，又是股东</text>
+
+            <path class="arw" d="M360,92 L360,138" marker-end="url(#arw7)"/>
+            <text class="ax" x="374" y="116">票据与现金</text>
+            <text class="ax" x="374" y="133">Google 200 亿额度 · Amazon 62 亿可转债</text>
+
+            <rect class="box" x="170" y="142" width="380" height="64" rx="11"/>
+            <text x="360" y="169" text-anchor="middle" font-size="15" fill="#2B2622">Anthropic</text>
+            <text x="360" y="191" text-anchor="middle" font-size="12.5" fill="#8C8177">上半年收入 162.86 亿美元</text>
+
+            <path class="arw" d="M360,208 L360,254" marker-end="url(#arw7)"/>
+            <text class="ax" x="374" y="232">算力采购款</text>
+            <text class="ax" x="374" y="249">Google ≥1,145 亿 · Amazon ≥1,100 亿</text>
+
+            <rect class="box" x="170" y="258" width="380" height="64" rx="11"/>
+            <text x="360" y="285" text-anchor="middle" font-size="15" fill="#2B2622">回到供应商的资产负债表</text>
+            <text x="360" y="307" text-anchor="middle" font-size="12.5" fill="#8C8177">同一笔钱，换了一个科目</text>
+
+            <path class="arw" d="M552,290 L640,290 L640,58 L556,58" marker-end="url(#arw7)"/>
+            <text class="axl" x="650" y="158" fill="#B85A34">股权回填</text>
+            <text class="ax" x="650" y="176">Class N</text>
+            <text class="ax" x="650" y="192">无投票权</text>
+            <text class="ax" x="650" y="208">上限 14.99%</text>
+
+            <text class="axl" x="170" y="356">三张资产负债表，一本账。</text>
+          </svg></div>
+          <figcaption><b>图 7</b>　算力账单并没有离开这个闭环。供应商用票据和现金把购买力送进来，再以算力费收回去，最后用股权补齐差额。这让“算力成本”这个数字失去了通常的含义。</figcaption>
+        </figure>
+
+        <p>这件事最关键的含义是：<strong>如果 6,370 亿的账单最终兑付不了，损失很大程度上由那三张资产负债表承担</strong>——而它们同时是股东。这既降低了 Anthropic 的真实风险，也让“它能不能付得起”这个问题变得没那么重要。真正该问的是：这笔钱在几个大账本之间转圈，最后谁在承担风险？</p>
+      </div>
+    </div>
+
+    <!-- ================= PART 4 ================= -->
+    <div class="part" id="p4">
+      <div class="part-head"><span class="part-num">PART 04</span><h2>三条没被写进去、但更接近真相的线</h2></div>
+      <p class="part-lede">前面七节是在检验别人给的叙事。这一节换个方向：从文件里挑出三组被忽略的数字，它们拼起来，其实是另一个故事。</p>
+
+      <div class="sec" id="s8">
+        <h3><span class="no">4.1</span>毛利率：从负 94.8% 到 85.4%</h3>
+        <p>这是整份文件里最陡的一条线，也是最能回答“它到底跑通没有”的数字。2024 年卖 3.86 亿的货，花了 7.52 亿的成本，毛利率是负 94.8%——卖得越多，亏得越快。2025 年转正到 39.5%，2026 上半年做到 85.4%。一年之内毛利率抬了 73 个点，这在硬件行业几乎不可能，在算力密集的软件公司里，只可能来自三件事同时发生：模型推理效率提升、产能利用率填满、以及产品结构往高价模型倾斜。</p>
+        <p>但这里必须补一句口径提醒：2026 上半年算力总支出 89.45 亿美元，其中只有 23.8 亿被计入营业成本，其余按研发、销售与管理分摊，研发占大头。所以那个 85.4% 是在“大部分算力算作研发”的结构上算出来的。研发费用占收入 59.8%，这笔钱没有消失，只是不在毛利里。<strong>真正要看的，是当自建产能的折旧开始计入成本时，这条线还能不能站住。</strong></p>
+      </div>
+
+      <div class="sec" id="s9">
+        <h3><span class="no">4.2</span>经营现金流：从 −57 亿到 +39 亿</h3>
+        <p>如果只看净亏损，你会觉得这是一台烧钱机器。但现金流量表讲的是另一个故事：2023 年经营现金流负 16 亿，2024 年负 57 亿，2025 年负 26 亿，2025 上半年负 15 亿，<strong>2026 上半年转正，正 39 亿美元</strong>。同期账上现金 1,124 亿、短期投资 193 亿，累计融资 1,411 亿，仅 2026 上半年就融了 1,108 亿。</p>
+
+        <figure>
+          <p class="swipe">左右滑动查看 →</p><div class="chart"><svg viewBox="0 0 800 330" role="img" aria-label="经营现金流变化">
+            <line x1="80" y1="170" x2="780" y2="170" stroke="#CFC3B3" stroke-width="1.4"/>
+            <text class="ax" x="72" y="174" text-anchor="end">0</text>
+            <rect class="bar-neg" x="124" y="170" width="72" height="36.6" rx="3"/>
+            <rect class="bar-neg" x="254" y="170" width="72" height="128.1" rx="3"/>
+            <rect class="bar-neg" x="384" y="170" width="72" height="59.3" rx="3"/>
+            <rect class="bar-neg" x="514" y="170" width="72" height="34" rx="3"/>
+            <rect class="bar-pos" x="644" y="81.6" width="72" height="88.4" rx="3"/>
+            <text x="160" y="193" text-anchor="middle" font-size="12.5" font-weight="600" fill="#FFFFFF">−1,627</text>
+            <text x="290" y="200" text-anchor="middle" font-size="12.5" font-weight="600" fill="#FFFFFF">−5,692</text>
+            <text x="420" y="200" text-anchor="middle" font-size="12.5" font-weight="600" fill="#FFFFFF">−2,637</text>
+            <text x="550" y="193" text-anchor="middle" font-size="12.5" font-weight="600" fill="#FFFFFF">−1,513</text>
+            <text x="680" y="132" text-anchor="middle" font-size="12.5" font-weight="600" fill="#FFFFFF">+3,929</text>
+            <text class="ax" x="160" y="328" text-anchor="middle">2023</text>
+            <text class="ax" x="290" y="328" text-anchor="middle">2024</text>
+            <text class="ax" x="420" y="328" text-anchor="middle">2025</text>
+            <text class="ax" x="550" y="328" text-anchor="middle">25H1</text>
+            <text class="ax" x="680" y="328" text-anchor="middle">26H1</text>
+            <text class="axl" x="80" y="44">单位：百万美元　·　正值为流入</text>
+          </svg></div>
+          <figcaption><b>图 8</b>　经营活动现金流。连续三年为负之后，2026 年上半年转正到 39 亿美元——这是“烧钱机器”叙事最直接的反证。</figcaption>
+        </figure>
+
+        <p>把这组数字和融资放在一起，你会得到一个和原文基调相反的判断：<strong>这次 IPO 不是救命，是给一家已经能自我供血的公司装第二级火箭。</strong>它需要钱，但需要的不是“活下去的钱”，而是“把 6,370 亿合同兑现的钱”。这两件事在估值上的含义完全不同：前者是求生，后者是扩张。</p>
+      </div>
+
+      <div class="sec" id="s10">
+        <h3><span class="no">4.3</span>Anthropic Direct：成本从“云费”变成“折旧”</h3>
+        <p>文件里有一句很轻的话，分量却不轻：公司自有数据中心的比例会上升，用来在高需求期用更便宜的长期算力，回填短期采购。这句话的意思是，未来几年一部分支出会从“付给云厂商的费用”变成“自己的折旧”。</p>
+        <p>对一个正在讲毛利率改善故事的公司，这是一次结构切换。付云费是变动成本，随用量走；自建是固定成本，先投下去再慢慢摊。短期看，它能把单位成本压下来——这也是 85% 毛利率能站住的原因之一；中期看，它会让经营杠杆变得更陡：需求好，利润爆发；需求差，折旧照提。</p>
+        <p>所以 2027 年最该盯的不是模型榜单，是<strong>折旧和租金开始集中进表的那两个季度，毛利率怎么走</strong>。那才是这家公司商业模式的期末考。</p>
+      </div>
+    </div>
+
+    <!-- ================= 跟踪指标 ================= -->
+    <div class="part" id="p5">
+      <div class="part-head"><span class="part-num">PART 05</span><h2>接下来盯五个数</h2></div>
+      <p class="part-lede">判断不需要每次都重读招股书。把下面五个指标记下来，每个季度对一次，故事的走向会自己浮出来。</p>
+      <div class="kpis">
+        <div class="kpi"><div class="t">① 收入 ÷ 算力支出</div><div class="d">现在 2.08。<em>连续两个季度低于 1.5</em>，效率叙事就破了。</div></div>
+        <div class="kpi"><div class="t">② 毛利率</div><div class="d">现在 85.4%。2027 年租赁与折旧集中计提后，<em>守不住 80%</em> 说明改善有一部分是时间差。</div></div>
+        <div class="kpi"><div class="t">③ 经营现金流</div><div class="d">现在 +39 亿。要看“购买设备 + 融资租赁本金”是否开始吞掉它。</div></div>
+        <div class="kpi"><div class="t">④ RPO ÷ 刚性承诺</div><div class="d">现在 108 亿 ÷ 2,656 亿。<em>这个比值不收敛</em>，长期合同就是在赌未来。</div></div>
+        <div class="kpi"><div class="t">⑤ 客户与合规质量</div><div class="d">前五大客户占比已从 36% 降到 21%；违规收入目标降到 3% 以下。两者同时下降，增长才算干净。</div></div>
+      </div>
+    </div>
+
+    <div class="src">
+      <b>来源与口径</b>
+      <ul>
+        <li>一手：Anthropic, PBC 向美国证监会递交的 Form S-1，accession 0001628280-26-067168，2026 年 10 月 26 日；财务报表截止 2026 年 6 月 30 日，部分运营指标截止 9 月 30 日。</li>
+        <li>二手：《Anthropic 要 IPO 了，帮大家总结了一下招股书里 11 个有趣的细节》，作者卡兹克，2026 年 10 月 27 日。文中“募资 1,000 亿美元”“估值 1.5 万亿至 2 万亿”“三季度收入 168 亿”均为媒体口径，不在招股书内。</li>
+        <li>未在正文核到的细节：“七位创始人各出 1 美元”出自招股书附件的 LLC 协议，正文未载；“每本 3,000 美元、40 万本书、Project Panama”来自法院解封材料与媒体报道，非 S-1 内容。</li>
+        <li>本文中“全面摊薄约 169 亿股”“前瞻收入 25 至 36 倍”为据披露数据的推算，不是公司口径。图表数值四舍五入，比例尺以图中标注为准。</li>
+      </ul>
+    </div>
+
+  </div>
+</div>
+</body>
+</html>
