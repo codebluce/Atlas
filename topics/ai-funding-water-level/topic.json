@@ -1,0 +1,57 @@
+{
+  "slug": "ai-funding-water-level",
+  "title": "AI资金链水位与业绩外推学习手册",
+  "prototype": "concept-frame",
+  "status": "active",
+  "root_index_card": {
+    "progress": "5 / 5",
+    "tag": "tag-good"
+  },
+  "modules": [
+    {
+      "id": "01",
+      "order": 1,
+      "title": "开支增速与供应商增速",
+      "file": "manual/01-capex-growth.html",
+      "alias": "水源",
+      "emoji": "🚰",
+      "state": "done"
+    },
+    {
+      "id": "02",
+      "order": 2,
+      "title": "借债、表外与认购热度",
+      "file": "manual/02-financing.html",
+      "alias": "融资",
+      "emoji": "🏦",
+      "state": "done"
+    },
+    {
+      "id": "03",
+      "order": 3,
+      "title": "甲骨文与 CoreWeave",
+      "file": "manual/03-weak-links.html",
+      "alias": "薄弱",
+      "emoji": "⚠️",
+      "state": "done"
+    },
+    {
+      "id": "04",
+      "order": 4,
+      "title": "OpenAI、Anthropic 与循环资金",
+      "file": "manual/04-sources.html",
+      "alias": "源头",
+      "emoji": "🔁",
+      "state": "done"
+    },
+    {
+      "id": "05",
+      "order": 5,
+      "title": "论点检验与跟踪清单",
+      "file": "manual/05-verdict.html",
+      "alias": "结论",
+      "emoji": "🧭",
+      "state": "done"
+    }
+  ]
+}
