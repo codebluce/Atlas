@@ -1,0 +1,236 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>模块3 · 电站经济性与持有主体 | 光伏产业链与电站资产证券化</title>
+<link rel="stylesheet" href="../../../design-system/style.css">
+<style>
+@media (max-width:640px){
+  .local-nav{overflow-x:visible}
+  .local-nav .container{flex-wrap:wrap;white-space:normal;gap:2px 6px}
+  .local-nav a{font-size:12.5px;padding:5px 8px}
+  table.tbl.mobile-stack td::before{display:inline;margin-right:6px}
+}
+</style>
+</head>
+<body>
+
+<header class="masthead">
+  <div class="container">
+    <nav class="breadcrumb" aria-label="当前位置"><ol>
+      <li><a href="../../../index.html">Atlas</a></li>
+      <li><a href="../index.html">光伏产业链与电站资产证券化</a></li>
+      <li aria-current="page">模块3 · 电站经济性与持有主体</li>
+    </ol></nav>
+    <span class="eyebrow">⚡ 模块 03 · 算账与持有人</span>
+    <h1>一座 100MW 电站的账本，和它背后的五类人</h1>
+    <p class="sub">电站的价值不在“装了多少瓦”，而在“每年能收多少钱、能收多少年、谁来保证收到”。531 之前是类固收，531 之后是市场化资产，两者不能用同一套估值。</p>
+  </div>
+</header>
+
+<nav class="local-nav">
+  <div class="container">
+    <a href="#p1">① 电站账本</a>
+    <a href="#p2">② 531 前后</a>
+    <a href="#p3">③ 电价与回本</a>
+    <a href="#p4">④ 五类玩家</a>
+    <a href="#p5">⑤ 速查</a>
+    <a href="#p6">⑥ 自测</a>
+  </div>
+</nav>
+
+<div class="wrap">
+
+<div class="checklist" style="margin-top:32px;">
+  <h4>本节读完，你能做到</h4>
+  <ul>
+    <li>用一张表算清 100MW 电站的投资、收入、IRR 与回本期</li>
+    <li>说清 531 前后两类资产在电价、期限、估值上的差别</li>
+    <li>解释“电价像股票市场”对风控意味着什么</li>
+    <li>分辨五类持有主体各自的动机与约束</li>
+    <li>判断户用光伏到底是能源生意还是渠道生意</li>
+  </ul>
+</div>
+
+<div class="part" id="p1">
+  <div class="part-head"><span class="part-num">01</span><h2>先说痛点：IRR 看着漂亮，回本却要十年</h2></div>
+  <p class="part-lede">电站融资最容易踩的坑，是把“资本金 IRR”当成资产回报。10%—15% 的资本金 IRR 看起来不错，但它是 70%—80% 杠杆放大后的结果，全投资 IRR 只有 6%—9%，回本要 8—12 年。先把这本账算一遍，才不会被打扮过的收益率说服。</p>
+
+  <div class="table-scroll">
+  <table class="tbl mobile-stack">
+    <thead><tr><th>项目</th><th>金额 / 比例</th><th>说明</th></tr></thead>
+    <tbody>
+      <tr><td data-label="项目"><b>总投资</b></td><td data-label="金额/比例">约 3.0—3.5 元/W，即 3.0—3.5 亿元</td><td data-label="说明">组件 0.7 元/W + 系统与建设</td></tr>
+      <tr><td data-label="项目"><b>资本金</b></td><td data-label="金额/比例">20%—30%</td><td data-label="说明">行业普遍 70%—80% 杠杆</td></tr>
+      <tr><td data-label="项目"><b>银行项目贷 / 租赁</b></td><td data-label="金额/比例">70%—80%</td><td data-label="说明">期限 8—15 年，成本 3%—4%</td></tr>
+      <tr><td data-label="项目"><b>年发电量</b></td><td data-label="金额/比例">1.2—1.6 亿度</td><td data-label="说明">利用小时 1,200—1,600</td></tr>
+      <tr><td data-label="项目"><b>年收入</b></td><td data-label="金额/比例">0.5—0.8 亿元</td><td data-label="说明">电价 0.3—0.45 元/度（含机制电量）</td></tr>
+      <tr><td data-label="项目"><b>年运维成本</b></td><td data-label="金额/比例">0.05—0.07 亿元</td><td data-label="说明">约 0.05—0.06 元/W/年</td></tr>
+      <tr><td data-label="项目"><b>全投资 IRR</b></td><td data-label="金额/比例">6%—9%</td><td data-label="说明">531 前项目偏高，531 后偏低</td></tr>
+      <tr><td data-label="项目"><b>资本金 IRR</b></td><td data-label="金额/比例">10%—15%</td><td data-label="说明">杠杆放大后</td></tr>
+      <tr><td data-label="项目"><b>静态回本</b></td><td data-label="金额/比例">8—12 年</td><td data-label="说明">正泰户用项目约 10 年</td></tr>
+    </tbody>
+  </table>
+  </div>
+
+  <div class="callout info">
+    <span class="label">一个容易被忽略的事实</span>
+    当前光伏电站“几乎没有全资本金”的做法，普遍是 70%—80% 杠杆。这意味着资本金 IRR 好看，主要来自杠杆，而不是资产本身回报高。一旦融资成本上行或电价下修，资本金收益会被双向挤压。
+  </div>
+</div>
+
+<div class="part" id="p2">
+  <div class="part-head"><span class="part-num">02</span><h2>531 前 vs 531 后：两种完全不同的资产</h2></div>
+  <p class="part-lede">这是全篇最重要的一张表。同一个行业、同一种设备，只因为投产时间差几个月，现金流性质就变了。</p>
+
+  <div class="table-scroll">
+  <table class="tbl mobile-stack">
+    <thead><tr><th>维度</th><th>531 前存量</th><th>531 后增量</th></tr></thead>
+    <tbody>
+      <tr><td data-label="维度"><b>电价</b></td><td data-label="531 前存量">机制电价锁定，确定性高</td><td data-label="531 后增量">竞价 + 市场化，波动大</td></tr>
+      <tr><td data-label="维度"><b>期限</b></td><td data-label="531 前存量">20 年或 22,000 小时</td><td data-label="531 后增量">机制电价 12 年，之后完全市场化</td></tr>
+      <tr><td data-label="维度"><b>现金流</b></td><td data-label="531 前存量">可预测，类固收</td><td data-label="531 后增量">前 12 年可测，之后不确定</td></tr>
+      <tr><td data-label="维度"><b>估值</b></td><td data-label="531 前存量">高、卖方惜售</td><td data-label="531 后增量">低、按账面价值打折</td></tr>
+      <tr><td data-label="维度"><b>融资</b></td><td data-label="531 前存量">银行、REITs 抢着做</td><td data-label="531 后增量">需要更强增信与运营兜底</td></tr>
+      <tr><td data-label="维度"><b>典型买家</b></td><td data-label="531 前存量">保险、理财子、公募 REITs</td><td data-label="531 后增量">产业资本、高收益债基金、机构间 REITs</td></tr>
+    </tbody>
+  </table>
+  </div>
+
+  <div class="callout good">
+    <span class="label">关键结论</span>
+    531 前资产是“存量博弈”，买到就是赚到；531 后资产是“增量定价”，谁能把电价、限电率、收缴率算清楚，谁就能赚认知的钱。
+  </div>
+</div>
+
+<div class="part" id="p3">
+  <div class="part-head"><span class="part-num">03</span><h2>电价：从“固定”到“股票市场”</h2></div>
+  <p class="part-lede">136 号文之后，各省电力市场更像“股票市场”：同一度电，不同时间、不同省份，价格能差好几倍。</p>
+  <ul>
+    <li>白天光伏大发时电价低，极端情况出现<b>负电价</b>；晚上电价高，但光伏不发电。</li>
+    <li>河北、河南等消纳压力大的省份，出现过 <b>0.08 元/度</b>的极端低价。</li>
+    <li>江苏、浙江的绿电溢价较好，深圳夏季高峰甚至出现“售电价格高于电网销售电价”的倒挂。</li>
+    <li>火电靠容量补偿生存，光伏靠“机制电量 + 市场化交易”组合。</li>
+  </ul>
+  <div class="callout warn">
+    <span class="label">风控含义</span>
+    看一个电站，不能只看“设计电价”，要看<b>当地近 12 个月的实际结算均价、限电率、机制电量占比</b>。可研里的电价是假设，结算单上的电价才是事实。
+  </div>
+
+  <h3 style="margin-top:30px;">回本周期：不同资产差一倍</h3>
+  <div class="table-scroll">
+  <table class="tbl mobile-stack">
+    <thead><tr><th>资产类型</th><th>回本周期</th><th>备注</th></tr></thead>
+    <tbody>
+      <tr><td data-label="资产类型">531 前集中式</td><td data-label="回本周期">8—10 年</td><td data-label="备注">电价锁定，现金流稳</td></tr>
+      <tr><td data-label="资产类型">531 后集中式</td><td data-label="回本周期">10—12 年</td><td data-label="备注">部分地区 12 年以上</td></tr>
+      <tr><td data-label="资产类型">工商业分布式（自用 70% 以上）</td><td data-label="回本周期">6—9 年</td><td data-label="备注">替代用户侧高价电</td></tr>
+      <tr><td data-label="资产类型">户用</td><td data-label="回本周期">8—10 年</td><td data-label="备注">正泰项目投资人回本约 10 年</td></tr>
+      <tr><td data-label="资产类型">风电</td><td data-label="回本周期">12—15 年</td><td data-label="备注">会上口径</td></tr>
+    </tbody>
+  </table>
+  </div>
+
+  <div class="callout bad">
+    <span class="label">投资人偏好带来的产品设计</span>
+    前 3—5 年分派率要“好看”，因为投资经理的考核周期等不到第 10 年。这直接影响产品设计——<b>前几年先还本、后几年提高分派率</b>，本质上是把长期现金流“前移”，并不是资产本身变好了。
+  </div>
+</div>
+
+<div class="part" id="p4">
+  <div class="part-head"><span class="part-num">04</span><h2>谁在持有电站：五类玩家与各自的算盘</h2></div>
+  <p class="part-lede">同一个电站，对不同玩家意义完全不同：对央企是装机指标，对金租是租赁资产，对厂商是组件出货的出口，对基金是待证券化的标的。</p>
+
+  <div class="table-scroll">
+  <table class="tbl mobile-stack">
+    <thead><tr><th>玩家</th><th>代表机构</th><th>动机</th><th>资金</th><th>偏好</th><th>约束</th></tr></thead>
+    <tbody>
+      <tr><td data-label="玩家"><b>五大六小央企</b></td><td data-label="代表机构">华能、华电、国家电投、三峡、中广核</td><td data-label="偏好">集中式、大基地、531 前存量</td><td data-label="动机">完成新能源装机指标、吃信用利差</td><td data-label="资金">集团授信、低成本贷款</td><td data-label="约束">资产负债率考核、回报率要求</td></tr>
+      <tr><td data-label="玩家"><b>地方国企 / 城投</b></td><td data-label="代表机构">高邮国投、云南能投、广东能源</td><td data-label="偏好">区域内分布式、集中式</td><td data-label="动机">盘活地方资产、完成招商</td><td data-label="资金">银行贷款、城投债</td><td data-label="约束">财政压力、决策慢</td></tr>
+      <tr><td data-label="玩家"><b>金租 / 商租</b></td><td data-label="代表机构">国网租赁、华能天成、华电租赁、中电投融和、平安租赁、远东宏信、江苏租赁</td><td data-label="偏好">有主体兜底的电站</td><td data-label="动机">赚租赁利差、做规模</td><td data-label="资金">同业负债、ABS</td><td data-label="约束">监管集中度、出表限制</td></tr>
+      <tr><td data-label="玩家"><b>厂商系</b></td><td data-label="代表机构">正泰安能、创维、TCL 光伏、海尔、天合富家、中来</td><td data-label="偏好">户用、工商业分布式</td><td data-label="动机">消化组件、赚开发 + 运维利润</td><td data-label="资金">自有资金 + 金融机构</td><td data-label="约束">主体信用弱、负债高</td></tr>
+      <tr><td data-label="玩家"><b>基金 / 外资</b></td><td data-label="代表机构">远东宏信 + 红杉（宏祚）、泰康、沙特电力</td><td data-label="偏好">优质集中式、储能</td><td data-label="动机">赚资产升值 + 稳定分红</td><td data-label="资金">基金募集、保险资金</td><td data-label="约束">退出渠道依赖 REITs</td></tr>
+    </tbody>
+  </table>
+  </div>
+
+  <h3 style="margin-top:30px;">户用市场的真实格局</h3>
+  <p><b>第一</b>是正泰安能（正泰电器子公司），市占率长期第一，经销商网络直接来自低压电器渠道。<b>第二梯队</b>是创维、TCL、海信、海尔等家电系，靠“家电下乡”的经销商网络快速起量。<b>厂商系</b>如天合富家、中来，早期靠组件消纳，但缺乏毛细血管级渠道。<b>金融机构</b>如华夏、中信等金租，通过基金/SPV 持有，但受监管限制，不能直接做 REITs。</p>
+
+  <div class="callout good">
+    <span class="label">一句话</span>
+    户用光伏表面是“能源生意”，本质是“渠道生意 + 金融生意”。谁掌握村镇经销商，谁就掌握获客；谁能找到低成本资金，谁就能规模化。
+  </div>
+
+  <h3 style="margin-top:30px;">为什么金租“大量收购但不做产业投资”</h3>
+  <ul>
+    <li>金租有牌照优势、资金成本低，但<b>不能直接发行 REITs</b>（监管不允许），也没有出表需求；</li>
+    <li>收购资产后，通过经营性租赁或转租赁赚取利差；</li>
+    <li>真正的退出，要么持有到期，要么通过“过桥方”转给能发 REITs 的主体。</li>
+  </ul>
+</div>
+
+<div class="part" id="p5">
+  <div class="part-head"><span class="part-num">05</span><h2>本节速查表</h2></div>
+  <div class="cheat-grid">
+    <div class="cheat-card"><div class="cc-name">总投资</div><div class="cc-detail"><b>造价：</b>3.0—3.5 元/W。<br><b>100MW：</b>约 3.0—3.5 亿元。</div></div>
+    <div class="cheat-card"><div class="cc-name">杠杆结构</div><div class="cc-detail"><b>资本金：</b>20%—30%。<br><b>贷款/租赁：</b>70%—80%。</div></div>
+    <div class="cheat-card"><div class="cc-name">两个 IRR</div><div class="cc-detail"><b>全投资：</b>6%—9%。<br><b>资本金：</b>10%—15%（靠杠杆放大）。</div></div>
+    <div class="cheat-card"><div class="cc-name">531 分界</div><div class="cc-detail"><b>存量：</b>锁价 20 年/22,000 小时。<br><b>增量：</b>机制价 12 年，之后市场化。</div></div>
+    <div class="cheat-card"><div class="cc-name">极端电价</div><div class="cc-detail">河北、河南出现过 <b>0.08 元/度</b>；白天可能负电价。</div></div>
+    <div class="cheat-card"><div class="cc-name">回本排序</div><div class="cc-detail">工商业 6—9 年 ＜ 户用 8—10 年 ＜ 集中式 8—12 年 ＜ 风电 12—15 年。</div></div>
+    <div class="cheat-card"><div class="cc-name">五类玩家</div><div class="cc-detail">央企、地方国企、金租/商租、厂商系、基金/外资。</div></div>
+    <div class="cheat-card"><div class="cc-name">户用本质</div><div class="cc-detail"><b>渠道 + 金融：</b>谁掌握村镇经销商，谁能拿到低成本资金。</div></div>
+    <div class="cheat-card"><div class="cc-name">金租退出</div><div class="cc-detail">不能直接发 REITs，只能持有到期或通过过桥方转给能发的主体。</div></div>
+  </div>
+</div>
+
+<div class="part" id="p6">
+  <div class="part-head"><span class="part-num">06</span><h2>自测：检验一下是不是真的懂了</h2></div>
+  <div class="quiz-item">
+    <div class="q-title">第 1 题 · 概念辨析</div>
+    <p style="margin:0;">为什么 531 前的电站估值高、卖方还惜售？</p>
+    <details><summary>查看解析</summary><div class="answer">因为它锁定了较高的机制电价，期限 20 年或 22,000 小时，现金流接近类固收。<b>买家算得清、敢给高价</b>，卖方也知道自己手里是稀缺资产。</div></details>
+  </div>
+  <div class="quiz-item">
+    <div class="q-title">第 2 题 · 定义复述</div>
+    <p style="margin:0;">“电价像股票市场”具体指什么？对尽调有什么要求？</p>
+    <details><summary>查看解析</summary><div class="answer">同一度电在不同时间、不同省份价格差异巨大，还可能出现负电价。<b>尽调必须看近 12 个月实际结算均价、限电率、机制电量占比</b>，不能只看可研电价。</div></details>
+  </div>
+  <div class="quiz-item">
+    <div class="q-title">第 3 题 · 计算题</div>
+    <p style="margin:0;">某 100MW 电站总投资 3.2 亿元，资本金 25%，其余按 3.5% 融资。若全投资 IRR 为 7%，资本金 IRR 大致会高于还是低于 7%？为什么？</p>
+    <details><summary>查看解析</summary><div class="answer">融资成本 3.5% 低于全投资回报 7%，<b>正杠杆</b>，资本金 IRR 会高于 7%，行业区间约 10%—15%。反之若融资成本高于 7%，杠杆会反向吞噬收益。</div></details>
+  </div>
+  <div class="quiz-item">
+    <div class="q-title">第 4 题 · 信号判读</div>
+    <p style="margin:0;">一只产品宣传“前三年分派率 9%”，你应该警惕什么？</p>
+    <details><summary>查看解析</summary><div class="answer">警惕<b>分派率被前移</b>：前几年先还本、后几年提高分派，会让前期数字好看。要看全周期现金流、还本安排，以及分派是否来自经营现金流而非本金。</div></details>
+  </div>
+  <div class="quiz-item">
+    <div class="q-title">第 5 题 · 分析题</div>
+    <p style="margin:0;">一家金租公司大量收购户用光伏资产，却说“我们不做产业投资”，这句话矛盾吗？</p>
+    <details><summary>查看解析</summary><div class="answer">不矛盾。它买的是<b>租赁资产</b>，赚利差和租金，不参与电站运营与升值；受监管限制不能发 REITs，所以退出靠持有到期或过桥转让。</div></details>
+  </div>
+</div>
+
+<div class="summary-box">
+  <h3>本节小结</h3>
+  <p>电站的价值由三件事决定：电价、发电量、融资结构。531 前是类固收，531 后是市场化资产，估值逻辑完全不同。五类持有人动机各异，但都绕不开一个终点——谁能把资产证券化，谁就有退出通道。</p>
+  <div class="mnemonic-line">先算电价，再算杠杆，最后算谁能接盘。</div>
+</div>
+
+<div class="next-card">
+  <div><div class="n-label">下一步</div><div class="n-title">模块 4 · 融资工具箱与机构间 REITs</div></div>
+  <div class="n-arrow">→</div>
+</div>
+<p style="text-align:center;"><a href="../index.html">← 返回光伏课题总目录</a></p>
+<div class="page-footer">
+  <span>光伏产业链与电站资产证券化 · 模块 3</span>
+  <span>IRR 与回本周期为行业区间估算，具体项目以尽调为准</span>
+</div>
+
+</div>
+</body>
+</html>

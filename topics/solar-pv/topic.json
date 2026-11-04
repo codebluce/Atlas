@@ -1,0 +1,18 @@
+{
+  "slug": "solar-pv",
+  "title": "光伏产业链与电站资产证券化",
+  "prototype": "framework",
+  "status": "active",
+  "order_note": "按 01→05 顺序读：产业链与周期、政策与价格、电站经济与持有主体、融资与机构间REITs、风险与29问。",
+  "root_index_card": {
+    "progress": "5 / 5",
+    "tag": "tag-good"
+  },
+  "modules": [
+    {"id": "01", "order": 1, "title": "产业链与四轮周期", "file": "manual/01-chain-cycle.html", "alias": "从砂到电", "emoji": "🔗", "state": "done"},
+    {"id": "02", "order": 2, "title": "政策、供需与价格", "file": "manual/02-policy-supply.html", "alias": "换挡", "emoji": "📜", "state": "done"},
+    {"id": "03", "order": 3, "title": "电站经济性与持有主体", "file": "manual/03-economics-owners.html", "alias": "算账", "emoji": "⚡", "state": "done"},
+    {"id": "04", "order": 4, "title": "融资工具箱与机构间REITs", "file": "manual/04-financing-reits.html", "alias": "退出", "emoji": "🏦", "state": "done"},
+    {"id": "05", "order": 5, "title": "风险图谱、29问与行动建议", "file": "manual/05-risk-qa-action.html", "alias": "落地", "emoji": "🧭", "state": "done"}
+  ]
+}
