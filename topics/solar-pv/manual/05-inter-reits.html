@@ -1,0 +1,507 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>模块5 · 机构间REITs实务 | 光伏产业链与电站资产证券化</title>
+<link rel="stylesheet" href="../../../design-system/style.css">
+<style>
+.local-nav{overflow-x:visible}
+.local-nav .container{flex-wrap:wrap;white-space:normal;gap:2px 6px}
+@media (max-width:640px){
+  .local-nav .container{flex-wrap:wrap;white-space:normal;gap:2px 6px}
+  .local-nav a{font-size:12.5px;padding:5px 8px}
+  table.tbl.mobile-stack td::before{display:inline;margin-right:6px}
+}
+.chart-wrap{height:auto}
+</style>
+</head>
+<body>
+
+<header class="masthead">
+  <div class="container">
+    <nav class="breadcrumb" aria-label="当前位置"><ol>
+      <li><a href="../../../index.html">Atlas</a></li>
+      <li><a href="../index.html">光伏产业链与电站资产证券化</a></li>
+      <li aria-current="page">模块5 · 机构间REITs实务</li>
+    </ol></nav>
+    <span class="eyebrow">🏦 模块 05 · 机构间 REITs</span> <span class="tag tag-real">真实数据</span>
+    <h1>不许兜底、不许回购，还要让投资人敢买</h1>
+    <p class="sub">机构间 REITs 的全部难点，都压在同一个矛盾上：既要把产品做成“真权益”才能出表，又要给出足够的安全垫才能卖得掉。条款设计就是在这条细线上走钢丝。</p>
+  </div>
+</header>
+
+<nav class="local-nav">
+  <div class="container">
+    <a href="#p1">① 痛点</a>
+    <a href="#p2">② 是什么</a>
+    <a href="#p3">③ 比公募差在哪</a>
+    <a href="#p4">④ 制度</a>
+    <a href="#p5">⑤ 市场规模</a>
+    <a href="#p6">⑥ 交易结构</a>
+    <a href="#p7">⑦ 核心条款</a>
+    <a href="#p8">⑧ 退出</a>
+    <a href="#p9">⑨ 估值与申报</a>
+    <a href="#p10">⑩ 案例</a>
+    <a href="#p11">⑪ 京东三模式</a>
+    <a href="#p12">⑫ 速查自测</a>
+  </div>
+</nav>
+
+<div class="wrap">
+
+<div class="checklist" style="margin-top:32px;">
+  <h4>本节读完，你能做到</h4>
+  <ul>
+    <li>用四要素判断一个产品是不是真正的机构间 REITs</li>
+    <li>说清它与公募 REITs、类 REITs、CMBS、银行贷款的六处差别</li>
+    <li>解释“能源类占 24.6%”和“占 20.3%”为什么不矛盾</li>
+    <li>设计一套既能出表、又能卖掉的条款组合</li>
+    <li>排出从立项到发行的完整时间表，并判断京东该走哪条路</li>
+  </ul>
+</div>
+
+<div class="part" id="p1">
+  <div class="part-head"><span class="part-num">01</span><h2>先说痛点：能发 REITs 的资产，不一定发得出去</h2></div>
+  <p class="part-lede">2026 年一个很刺眼的变化：申报的单子比 2025 年还多，获批的却少了三成。原因不是资产变差，而是监管把“卖得掉”提前变成了审批条件。</p>
+
+  <div class="table-scroll">
+  <table class="tbl mobile-stack">
+    <thead><tr><th>年份</th><th>申报</th><th>获批</th><th>获批率</th></tr></thead>
+    <tbody>
+      <tr><td data-label="年份">2025 年</td><td data-label="申报">67 单</td><td data-label="获批">48 单</td><td data-label="获批率">72%</td></tr>
+      <tr class="hl"><td data-label="年份">2026 年至今</td><td data-label="申报">68 单</td><td data-label="获批">30 单</td><td data-label="获批率">44%</td></tr>
+    </tbody>
+  </table>
+  </div>
+
+  <p>两份材料对这个变化的说法几乎一致：<b>监管把“对外销售无障碍”前置成了审批要件</b>，近期获批项目基本都在审核阶段就已锁定资方。财通的说法更直接——“先找到钱，再给批文”，目的是避免发行前大改条款。</p>
+
+  <div class="chart-card">
+    <div class="chart-title">图R1 · 申报量没降，获批量腰斩</div>
+    <div class="chart-sub">两组柱子：浅色为申报，深色为获批。2026 年的申报数略高于 2025 年，但获批数从 48 掉到 30。</div>
+    <div class="chart-wrap">
+      <svg viewBox="0 0 700 300" role="img" aria-label="机构间REITs申报与获批对比" style="width:100%;height:auto">
+        <line x1="90" y1="240" x2="660" y2="240" stroke="#E9E1D6"/>
+        <line x1="90" y1="168" x2="660" y2="168" stroke="#F1EBE1"/>
+        <line x1="90" y1="96" x2="660" y2="96" stroke="#F1EBE1"/>
+        <line x1="90" y1="24" x2="660" y2="24" stroke="#F1EBE1"/>
+        <text x="82" y="244" text-anchor="end" font-size="11" fill="#A79C90">0</text>
+        <text x="82" y="172" text-anchor="end" font-size="11" fill="#A79C90">30</text>
+        <text x="82" y="100" text-anchor="end" font-size="11" fill="#A79C90">60</text>
+        <text x="82" y="28" text-anchor="end" font-size="11" fill="#A79C90">90</text>
+
+        <rect x="150" y="79" width="70" height="161" rx="3" fill="#D8C7B4"/>
+        <text x="185" y="71" text-anchor="middle" font-size="13" font-weight="600" fill="#5B5147">67</text>
+        <rect x="232" y="125" width="70" height="115" rx="3" fill="#D9764A"/>
+        <text x="267" y="117" text-anchor="middle" font-size="13" font-weight="600" fill="#B85A34">48</text>
+        <text x="226" y="262" text-anchor="middle" font-size="12.5" fill="#5B5147">2025 年</text>
+        <text x="226" y="280" text-anchor="middle" font-size="11" fill="#8C8177">获批率 72%</text>
+
+        <rect x="420" y="77" width="70" height="163" rx="3" fill="#D8C7B4"/>
+        <text x="455" y="69" text-anchor="middle" font-size="13" font-weight="600" fill="#5B5147">68</text>
+        <rect x="502" y="168" width="70" height="72" rx="3" fill="#C0433D"/>
+        <text x="537" y="160" text-anchor="middle" font-size="13" font-weight="600" fill="#C0433D">30</text>
+        <text x="496" y="262" text-anchor="middle" font-size="12.5" fill="#5B5147">2026 年至今</text>
+        <text x="496" y="280" text-anchor="middle" font-size="11" fill="#8C8177">获批率 44%</text>
+      </svg>
+    </div>
+    <div class="chart-footnote">数据来源：财通资管、国泰海通 2026 年 11 月交流材料，统计口径为持有型不动产 ABS（2026 年 7 月起正式定名机构间 REITs）；2026 年为截至材料编制时的不完全年度数据。</div>
+  </div>
+</div>
+
+<div class="part" id="p2">
+  <div class="part-head"><span class="part-num">02</span><h2>它是什么：四条硬约束，三处灵活</h2></div>
+  <p class="part-lede">2026 年 7 月 24 日，沪深交易所同步发布《资产支持证券挂牌条件确认/审核指引（2026 年修订）》，正式把“持有型不动产 ABS”定名为机构间 REITs，并第一次在官方规则里写死了“四要素”。</p>
+
+  <div class="concept-grid">
+    <div class="concept-card"><div class="c-name">无外部增信</div><div class="c-en">真权益</div><div class="c-def">不设差额补足、保证担保等主体刚性增信，靠资产本身现金流说话。</div><div class="c-formula">资产信用 &gt; 主体信用</div><div class="c-mnemonic">不许“爸爸兜底”。</div></div>
+    <div class="concept-card"><div class="c-name">平层结构</div><div class="c-en">不分优先劣后</div><div class="c-def">不通过结构化分层增厚优先级收益，所有份额同股同权。</div><div class="c-formula">没有安全垫</div><div class="c-mnemonic">没有优先级，就没有“保本”幻觉。</div></div>
+    <div class="concept-card"><div class="c-name">无强制回购</div><div class="c-en">不能承诺全额回购</div><div class="c-def">一旦承诺回购，性质又变回债，失去权益属性。</div><div class="c-formula">避免“明股实债”</div><div class="c-mnemonic">回购一写，审计就翻脸。</div></div>
+    <div class="concept-card"><div class="c-name">主动管理</div><div class="c-en">持有人参与运营</div><div class="c-def">持有人通过机制参与底层资产运营，管理人和运营管理机构各担其责。</div><div class="c-formula">运营能力是核心资产</div><div class="c-mnemonic">买的不只是电站，还有运维团队。</div></div>
+  </div>
+
+  <h3 style="margin-top:28px;">资产端留了三处灵活</h3>
+  <ul>
+    <li><b>不必持有 100% 股权：</b>在“资产控制”的前提下，允许不持有项目公司全部股权，一般为 50% 以上。</li>
+    <li><b>可以加杠杆：</b>允许项目公司配备一定比例杠杆（约 50%），也允许原始权益人为项目公司借款提供增信，用来提高产品端收益。</li>
+    <li><b>可以不强制自持：</b>不强制要求原始权益人自持及战略配售比例，鼓励市场化发售、募集权益份额。</li>
+  </ul>
+  <div class="callout info">
+    <span class="label">一句话定性</span>
+    它被定位为“可与公募 REITs 衔接的场内标准化权益产品”，遵循“真实出售、破产隔离”，并坚持“实质重于形式、突出资产信用、弱化主体依赖”的思路。
+  </div>
+</div>
+
+<div class="part" id="p3">
+  <div class="part-head"><span class="part-num">03</span><h2>与公募差在哪：一张表看七种工具</h2></div>
+  <p class="part-lede">这张表来自财通资管的材料，把公募 REITs、机构间 REITs、Pre-REITs、类 REITs、CMBS、债务融资工具、银行贷款放在同一把尺子上量。左半边是权益，右半边是债。</p>
+
+  <div class="table-scroll">
+  <table class="tbl mobile-stack">
+    <thead><tr><th>产品</th><th>规模</th><th>合规要求</th><th>资金用途</th><th>成本</th><th>期限</th></tr></thead>
+    <tbody>
+      <tr><td data-label="产品"><b>公募 REITs</b></td><td data-label="规模">基本接近资产估值（含外部负债），规模最大</td><td data-label="合规要求">基本无任何瑕疵</td><td data-label="资金用途">明确的募投项目资本金</td><td data-label="成本">权益融资，向投资人分享收益</td><td data-label="期限">与项目周期匹配，可到土地剩余期限</td></tr>
+      <tr><td data-label="产品"><b>机构间 REITs</b></td><td data-label="规模">基本接近资产估值（含外部负债）</td><td data-label="合规要求">权属清晰、不存在转让限制，关注实质经营</td><td data-label="资金用途">可自由使用，可作资本金</td><td data-label="成本">权益融资</td><td data-label="期限">长期，可与资产存续期匹配</td></tr>
+      <tr><td data-label="产品"><b>Pre-REITs</b></td><td data-label="规模">—</td><td data-label="合规要求">培育期资产，标准相对宽</td><td data-label="资金用途">培育期投入</td><td data-label="成本">高风险阶段的权益投资，预期回报高</td><td data-label="期限">培育期通常 3—5 年</td></tr>
+      <tr><td data-label="产品"><b>类 REITs</b></td><td data-label="规模">资产估值 75%—90%</td><td data-label="合规要求">中等</td><td data-label="资金用途">可自由使用</td><td data-label="成本">略高于同主体 CMBS 利率</td><td data-label="期限">一般每 3 年存在置换需求</td></tr>
+      <tr><td data-label="产品"><b>CMBS</b></td><td data-label="规模">资产估值 50%—70%</td><td data-label="合规要求">产权清晰，通常要求无其他债务关系</td><td data-label="资金用途">自由使用，拿地和作资本金除外</td><td data-label="成本">同期限信用债利率浮动约 10—20bps</td><td data-label="期限">一般不超 10 年</td></tr>
+      <tr><td data-label="产品"><b>债务融资工具</b></td><td data-label="规模">受抵押物与主体资质双重约束</td><td data-label="合规要求">主体信用为主</td><td data-label="资金用途">需符合审批用途与监管导向</td><td data-label="成本">高于同主体银行贷款利率</td><td data-label="期限">一般不超 10 年</td></tr>
+      <tr><td data-label="产品"><b>银行贷款</b></td><td data-label="规模">资产估值 50%—60%，原则上不超 70%</td><td data-label="合规要求">产权清晰</td><td data-label="资金用途">约定用途</td><td data-label="成本">LPR 加点，优质主体较低</td><td data-label="期限">最长 15 年，存在硬性约束</td></tr>
+    </tbody>
+  </table>
+  </div>
+
+  <h3 style="margin-top:28px;">机构间 vs 公募：六处关键差异</h3>
+  <div class="table-scroll">
+  <table class="tbl mobile-stack">
+    <thead><tr><th>维度</th><th>机构间 REITs</th><th>公募 REITs</th></tr></thead>
+    <tbody>
+      <tr><td data-label="维度"><b>投资者</b></td><td data-label="机构间">非公开，≤200 人，不可公开推介，不公开披露</td><td data-label="公募">公开，公募基金为载体，≥1,000 人</td></tr>
+      <tr><td data-label="维度"><b>增信</b></td><td data-label="机构间">可用倾斜分配、业绩对赌、母公司安慰函等</td><td data-label="公募">不允许原始权益人或关联方信用兜底</td></tr>
+      <tr><td data-label="维度"><b>资产范围</b></td><td data-label="机构间">权属清晰、有稳定现金流即可，业态与区域无硬约束</td><td data-label="公募">限定基础设施领域，重点行业与范围有明确要求</td></tr>
+      <tr><td data-label="维度"><b>杠杆</b></td><td data-label="机构间">≤50%（特殊行业最高可放宽至 65%）</td><td data-label="公募">≤28.5%，实操案例大多不超 20%</td></tr>
+      <tr><td data-label="维度"><b>募集资金</b></td><td data-label="机构间">无明确限制</td><td data-label="公募">85% 以上净回收资金用于在建、新建或存量收购</td></tr>
+      <tr><td data-label="维度"><b>申报</b></td><td data-label="机构间">仅交易所，一般 3—6 个月</td><td data-label="公募">省发改委、国家发改委、证监会、交易所，12—18 个月</td></tr>
+    </tbody>
+  </table>
+  </div>
+
+  <div class="callout warn">
+    <span class="label">一个容易被忽略的点：估值口径不同</span>
+    公募 REITs 的估值参数要求最严、估值最低；机构间居中；类 REITs 最宽松、估值最高。同一座电站，换个产品形态，评估值就能差出一截——所以比较“谁估值高”之前，先确认比的是哪种产品。
+  </div>
+</div>
+
+<div class="part" id="p4">
+  <div class="part-head"><span class="part-num">04</span><h2>制度安排：十条规则决定了产品能做成什么样</h2></div>
+  <p class="part-lede">这部分是“规则层”，看起来枯燥，但它决定了后面每一条商业条款有没有空间。</p>
+
+  <div class="table-scroll">
+  <table class="tbl mobile-stack">
+    <thead><tr><th>要素</th><th>安排</th></tr></thead>
+    <tbody>
+      <tr><td data-label="要素"><b>产品载体</b></td><td data-label="安排">以券商专项计划、基金子公司专项计划为主；也在考虑信托计划、保险资管计划、契约型私募基金参与</td></tr>
+      <tr><td data-label="要素"><b>资产范围</b></td><td data-label="安排">公募 REITs 的资产范围，加上商业物业（商场、写字楼、酒店等）及部分暂无法发行公募 REITs 的基础设施</td></tr>
+      <tr><td data-label="要素"><b>结构设计</b></td><td data-label="安排">鼓励平层、不通过分层增厚优先级收益；在资产控制前提下可不持有全部股权（一般 50% 以上）；允许项目公司配一定杠杆（约 50%），允许原始权益人为项目公司借款增信</td></tr>
+      <tr><td data-label="要素"><b>产品期限</b></td><td data-label="安排">原则上与底层资产存续期限匹配，鼓励中长期限，可设开放期回购机制</td></tr>
+      <tr><td data-label="要素"><b>主体增信</b></td><td data-label="安排">不直接设差额补足、保证担保；可设业绩调整条款、建立对赌机制</td></tr>
+      <tr><td data-label="要素"><b>市场化募集</b></td><td data-label="安排">不强制要求自持及战略配售比例，鼓励市场化发售</td></tr>
+      <tr><td data-label="要素"><b>募集资金用途</b></td><td data-label="安排">用途灵活不受限，参照传统不动产 ABS；如用于项目再投资应事先明确</td></tr>
+      <tr><td data-label="要素"><b>信息披露</b></td><td data-label="安排">建立兼顾“持有型不动产投资”与“标准化产品”双重特性的信披制度</td></tr>
+      <tr><td data-label="要素"><b>交易机制</b></td><td data-label="安排">平层结构，设做市商机制；后续考虑纳入竞价交易、在固收平台开专区交易</td></tr>
+      <tr><td data-label="要素"><b>其他要素</b></td><td data-label="安排">可按投资者需求定制融资规模与收益分派，按原始权益人需求灵活设置运营管理及控制权特殊条款</td></tr>
+    </tbody>
+  </table>
+  </div>
+</div>
+
+<div class="part" id="p5">
+  <div class="part-head"><span class="part-num">05</span><h2>市场规模：24.6% 和 20.3% 为什么不矛盾</h2></div>
+  <p class="part-lede">这是两份材料之间一个很容易看错的细节：同一批资产，PPT 说能源类占 24.6%，研究报告说占 20.3%。两个数都对，因为一个按数量算，一个按规模算。</p>
+
+  <div class="table-scroll">
+  <table class="tbl mobile-stack">
+    <thead><tr><th>市场（截至 2026-09-30）</th><th>产品数量</th><th>规模</th><th>能源类数量 / 规模</th><th>数量占比</th><th>规模占比</th></tr></thead>
+    <tbody>
+      <tr><td data-label="市场"><b>公募 REITs</b></td><td data-label="数量">89 只</td><td data-label="规模">2,416 亿元</td><td data-label="能源类">11 只 / 276 亿元</td><td data-label="数量占比">12.4%</td><td data-label="规模占比">11.4%</td></tr>
+      <tr><td data-label="市场"><b>机构间 REITs</b></td><td data-label="数量">130 只</td><td data-label="规模">2,518 亿元</td><td data-label="能源类">32 只 / 511 亿元</td><td data-label="数量占比">24.6%</td><td data-label="规模占比">20.3%</td></tr>
+    </tbody>
+  </table>
+  </div>
+
+  <p>把这两组数再除一下，会得到一个更有意思的结论：公募能源类单只平均约 <b>25 亿元</b>，机构间约 <b>16 亿元</b>。也就是说，<b>机构间 REITs 里能源项目“数量多、单只小”</b>——这正好对应它的定位：承接那些还没大到能发公募、但又需要退出的资产。</p>
+
+  <div class="chart-card">
+    <div class="chart-title">图R2 · 能源类资产的两种占比：数量高、规模低</div>
+    <div class="chart-sub">左组是数量占比，右组是规模占比。机构间 REITs 的柱子更高，但差距只在数量端明显——说明它装的是“更多、更小”的项目。</div>
+    <div class="chart-wrap">
+      <svg viewBox="0 0 700 300" role="img" aria-label="能源类REITs数量与规模占比" style="width:100%;height:auto">
+        <line x1="80" y1="240" x2="660" y2="240" stroke="#E9E1D6"/>
+        <line x1="80" y1="168" x2="660" y2="168" stroke="#F1EBE1"/>
+        <line x1="80" y1="96" x2="660" y2="96" stroke="#F1EBE1"/>
+        <line x1="80" y1="24" x2="660" y2="24" stroke="#F1EBE1"/>
+        <text x="72" y="244" text-anchor="end" font-size="11" fill="#A79C90">0</text>
+        <text x="72" y="172" text-anchor="end" font-size="11" fill="#A79C90">10%</text>
+        <text x="72" y="100" text-anchor="end" font-size="11" fill="#A79C90">20%</text>
+        <text x="72" y="28" text-anchor="end" font-size="11" fill="#A79C90">30%</text>
+        <text x="200" y="20" text-anchor="middle" font-size="12" font-weight="600" fill="#5B5147">按数量</text>
+        <text x="480" y="20" text-anchor="middle" font-size="12" font-weight="600" fill="#5B5147">按规模</text>
+
+        <rect x="140" y="151" width="55" height="89" rx="3" fill="#D8C7B4"/>
+        <text x="167" y="143" text-anchor="middle" font-size="12.5" font-weight="600" fill="#5B5147">12.4%</text>
+        <text x="167" y="260" text-anchor="middle" font-size="11" fill="#8C8177">公募</text>
+
+        <rect x="215" y="62" width="55" height="178" rx="3" fill="#D9764A"/>
+        <text x="242" y="54" text-anchor="middle" font-size="12.5" font-weight="600" fill="#B85A34">24.6%</text>
+        <text x="242" y="260" text-anchor="middle" font-size="11" fill="#8C8177">机构间</text>
+
+        <rect x="420" y="158" width="55" height="82" rx="3" fill="#D8C7B4"/>
+        <text x="447" y="150" text-anchor="middle" font-size="12.5" font-weight="600" fill="#5B5147">11.4%</text>
+        <text x="447" y="260" text-anchor="middle" font-size="11" fill="#8C8177">公募</text>
+
+        <rect x="495" y="94" width="55" height="146" rx="3" fill="#D9764A"/>
+        <text x="522" y="86" text-anchor="middle" font-size="12.5" font-weight="600" fill="#B85A34">20.3%</text>
+        <text x="522" y="260" text-anchor="middle" font-size="11" fill="#8C8177">机构间</text>
+      </svg>
+    </div>
+    <div class="chart-footnote">数据来源：财通资管材料（数量占比）与研究报告汇总（规模占比），均截至 2026-09-30。两者分母不同，不能相互替代。</div>
+  </div>
+
+  <p>另一个结构信息：机构间 REITs 分布上，上交所 109 只 / 2,282 亿元，深交所 21 只 / 236 亿元；2026 年三季度发行 34 单 / 446 亿元，2025 年全年 29 单 / 537.5 亿元。<b>发行单数在增加，单只规模在变小</b>——和上面“数量多、单只小”的判断一致。</p>
+</div>
+
+<div class="part" id="p6">
+  <div class="part-head"><span class="part-num">06</span><h2>交易结构：钱怎么进、怎么出、谁在管</h2></div>
+  <p class="part-lede">机构间 REITs 的结构本质上是“专项计划持有项目公司股权 + 债权”，再配一个外部银行贷款和一家运营管理机构。</p>
+
+  <div class="method-step"><div class="m-num">1</div><div class="m-body"><h4>设 SPV</h4><p>原始权益人（电站母公司）设立项目公司，持有电站资产。</p></div></div>
+  <div class="method-step"><div class="m-num">2</div><div class="m-body"><h4>受让股权 + 发放借款</h4><p>专项计划受让项目公司 100% 股权（或 50% 以上），并向项目公司发放股东借款。这一步同时解决“控制权”和“现金流归集”。</p></div></div>
+  <div class="method-step"><div class="m-num">3</div><div class="m-body"><h4>外部杠杆</h4><p>银行向项目公司提供贷款，规模一般为资产评估值的 50%—60%。这一步用来提高产品端收益率。</p></div></div>
+  <div class="method-step"><div class="m-num">4</div><div class="m-body"><h4>原始权益人自持</h4><p>认购不低于 15% 的份额，持有期间不可转让，实现“利益绑定”。外部投资人约占 80%—90%。</p></div></div>
+  <div class="method-step"><div class="m-num">5</div><div class="m-body"><h4>运营管理</h4><p>运营管理机构（通常是原始权益人子公司）与项目公司签运营服务协议，收取服务费，费率有一定弹性。</p></div></div>
+  <div class="method-step"><div class="m-num">6</div><div class="m-body"><h4>现金流归集</h4><p>电费收入进入监管账户，按约定顺序支付运营成本、贷款本息、投资人分派。</p></div></div>
+  <div class="method-step"><div class="m-num">7</div><div class="m-body"><h4>退出</h4><p>通过开放期回售、原始权益人优先收购、公募 REITs 或市场化处置实现。</p></div></div>
+
+  <h3 style="margin-top:28px;">一张图看清各方关系</h3>
+  <div class="chart-card">
+    <div class="chart-title">图R3 · 机构间 REITs 的资金与资产流向</div>
+    <div class="chart-sub">中间横线以上是“资产与控制”，以下是“钱与增信”。注意外部投资人占 80%—90%、原始权益人自持 10%—20%，这是典型的“自己留一份、卖给别人九份”。</div>
+    <div class="chart-wrap">
+      <svg viewBox="0 0 780 420" role="img" aria-label="机构间REITs交易结构" style="width:100%;height:auto">
+        <defs><marker id="arr5" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="#B9AB9A"/></marker></defs>
+        <rect x="40" y="60" width="200" height="64" rx="9" fill="#FFFDF9" stroke="#E2D8CA"/>
+        <text x="140" y="86" text-anchor="middle" font-size="13.5" fill="#2B2622">原始权益人</text>
+        <text x="140" y="107" text-anchor="middle" font-size="11.5" fill="#8C8177">项目公司原股东</text>
+
+        <rect x="300" y="40" width="200" height="104" rx="9" fill="#FCEBD9" stroke="#EBC9A9"/>
+        <text x="400" y="68" text-anchor="middle" font-size="13.5" fill="#B85A34">资产支持专项计划</text>
+        <text x="400" y="89" text-anchor="middle" font-size="11.5" fill="#B85A34">（机构间 REITs · 平层）</text>
+        <text x="400" y="110" text-anchor="middle" font-size="11.5" fill="#B85A34">计划管理人：券商资管 / 基金子公司</text>
+        <text x="400" y="129" text-anchor="middle" font-size="11.5" fill="#B85A34">销售机构：负责询价与发售</text>
+
+        <rect x="560" y="60" width="190" height="64" rx="9" fill="#FFFDF9" stroke="#E2D8CA"/>
+        <text x="655" y="86" text-anchor="middle" font-size="13.5" fill="#2B2622">外部投资人</text>
+        <text x="655" y="107" text-anchor="middle" font-size="11.5" fill="#8C8177">保险 · 理财子 · 券商自营</text>
+
+        <line x1="244" y1="92" x2="296" y2="92" stroke="#B9AB9A" stroke-width="1.6" fill="none" marker-end="url(#arr5)"/>
+        <text x="270" y="82" text-anchor="middle" font-size="10.5" fill="#8C8177">转让股权</text>
+
+        <line x1="504" y1="92" x2="556" y2="92" stroke="#B9AB9A" stroke-width="1.6" fill="none" marker-end="url(#arr5)"/>
+        <text x="530" y="82" text-anchor="middle" font-size="10.5" fill="#8C8177">认购</text>
+
+        <rect x="300" y="200" width="200" height="70" rx="9" fill="#FFFDF9" stroke="#E2D8CA"/>
+        <text x="400" y="228" text-anchor="middle" font-size="13.5" fill="#2B2622">项目公司 / SPV</text>
+        <text x="400" y="249" text-anchor="middle" font-size="11.5" fill="#8C8177">持有电站 · 产生电费</text>
+
+        <line x1="400" y1="148" x2="400" y2="196" stroke="#B9AB9A" stroke-width="1.6" fill="none" marker-end="url(#arr5)"/>
+        <text x="412" y="176" font-size="10.5" fill="#8C8177">持股 + 股东借款</text>
+
+        <rect x="40" y="200" width="190" height="70" rx="9" fill="#EEF4F1" stroke="#CADFD4"/>
+        <text x="135" y="228" text-anchor="middle" font-size="12.5" fill="#3E8362">贷款银行</text>
+        <text x="135" y="249" text-anchor="middle" font-size="11.5" fill="#3E8362">外部杠杆 50%—60%</text>
+
+        <line x1="234" y1="235" x2="296" y2="235" stroke="#B9AB9A" stroke-width="1.6" fill="none" marker-end="url(#arr5)"/>
+        <text x="265" y="225" text-anchor="middle" font-size="10.5" fill="#8C8177">放款</text>
+
+        <rect x="560" y="200" width="190" height="70" rx="9" fill="#EEF4F1" stroke="#CADFD4"/>
+        <text x="655" y="228" text-anchor="middle" font-size="12.5" fill="#3E8362">运营管理机构</text>
+        <text x="655" y="249" text-anchor="middle" font-size="11.5" fill="#3E8362">原始权益人子公司</text>
+
+        <line x1="556" y1="235" x2="504" y2="235" stroke="#B9AB9A" stroke-width="1.6" fill="none" marker-end="url(#arr5)"/>
+        <text x="530" y="225" text-anchor="middle" font-size="10.5" fill="#8C8177">运维服务</text>
+
+        <rect x="300" y="320" width="200" height="56" rx="9" fill="#FBF1DE" stroke="#E8D3A9"/>
+        <text x="400" y="344" text-anchor="middle" font-size="12" fill="#7A5716">分派：半年或每年一次</text>
+        <text x="400" y="364" text-anchor="middle" font-size="11" fill="#7A5716">自持 10%—20% ｜ 外部 80%—90%</text>
+        <line x1="400" y1="270" x2="400" y2="316" stroke="#B9AB9A" stroke-width="1.6" fill="none" marker-end="url(#arr5)"/>
+      </svg>
+    </div>
+    <div class="chart-footnote">结构依据财通资管、国泰海通 2026 年 11 月交流材料中的交易结构示例；自持比例与外部比例为该示例取值，实际项目可按出表需求调整。</div>
+  </div>
+</div>
+
+<div class="part" id="p7">
+  <div class="part-head"><span class="part-num">07</span><h2>核心条款：六条软增信，决定能不能出表</h2></div>
+  <p class="part-lede">不能兜底，但可以“软化”。行业里常用六条工具，每一条都在“让投资人安心”和“不让审计认定为债”之间找平衡。</p>
+
+  <div class="table-scroll">
+  <table class="tbl mobile-stack">
+    <thead><tr><th>条款</th><th>怎么做</th><th>对投资人</th><th>对原始权益人</th></tr></thead>
+    <tbody>
+      <tr><td data-label="条款"><b>倾斜分配</b></td><td data-label="做法">项目公司当年净收益未达预测值时，原始权益人放弃当年分红权，让渡给其他份额持有人</td><td data-label="对投资人">补足期间收益缺口</td><td data-label="对原始权益人">减少自身收益，可能影响出表认定</td></tr>
+      <tr><td data-label="条款"><b>业绩对赌</b></td><td data-label="做法">实际经营净收益不足对赌目标，由原始权益人补足；后续年度超额部分可返还补足款，返还上限为累计补足额</td><td data-label="对投资人">收益不达预期有补偿</td><td data-label="对原始权益人">可能触发补足义务，影响出表</td></tr>
+      <tr><td data-label="条款"><b>银行杠杆</b></td><td data-label="做法">引入低成本银行杠杆提高产品收益率，规模一般不超资产估值 50%；水电等负债率较高的行业最高 65%，一事一议</td><td data-label="对投资人">放大可分配现金流</td><td data-label="对原始权益人">提高负债，需银行配合解押</td></tr>
+      <tr><td data-label="条款"><b>期间收益兜底</b></td><td data-label="做法">部分项目设期间收益对赌（如中交项目），部分不设（如建信项目），需与投资人一对一谈</td><td data-label="对投资人">主体或资产越弱，越要求兜底</td><td data-label="对原始权益人">增加现金支出压力</td></tr>
+      <tr><td data-label="条款"><b>开放期安排</b></td><td data-label="做法">可设前 N 年无开放期、自第 N+1 年起开放；频率可为半年或一年一次；单次退出限额与开放期个数相关</td><td data-label="对投资人">提供退出窗口</td><td data-label="对原始权益人">需准备流动性支持资金</td></tr>
+      <tr><td data-label="条款"><b>出表 / 并表</b></td><td data-label="做法">自持 50% 以上可并表；也可通过 ABS 管理委员会等机制给予发行人较高决策权实现并表；选择出表则减少自持（至少 5%）</td><td data-label="对投资人">关注原始权益人是否“还在船上”</td><td data-label="对原始权益人">决定报表呈现与杠杆占用</td></tr>
+    </tbody>
+  </table>
+  </div>
+
+  <div class="callout warn">
+    <span class="label">出表的关键</span>
+    三类条款设置得太“硬”，审计师会认定为“实质债务”，无法出表；太“软”，投资人又不买账。这是一个“与审计师和投资人同时谈判”的艺术。实操上，想并表就自持 50% 以上，想出表就压到 5% 左右并减少硬性补足。
+  </div>
+
+  <h3 style="margin-top:28px;">一个示例：5 亿元产品怎么搭</h3>
+  <p>财通材料给了一个标准示例：资产组估值约 10 亿元，保留不超过 50% 的底层贷款，产品发行规模约 5 亿元；原始权益人认购不低于 15%，持有期间不能转让；产品期限 50 年，与资产期限一致；存续期内可开放申购赎回，发行人对净赎回提供有限流动性支持。</p>
+</div>
+
+<div class="part" id="p8">
+  <div class="part-head"><span class="part-num">08</span><h2>退出：三步走，一步比一步硬</h2></div>
+  <p class="part-lede">机构间 REITs 是非公开产品，二级流动性天然弱。所以退出机制是分层设计的：先撮合，再回购，最后才动资产。</p>
+
+  <div class="case-step"><div class="step-badge">1</div><div class="step-body"><h4>二级市场撮合交易</h4>管理人和销售机构优先组织再销售或做市撮合，帮助要退出的份额找到买家。<span class="result">→ 不保证成交</span></div></div>
+  <div class="case-step"><div class="step-body"><h4>发行人优先受让</h4>发行人可行使 ABS 份额优先受让权，折价受让未撮合成功的份额。单次额度一般设上限（如全部份额的 10%—20%），受让价格为“初始评估参数对应估值 × 折扣系数 − 未偿还外部借款本金”。<span class="result">→ 折扣系数鼓励长期持有</span></div></div>
+  <div class="case-step"><div class="step-body"><h4>市场化处置</h4>合计达到一定比例的持有人可提议召开持有人大会，表决大宗交易、公募 REITs 退出等方案；处置成功则专项计划终止，未通过则继续存续。<span class="result">→ 最后一道门</span></div></div>
+
+  <p>产品可每 3 年 / 5 年 / 10 年设置开放退出期。财通材料的表述是“开放期安排是投资人普遍要求的条款”，但在起始时点、频率、单次限额上都可以谈。</p>
+
+  <div class="callout info">
+    <span class="label">清仓回购：一个容易被忽略的尾巴</span>
+    经原始权益人提供流动性支持后，如果外部投资人持有份额占比低于 10%，原始权益人有权按份额参考净值回购剩余全部份额。这条让产品能“收尾”，但也意味着小份额持有人最后没有议价空间。
+  </div>
+</div>
+
+<div class="part" id="p9">
+  <div class="part-head"><span class="part-num">09</span><h2>估值与申报：DCF 定价，七个月走完</h2></div>
+  <h3>估值方法：收益法下的现金流折现</h3>
+  <p>机构间 REITs 的资产评估采用收益法，主要是现金流折现法（DCF）。这解释了一个现象：<b>同样的电站，电价假设差 1 分钱，估值能差出一个量级</b>。所以谈判的焦点往往不在资产本身，而在折现率、利用小时、电价曲线这三个参数。</p>
+
+  <h3 style="margin-top:26px;">申报流程与时间</h3>
+  <div class="chart-card">
+    <div class="chart-title">图R4 · 从立项到上市，全程约 7 个月</div>
+    <div class="chart-sub">深色为关键路径。前期论证 2 个月、中介尽调与出报告 3 个月、申报反馈 1 个月、无异议函 0.5 个月、发行 0.5 个月。</div>
+    <div class="chart-wrap">
+      <svg viewBox="0 0 780 240" role="img" aria-label="机构间REITs申报时间轴" style="width:100%;height:auto">
+        <line x1="40" y1="150" x2="740" y2="150" stroke="#E9E1D6" stroke-width="2"/>
+        <rect x="40" y="132" width="200" height="36" rx="5" fill="#D9764A"/>
+        <text x="140" y="155" text-anchor="middle" font-size="12" fill="#FFFFFF">前期方案论证 · 2 个月</text>
+        <rect x="240" y="132" width="300" height="36" rx="5" fill="#C0433D"/>
+        <text x="390" y="155" text-anchor="middle" font-size="12" fill="#FFFFFF">中介尽调与出报告 · 3 个月</text>
+        <rect x="540" y="132" width="100" height="36" rx="5" fill="#C1892A"/>
+        <text x="590" y="155" text-anchor="middle" font-size="12" fill="#FFFFFF">申报反馈 · 1 月</text>
+        <rect x="640" y="132" width="50" height="36" rx="5" fill="#3E8362"/>
+        <text x="665" y="155" text-anchor="middle" font-size="11" fill="#FFFFFF">0.5</text>
+        <rect x="690" y="132" width="50" height="36" rx="5" fill="#3E8362" opacity="0.8"/>
+        <text x="715" y="155" text-anchor="middle" font-size="11" fill="#FFFFFF">0.5</text>
+
+        <text x="40" y="70" font-size="12" fill="#5B5147">关键动作</text>
+        <text x="40" y="94" font-size="11.5" fill="#8C8177">资产摸排 · 方案决策 · 中介选定 · 战投确定 → 尽调与专业报告 → 交易所申报与反馈 → 无异议函 → 路演询价发行 → 上市</text>
+        <text x="40" y="200" font-size="11.5" fill="#8C8177">注：交易所审核口径常表述为 5—6 个月，指从申报到无异议函；加上前期论证与发行，全流程约 7 个月。</text>
+        <text x="40" y="222" font-size="11.5" fill="#8C8177">不同项目因资产复杂度、权属瑕疵、投资人落实进度差异较大。</text>
+      </svg>
+    </div>
+    <div class="chart-footnote">时间口径来自财通资管 2026 年 11 月材料中的申报周期示例，为估算值，非监管承诺时限。</div>
+  </div>
+</div>
+
+<div class="part" id="p10">
+  <div class="part-head"><span class="part-num">10</span><h2>六个案例：从风电到户用，看资产谱系</h2></div>
+  <p class="part-lede">案例的价值不在名字，而在期限——20 年、50 年、25 年、16 年，期限基本都跟着设备寿命或土地证走。这说明产品设计的第一原则是“期限匹配资产”，不是“期限匹配资金偏好”。</p>
+
+  <div class="table-scroll">
+  <table class="tbl mobile-stack">
+    <thead><tr><th>项目</th><th>底层资产</th><th>期限</th><th>状态</th><th>亮点</th></tr></thead>
+    <tbody>
+      <tr><td data-label="项目">泰康资产-财通-远景新能源</td><td data-label="底层资产">集中式风电</td><td data-label="期限">20 年（匹配设备寿命与土地剩余期限）</td><td data-label="状态">已发行</td><td data-label="亮点">全国首单清洁能源机构间 REITs</td></tr>
+      <tr><td data-label="项目">财通资管-阿特斯</td><td data-label="底层资产">电网侧独立储能</td><td data-label="期限">50 年（与土地证期限一致）</td><td data-label="状态">已发行</td><td data-label="亮点">全国首单储能机构间 REITs</td></tr>
+      <tr><td data-label="项目">财通-正泰安能</td><td data-label="底层资产">户用分布式光伏</td><td data-label="期限">25 年（匹配设备寿命）</td><td data-label="状态">已申报</td><td data-label="亮点">全国规模最大的清洁能源机构间 REITs</td></tr>
+      <tr><td data-label="项目">财通资管-协鑫能科</td><td data-label="底层资产">集中式风电</td><td data-label="期限">16 年</td><td data-label="状态">已申报</td><td data-label="亮点">民营企业新能源公募 REITs</td></tr>
+      <tr><td data-label="项目">申港-通合新能源</td><td data-label="底层资产">工商业分布式光伏</td><td data-label="期限">25 年（匹配设备寿命）</td><td data-label="状态">已发行</td><td data-label="亮点">全国首单工商业分布式光伏机构间 REITs</td></tr>
+      <tr><td data-label="项目">兴证基实-宏祚新能源</td><td data-label="底层资产">工商业分布式光伏</td><td data-label="期限">25 年</td><td data-label="状态">已发行</td><td data-label="亮点">远东宏信与红杉资本合作的基金主体发行</td></tr>
+    </tbody>
+  </table>
+  </div>
+
+  <div class="callout info">
+    <span class="label">从案例里读出的三件事</span>
+    一是<b>户用也能发</b>：正泰安能用 25 年期做了全国规模最大的清洁能源机构间 REITs，说明“分散”不是绝对障碍，关键是有强渠道和强主体。二是<b>基金主体也能发</b>：宏祚由远东宏信与红杉的基金主体发行，为财务投资人提供了退出范式。三是<b>期限不是越长越好</b>：50 年的储能项目匹配土地证，16 年的风电项目匹配剩余运营期，都是“跟着资产走”。
+  </div>
+</div>
+
+<div class="part" id="p11">
+  <div class="part-head"><span class="part-num">11</span><h2>京东怎么切入：三种持有模式，三种报表</h2></div>
+  <p class="part-lede">财通在材料最后专门给了一个议题：围绕“如何持有项目公司股权”，有三条路。它们的差别不在收益，而在出表、杠杆、税负与退出。</p>
+
+  <div class="table-scroll">
+  <table class="tbl mobile-stack">
+    <thead><tr><th>模式</th><th>怎么做</th><th>优点</th><th>代价</th></tr></thead>
+    <tbody>
+      <tr><td data-label="模式"><b>01 主体直投</b></td><td data-label="做法">新设公司直接出资，收购并持有项目公司股权</td><td data-label="优点">股权关系最清晰，控制权完整、决策链短；尽调、过户、工商变更主体即收购方，权责单一</td><td data-label="代价">资金靠自有或自筹，资产并表、报表占用大</td></tr>
+      <tr><td data-label="模式"><b>02 基金 / 信托产品收购</b></td><td data-label="做法">发起设立基金或信托 SPV，由该产品收购并持有项目公司股权</td><td data-label="优点">资金来源灵活（可自出、可募集）；借力 GP/信托的专业管理；SPV 风险隔离，可结构化设计，便于出表与退出</td><td data-label="代价">涉及产品备案与管理人资质，架构最复杂</td></tr>
+      <tr><td data-label="模式"><b>03 融资租赁公司收购</b></td><td data-label="做法">持牌租赁公司收购并持有项目公司股权，再以经营性租赁向项目公司提供资产/资金</td><td data-label="优点">依托牌照，“股权收购 + 经营性租赁”组合；通过租赁现金流回款，具备类信贷属性</td><td data-label="代价">受牌照、集中度及监管指标约束最深，需兼顾合规与租后管理</td></tr>
+    </tbody>
+  </table>
+  </div>
+
+  <div class="callout good">
+    <span class="label">怎么选</span>
+    想<b>控制资产、长期经营</b>，走模式一；想<b>出表、引入外部资金、为证券化留口子</b>，走模式二；已有租赁牌照、想<b>用租赁现金流做类信贷</b>，走模式三。三者不是互斥的——可以先租赁持有、再装基金、最后发 REITs。
+  </div>
+</div>
+
+<div class="part" id="p12">
+  <div class="part-head"><span class="part-num">12</span><h2>本节速查表</h2></div>
+  <div class="cheat-grid">
+    <div class="cheat-card"><div class="cc-name">四要素</div><div class="cc-detail">无外部增信、平层结构、无强制回购、主动管理。</div></div>
+    <div class="cheat-card"><div class="cc-name">三处灵活</div><div class="cc-detail">可不持 100% 股权（一般 ≥50%）；可加约 50% 杠杆；不强制自持与战配。</div></div>
+    <div class="cheat-card"><div class="cc-name">六处差异</div><div class="cc-detail">200 人 vs 1000 人；50% vs 28.5% 杠杆;3—6 月 vs 12—18 月；资金用途灵活 vs 85% 限制。</div></div>
+    <div class="cheat-card"><div class="cc-name">市场规模</div><div class="cc-detail">130 只 / 2,518 亿；能源类 32 只 / 511 亿。数量占 24.6%，规模占 20.3%。</div></div>
+    <div class="cheat-card"><div class="cc-name">获批率</div><div class="cc-detail">2025 年 48/67=72%；2026 年 30/68=44%。</div></div>
+    <div class="cheat-card"><div class="cc-name">六条软增信</div><div class="cc-detail">倾斜分配、业绩对赌、银行杠杆、期间收益兜底、开放期、出表/并表安排。</div></div>
+    <div class="cheat-card"><div class="cc-name">出表并表</div><div class="cc-detail">自持 ≥50% 可并表；出表则自持压到约 5%。</div></div>
+    <div class="cheat-card"><div class="cc-name">退出三步</div><div class="cc-detail">撮合 → 发行人优先受让（10%—20% 额度、折价）→ 持有人大会市场化处置。</div></div>
+    <div class="cheat-card"><div class="cc-name">时间与估值</div><div class="cc-detail">全流程约 7 个月（审核 5—6 个月）；估值用 DCF。</div></div>
+  </div>
+</div>
+
+<div class="part" id="p13">
+  <div class="part-head"><span class="part-num">13</span><h2>自测：检验一下是不是真的懂了</h2></div>
+  <div class="quiz-item">
+    <div class="q-title">第 1 题 · 概念辨析</div>
+    <p style="margin:0;">为什么机构间 REITs 不允许设差额补足，却允许业绩对赌？</p>
+    <details><summary>查看解析</summary><div class="answer">差额补足是<b>无条件的主体刚性增信</b>，审计会认定为债；业绩对赌是<b>有条件的、与经营结果挂钩的调整机制</b>，本质是价格调节，不改变权益属性。</div></details>
+  </div>
+  <div class="quiz-item">
+    <div class="q-title">第 2 题 · 定义复述</div>
+    <p style="margin:0;">“能源类占 24.6%”和“占 20.3%”分别是什么口径？为什么前者更高？</p>
+    <details><summary>查看解析</summary><div class="answer">24.6% 是<b>数量占比</b>（32/130），20.3% 是<b>规模占比</b>（511/2,518 亿）。前者更高说明能源类单只规模偏小——机构间 REITs 承接的是“更多、更小”的项目。</div></details>
+  </div>
+  <div class="quiz-item">
+    <div class="q-title">第 3 题 · 计算题</div>
+    <p style="margin:0;">某资产估值 12 亿元，按不超过 50% 保留底层贷款，产品发行规模约多少？若原始权益人自持 15%，外部投资人认购多少？</p>
+    <details><summary>查看解析</summary><div class="answer">贷款约 6 亿，产品规模约 <b>6 亿元</b>；原始权益人自持 15% 约 <b>0.9 亿元</b>，外部投资人约 <b>5.1 亿元</b>。（按 50% 上限示意，实际比例以交易文件为准）</div></details>
+  </div>
+  <div class="quiz-item">
+    <div class="q-title">第 4 题 · 信号判读</div>
+    <p style="margin:0;">一个项目说“我们已经拿到交易所无异议函，现在开始找投资人”，你判断它接下来会怎样？</p>
+    <details><summary>查看解析</summary><div class="answer">风险很高。现在审核逻辑是<b>“以销定产”</b>，获批项目多在审核阶段已锁定资方；拿到函再找钱，很可能长期发不出去，或被迫在发行前大改条款。</div></details>
+  </div>
+  <div class="quiz-item">
+    <div class="q-title">第 5 题 · 分析题</div>
+    <p style="margin:0;">公司既想降低资产负债率，又想保留对电站的运营控制，条款上应该怎么设计？</p>
+    <details><summary>查看解析</summary><div class="answer">降低负债率要<b>出表</b>：自持压到约 5%，减少硬性补足与回购承诺。保留运营控制则靠<b>运营管理协议 + 管理委员会席位</b>，而不是靠股权比例。两者可以同时做到——控制权不等于持股权。</div></details>
+  </div>
+</div>
+
+<div class="summary-box">
+  <h3>本节小结</h3>
+  <p>机构间 REITs 的价值在于“用 5—6 个月的审核、50% 的杠杆、灵活的募集资金用途”，把还不具备公募条件的资产先做成可交易的权益产品。它的全部设计难点，是在“不兜底”和“卖得掉”之间找平衡：倾斜分配、业绩对赌、流动性支持、开放期，都是这条细线上的工具。而“以销定产”意味着，能不能发出去，越来越取决于资金端而不是资产端。</p>
+  <div class="mnemonic-line">资产定估值，条款定出表，资金定成败。</div>
+</div>
+
+<div class="next-card">
+  <div><div class="n-label">下一步</div><div class="n-title">模块 6 · 风险图谱、29 问与行动建议</div></div>
+  <div class="n-arrow">→</div>
+</div>
+<p style="text-align:center;"><a href="../index.html">← 返回光伏课题总目录</a></p>
+<div class="page-footer">
+  <span>光伏产业链与电站资产证券化 · 模块 5</span>
+  <span>规则与条款依据 2026 年 7 月交易所指引及两家机构 2026 年 11 月材料，不构成投资建议</span>
+</div>
+
+</div>
+</body>
+</html>
