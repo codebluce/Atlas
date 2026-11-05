@@ -1,0 +1,423 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>资产管理信托管理办法 · 三版条款对照</title>
+<style>
+:root{--ink:#132033;--ink2:#31405a;--muted:#6d7889;--faint:#9aa5b4;
+--line:#e2ddd3;--line2:#efeae1;--paper:#f8f6f1;--card:#fff;
+--red:#a92a2a;--redbg:#fdf1ef;--green:#1d5f39;--greenbg:#eef6f0;
+--gold:#8d6a1f;--blue:#2b567f;}
+*{box-sizing:border-box;}
+html{scroll-behavior:smooth;}
+body{margin:0;background:var(--paper);color:var(--ink2);
+font-family:-apple-system,BlinkMacSystemFont,"PingFang SC","Hiragino Sans GB","Microsoft YaHei",sans-serif;
+font-size:16px;line-height:1.85;-webkit-font-smoothing:antialiased;
+font-variant-numeric:lining-nums tabular-nums;}
+#bar{position:fixed;top:0;left:0;height:3px;width:0;background:linear-gradient(90deg,var(--red),#c98a3c);z-index:99;}
+.wrap{max-width:1180px;margin:0 auto;padding:0 26px 90px;
+display:grid;grid-template-columns:186px minmax(0,1fr);gap:52px;}
+nav{position:sticky;top:0;align-self:start;max-height:100vh;overflow-y:auto;padding:40px 0;font-size:13px;}
+.toc-t{font-size:10.5px;letter-spacing:.2em;color:var(--faint);font-weight:700;margin-bottom:12px;}
+nav a{display:block;color:var(--muted);text-decoration:none;padding:5px 0 5px 11px;
+border-left:2px solid transparent;line-height:1.5;transition:.15s;}
+nav a:hover,nav a.on{color:var(--red);border-left-color:var(--red);}
+main{min-width:0;padding-top:34px;}
+
+.cover{border-bottom:2px solid var(--ink);padding-bottom:26px;margin-bottom:8px;}
+.kick{font-size:11px;letter-spacing:.24em;color:var(--red);font-weight:700;margin-bottom:16px;}
+h1{font-family:"Songti SC","Noto Serif SC",Georgia,serif;font-size:33px;line-height:1.35;
+color:var(--ink);margin:0 0 12px;font-weight:700;letter-spacing:-.01em;}
+.sub{font-size:15px;color:var(--muted);margin:0 0 20px;}
+.meta{display:flex;flex-wrap:wrap;gap:8px 26px;font-size:13px;color:var(--faint);}
+.meta b{color:var(--ink2);font-weight:600;}
+
+.lead{background:var(--ink);color:#f3efe6;border-radius:10px;padding:22px 26px;margin:26px 0 34px;}
+.lead .lab{font-size:10.5px;letter-spacing:.2em;color:#c9a05a;font-weight:700;margin-bottom:8px;}
+.lead p{margin:0;font-size:15.5px;line-height:1.85;}
+.lead strong{color:#fff;border-bottom:1px solid rgba(201,160,90,.55);}
+
+h2{font-family:"Songti SC","Noto Serif SC",Georgia,serif;font-size:23px;color:var(--ink);
+margin:52px 0 6px;padding-top:20px;border-top:2px solid var(--ink);font-weight:700;}
+h2 .num{font-size:12px;color:var(--red);letter-spacing:.1em;display:block;margin-bottom:6px;font-weight:700;}
+h3{font-size:16px;color:var(--ink);margin:26px 0 10px;font-weight:700;
+padding-left:11px;border-left:3px solid var(--red);}
+p{margin:0 0 14px;}
+strong{color:var(--ink);}
+
+.tw{overflow-x:auto;margin:18px 0;border:1px solid var(--line);border-radius:8px;background:#fff;}
+table{width:100%;border-collapse:collapse;font-size:13.5px;line-height:1.7;}
+th{background:#f4f1ea;text-align:left;padding:10px 13px;border-bottom:1px solid var(--line);
+font-weight:700;color:var(--ink);white-space:nowrap;font-size:13px;}
+td{padding:9px 13px;border-bottom:1px solid var(--line2);vertical-align:top;}
+tr:last-child td{border-bottom:none;}
+tr:nth-child(even) td{background:#fcfbf8;}
+
+.tag{display:inline-block;font-size:11.5px;font-weight:700;padding:2px 8px;border-radius:20px;white-space:nowrap;}
+.t-tight{background:var(--redbg);color:var(--red);border:1px solid #f0d8d3;}
+.t-loose{background:var(--greenbg);color:var(--green);border:1px solid #cfe4d5;}
+.t-mid{background:#f6f1e3;color:var(--gold);border:1px solid #e8dcc0;}
+
+.card{background:#fff;border:1px solid var(--line);border-radius:12px;margin:26px 0 34px;
+box-shadow:0 1px 3px rgba(19,32,51,.04),0 10px 28px rgba(19,32,51,.04);overflow:hidden;}
+.card-hd{padding:18px 24px 14px;border-bottom:1px solid var(--line2);display:flex;
+align-items:baseline;gap:12px;flex-wrap:wrap;background:#fdfcfa;}
+.card-hd .no{font-family:Georgia,serif;font-size:13px;color:var(--red);font-weight:700;letter-spacing:.06em;}
+.card-hd .ttl{font-family:"Songti SC","Noto Serif SC",Georgia,serif;font-size:19px;color:var(--ink);font-weight:700;}
+.card-hd .tag{margin-left:auto;}
+
+.cols{display:grid;grid-template-columns:1fr 1fr 1fr;gap:0;}
+.col{padding:18px 20px;border-right:1px solid var(--line2);min-width:0;}
+.col:last-child{border-right:none;}
+.col.new{background:#fcfdfb;}
+.col-hd{font-size:11.5px;font-weight:700;letter-spacing:.08em;color:var(--muted);margin-bottom:4px;}
+.col-hd .dt{display:block;font-size:11px;font-weight:400;color:var(--faint);letter-spacing:0;margin-top:2px;}
+.nb{font-size:12.5px;color:var(--faint);margin:0 0 10px;line-height:1.6;}
+.txt{font-size:13.5px;line-height:1.85;color:var(--ink2);
+font-family:"Songti SC","Noto Serif SC","SimSun",Georgia,serif;}
+.txt p{margin:0 0 9px;}
+.txt p:last-child{margin-bottom:0;}
+.txt del{background:var(--redbg);color:#8f2a22;text-decoration:line-through;text-decoration-thickness:1px;}
+.txt ins{background:var(--greenbg);color:var(--green);text-decoration:none;box-shadow:inset 0 -1px 0 #9ec9ac;}
+.txt del.blk{display:block;padding:8px 10px;border-radius:6px;margin:0 0 9px;
+text-decoration:none;border-left:2px solid #d98b80;line-height:1.8;}
+.txt ins.blk{display:block;padding:8px 10px;border-radius:6px;margin:0 0 9px;
+border-left:2px solid #7fb894;line-height:1.8;}
+.empty{color:var(--faint);font-size:13px;font-style:normal;}
+
+.analysis{padding:18px 24px 20px;background:#fbfaf7;border-top:1px solid var(--line2);}
+.analysis .ah{font-size:11.5px;letter-spacing:.14em;color:var(--gold);font-weight:700;margin-bottom:8px;}
+.analysis ul{margin:0 0 12px;padding-left:20px;font-size:13.5px;line-height:1.8;}
+.analysis li{margin-bottom:5px;}
+.analysis li::marker{color:var(--red);}
+.analysis .why{font-size:14px;line-height:1.85;color:var(--ink2);margin:0;
+padding-left:12px;border-left:2px solid var(--line);}
+
+.legend{display:flex;gap:18px;flex-wrap:wrap;font-size:12.5px;color:var(--muted);margin:14px 0 0;}
+.legend span{display:flex;align-items:center;gap:6px;}
+.sw{width:18px;height:11px;border-radius:2px;display:inline-block;vertical-align:-1px;}
+.sw.d{background:#f3c7bf;border:1px solid #d98b80;}
+.sw.i{background:#bcdcc8;border:1px solid #7fb894;}
+
+.kpi{display:grid;grid-template-columns:repeat(4,1fr);gap:12px;margin:20px 0;}
+.kpi div{background:#fff;border:1px solid var(--line);border-radius:8px;padding:12px 14px;}
+.kpi .t{font-size:11.5px;color:var(--faint);}
+.kpi .v{font-family:Georgia,serif;font-size:19px;color:var(--ink);font-weight:700;line-height:1.4;}
+.kpi .s{font-size:11.5px;color:var(--muted);}
+
+/* ── 第四十八条深度拆解 ── */
+.dp{margin:30px 0 34px;}
+.layer{display:grid;grid-template-columns:52px minmax(0,1fr);gap:0;
+border:1px solid var(--line);border-bottom:none;background:#fff;}
+.layer:first-of-type{border-radius:10px 10px 0 0;}
+.layer:last-of-type{border-bottom:1px solid var(--line);border-radius:0 0 10px 10px;}
+.layer .lv{display:flex;align-items:flex-start;justify-content:center;
+padding:16px 0;background:#f6f2ea;border-right:1px solid var(--line2);
+font-family:Georgia,serif;font-size:16px;color:var(--red);font-weight:700;}
+.layer .in{padding:15px 20px;}
+.layer .h{font-size:14.5px;color:var(--ink);font-weight:700;margin-bottom:5px;}
+.layer .h em{font-style:normal;font-size:12px;color:var(--muted);font-weight:400;margin-left:8px;}
+.layer .b{font-size:13.5px;line-height:1.8;color:var(--ink2);}
+.layer.hot{background:#fdfaf4;}
+.layer.hot .lv{background:#f8ecd8;color:#8d5a12;}
+
+.ex{background:#fff;border:1px solid var(--line);border-radius:10px;margin:20px 0;overflow:hidden;}
+.ex-hd{padding:12px 18px;background:#fdfcfa;border-bottom:1px solid var(--line2);
+font-size:13px;font-weight:700;color:var(--ink);display:flex;gap:10px;align-items:baseline;}
+.ex-hd .q{font-family:Georgia,serif;font-size:12px;color:var(--red);font-weight:700;}
+.ex-bd{padding:16px 18px;font-size:13.5px;line-height:1.85;}
+.ex-bd p{margin:0 0 11px;}
+.ex-bd p:last-child{margin-bottom:0;}
+.calc{background:#fbfaf7;border:1px dashed #ddd5c6;border-radius:6px;
+padding:11px 15px;margin:12px 0;font-size:13px;line-height:1.9;
+font-family:"SF Mono",Menlo,Consolas,monospace;color:var(--ink);white-space:pre-wrap;}
+.verdict-bar{display:flex;align-items:center;gap:8px;margin-top:12px;padding:9px 13px;
+border-radius:6px;font-size:13px;font-weight:600;}
+.verdict-bar.bad{background:var(--redbg);color:var(--red);border:1px solid #f0d8d3;}
+.verdict-bar.good{background:var(--greenbg);color:var(--green);border:1px solid #cfe4d5;}
+.verdict-bar.warn{background:#f6f1e3;color:var(--gold);border:1px solid #e8dcc0;}
+
+.trap{background:#fff;border:1px solid var(--line);border-left:3px solid var(--red);
+border-radius:0 8px 8px 0;padding:14px 18px;margin:12px 0;font-size:13.5px;line-height:1.85;}
+.trap .t{font-weight:700;color:var(--ink);margin-bottom:4px;}
+
+.note{font-size:13px;color:var(--muted);line-height:1.8;background:#fff;border:1px solid var(--line);
+border-radius:8px;padding:14px 18px;margin:22px 0;}
+.note b{color:var(--ink);}
+
+footer{max-width:1180px;margin:0 auto;padding:28px 26px 60px;border-top:1px solid var(--line);
+font-size:12.5px;color:var(--faint);line-height:1.9;}
+
+@media (max-width:1000px){
+  .wrap{grid-template-columns:1fr;gap:0;padding:0 18px 60px;}
+  nav{position:static;max-height:none;padding:22px 0 6px;border-bottom:1px solid var(--line);
+  margin-bottom:4px;columns:2;column-gap:20px;}
+  nav a{break-inside:avoid;}
+  .cols{grid-template-columns:1fr;}
+  .col{border-right:none;border-bottom:1px solid var(--line2);}
+  .kpi{grid-template-columns:repeat(2,1fr);}
+  .layer{grid-template-columns:42px minmax(0,1fr);}
+  .layer .in{padding:13px 15px;}
+  h1{font-size:25px;}
+  h2{font-size:20px;}
+}
+@media print{
+  body{background:#fff;font-size:10.5pt;}
+  nav,#bar{display:none;}
+  .wrap{display:block;max-width:none;padding:0;}
+  .card{page-break-inside:avoid;box-shadow:none;}
+  .cols{grid-template-columns:1fr 1fr 1fr;}
+}
+</style>
+</head>
+<body>
+<div id="bar"></div>
+<div class="wrap">
+<nav>
+  <div class="toc-t">目录</div>
+  <a href="#overview">总览</a>
+  <a href="#a9">第 9 条 · 投资者集中度</a><a href="#a10">第 10 条 · 嵌套与穿透</a><a href="#a46">第 46 条 · 非标资产投资</a><a href="#a48">第 48 条 · 单一资产集中度</a><a href="#a49">第 49 条 · 关联交易</a><a href="#a82">第 82 条 · 用语含义</a>
+  <a href="#deep">第 48 条怎么读</a>
+  <a href="#main">三条主线</a>
+  <a href="#source">资料来源</a>
+</nav>
+<main>
+
+<div class="cover">
+  <div class="kick">REGULATORY COMPARISON</div>
+  <h1>《资产管理信托管理办法》三版对照</h1>
+  <p class="sub">第九、十、四十六、四十八、四十九、八十二条 · 旧办法 → 征求意见稿 → 正式稿</p>
+  <div class="meta">
+    <span><b>正式稿</b>　2026-10-30 发布，2027-01-01 施行</span>
+    <span><b>文号</b>　国家金融监督管理总局令〔2026〕5号</span>
+    <span><b>征求意见</b>　2025-10-31</span>
+    <span><b>旧版</b>　银监会令 2007 年第 3 号（2009 年修订）</span>
+  </div>
+  <div class="legend">
+    <span><i class="sw d"></i>红字：征求意见稿中被删除或改写</span>
+    <span><i class="sw i"></i>绿底：正式稿新增或改写</span>
+  </div>
+</div>
+
+<div class="lead">
+  <div class="lab">一句话结论</div>
+  <p>从征求意见稿到正式稿，条文总数没变（都是 85 条），但<strong>六个条款的改动方向并不一致</strong>：第九、四十六、四十八、四十九条收紧，第十条明显放松，第八十二条做技术性校正。整体不是“一刀切加严”，而是<strong>把最难的执行点拿掉，把最容易出风险的环节钉死</strong>。</p>
+</div>
+
+<h2 id="overview"><span class="num">OVERVIEW</span>六条改动的方向</h2>
+
+<div class="kpi">
+  <div><div class="t">条文总数</div><div class="v">85 → 85</div><div class="s">征求意见稿 → 正式稿</div></div>
+  <div><div class="t">实质收紧</div><div class="v">4 条</div><div class="s">9 / 46 / 48 / 49</div></div>
+  <div><div class="t">明显放松</div><div class="v">1 条</div><div class="s">10</div></div>
+  <div><div class="t">技术性调整</div><div class="v">1 条</div><div class="s">82</div></div>
+</div>
+
+<div class="tw">
+<table>
+<thead><tr><th>条款</th><th>主题</th><th>方向</th><th>一句话变化</th></tr></thead>
+<tbody>
+<tr><td>第九条</td><td>投资者集中度</td><td><span class="tag t-tight">收紧</span></td><td>第二款从“开放式产品”扩到“全部产品”</td></tr>
+<tr><td>第十条</td><td>嵌套与穿透</td><td><span class="tag t-loose">放松</span></td><td>删除“信托套信托须合并计算 200 人”</td></tr>
+<tr><td>第四十六条</td><td>非标资产</td><td><span class="tag t-tight">最硬</span></td><td>投非标必须封闭式，直接与间接都管</td></tr>
+<tr><td>第四十八条</td><td>单一资产集中度</td><td><span class="tag t-tight">收紧</span></td><td>分母改为净资产，豁免改为“临近到期”</td></tr>
+<tr><td>第四十九条</td><td>关联交易</td><td><span class="tag t-tight">收紧</span></td><td>资产服务信托财产纳入绝对禁止</td></tr>
+<tr><td>第八十二条</td><td>用语含义</td><td><span class="tag t-mid">校正</span></td><td>封闭式不再限制“认购”，只限赎回</td></tr>
+</tbody>
+</table>
+</div>
+
+<div class="note">
+<b>怎么读这份对照：</b>旧办法的条号与新办法完全不对应，所以左栏标的是“功能对应”的旧条款（例如新第九条对应旧第五条第三项），不是同号条款。征求意见稿与正式稿同号，直接逐字比对，红底为删、绿底为增。
+</div>
+
+<div class="card" id="a9"><div class="card-hd"><span class="no">第 9 条</span><span class="ttl">投资者集中度</span><span class="tag t-tight">实质收紧</span></div><div class="cols"><div class="col"><div class="col-hd">旧办法<span class="dt">《集合资金信托计划管理办法》第五条（三）</span></div><p class="nb">旧版没有“单一投资者占产品比例”这类集中度规则，只限制人数。</p><div class="txt"><p>（三）单个信托计划的自然人人数不得超过 50 人，但单笔委托金额在 300 万元以上的自然人投资者和合格的机构投资者数量不受限制；</p></div></div><div class="col"><div class="col-hd">征求意见稿<span class="dt">第 9 条 · 182 字 · 红字为被删</span></div><div class="txt"><p>单个投资者投资同一信托产品的<del>金额</del>，不得高于信托产品<del>实收</del>信托<del>规模</del>的百分之五十。单个机构投资者及其关联<del>方</del>投资同一信托产品的<del>金额</del>，合计不得高于信托产品<del>实收</del>信托<del>规模</del>的百分之八十。<del>国家金融监督管理总局另有规定的，从其规定。</del></p><p>单个资产管理产品管理人管理的全部资产管理产品，投资基础资产涉及非标准化债权类资产的<del>开放式</del>信托产品的<del>，投资金额</del>合计不得超过该信托产品<del>实收规模</del>的百分之五十。</p></div></div><div class="col new"><div class="col-hd">正式稿<span class="dt">第 9 条 · 279 字 · 绿底为新增</span></div><div class="txt"><p>单个投资者投资同一信托产品的<ins>信托单位</ins>，不得高于<ins>该</ins>信托产品信托<ins>单位合计</ins>的百分之五十。单个机构投资者及其关联<ins>企业</ins>投资同一信托产品的<ins>信托单位</ins>，合计不得高于<ins>该</ins>信托产品信托<ins>单位合计</ins>的百分之八十。<ins>对于因其他投资者赎回等因素导致投资者被动超过上述比例的，在恢复至符合要求前，被动超过上述比例的投资者不得新增投资该信托产品。</ins></p><p>单个资产管理产品管理人管理的全部资产管理产品，投资基础资产涉及非标准化债权类资产的<ins>同一信托产品，投资同一</ins>信托产品的<ins>信托单位</ins>合计不得超过该信托产品<ins>信托单位合计</ins>的百分之五十。</p><p><ins>国家金融监督管理总局关于信托产品的制度规则中对投资者集中度另有规定的，从其规定。</ins></p></div></div></div><div class="analysis"><div class="ah">改了什么</div><ul><li>计量单位由“金额”改为“<b>信托单位</b>”，把净值涨跌从分母里排除</li><li>“关联方”改为“<b>关联企业</b>”，口径收窄到企业</li><li>新增：被动超限期间<b>不得新增投资</b></li><li>第二款把“<b>开放式</b>信托产品”改为“<b>同一</b>信托产品”——约束范围从开放式扩到全部产品</li><li>兜底条款细化为“总局关于信托产品的制度规则中对投资者集中度另有规定”</li></ul><p class="why"><b>意味着什么 · </b>真正的收紧藏在第二款。原来只管“开放式 + 投非标的”这一种组合，现在所有投非标的产品都受“单一管理人旗下产品合计不超过 50%”约束。计量单位换成份额，也解决了过去按金额算、净值一涨就超限的技术麻烦。</p></div></div>
+<div class="card" id="a10"><div class="card-hd"><span class="no">第 10 条</span><span class="ttl">嵌套与穿透</span><span class="tag t-loose">明显放松</span></div><div class="cols"><div class="col"><div class="col-hd">旧办法<span class="dt">《集合资金信托计划管理办法》无对应条款</span></div><p class="nb">旧版没有嵌套、穿透的一般性规则。</p><div class="empty">无对应条款</div></div><div class="col"><div class="col-hd">征求意见稿<span class="dt">第 10 条 · 369 字 · 红字为被删</span></div><div class="txt"><p>信托产品接受其他资产管理产品投资的，信托公司应当穿透识别实际投资者和最终资金来源，<del>除本条第二款情形外，</del>不合并计算其他资产管理产品的投资者数量。上层资产管理产品管理人应当将实际投资者类型和资金来源审查情况告知给信托公司。信托文件中应当明确上层资产管理产品管理人严格审查资金来源，确保信托产品资金来源依法合规。</p><p><del>信托产品接受其他信托产品投资，上层信托产品管理人应当将投资金额占该上层信托产品实收信托规模的比例告知给信托公司。</del><del>对于该比例超过百分之二十五的，信托公司应当对该上层信托产品穿透审查合格投资者资质，合并计算投资者数量，合并计算的投资者数量不得超过二百人。</del></p><p><del>对于因投资者赎回等因素导致上层信托产品投资被动超过前款比例的，上层信托产品管理人应当及时告知信托公司，信托公司可以不合并计算上层信托产品投资者数量,但不得接受上层信托产品的新增投资。</del></p></div></div><div class="col new"><div class="col-hd">正式稿<span class="dt">第 10 条 · 143 字 · 绿底为新增</span></div><div class="txt"><p>信托产品接受其他资产管理产品投资的，信托公司应当穿透识别实际投资者和最终资金来源，不合并计算其他资产管理产品的投资者数量。上层资产管理产品管理人应当将实际投资者类型和资金来源审查情况告知给信托公司。信托文件中应当明确上层资产管理产品管理人严格审查资金来源，确保信托产品资金来源依法合规。</p></div></div></div><div class="analysis"><div class="ah">改了什么</div><ul><li>删除“除本条第二款情形外”的指代</li><li>整条删除<b>第二款</b>：上层信托产品投资超 25% 时，须穿透审查合格投资者、<b>合并计算不超过 200 人</b></li><li>整条删除<b>第三款</b>：被动超限的告知与处理</li></ul><p class="why"><b>意味着什么 · </b>六条里最明显的一处放松。“信托套信托要合并算人数”这条执行难度最大、争议也最大，正式稿直接拿掉，只保留穿透识别和告知义务。注意：不合并人数不等于不穿透，资金来源合规的责任仍在信托公司。</p></div></div>
+<div class="card" id="a46"><div class="card-hd"><span class="no">第 46 条</span><span class="ttl">非标资产投资</span><span class="tag t-tight">重写·最硬</span></div><div class="cols"><div class="col"><div class="col-hd">旧办法<span class="dt">《集合资金信托计划管理办法》第二十七条（二）（六）</span></div><p class="nb">旧版用“贷款不超过 30%”和“不得投同一项目”间接约束，没有“非标”这个概念。</p><div class="txt"><p>（二）向他人提供贷款不得超过其管理的所有信托计划实收余额的 30%，但中国银行业监督管理委员会另有规定的除外；</p><p>（六）不得将同一公司管理的不同信托计划投资于同一项目。</p></div></div><div class="col"><div class="col-hd">征求意见稿<span class="dt">第 46 条 · 397 字 · 红字为被删</span></div><div class="txt"><p>信托产品直接投资非标准化资产的，信托公司应当披露非标准化资产类型、比例、期限、风险特征以及信托资金使用方情况。<del>信托产品投资基础资产涉及非标准化资产的私募资产管理产品的，信托公司应当穿透识别非标准化资产并向投资者披露。</del><del>信托产品投资非标准化资产应当遵守《指导意见》有关期限匹配的要求。</del></p><p>信托公司应当跟踪投资于非标准化债权类资产的资金流向<del>，采取必要的手段核查验证</del>，在相关合同中约定信托资金使用方的配合义务，防范资金流向违反相关规定。</p><p><del>开放式信托产品直接投资于非标准化债权类资产的，信托公司应当按照法律法规和信托文件合理确定申购、赎回价格，不得脱离实际投资收益进行分离定价。</del></p><p>封闭式信托产品存续期间，其所投资的非标准化资产部分到期、终止或者退出的，信托公司可以按照信托文件规定，对到期、终止或者退出的非标准化资产进行清算并以资金形式分配给投资者，但应当公平对待投资者，不得允许投资者提前退出或者变相提前退出。</p></div></div><div class="col new"><div class="col-hd">正式稿<span class="dt">第 46 条 · 404 字 · 绿底为新增</span></div><div class="txt"><p><ins>信托产品直接或间接投资于非标准化资产的，应当为封闭式信托产品。</ins><ins>非标准化资产的终止日或退出日不得晚于封闭式信托产品的终止日。</ins></p><p>信托产品直接投资非标准化资产的，信托公司应当披露非标准化资产类型、<ins>投资</ins>比例、期限、风险特征以及信托资金使用方情况。信托公司应当跟踪<ins>直接</ins>投资于非标准化债权类资产的资金流向，在相关合同中约定信托资金使用方的配合义务，<ins>采取必要的手段核查验证，</ins>防范资金流向违反相关规定。</p><p><ins>信托产品通过资产管理产品间接投资非标准化资产的，信托产品所投资的资产管理产品应当为封闭式产品，且其终止日不得晚于信托产品的终止日。</ins><ins>信托公司应当穿透识别非标准化资产并向投资者披露。</ins></p><p>封闭式信托产品存续期间，其所投资的非标准化资产部分到期、终止或者退出的，信托公司可以按照信托文件规定，对到期、终止或者退出的非标准化资产进行清算并以资金形式<ins>或信托财产原状</ins>分配给投资者，但应当公平对待投资者，不得允许投资者提前退出或者变相提前退出。</p></div></div></div><div class="analysis"><div class="ah">改了什么</div><ul><li>新增第一款：直接<b>或间接</b>投非标的，<b>应当为封闭式信托产品</b>；非标终止日不得晚于产品终止日</li><li>删除“开放式产品投非标须合理定价、不得分离定价”整款（开放式已不能投非标）</li><li>新增：通过资管产品<b>间接</b>投非标的，所投资管产品也须为封闭式，且终止日不得晚于信托产品</li><li>清算分配新增“<b>或信托财产原状分配</b>”</li></ul><p class="why"><b>意味着什么 · </b>这是全篇最硬的一条：非标与开放式产品彻底切割，且把“期限匹配”从原则要求变成合同层面的终止日约束。新增的“原状分配”是个口子——非标到期变现不了时可以把资产直接分给投资者，避免被迫贱卖，但投资者也可能因此拿到非现金资产。</p></div></div>
+<div class="card" id="a48"><div class="card-hd"><span class="no">第 48 条</span><span class="ttl">单一资产集中度</span><span class="tag t-tight">收紧＋换豁免</span></div><div class="cols"><div class="col"><div class="col-hd">旧办法<span class="dt">《集合资金信托计划管理办法》第二十七条（六）</span></div><p class="nb">旧版只禁止“不同信托计划投同一项目”，没有比例上限。</p><div class="txt"><p>（六）不得将同一公司管理的不同信托计划投资于同一项目。</p></div></div><div class="col"><div class="col-hd">征求意见稿<span class="dt">第 48 条 · 535 字 · 红字为被删</span></div><div class="txt"><p>单个信托产品投资于同一资产的投资金额，不得超过该信托产品<del>实收信托</del>的百分之二十五，银行活期存款、国债、中央银行票据、政策性金融债和地方政府债券除外。<del>完全按照有关指数的构成比例进行证券投资的信托产品不受上述比例限制。</del>单一主体及其关联方的非标准化资产视为同一资产。信托产品投资基础资产涉及非标准化资产的私募资产管理产品，信托公司应当穿透计算上述比例。单个信托产品投资于同一资产管理产品的投资金额，不得超过该信托产品<del>实收信托</del>的百分之二十五。</p><p>符合下列条件之一的信托产品不受前款比例限制：</p><p>（一）信托文件约定仅以战略配售、非公开发行、大宗交易、协议转让方式投资上市公司股票，全部投资者均为符合本办法规定的机构投资者且单个投资者委托金额不低于三百万元人民币或者等值外币的封闭式信托产品<del>；</del></p><p>（二）全部投资者均为符合本办法规定的机构投资者且单个投资者<del>委托</del>金额不低于一千万元人民币或者等值外币<del>；</del></p><p><del>（三）信托文件约定将百分之九十以上的信托产品财产投资于基础资产全部为标准化资产且符合前款比例规定的单只信托产品；</del></p><p>（<del>四</del>）国家金融监督管理总局规定的其他情形。</p><p><del>信托公司管理完全按照有关指数的构成比例进行证券投资的信托产品，应当选择成分券代表性强且流动性良好、符合分散投资要求、运行平稳、信息透明的指数。</del></p></div></div><div class="col new"><div class="col-hd">正式稿<span class="dt">第 48 条 · 577 字 · 绿底为新增</span></div><div class="txt"><p>单个信托产品<ins>直接</ins>投资于同一资产的投资金额，不得超过该信托产品<ins>净资产</ins>的百分之二十五，银行活期存款、国债、中央银行票据、政策性金融债和地方政府债券除外。单一主体及其关联方的非标准化资产视为同一资产。信托产品投资基础资产涉及非标准化<ins>债权类</ins>资产的私募资产管理产品，信托公司应当穿透计算上述<ins>非标准化债权类资产投资</ins>比例。单个信托产品投资于同一资产管理产品的投资金额，不得超过该信托产品<ins>净资产</ins>的百分之二十五。<ins>对于因信托产品财产净值波动、投资者赎回等因素导致被动超过上述比例的，在恢复至符合要求前，相关信托产品不得再投资该资产或资产管理产品。</ins></p><p>符合下列条件之一的信托产品不受前款比例限制：</p><p>（一）信托文件约定仅以战略配售、非公开发行、大宗交易、协议转让方式投资上市公司股票<ins>或仅直接投资未上市企业股权</ins>，全部投资者均为符合本办法规定的机构投资者且单个投资者委托金额不低于三百万元人民币或者等值外币的封闭式信托产品<ins>。</ins></p><p>（二）全部投资者均为符合本办法规定的机构投资者且单个投资者<ins>投资</ins>金额不低于一千万元人民币或者等值外币<ins>。</ins></p><p><ins>（三）符合本办法第四十六条第四款情形且距产品终止日不足十二个月的封闭式信托产品。</ins></p><p><ins>（四）完全按照有关指数的构成比例进行证券投资的信托产品。</ins><ins>相关指数应当是成分券代表性强且流动性良好、符合分散投资要求、运行平稳、信息透明的指数。</ins></p><p>（<ins>五</ins>）国家金融监督管理总局规定的其他情形。</p></div></div></div><div class="analysis"><div class="ah">改了什么</div><ul><li>分母由“实收信托”改为“<b>净资产</b>”</li><li>新增被动超限：恢复前<b>不得再投资</b>该资产或资管产品</li><li>豁免由 4 项增至 5 项</li><li>（一）增加“或仅<b>直接投资未上市企业股权</b>”</li><li>原（三）“90% 以上投单只产品”豁免 → 改为“<b>符合 46 条第四款情形</b>且距终止日不足 12 个月的封闭式产品”</li><li>指数投资的要求从独立一款并入（四）</li></ul><p class="why"><b>意味着什么 · </b>分母改净资产，对加杠杆的产品是实质性收紧——净资产小于实收规模时，25% 对应的绝对金额更小。用“临近到期的封闭式产品”替换“投单只产品的 FOF”豁免，指向很清楚：给存量非标到期清算留通道，而不是给通道业务留口子。</p></div></div>
+<div class="card" id="a49"><div class="card-hd"><span class="no">第 49 条</span><span class="ttl">关联交易</span><span class="tag t-tight">收紧</span></div><div class="cols"><div class="col"><div class="col-hd">旧办法<span class="dt">《集合资金信托计划管理办法》第二十七条（四）（五）</span></div><p class="nb">旧版只规范“固有财产”与“不同信托财产”两类。</p><div class="txt"><p>（四）不得以固有财产与信托财产进行交易；</p><p>（五）不得将不同信托财产进行相互交易；</p></div></div><div class="col"><div class="col-hd">征求意见稿<span class="dt">第 49 条 · 124 字 · 红字为被删</span></div><div class="txt"><p>信托公司不得将不同信托产品财产相互交易，不得以信托产品财产与固有财产、公益慈善信托财产进行交易。</p><p><del>信托公司管理的资产服务信托财产与信托产品财产进行交易的，应当事前在相关信托文件中明确规定或者经双方委托人（或者受益人）同意，并以公平的市场价格进行交易。</del></p></div></div><div class="col new"><div class="col-hd">正式稿<span class="dt">第 49 条 · 78 字 · 绿底为新增</span></div><div class="txt"><p>信托公司不得将不同信托产品财产相互交易，不得以信托产品财产与<ins>本公司</ins>固有<ins>财产、资产服务信托</ins>财产、公益慈善信托财产进行交易。<ins>国家金融监督管理总局另有规定的除外。</ins></p></div></div></div><div class="analysis"><div class="ah">改了什么</div><ul><li>“固有财产”改为“<b>本公司</b>固有财产”，指向更明确</li><li>把“<b>资产服务信托财产</b>”纳入绝对禁止</li><li>删除第二款：资产服务信托财产与信托产品财产“经约定或同意、按公允价格”可交易的例外</li><li>新增“国家金融监督管理总局另有规定的除外”</li></ul><p class="why"><b>意味着什么 · </b>从“禁止三类财产相互交易”扩到“四类”，且资产服务信托从“可附条件交易”变成“原则禁止”。对同时做资产服务信托和资产管理信托的机构影响最大——过去靠“委托人同意＋公允价格”做的内部交易，正式稿不再认可。保留“总局另有规定”，是给后续专项规则留口子。</p></div></div>
+<div class="card" id="a82"><div class="card-hd"><span class="no">第 82 条</span><span class="ttl">用语含义</span><span class="tag t-mid">技术性调整</span></div><div class="cols"><div class="col"><div class="col-hd">旧办法<span class="dt">《集合资金信托计划管理办法》无对应条款</span></div><p class="nb">旧版没有统一的定义条款，相关概念散见第二条、第五条、第六条。</p><div class="empty">无对应条款</div></div><div class="col"><div class="col-hd">征求意见稿<span class="dt">第 82 条 · 527 字 · 红字为被删</span></div><div class="txt"><p>本办法中下列用语的含义：</p><p>结构化信托产品是指信托公司按照<del>本金和</del>信托利益受偿顺序的不同，将信托产品划分为不同等级的信托单位，不同等级信托单位的信托利益分配不按信托单位比例计算，而是由信托文件另行规定、按照优先与劣后受益权安排进行信托利益分配的信托产品。享有优先受益权的投资者称为优先级投资者，享有劣后受益权的投资者称为劣后级投资者。</p><p>封闭式信托产品是指有确定唯一终止日，且自成立日至终止日期间，投资者不得进行<del>认购或者</del>赎回的信托产品。封闭式信托产品可以在信托文件中设置多个申购期，但信托公司不得突破投资者<del>人</del>数限制，不得为不同投资者对应不同的基础资产，不得为不同投资者设置不同终止日，不得安排投资者提前退出或者变相提前退出。</p><p>开放式信托产品是指自成立日至终止日期间，信托产品信托单位总额不固定，投资者可以按照信托文件规定，在开放<del>日</del>进行认（申）购或者赎回的信托产品。开放周期是指开放式信托产品两个开放期的最短间隔天数。</p><p>非标准化资产<del>包括</del>非标准化债权类资产<del>和</del>未上市企业股权<del>及其</del>受（收）益权。标准化债权类资产、非标准化债权类资产按照《指导意见》和《标准化债权类资产认定规则》认定。</p><p>资产管理产品是指《指导意见》规定的资产管理产品。私募投资基金适用本办法有关资产管理产品的规定。</p></div></div><div class="col new"><div class="col-hd">正式稿<span class="dt">第 82 条 · 519 字 · 绿底为新增</span></div><div class="txt"><p>本办法中下列用语的含义：</p><p>结构化信托产品是指信托公司按照信托利益受偿顺序的不同，将信托产品划分为不同等级的信托单位，不同等级信托单位的信托利益分配不按信托单位比例计算，而是由信托文件另行规定、按照优先与劣后受益权安排进行信托利益分配的信托产品。享有优先受益权的投资者称为优先级投资者，享有劣后受益权的投资者称为劣后级投资者。</p><p>封闭式信托产品是指有确定唯一终止日，且自成立日至终止日期间，投资者不得进行赎回的信托产品。封闭式信托产品可以在信托文件中设置多个申购期，但信托公司不得突破投资者数<ins>量</ins>限制，不得为不同投资者对应不同的基础资产，不得为不同投资者设置不同终止日，不得安排投资者提前退出或者变相提前退出。</p><p>开放式信托产品是指自成立日至终止日期间，信托产品信托单位总额不固定，投资者可以按照信托文件规定，在开放<ins>期</ins>进行认（申）购或者赎回的信托产品。开放周期是指开放式信托产品两个开放期的最短间隔天数。</p><p>非标准化资产<ins>是指</ins>非标准化债权类资产<ins>、</ins>未上市企业股权<ins>和</ins>受（收）益权。标准化债权类资产、非标准化债权类资产按照《指导意见》和《标准化债权类资产认定规则》认定。</p><p>资产管理产品是指《指导意见》规定的资产管理产品。私募投资基金适用本办法有关资产管理产品的规定。</p></div></div></div><div class="analysis"><div class="ah">改了什么</div><ul><li>结构化：删去“<b>本金和</b>”，只按信托利益受偿顺序划分</li><li>封闭式：删去“认购或者”，只保留“<b>不得赎回</b>”</li><li>“投资者人数”改为“投资者<b>数量</b>”</li><li>开放式：计算口径由“开放<b>日</b>”改为“开放<b>期</b>”</li><li>非标：“包括”改为“<b>是指</b>”，定义更封闭</li><li>“股权<b>及其</b>受（收）益权”改为“股权<b>和</b>受（收）益权”</li></ul><p class="why"><b>意味着什么 · </b>看似只是措辞，实际上三处都有实质含义。封闭式删掉“认购”，意味着封闭式可以设置申购期、只是不许赎回——这和第 9 条按份额算集中度是配套的。非标从“包括”改成“是指”，排除了扩张解释的空间。结构化删掉“本金”后，受偿顺序只看信托利益，为分级设计留了更大余地。</p></div></div>
+
+
+<h2 id="deep"><span class="num">ARTICLE 48</span>第四十八条怎么读</h2>
+
+<p>这是全篇最复杂的一条，因为它把<b>四个独立的约束</b>压在一句话里，还改了一次分母。读错一个环节，算出来的额度就会偏大。</p>
+
+<div class="calc">① 单一资产 ≤ 净资产 25%
+② 单一资管产品 ≤ 净资产 25%
+③ 穿透后同一非标债权合并计算
+④ 被动超限只冻结新增</div>
+
+<div class="dp">
+  <div class="layer">
+    <div class="lv">1</div>
+    <div class="in"><div class="h">分母换成净资产<em>收紧</em></div>
+    <div class="b">征求意见稿写的是“实收信托规模”，正式稿改成“净资产”。对加杠杆的产品，同样的百分比，能买的绝对金额变小了。</div></div>
+  </div>
+  <div class="layer">
+    <div class="lv">2</div>
+    <div class="in"><div class="h">单一资产 25%<em>基础约束</em></div>
+    <div class="b">投任何一笔资产，不得超过净资产的四分之一。五类资产豁免：活期存款、国债、央票、政金债、地方债。</div></div>
+  </div>
+  <div class="layer hot">
+    <div class="lv">3</div>
+    <div class="in"><div class="h">“同一资产”要合并<em>防拆单</em></div>
+    <div class="b">单一主体及其关联方的非标，视为同一资产。拆成几笔、借给几家关联公司，都要合起来算。</div></div>
+  </div>
+  <div class="layer">
+    <div class="lv">4</div>
+    <div class="in"><div class="h">单一资管产品 25%<em>防集中依赖</em></div>
+    <div class="b">就算底层分散，你对某一只基金、某一个资管计划的依赖，也不能超过净资产 25%。</div></div>
+  </div>
+  <div class="layer hot">
+    <div class="lv">5</div>
+    <div class="in"><div class="h">穿透后合并<em>真正管用的那层</em></div>
+    <div class="b">通过私募资管产品投非标债权的，要穿透算比例。多只通道、同一个底层，合计不能超 25%。</div></div>
+  </div>
+  <div class="layer">
+    <div class="lv">6</div>
+    <div class="in"><div class="h">被动超限<em>不强制卖出</em></div>
+    <div class="b">因净值波动、赎回导致超限的，恢复前不得再投该资产或该资管产品。冻结新增，不逼着砍仓。</div></div>
+  </div>
+</div>
+
+<div class="ex">
+  <div class="ex-hd"><span class="q">例 1</span>为什么分母一改，杠杆高的人就难受了</div>
+  <div class="ex-bd">
+    <p>假设信托产品净资产 10 亿元。同样按 25% 算，上限都是 2.5 亿——但占总资产的比例完全不同：</p>
+    <div class="tw"><table>
+      <thead><tr><th>杠杆率</th><th>总资产</th><th>单一资产上限</th><th>占总资产</th></tr></thead>
+      <tbody>
+        <tr><td>100%（无杠杆）</td><td>10 亿</td><td>2.5 亿</td><td>25.0%</td></tr>
+        <tr><td>140%</td><td>14 亿</td><td>2.5 亿</td><td>17.9%</td></tr>
+        <tr><td>200%</td><td>20 亿</td><td>2.5 亿</td><td>12.5%</td></tr>
+      </tbody>
+    </table></div>
+    <p>上限的绝对金额没变，但杠杆越高，它能买的东西占总资产的比例越小。逻辑是：净资产才是风险资本，借来的钱不该用来放大单一风险。</p>
+    <div class="verdict-bar warn">副作用：分母每天都在变。净值一跌，原本 24% 的持仓可能变成 26%——这正是第 6 层要补规则的原因。</div>
+  </div>
+</div>
+
+<div class="ex">
+  <div class="ex-hd"><span class="q">例 2</span>拆成两笔借给关联公司，能过吗</div>
+  <div class="ex-bd">
+    <p>净资产 10 亿，上限 2.5 亿。A 公司是母公司，B 是其子公司：</p>
+    <div class="tw"><table>
+      <thead><tr><th>投向</th><th>金额</th><th>单独看</th><th>合并看</th></tr></thead>
+      <tbody>
+        <tr><td>A 公司非标</td><td>1.4 亿</td><td>14%　合规</td><td rowspan="2">2.7 亿 = <b>27%</b>　超限</td></tr>
+        <tr><td>B 公司非标</td><td>1.3 亿</td><td>13%　合规</td></tr>
+      </tbody>
+    </table></div>
+    <div class="verdict-bar bad">拆单不行。条文明确“单一主体及其关联方的非标准化资产视为同一资产”。</div>
+    <p style="margin-top:12px;">注意口径边界：条文只对<b>非标</b>做了关联方合并。标准化资产（例如同一发行人发的两只债）要不要合并，本条没写，实务上要另找依据，不宜自行扩大解释。</p>
+  </div>
+</div>
+
+<div class="ex">
+  <div class="ex-hd"><span class="q">例 3</span>投两只基金，各自 20%，算不算绕过去了</div>
+  <div class="ex-bd">
+    <p>想投 E 公司的非标债权，直接投会超限，于是走两只私募资管计划：</p>
+    <div class="tw"><table>
+      <thead><tr><th>通道</th><th>投入</th><th>占净资产</th><th>通道投向</th><th>单独看</th></tr></thead>
+      <tbody>
+        <tr><td>资管计划 X</td><td>2.0 亿</td><td>20%</td><td>100% 投 E</td><td>合规</td></tr>
+        <tr><td>资管计划 Y</td><td>2.2 亿</td><td>22%</td><td>100% 投 E</td><td>合规</td></tr>
+      </tbody>
+    </table></div>
+    <div class="calc">产品层各自 ≤ 25%　→　表面合规
+穿透后对 E 的合计敞口 = 2.0 + 2.2 = 4.2 亿 = 42%　→　超限</div>
+    <div class="verdict-bar bad">第三句就是防这个：穿透计算后，分散在不同通道、实质投给同一主体的，必须合并。</div>
+    <p style="margin-top:12px;">反过来看也成立：如果一只通道产品 100% 投单一标的，“产品层 25%”和“资产层 25%”正好重合，第一道关就卡住了。穿透真正起作用，是在<b>多通道 + 同一底层</b>这个组合上。</p>
+  </div>
+</div>
+
+<div class="ex">
+  <div class="ex-hd"><span class="q">例 4</span>什么都没做，为什么突然超限了</div>
+  <div class="ex-bd">
+    <p>这是最常发生的情形——不是主动买超的，是被动超的：</p>
+    <div class="tw"><table>
+      <thead><tr><th>时点</th><th>净资产</th><th>持仓</th><th>占比</th><th>状态</th></tr></thead>
+      <tbody>
+        <tr><td>建仓时</td><td>10 亿</td><td>2.4 亿</td><td>24%</td><td>合规</td></tr>
+        <tr><td>其他资产亏 1 亿</td><td>9 亿</td><td>2.4 亿</td><td><b>26.7%</b></td><td>被动超限</td></tr>
+      </tbody>
+    </table></div>
+    <p>条文给的处理是：<b>不得再投资该资产或该资管产品</b>，但没有要求强制卖出。</p>
+    <div class="verdict-bar warn">这一点很关键：非标流动性差，强制卖出等于逼着打折。监管选的是“冻结新增”，不是“强制减仓”。</div>
+    <p style="margin-top:12px;">恢复路径有三条：净值回升、其他资产变现后摊薄占比、或者该资产自然到期。注意“不得再投资”包含<b>到期续作</b>——这一点实操中最容易忽略。</p>
+  </div>
+</div>
+
+<h3>四个容易踩的坑</h3>
+
+<div class="trap"><div class="t">一、分母用错</div>
+还在按“实收信托规模”算。征求意见稿是这个口径，正式稿已经改成净资产。用错分母，算出来的额度偏大。</div>
+
+<div class="trap"><div class="t">二、只算资产层，不算通道层</div>
+投一只基金刚好 24%，看起来安全。但如果这只基金自己也加了杠杆，穿透后的底层敞口会超过 25%。两层都要过。</div>
+
+<div class="trap"><div class="t">三、忘了关联方合并</div>
+同一集团下 A、B 两家分别借，各自都没超，合起来超了。</div>
+
+<div class="trap"><div class="t">四、以为超限就得卖</div>
+被动超限只冻结新增，不强制减仓。真正的压力在于：恢复之前这个资产一分钱都不能再加，包括到期续作。</div>
+
+<h3>两个条文没写清的口径</h3>
+
+<div class="note">
+<p><b>“投资金额”按成本还是市值？</b>对标准化资产影响不大，对非标影响很大——非标按摊余成本计价，市值口径无从谈起。实务上大概率按账面价值，但需要机构在内部制度里明确，否则口径一换，比例就变了。</p>
+<p style="margin-bottom:0;"><b>穿透只写了“非标债权”，没写“未上市股权”。</b>第八十二条把非标定义成“非标债权 + 未上市企业股权 + 受（收）益权”三类，但第四十八条第三句只对非标<b>债权</b>要求穿透。这意味着通过通道投未上市股权，条文层面存在解释空间。不过第四十六条要求所有非标（含股权）必须封闭式，期限和结构仍然受管。这个口子值得留意，但不宜当作套利空间来用。</p>
+</div>
+
+<div class="verdict-bar good" style="margin-top:20px;display:block;padding:14px 18px;line-height:1.85;">
+<b>一句话复述：</b>单一资产 25%、单一通道 25%，两个都按净资产算；通道穿透后还要合并同一主体的敞口；被动超限只冻结新增、不强制卖出。
+</div>
+
+
+<h2 id="main"><span class="num">SUMMARY</span>三条主线</h2>
+
+<h3>一、非标：从“可做”变成“只能用封闭式做”</h3>
+<p>第四十六条新增的第一款是这次修订最硬的一处。过去开放式产品投非标，只要“合理定价、不分离定价”就行；现在直接要求<strong>必须封闭式</strong>，而且非标的终止日不得晚于产品终止日。同时把间接投资（通过资管产品）也纳进来，堵住了“绕道投非标”的路径。</p>
+<p>配套的是第四十八条的分母改为净资产——加杠杆的产品，25% 的绝对额度会明显变小。两条合起来，非标业务的空间被压得很实。</p>
+
+<h3>二、嵌套：把执行成本最高的那条拿掉</h3>
+<p>第十条删掉的那款，要求上层信托产品投资超过 25% 时穿透审查、合并计算不超过 200 人。这条在实际操作中几乎无法执行——需要上层管理人持续提供投资者名册，还要动态维护人数。正式稿拿掉它，只保留“穿透识别实际投资者和资金来源”的义务。</p>
+<p>但要注意方向：<strong>人数不合并，穿透责任还在</strong>。资金来源不合规，责任仍在信托公司，只是不再要求逐层数人头。</p>
+
+<h3>三、关联交易：从“三类财产”到“四类财产”</h3>
+<p>第四十九条把资产服务信托财产也纳入绝对禁止，并删掉了“经委托人同意＋公允价格即可交易”的例外。对同时经营资产服务信托和资产管理信托的机构，这意味着过去常见的内部交易安排不再可行。</p>
+<p>保留的“总局另有规定除外”，说明监管不想完全堵死，而是把口子收到“一事一议”的层面。</p>
+
+<h2 id="source"><span class="num">SOURCE</span>资料来源与说明</h2>
+
+<div class="note">
+<p><b>正式稿：</b>国家金融监督管理总局令〔2026〕5号，2026 年 10 月 30 日发布，2027 年 1 月 1 日起施行，共 5 章 85 条。条文取自金融监管总局官网规章正文。</p>
+<p><b>征求意见稿：</b>2025 年 10 月 31 日发布的《资产管理信托管理办法（征求意见稿）》，共 85 条。文本取自官网公告附件，已与官网下载版逐字核对一致。征求意见到正式发布相隔整一年。</p>
+<p><b>旧版：</b>《信托公司集合资金信托计划管理办法》（银监会令 2007 年第 3 号，2009 年银监会令第 1 号修订），共 55 条。正式稿第八十三条明确本办法施行后该办法不再适用。</p>
+<p style="margin-bottom:0;"><b>提醒：</b>左栏的旧条款是“功能对应”而非同号条款；正式稿第八十二条的定义变化会反向影响第九、四十六、四十八条的适用口径，读单条时要连带看。</p>
+</div>
+
+<div class="note">
+<p style="margin-bottom:0;"><b>关于“第四十八条怎么读”那一节：</b>条文本身是原文；四个算例中的金额、比例（净资产 10 亿、上限 2.5 亿、杠杆 100%/140%/200% 等）是为了说明计算逻辑而设的<b>示例假设</b>，不是对某个真实产品的测算。实际执行时请用产品的真实净资产与持仓口径重算。</p>
+</div>
+
+</main>
+</div>
+<footer>
+  <p><b>《资产管理信托管理办法》三版条款对照</b>　编制日期 2026-11-03</p>
+  <p>条文以监管机构官网发布文本为准；解读部分为分析意见，不构成法律意见。</p>
+</footer>
+<script>
+(function(){
+  var bar=document.getElementById('bar');
+  window.addEventListener('scroll',function(){
+    var h=document.documentElement;
+    var max=h.scrollHeight-h.clientHeight;
+    bar.style.width=(max>0?(h.scrollTop||document.body.scrollTop)/max*100:0)+'%';
+  },{passive:true});
+})();
+</script>
+</body>
+</html>
