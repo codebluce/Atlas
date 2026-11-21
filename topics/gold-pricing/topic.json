@@ -4,7 +4,7 @@
   "prototype": "concept-frame",
   "status": "active",
   "root_index_card": {
-    "progress": "4 / 4",
+    "progress": "5 / 5",
     "tag": "tag-good"
   },
   "modules": [
@@ -42,6 +42,15 @@
       "file": "manual/04-regime-check.html",
       "alias": "验证",
       "emoji": "🔬",
+      "state": "done"
+    },
+    {
+      "id": "05",
+      "order": 5,
+      "title": "定价权迁移与双层框架",
+      "file": "manual/05-marginal-buyer.html",
+      "alias": "定价权",
+      "emoji": "🧭",
       "state": "done"
     }
   ]

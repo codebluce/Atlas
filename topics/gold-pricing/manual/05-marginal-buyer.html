@@ -1,0 +1,160 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head><meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>谁在边际上买，谁就决定金价 | 黄金定价与2026年阶段复盘学习手册</title>
+<link rel="stylesheet" href="../../../design-system/style.css">
+<!-- Chart.js：本地优先，CDN 兜底（离线也能出图）。KEEP，不要删 -->
+<script src="../../../design-system/vendor/chart.umd.min.js"></script>
+<script>window.Chart||document.write('<script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.4/dist/chart.umd.min.js"><\/script>');</script>
+</head><body>
+<header class="masthead"><div class="container">
+<nav class="breadcrumb" aria-label="当前位置"><ol><li><a href="../../../index.html">Atlas</a></li><li><a href="../index.html">黄金定价与2026年阶段复盘学习手册</a></li><li aria-current="page">模块 05 · 定价权迁移</li></ol></nav>
+<span class="eyebrow">🧭 模块 05 · 定价权迁移与双层框架</span>
+<h1>谁在边际上买，谁就决定金价</h1><p class="sub">同样是中国和波兰在买，为什么 2023 年黄金"脱离美元"，2026 年又"回到美元"？答案不在买不买，而在谁掌握边际增量。</p>
+</div></header>
+<nav class="local-nav"><div class="container"><a href="#p1">① 痛点</a><a href="#p2">② 概念</a><a href="#p3">③ 机制</a><a href="#p4">④ 数据图</a><a href="#p5">⑤ 核验</a><a href="#p6">⑥ 速查</a><a href="#p7">⑦ 自测</a></div></nav>
+<div class="wrap"><div class="checklist" style="margin-top:32px"><h4>本节读完，你能做到</h4>
+<ul>
+<li>解释：为什么"存量持仓"不决定短期定价权，边际买盘才决定。</li>
+<li>区分：央行资金与 ETF / 期货资金对利率、美元的弹性差异。</li>
+<li>复述：2022–25 与 2026 两次边际买盘切换如何改变金价与美元的相关性。</li>
+<li>手算：把季度购金吨数按季均价折算为美元价值。</li>
+<li>读图：从 19 季度数据识别"量价背离"与"吨数降、金额升"的剪刀差。</li>
+<li>判断：央行的"无弹性"到底指什么，何处其实价格敏感。</li>
+<li>用双层框架：短期看美元宏观、长期看储备格局。</li>
+<li>避开：拿单一季度线性年化、把滚动相关当因果。</li>
+</ul></div>
+
+<div class="part" id="p1"><div class="part-head"><span class="part-num">01</span><h2>先说痛点：同一批央行在买，结论却完全相反</h2></div>
+<p class="part-lede">2023 年媒体说"黄金脱离了美元体系"，2026 年又说"黄金重回美元逻辑"。可全球央行这两个阶段都在买黄金——叙事为什么会掉头？</p>
+<div class="analogy"><span class="label">🏦 一个类比</span>一间教室谁当有发言权，不看出席人数，看此刻谁在举手发言。存量持仓像座无虚席的听众，边际买盘才是正在发言的人；换个发言人，全场结论就变。</div>
+<p>浙商银行 FICC 的观察是：金价"又开始跟着美国数据走了"。这不是央行停买，而是<strong class="para-lead">边际增量的主体换了</strong>。要判断定价逻辑，先问"这个季度多出来的买盘是谁"，而不是"谁手里黄金最多"。</p>
+<div class="callout warn"><span class="label">先划边界</span>本节是对一篇机构观点文章的结构化拆解 + 外部数据验证。"边际买盘决定定价权""双层逻辑"是文章的定性框架，不是行业标准化指标或经回归验证的模型；文中相关性数值为滚动统计描述，非因果检验结论。用于建立分析结构，不构成投资建议。</div></div>
+
+<div class="part" id="p2"><div class="part-head"><span class="part-num">02</span><h2>五个分论点：把文章拆成一条因果链</h2></div>
+<p class="part-lede">原文看似讲了两段行情，其实是五个层层递进的判断。先逐个认识，下一节再把它们串起来。</p>
+<div class="concept-grid">
+<div class="concept-card"><div class="c-name">边际买盘定价</div><div class="c-en">Marginal buyer sets price</div><div class="c-def">短期定价权归新增边际买盘，不归存量持仓。存量决定中枢，边际决定方向与波动。</div><div class="c-mnemonic">看谁在加仓，不看谁仓位大。</div></div>
+<div class="concept-card"><div class="c-name">反常时代</div><div class="c-en">2022–25 anomaly</div><div class="c-def">央行连续三年千吨级购金，成为最大边际买盘；战略资金对利率不敏感，对冲利空，金价与美元负相关一度衰减至接近 0。</div><div class="c-mnemonic">央行主导 → 美元逻辑失效。</div></div>
+<div class="concept-card"><div class="c-name">逻辑回归</div><div class="c-en">2026 reversion</div><div class="c-def">央行增量放缓、ETF/期货活跃度上升成为新边际主力；这类资金以美债实际利率、美元为标尺，金价重回美元定价，负相关修复至约 −0.6。</div><div class="c-mnemonic">交易资金主导 → 美元逻辑回归。</div></div>
+<div class="concept-card"><div class="c-name">双层框架</div><div class="c-en">Two-layer view</div><div class="c-def">短期看美联储/美元/美债利率，长期看央行购金与全球储备格局；两层并行，主导权随时段轮换，拒绝"脱离 vs 回归"二元对立。</div><div class="c-mnemonic">短看宏观，长看储备。</div></div>
+<div class="concept-card"><div class="c-name">尾部反转</div><div class="c-en">Tail reversal</div><div class="c-def">央行购金只是暂退幕后；一旦再现美元信用事件，央行大规模扫货将再度夺回边际定价权，打破金价与美元的相关性。</div><div class="c-mnemonic">信用事件 = 反转开关。</div></div>
+</div></div>
+
+<div class="part" id="p3"><div class="part-head"><span class="part-num">03</span><h2>串起来：从总纲到两次切换到尾部风险</h2></div>
+<p class="part-lede">五个论点不是并列，而是一条主线。用一张"证据抓手表"看每一环靠什么支撑。</p>
+<table class="tbl mobile-stack"><thead><tr><th>环节</th><th>核心问题</th><th>证据抓手</th></tr></thead><tbody>
+<tr><td data-label="环节">① 总纲</td><td data-label="核心问题">谁决定定价权？</td><td data-label="证据抓手">存量决定中枢、边际决定方向；央行增量从千吨级降至 863 吨后只能托底。</td></tr>
+<tr><td data-label="环节">② 失效</td><td data-label="核心问题">为何 2022–25 脱钩？</td><td data-label="证据抓手">2022–24 连续三年 1000+ 吨购金；金价 1614→5598；与美元负相关一度≈0。</td></tr>
+<tr><td data-label="环节">③ 回归</td><td data-label="核心问题">为何 2026 又挂钩？</td><td data-label="证据抓手">SPDR 持仓 1100→1000→1050 吨波动；负相关修复至 −0.6；金价回落至 3572。</td></tr>
+<tr><td data-label="环节">④ 双层</td><td data-label="核心问题">怎么看才不偏？</td><td data-label="证据抓手">Q3 央行仍增持 321 吨抬底；短期数据日内影响金价，长期储备格局未变。</td></tr>
+<tr><td data-label="环节">⑤ 尾部</td><td data-label="核心问题">什么会再打破？</td><td data-label="证据抓手">2022 俄储备被冻结是先例；美国债务突破 40.7 万亿美元是潜在触发。</td></tr>
+</tbody></table>
+<div class="callout info"><span class="label">大论点</span>黄金定价框架随<strong>边际买盘的性质</strong>切换：无弹性的央行战略购金主导时美元框架失效，以美元利率为标尺的交易资金主导时美元逻辑回归。央行购金从千吨级降至 863 吨的同时，金价与美元负相关从 ≈0 修复至 −0.6——数据正好印证。</div></div>
+
+<div class="part" id="p4"><div class="part-head"><span class="part-num">04</span><h2>用 19 季度真实数据检验它</h2></div>
+<span class="tag tag-real">真实数据</span>
+<p class="part-lede">下面两张图取自 WGC 2022Q1–2026Q3 的全球央行净购金与 LBMA 季均价。先看量价背离，再看年度剪刀差。</p>
+<div class="chart-card">
+  <div class="chart-title">图G1 · 央行季度净购金量与金价：量价背离</div>
+  <div class="chart-sub">蓝柱为净购金量（左轴，吨），红线为 LBMA 季均价（右轴，美元/盎司）。观察金价越高时购金吨数如何变化。</div>
+  <div class="chart-wrap"><canvas id="chartG1"></canvas></div>
+  <div class="legend-note"><span><span class="dot" style="background:#486581"></span>净购金量（吨）</span><span><span class="dot" style="background:#9c3338"></span>LBMA 季均价（USD/oz）</span></div>
+  <div class="chart-footnote">真实数据：世界黄金协会《Gold Demand Trends》2022Q1–2026Q3；季均价来自 LBMA 午盘价。2022Q1 与 2025Q4 为倒推/估算值，美元价值为自行折算。详见 <a href="../data/SOURCES.md">来源说明</a>与 <a href="../data/central-bank-verified.csv">CSV</a>。</div>
+</div>
+<div class="callout good"><span class="label">读出买家性质</span>2022Q3 金价仅 1,672 美元时单季狂买 <b>399 吨</b>（历史纪录），2026Q1 金价冲到 4,873 美元时只买 <b>56.5 吨</b>（四年最低）；Q3 金价回落到 4,262 美元，购金立刻回升到 <b>321 吨</b>。央行并非"完全无弹性"——战略方向上不因利率波动而改变增持目标，但执行节奏对价格敏感：高位放缓、回落加速。</div>
+<div class="chart-card">
+  <div class="chart-title">图G2 · 全年购金吨数 vs 美元价值：同名不同实的剪刀差</div>
+  <div class="chart-sub">蓝柱为全年净购金吨数（左轴），金线为折算美元价值（右轴，亿美元）。2026 仅含前三季度。</div>
+  <div class="chart-wrap short"><canvas id="chartG2"></canvas></div>
+  <div class="legend-note"><span><span class="dot" style="background:#486581"></span>全年净购金（吨）</span><span><span class="dot" style="background:#b08429"></span>美元价值（亿美元）</span></div>
+  <div class="chart-footnote">真实数据：WGC 各年度报告；美元价值为"吨数 × 32,150.7466 × 季均价"自行折算并已校验。2026 为前三季度，非全年。详见 <a href="../data/SOURCES.md">来源说明</a>。</div>
+</div>
+<div class="callout info"><span class="label">关键洞察</span>2022→2025 购金吨数从 1,081 降至 864 吨（<b>−20%</b>），但美元支出从 621 亿升至 955 亿（<b>+54%</b>）。央行对金价的边际支撑，在金额维度上不降反升——这正是"长线资金抬高底部"的量化证据。也提醒我们：判断托底力度要用滚动均值和价格条件，不能拿某一季线性年化。</div>
+<h3>最新季度快照（2026 Q3）</h3>
+<table class="tbl mobile-stack"><thead><tr><th>指标</th><th>数值</th><th>说明</th></tr></thead><tbody>
+<tr><td data-label="指标">净购金量</td><td data-label="数值" class="num">321 吨</td><td data-label="说明">同比 +42%，2024Q4 以来单季新高</td></tr>
+<tr><td data-label="指标">对应美元价值</td><td data-label="数值" class="num">≈440 亿美元</td><td data-label="说明">按季均价 4,262 美元折算</td></tr>
+<tr><td data-label="指标">已公布部分</td><td data-label="数值" class="num">120 吨</td><td data-label="说明">中国 +63、波兰 +40 主导</td></tr>
+<tr><td data-label="指标">未披露估算</td><td data-label="数值" class="num">≈201 吨（63%）</td><td data-label="说明">WGC 基于贸易数据与调研估算</td></tr>
+</tbody></table></div>
+
+<div class="part" id="p5"><div class="part-head"><span class="part-num">05</span><h2>核验：把美元价值手算一遍</h2></div>
+<p class="part-lede">机构不直接公布"央行购金花了多少钱"，但可以算。关键是单位换算别错。</p>
+<div class="method-step"><div class="m-num">1</div><div class="m-body"><h4>先定换算常数</h4>1 公吨黄金 = 32,150.7466 金衡盎司。这是把"吨"接到"美元/盎司"的唯一桥梁。<div class="calc-box"><span class="eq">吨数 × 32,150.7466 × 季均价 = 美元价值</span></div></div></div>
+<div class="method-step"><div class="m-num">2</div><div class="m-body"><h4>代入 2026 Q3</h4>321.2 吨 × 32,150.7466 × 4,262 美元 ≈ 440 亿美元。<div class="calc-box"><span class="eq">321.2 × 32,150.7466 × 4,262 ÷ 10⁸ ≈ 440.1（亿美元）</span></div></div></div>
+<div class="method-step"><div class="m-num">3</div><div class="m-body"><h4>用全市场数校验</h4>同一公式套 WGC 公布的 Q3 全季黄金总需求 1,369 吨，得 1,876 亿美元，与 WGC 直接公布的 1,880 亿仅差 0.2%。说明折算口径可靠。<div class="calc-box"><span class="eq">1,369 × 32,150.7466 × 4,262 ÷ 10⁸ ≈ 1,876 亿 ≈ 1,880 亿（WGC）</span></div></div></div>
+<div class="case-step"><div class="step-badge">1</div><div class="step-body"><h4>锁定口径</h4>购金量用 WGC 修订值，金价用 LBMA 午盘季均价。 <span class="result">→ 跨期可比</span></div></div>
+<div class="case-step"><div class="step-body"><h4>留意修订</h4>2024Q1 初值 289.7 被修订为 309.9 吨；统一取最新值。 <span class="result">→ 避免版本混用</span></div></div>
+<div class="case-step"><div class="step-body"><h4>拆开已公布与估算</h4>Q3 的 321 吨里只有 120 吨公开，63% 是估算。 <span class="result">→ 不把估算当事实验证</span></div></div>
+<div class="case-step"><div class="step-body"><h4>识别价格敏感</h4>金价高的季度买得少，低的季度买得多。 <span class="result">→ "无弹性"只限战略方向</span></div></div>
+<div class="case-step"><div class="step-body"><h4>拒绝单季年化</h4>单季在 56.5–417 吨间波动 7.4 倍；WGC 预测全年 848 吨。 <span class="result">→ 用滚动均值</span></div></div></div>
+
+<div class="part" id="p6"><div class="part-head"><span class="part-num">06</span><h2>本节速查表</h2></div><div class="cheat-grid">
+<div class="cheat-card"><div class="cc-name">定价权</div><div class="cc-detail"><b>定义：</b>短期归边际买盘。<b>用途：</b>判断当前谁主导金价。</div></div>
+<div class="cheat-card"><div class="cc-name">存量 vs 边际</div><div class="cc-detail"><b>存量：</b>决定中枢。<b>边际：</b>决定方向与波动。</div></div>
+<div class="cheat-card"><div class="cc-name">央行资金</div><div class="cc-detail"><b>性质：</b>战略配置。<b>弹性：</b>方向刚性、节奏价格敏感。</div></div>
+<div class="cheat-card"><div class="cc-name">交易资金</div><div class="cc-detail"><b>性质：</b>ETF/期货/对冲基金。<b>标尺：</b>美债实际利率、美元。</div></div>
+<div class="cheat-card"><div class="cc-name">负相关修复</div><div class="cc-detail"><b>反常期：</b>≈0。<b>2026：</b>回到约 −0.6。</div></div>
+<div class="cheat-card"><div class="cc-name">双层框架</div><div class="cc-detail"><b>短期：</b>美联储/美元/利率。<b>长期：</b>央行购金/储备格局。</div></div>
+<div class="cheat-card"><div class="cc-name">吨→美元</div><div class="cc-detail"><b>公式：</b>吨 × 32,150.7466 × 季均价。<b>校验：</b>1,369 吨→1,876 亿。</div></div>
+<div class="cheat-card"><div class="cc-name">量价背离</div><div class="cc-detail"><b>发现：</b>价高买少、价低买多。<b>提醒：</b>勿当完全无弹性。</div></div>
+<div class="cheat-card"><div class="cc-name">核验红线</div><div class="cc-detail">单季年化 / 滚动相关当因果 / 把估算当公开事实</div></div>
+</div></div>
+
+<div class="part" id="p7"><div class="part-head"><span class="part-num">07</span><h2>自测：检验一下是不是真的懂了</h2></div>
+<div class="quiz-item"><div class="q-title">第 1 题 · 概念辨析</div><p style="margin:0;">为什么"持仓最多的主体"不一定是定价主导者？</p><details><summary>查看解析</summary><div class="answer"><b>定价权归边际增量买盘。</b>存量决定价格中枢，但短期方向和波动由这一刻新增/减少买入的主体决定。<a href="#p1">↩ 回看</a></div></details></div>
+<div class="quiz-item"><div class="q-title">第 2 题 · 机制复述</div><p style="margin:0;">2022–25 金价与美元负相关为何衰减到接近 0？</p><details><summary>查看解析</summary><div class="answer"><b>央行连续三年千吨级购金成为边际主力。</b>战略资金对利率不敏感，利率利空被实物买盘对冲。<a href="#p2">↩ 回看</a></div></details></div>
+<div class="quiz-item"><div class="q-title">第 3 题 · 计算题</div><p style="margin:0;">2026Q3 净购金 321.2 吨、季均价 4,262 美元/盎司，折算美元价值约多少？（1 吨=32,150.7466 盎司）</p><details><summary>查看解析</summary><div class="answer"><b>约 440 亿美元。</b>321.2×32,150.7466×4,262÷10⁸≈440.1。<a href="#p5">↩ 回看</a></div></details></div>
+<div class="quiz-item"><div class="q-title">第 4 题 · 信号判读</div><p style="margin:0;">金价 4,873 美元时央行只买 56.5 吨，回落到 4,262 时买 321 吨，说明什么？</p><details><summary>查看解析</summary><div class="answer"><b>央行是战略性价格敏感买家。</b>"无弹性"指战略方向不因利率改变，但执行节奏高位放缓、回落加速。<a href="#p4">↩ 回看</a></div></details></div>
+<div class="quiz-item"><div class="q-title">第 5 题 · 分析题</div><p style="margin:0;">有人说"2026Q3 买了 321 吨，年化 1,284 吨，央行托底空前强劲"，哪里不对？</p><details><summary>查看解析</summary><div class="answer"><b>单季不能线性年化。</b>单季在 56.5–417 吨间波动 7.4 倍；WGC 全年预测仅 848 吨。且 321 吨中 63% 是估算，应用滚动均值结合价格条件判断。<a href="#p4">↩ 回看</a></div></details></div></div>
+
+<div class="summary-box"><h3>本节小结</h3><p>金价的短期叙事，问的是"谁在边际上买"：央行主导则美元框架失效，交易资金主导则美元逻辑回归；长期看央行购金仍在抬高底部。19 季度数据既印证了这套双层框架，也提醒我们央行买得"有节奏"——高位放缓、回落加速，不能简单年化。</p><div class="mnemonic-line">存量定中枢，边际定方向；短看美元，长看储备。</div></div>
+<div class="next-card"><div><div class="n-label">下一步 · 模块 05 完结</div><div class="n-title"><a href="../index.html">回到本课题目录 →</a></div></div><div class="n-arrow">→</div></div>
+<p style="text-align:center"><a href="../index.html">← 返回黄金定价与2026年阶段复盘学习手册目录</a></p>
+<div class="page-footer"><span>黄金定价与2026年阶段复盘学习手册 · 模块 05 · 拆解底本：浙商银行FICC（2026-11-10）</span>
+<span>真实数据来自 WGC《Gold Demand Trends》，口径见 <a href="../data/SOURCES.md">来源说明</a> · 定性框架非投资建议</span></div></div>
+
+<script>
+// 全局 defaults 统一配置（§6.2）
+const gridColor = '#EFE7DA';
+Chart.defaults.font.family = "-apple-system,BlinkMacSystemFont,'PingFang SC','Microsoft YaHei',sans-serif";
+Chart.defaults.font.size = 12.5;
+Chart.defaults.color = '#5B5147';
+
+const Q=['22Q1','22Q2','22Q3','22Q4','23Q1','23Q2','23Q3','23Q4','24Q1','24Q2','24Q3','24Q4','25Q1','25Q2','25Q3','25Q4','26Q1','26Q2','26Q3'];
+const T=[84.8,179.9,399.3,417.2,286.2,173.6,357.7,219.6,309.9,211.5,199.5,365.1,241.7,172,219.9,230,56.5,288.9,321.2];
+const P=[1938.9,1941.8,1671.7,1797.2,1889.9,1975.9,1928.5,1971.5,2069.8,2338.6,2474.3,2663.4,2859.6,3280.4,3456.5,4150,4872.9,4506.3,4262];
+
+new Chart(document.getElementById('chartG1'),{
+  data:{labels:Q,datasets:[
+    {type:'bar',label:'净购金量',data:T,backgroundColor:'#486581',yAxisID:'y',borderRadius:2,barPercentage:.72},
+    {type:'line',label:'季均价',data:P,borderColor:'#9c3338',backgroundColor:'#9c3338',borderWidth:2,borderDash:[5,4],pointRadius:0,pointHoverRadius:4,tension:.25,yAxisID:'y1'}
+  ]},
+  options:{responsive:true,maintainAspectRatio:false,interaction:{mode:'index',intersect:false},
+    plugins:{legend:{display:false},tooltip:{callbacks:{label:c=>c.dataset.label==='季均价'?'季均价 $'+Math.round(c.parsed.y).toLocaleString():c.dataset.label+' '+c.parsed.y+' 吨'}}},
+    scales:{
+      x:{ticks:{autoSkip:false,maxRotation:55,minRotation:45,font:{size:10}},grid:{display:false}},
+      y:{position:'left',beginAtZero:true,max:480,title:{display:true,text:'吨'},ticks:{font:{size:11}},grid:{color:gridColor}},
+      y1:{position:'right',min:1200,max:5400,title:{display:true,text:'USD/oz'},ticks:{font:{size:11},callback:v=>'$'+(v/1000).toFixed(1)+'k'},grid:{display:false}}
+    }}
+});
+
+const YL=['2022','2023','2024','2025','2026*'];
+const YT=[1081.2,1037.1,1086,863.6,666.6];
+const YV=[621,645,837,955,947];
+new Chart(document.getElementById('chartG2'),{
+  data:{labels:YL,datasets:[
+    {type:'bar',label:'吨数',data:YT,backgroundColor:'#486581',yAxisID:'y',borderRadius:4,barPercentage:.55},
+    {type:'line',label:'美元价值',data:YV,borderColor:'#b08429',backgroundColor:'#b08429',borderWidth:2.5,pointRadius:4,pointHoverRadius:6,tension:.2,yAxisID:'y1'}
+  ]},
+  options:{responsive:true,maintainAspectRatio:false,interaction:{mode:'index',intersect:false},
+    plugins:{legend:{display:false},tooltip:{callbacks:{label:c=>c.dataset.label==='吨数'?Math.round(c.parsed.y)+' 吨':Math.round(c.parsed.y)+' 亿美元'}}},
+    scales:{
+      x:{ticks:{font:{size:12}},grid:{display:false}},
+      y:{position:'left',beginAtZero:true,max:1300,title:{display:true,text:'吨'},ticks:{font:{size:11}},grid:{color:gridColor}},
+      y1:{position:'right',beginAtZero:true,max:1100,title:{display:true,text:'亿美元'},ticks:{font:{size:11}},grid:{display:false}}
+    }}
+});
+</script>
+</body></html>
