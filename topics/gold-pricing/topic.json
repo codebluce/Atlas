@@ -4,7 +4,7 @@
   "prototype": "concept-frame",
   "status": "active",
   "root_index_card": {
-    "progress": "5 / 5",
+    "progress": "7 / 7",
     "tag": "tag-good"
   },
   "modules": [
@@ -51,6 +51,24 @@
       "file": "manual/05-marginal-buyer.html",
       "alias": "定价权",
       "emoji": "🧭",
+      "state": "done"
+    },
+    {
+      "id": "06",
+      "order": 6,
+      "title": "投资实操指引",
+      "file": "manual/06-investment-guide.html",
+      "alias": "实操",
+      "emoji": "🧭",
+      "state": "done"
+    },
+    {
+      "id": "07",
+      "order": 7,
+      "title": "投行框架深度拆解",
+      "file": "manual/07-investment-banks.html",
+      "alias": "投行",
+      "emoji": "🏦",
       "state": "done"
     }
   ]

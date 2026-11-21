@@ -1,0 +1,542 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head><meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>三大投行黄金分析框架深度拆解 | 黄金定价与2026年阶段复盘学习手册</title>
+<link rel="stylesheet" href="../../../design-system/style.css">
+<script src="../../../design-system/vendor/chart.umd.min.js"></script>
+<script>window.Chart||document.write('<script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.4/dist/chart.umd.min.js"><\/script>');</script>
+</head><body>
+<header class="masthead"><div class="container">
+<nav class="breadcrumb" aria-label="当前位置"><ol><li><a href="../../../index.html">Atlas</a></li><li><a href="../index.html">黄金定价与2026年阶段复盘学习手册</a></li><li aria-current="page">三大投行黄金分析框架深度拆解</li></ol></nav>
+<span class="eyebrow">🧭 独立章节 · 三大投行黄金分析框架深度拆解</span>
+<h1>三大投行黄金分析框架深度拆解</h1><p >原文完整保留，仅做 Atlas 视觉统一。数据与观点来源见章末。</p>
+</div></header>
+<nav class="local-nav"><div class="container"><a href="#overview">导览</a><a href="#main">正文</a><a href="#cheat">速查</a><a href="#quiz">自测</a></div></nav>
+<div class="wrap">
+<div class="checklist" style="margin-top:32px"><h4>本章内容</h4><ul>
+<li>保留原报告完整结构、论点、数据与图表，不做删减式改写。</li>
+<li>可直接对照原文查阅：核心论点、逻辑链条、论据数据、实操规则。</li>
+<li>章末附速查卡与自测题，便于复习；正文不被教学框架挤压。</li>
+</ul></div>
+<div class="part" id="overview"><div class="part-head"><span class="part-num">00</span><h2>先说痛点：为什么需要这套完整方法论</h2></div>
+<p class="part-lede">本章为独立报告章节，完整保留原文。下方"正文"即报告原文全貌；速查与自测为附加复习工具。</p></div>
+<div id="main">
+
+
+<header>
+  <div >方法论深修 · 从模型到实操</div>
+  <h1>三大投行黄金分析框架深度拆解<br><span >高盛 · 摩根大通 · 摩根士丹利：它们到底怎么分析，你怎么借鉴</span></h1>
+  <div style="display:flex;flex-wrap:wrap;gap:8px 22px;color:var(--tx3);font-size:12.5px;margin-top:18px">
+    <span><b>信息核验</b>　2026-11-21</span>
+    <span><b>primary 信源</b>　高盛 Gold Market Primer、J.P. Morgan Global Research、摩根士丹利 2027 展望</span>
+    <span><b>定位</b>　方法论学习材料，非投资建议</span>
+  </div>
+</header>
+
+<div style="background:var(--bg2);border:1px solid var(--bd);border-radius:12px;padding:18px 24px;margin:28px 0 40px">
+  <div style="font-size:12px;color:var(--tx3);letter-spacing:1px;margin-bottom:10px">目录</div>
+  <a href="#s0">怎么读这份文档</a>
+  <a href="#s1">一 · 高盛：信念买家定价模型</a>
+  <a href="#sA" style="color:var(--gold2)">附 · GS Nowcast 深度展开</a>
+  <div style="font-size:12px;color:var(--tx3);margin:2px 0 6px 0">　└ <a href="#a1">A.1 原理</a> · <a href="#a2">A.2 两组件</a> · <a href="#a3">A.3 各年验证</a> · <a href="#a4">A.4 失效与修订</a> · <a href="#a5">A.5 个人借用</a></div>
+  <a href="#s2">二 · 摩根大通：替代数据+制度框架</a>
+  <a href="#s3">三 · 摩根士丹利：残差归因+三情景</a>
+  <a href="#s4">四 · 三方对照与方法论迁移</a>
+  <a href="#s5">五 · 你的实操清单</a>
+  <a href="#s6">六 · 信源与引用规范</a>
+</div>
+
+<section id="s0">
+  <div class="callout" style="background:rgba(224,164,74,.08);border:1px solid rgba(224,164,74,.3)">
+    <span >怎么读：三个投行 = 三种不同的分析哲学</span>
+    <strong>高盛</strong>造了一个可回归、可预测的<strong>定价机器</strong>（谁在买决定价格，量化到"每 100 吨=涨 1.7%"）；<strong>摩根大通</strong>做的是<strong>制度变迁+替代数据</strong>的侦探工作（公开数据不可信，用海关和炼厂流量还原真相）；<strong>摩根士丹利</strong>用的是<strong>模型残差+情景树</strong>（先证明传统模型失效，再用三情景覆盖不确定性）。<br><br>
+    你不需要三套全学。<strong>最值得个人投资者迁移的是高盛的流量框架</strong>——它透明、可复现、能直接用公开数据算。另两家提供的是"如何识别数据陷阱"和"如何做情景规划"的思维工具。文末有一张统一的实操清单。
+  </div>
+</section>
+
+<!-- ============ 高盛 ============ -->
+<section id="s1">
+  <div style="display:flex;align-items:baseline;gap:14px;margin-bottom:10px;flex-wrap:wrap"><span style="font-size:13px;color:var(--gold);font-weight:600;letter-spacing:1px">PART 01</span><h2>高盛：信念买家定价模型</h2></div>
+  <p style="color:var(--tx3);font-size:13.5px;margin-bottom:24px">三家中最完整、最可复现的一套。来自高盛贵金属研究 Lina Thomas 与 Daan Struyven 的 <em>Gold Market Primer</em>（2025-08-17），方法论几乎全公开。</p>
+
+  <div style="padding:4px 18px 18px;border-top:3px solid var(--gold)">
+    <div style="padding:20px 0 14px;border-bottom:1px solid var(--bd);margin-bottom:8px"><div style="font-size:20px;font-weight:600;color:var(--tx)"> Goldman Sachs · Gold Market Primer</div><div style="color:var(--tx3);font-size:13px;margin-top:4px">核心命题：黄金不被"消费"，而是被"累积"——所以供需平衡表无用，所有权转移才是定价机制</div></div>
+
+    <h4>第 1 步：重新定义黄金市场——不是商品，是存量博弈</h4>
+    <p>高盛的开篇论断：<strong>几乎历史上开采出的每一盎司黄金都还存在</strong>，每年新增矿产量只占存量约 1%，且价格无弹性。石油、天然气靠"产量 vs 消费"定价，但黄金不消耗、只被持有——<strong>市场通过所有权的转移来出清</strong>，价格反映的是"谁更愿意持有、谁愿意放手"。这一步是所有后续模型的地基：它解释了为什么传统供需平衡表会误判。</p>
+    <div style="background:var(--card2);border:1px dashed var(--bd2);border-radius:10px;padding:14px 18px;margin:14px 0;font-family:Menlo,Consolas,monospace;font-size:13px;color:var(--gold2);text-align:center">信念买家净买入 + 机会买家净买入 = 存量抛售 + 矿产量<br>→ 由于矿产量稳定、机会买家极少净卖出<br>→ 价格 ≈ f(信念买家净买入 ÷ 可供购买的黄金)</div>
+
+    <h4>第 2 步：把买家分成两类——谁定方向，谁定幅度</h4>
+    <table>
+      <thead><tr><th>买家类型</th><th>成员</th><th>行为特征</th><th>对价格的作用</th></tr></thead>
+      <tbody>
+        <tr><td><b>信念买家</b><br>Conviction buyers</td><td>央行、黄金 ETF、投机者（COMEX 管理基金净多头）</td><td>基于宏观或避险信念买入，<b>不看价格</b>；资金雄厚、行动果断</td><td><strong>定方向</strong>（directional force）</td></tr>
+        <tr><td><b>机会买家</b><br>Opportunistic buyers</td><td>新兴市场家庭（实物金饰、金条）</td><td>价格合适才买，"低吸高退"但极少净卖出</td><td><strong>定幅度</strong>：跌时托底、涨时形成阻力</td></tr>
+      </tbody>
+    </table>
+    <p>高盛用曼哈顿公寓作类比：假设没有新建/拆除，100 套成交对应 100 套卖出，关键是"谁拿到了钥匙"——愿意不惜代价入住的信念买家拿走房源，价格就涨；他们离场，价格由机会买家接管。</p>
+
+    <h4>第 3 步：核心量化规则——把定性框架变成可计算的数值</h4>
+    <div style="background:var(--card2);border:1px dashed var(--bd2);border-radius:10px;padding:14px 18px;margin:14px 0;font-family:Menlo,Consolas,monospace;font-size:13px;color:var(--gold2);text-align:center">每 100 吨信念买家净买入 ≈ 金价上涨 1.7%<br>（OLS 回归，95% 置信区间 1.5%–2.0%）</div>
+    <ul style="list-style:none;margin:10px 0">
+      <li><b>解释力</b>：信念买家流量（央行+ETF+投机）解释月度金价变动的约 <strong>70%</strong>。</li>
+      <li><b>样本</b>：回归用 2014 年 1 月–2024 年 8 月月度数据；另一组检验用 2007 年 1 月–2025 年 5 月。</li>
+      <li><b>为什么三者系数相近</b>：伦敦 OTC 和纽约 COMEX 通过 EFP 价差紧密联动——<strong>在伦敦买入的每一吨，无论买家类型，对价格影响相近</strong>。这让他们可以合并成一个变量。</li>
+      <li><b>验证案例</b>：2023 年信念流量 +975 吨 → 模型预测涨 18%（区间 15–21%），实际 +15%；2021 年 −209 吨 → 预测 −4%，实际 −4%。<strong>传统供需表会把 2021 年误读为看涨</strong>（机会需求大、矿产略降），但信念流量为负，金价实跌。</li>
+    </ul>
+    <div style="background:var(--card);border:1px solid var(--bd);border-radius:14px;padding:22px 24px 16px;margin:22px 0">
+      <div style="font-size:15px;font-weight:600;margin-bottom:4px">模型的历史验证：信念净流量 vs 金价实际涨跌</div>
+      <div style="font-size:12.5px;color:var(--tx3);margin-bottom:16px">三个对照年份：2023 大涨、2021 小跌、2018 持平。柱=信念净流量（吨），线=金价年度涨跌（%）。</div>
+      <div style="height:290px;height:300px"><canvas id="cGS"></canvas></div>
+    </div>
+
+    <h4>第 4 步：分别预测三类信念买家——这是" forecasting gold = forecasting conviction holdings"</h4>
+    <table>
+      <thead><tr><th>买家</th><th>驱动变量</th><th>量化规则 / 建模方法</th></tr></thead>
+      <tbody>
+        <tr><td><b>ETF</b></td><td>美国政策利率（用 2 年期美债收益率代理利率预期）</td><td>VAR 模型：<strong>每降息 25bp → 约 60 吨 ETF 需求，摊到 6 个月</strong>；且降息"实际发生后"才流入，不提前反应。衰退/压力期会持续超调</td></tr>
+        <tr><td><b>央行</b></td><td>货币信用（财政可持续性担忧）+ 地缘风险（制裁风险）</td><td>看长周期：储备体系信心下降时买入，信心恢复时放缓。2022 俄储备被冻结后购金<b>翻五倍</b>。用 GS Nowcast 追踪未披露部分</td></tr>
+        <tr><td><b>投机者</b></td><td>—</td><td><strong>视为噪声</strong>：COMEX 净多头（CFCDUMMN）围绕长期均值波动、会均值回归。极端仓位=短期波动风险，<b>不视为公允价值变化</b>，预测时假设回归均值</td></tr>
+      </tbody>
+    </table>
+    <p style="font-size:12px;color:var(--tx3);border-left:2px solid var(--bd2);padding-left:12px;margin:12px 0;font-style:normal">高盛的真正洞察：著名的"利率—黄金负相关"其实主要来自 ETF 与利率的高度相关（ETF 2000 年代中期才出现）。2022 年"相关性破裂"不是利率逻辑失效，而是<b>央行购金五倍增长压倒了 ETF 流出</b>，重置了利率与金价水平之间的关系。</p>
+
+    <h4>第 5 步：用替代数据解决"央行买盘看不见"的问题——GS Nowcast</h4>
+    <p>央行没有义务完整、及时上报购金。高盛用<strong>英国海关数据</strong>构建实时 nowcast，逻辑链条非常精巧：</p>
+    <div style="display:flex;flex-wrap:wrap;align-items:center;gap:8px;margin:16px 0;font-size:13px">
+      <span style="background:rgba(224,164,74,.08);border-color:rgba(224,164,74,.4);color:var(--gold2)">伦敦 OTC 交易 400oz 大金条</span><span style="text-align:center;color:var(--tx3);padding:4px 0;line-height:1">→</span>
+      <span style="background:rgba(224,164,74,.08);border-color:rgba(224,164,74,.4);color:var(--gold2)">英国无金矿/无认证精炼厂</span><span style="text-align:center;color:var(--tx3);padding:4px 0;line-height:1">→</span>
+      <span  style="background:rgba(224,164,74,.08);border-color:rgba(224,164,74,.4);color:var(--gold2)">所有伦敦交易的黄金必靠进口</span><span style="text-align:center;color:var(--tx3);padding:4px 0;line-height:1">→</span>
+      <span style="background:rgba(224,164,74,.08);border-color:rgba(224,164,74,.4);color:var(--gold2)">留在英国=金库；运出英国=央行金库或瑞士改铸</span>
+    </div>
+    <p>Nowcast 两个组件：① <strong>英国对全球（除瑞士）的金条出口</strong>——直接运往央行金库的代理，2022 年中后激增；② <strong>英瑞报告差额</strong>（英国对瑞士出口 vs 瑞士自英国进口，2022 年后出现背离）——瑞士严格遵守主权黄金豁免、英国可能不严格，差额即"经伦敦买入的央行黄金"。对中国，nowcast 比央行报告"启动更早、数值更高、持续更久"。</p>
+
+    <h4>第 6 步：把这套框架转成你的预测公式</h4>
+    <div style="background:var(--card2);border:1px dashed var(--bd2);border-radius:10px;padding:14px 18px;margin:14px 0;font-family:Menlo,Consolas,monospace;font-size:13px;color:var(--gold2);text-align:center">预期金价涨幅% ≈ 1.7% × (预期信念净买入吨数 ÷ 100)<br>信念净买入 = 央行(Nowcast/公开) + ETF(利率推算) + 投机(取均值=0)</div>
+    <p>高盛 2025-09 的实例：预测 2026 年中 4,000 美元（当时 3,772，+6%），逻辑是"央行结构性需求 + 美联储降息支撑 ETF"；并说明<strong>上行风险大于下行</strong>，因 COMEX 净多头处 2014 年来第 73 百分位（极端意味着战术回调风险，但不改变公允价值）。</p>
+
+    <div class="callout" style="background:rgba(224,164,74,.08);border:1px solid rgba(224,164,74,.3)">
+      <span >你可以直接抄走的方法</span>
+      ① <strong>别用供需平衡表判断金价</strong>，用"谁在净买入"；② <strong>把 1.7%/100 吨当尺子</strong>：看到季度央行+ETF 净流入 300 吨，可粗估约 +5% 的价格支撑；③ <strong>把投机仓位极端值当波动信号、不当趋势信号</strong>；④ <strong>降息 25bp≈60 吨 ETF（6 个月摊）</strong>是可用的换算；⑤ 央行数据看不全时，学它找<strong>替代数据交叉验证</strong>（个人可用瑞士海关、中国进口、伦敦金库变动）。
+    </div>
+    <div style="font-size:12px;color:var(--tx3);border-left:2px solid var(--bd2);padding-left:12px;margin:12px 0;font-style:normal">信息源（primary）：Goldman Sachs Global Investment Research, <em>Gold Market Primer / Precious Analyst</em>, Lina Thomas & Daan Struyven, 2025-08-17（PDF 原文，含 Exhibit 5–19、OLS 系数与置信区间、GS Nowcast 方法、VAR 模型）。Goldman Sachs, "Gold Is Forecast to Rise 6% by the Middle of 2026", 2025-09-24。Kitco 转载报道 2025-10-01。媒体转述（后期目标价调整）：gold678.com 2026-09、goldinvest.de 2026-11、证券时报 stcn.com 2026-11。</div>
+  </div>
+</section>
+
+
+<!-- ============ 附注A：GS Nowcast ============ -->
+<section id="sA" style="border-top:2px dashed var(--bd2);padding-top:30px;margin-top:10px">
+  <div style="display:flex;align-items:baseline;gap:14px;margin-bottom:10px;flex-wrap:wrap"><span style="font-size:13px;color:var(--gold);font-weight:600;letter-spacing:1px;color:var(--purple)">附注 A</span><h2>附注：GS Nowcast —— 高盛如何"看见"央行暗中买金</h2></div>
+  <p style="color:var(--tx3);font-size:13.5px;margin-bottom:24px">这是高盛定价框架中最具巧思、也最被市场关注的一环，正文第 1 节曾提及。作为附注完整展开：机制原理、两个组件、各年套用与验证、以及 2025 年模型失效与 2026 年修订。信源为高盛 Gold Market Primer 原始 PDF 的 Exhibit 12/13/14 图表。</p>
+</section>
+<section id="a0">
+  <div class="callout" style="background:rgba(224,164,74,.08);border:1px solid rgba(224,164,74,.3)">
+    <span >Nowcast 要解决的核心问题</span>
+    央行购金没有强制披露规则（向 IMF 报告是自愿的），官方数据<strong>既不完整、又滞后两个月</strong>。结果就是：你看到的"央行这个季度只买了 16 吨"可能是假象，真实买盘或许有 244 吨。高盛的 Nowcast 就是<strong>用贸易数据倒推央行真实购金</strong>的一套方法——它在 2022 年后成为黄金定价研究里最著名的"另类数据"案例。
+  </div>
+</section><section id="a1">
+  <div style="display:flex;align-items:baseline;gap:14px;margin-bottom:10px;flex-wrap:wrap"><span style="font-size:13px;color:var(--gold);font-weight:600;letter-spacing:1px">附注 A.1</span><h2>底层原理：为什么英国海关数据能"看见"主权黄金</h2></div>
+  <p style="color:var(--tx3);font-size:13.5px;margin-bottom:24px">这是整个方法的地基，逻辑链条有四步，缺一不可。</p>
+
+  <div style="background:var(--card);border:1px solid var(--bd);border-radius:14px;padding:20px 24px;margin:16px 0">
+    <div style="display:flex;flex-direction:column;gap:0;margin:14px 0">
+      <div style="background:rgba(224,164,74,.08);border-color:rgba(224,164,74,.4);color:var(--gold2)"><span style="font-weight:600;color:var(--tx);display:block;margin-bottom:2px">前提 1 · 伦敦是全球实物黄金定价与清算中心</span>伦敦 OTC 市场交易 400 盎司大金条（约一块砖大小），主权买家（央行）主要在这里交易；全球实物 ETF 的黄金也几乎都存于伦敦金库。</div>
+      <div style="text-align:center;color:var(--tx3);padding:4px 0;line-height:1">↓</div>
+      <div style="background:rgba(224,164,74,.08);border-color:rgba(224,164,74,.4);color:var(--gold2)"><span style="font-weight:600;color:var(--tx);display:block;margin-bottom:2px">前提 2 · 英国几乎不产金、也没有能造 400oz 金条的认证精炼厂</span>因此，任何在伦敦 OTC 交易的黄金<strong>必然先进口到英国</strong>——这给了高盛一个可观测的入口。</div>
+      <div style="text-align:center;color:var(--tx3);padding:4px 0;line-height:1">↓</div>
+      <div style="background:rgba(224,164,74,.08);border-color:rgba(224,164,74,.4);color:var(--gold2)"><span style="font-weight:600;color:var(--tx);display:block;margin-bottom:2px">前提 3 · 入境黄金只有两个去向</span>留在英国 = 存进伦敦金库（ETF、英格兰银行、机构）；离开英国 = 运往瑞士改铸成小规格零售金条，或直接运往<strong>各国央行金库</strong>。</div>
+      <div style="text-align:center;color:var(--tx3);padding:4px 0;line-height:1">↓</div>
+      <div  style="background:rgba(224,164,74,.08);border-color:rgba(224,164,74,.4);color:var(--gold2)"><span style="font-weight:600;color:var(--tx);display:block;margin-bottom:2px">关键推论 · 英国海关"实际上"记录了主权交易</span>国际规则本应把主权黄金排除在贸易数据之外，但分类由海关官员自行判断——央行与非主权方在伦敦 OTC 的交易，常常难以识别为主权黄金，于是<strong>仍被计入贸易统计</strong>。</div>
+    </div>
+  </div>
+
+  <h3>证明这一步的关键图表：Exhibit 13</h3>
+  <div style="background:var(--card);border:1px solid var(--bd);border-radius:14px;padding:22px 24px 16px;margin:22px 0">
+    <div style="font-size:15px;font-weight:600;margin-bottom:4px">Exhibit 13 · 伦敦金库持仓变化 vs 英国净进口（2017–2026，吨）</div>
+    <div style="font-size:12.5px;color:var(--tx3);margin-bottom:16px">高盛的论证：两条线"几乎完美重合"。如果主权交易真的被系统性地从海关数据中排除，这种吻合是不可能的——因为伦敦金库流出包含了大量央行买盘，而英国净进口若不含主权交易，两者不该对得上。</div>
+    <div style="height:290px;height:300px"><canvas id="cEx13"></canvas></div>
+    <div style="font-size:12px;color:var(--tx3);border-left:2px solid var(--bd2);padding-left:12px;margin:12px 0;font-style:normal">据原图复绘（示意）。原图来源：LBMA, UK HMRC, Goldman Sachs Global Investment Research。纵轴 -200 至 300 吨/月，两条线在 2017–2026 大部分月份高度重合，个别月份（如 2020、2021、2024）出现较大波动。</div>
+  </div>
+  <div class="callout" style="background:rgba(91,156,246,.06);border:1px solid rgba(91,156,246,.25)">
+    <span >这个"反证法"是整个方法最聪明的地方</span>
+    高盛没有直接假设"海关数据含主权交易"，而是用<strong>一个可独立观测的量（伦敦金库变动）去验证另一个量（海关净进口）</strong>。两者高度吻合 → 反推出海关数据确实包含央行买盘。这是典型的"用可观测代理验证不可观测变量"的研究方法。
+  </div>
+</section><section id="a2">
+  <div style="display:flex;align-items:baseline;gap:14px;margin-bottom:10px;flex-wrap:wrap"><span style="font-size:13px;color:var(--gold);font-weight:600;letter-spacing:1px">附注 A.2</span><h2>两个组件的构造</h2></div>
+  <p style="color:var(--tx3);font-size:13.5px;margin-bottom:24px">确认原理成立后，高盛把 Nowcast 拆成两块，分别捕捉"直接运走"和"借道瑞士"两类央行买盘。</p>
+
+  <div style="grid-template-columns:1fr">
+    <div style="background:var(--card);border:1px solid var(--bd);border-radius:12px;padding:18px 20px">
+      <div >COMPONENT 1</div>
+      <div style="font-size:15px;font-weight:600;margin:6px 0 10px;color:var(--tx)">英国对全球（除瑞士）的金条出口</div>
+      <p><strong>捕捉什么</strong>：直接运往各国央行金库的黄金。<br>
+      <strong>为什么除瑞士</strong>：瑞士是改铸中心，运往瑞士的多是零售需求，剔除后才能 isolates 主权直接采购。<br>
+      <strong>历史表现</strong>：2022 年中后激增，且主要流向新兴市场——正对应俄储备被冻结后 EM 央行的"本土持有、不可被冻结"需求。<br>
+      <strong>中国案例</strong>：Nowcast 与 PBoC 报告Pattern 相似，但<strong>启动更早、读数更高、持续更久</strong>。</p>
+    </div>
+    <div style="background:var(--card);border:1px solid var(--bd);border-radius:12px;padding:18px 20px">
+      <div >COMPONENT 2</div>
+      <div style="font-size:15px;font-weight:600;margin:6px 0 10px;color:var(--tx)">英瑞报告差额（UK–Switzerland gap）</div>
+      <p><strong>捕捉什么</strong>：经伦敦买入、但借道瑞士流转/储存的央行黄金。<br>
+      <strong>原理</strong>：英国对瑞士出口 vs 瑞士自英国进口，理论上应相等；但 2022 年后两者<strong>出现背离</strong>。原因是瑞士严格遵守主权黄金豁免（不记录），英国可能不严格（记录）。<br>
+      <strong>差额的含义</strong>：这部分"对不上的账"就是被隐匿的主权买盘。<br>
+      <strong>验证图</strong>：Exhibit 14 右图，红蓝线 2022 后明显分叉。</p>
+    </div>
+  </div>
+
+  <div style="background:var(--card2);border:1px dashed var(--bd2);border-radius:10px;padding:14px 18px;margin:14px 0;font-family:Menlo,Consolas,monospace;font-size:13px;color:var(--gold2);text-align:center">GS Nowcast = 英国对(全球−瑞士)金条出口 + 英瑞报告差额<br>　　　　　　+ (2026 修订后)伦敦金库流出 − 英国净出口的缺口</div>
+
+  <h3>Exhibit 14：Nowcast 同时捕捉报告与未报告购金</h3>
+  <div style="background:var(--card);border:1px solid var(--bd);border-radius:14px;padding:22px 24px 16px;margin:22px 0">
+    <div style="font-size:15px;font-weight:600;margin-bottom:4px">Exhibit 14 左图 · 中国购金：GS 估算 vs 官方报告（2014–2026，吨/月）</div>
+    <div style="font-size:12.5px;color:var(--tx3);margin-bottom:16px">蓝色 = GS 对中国在伦敦 OTC 市场购金的估算；红色 = 报告的中国央行购金。纵轴 0–80 吨。注意 2022 年后蓝柱持续高于红柱、且红柱稀疏——这正是"未报告购金"的可视化。</div>
+    <div style="height:290px;height:300px"><canvas id="cEx14L"></canvas></div>
+    <div style="font-size:12px;color:var(--tx3);border-left:2px solid var(--bd2);padding-left:12px;margin:12px 0;font-style:normal">据原图复绘（示意，非精确逐月数值）。原图来源：IMF, HMRC, Goldman Sachs GIR。原图中还标注了一个 "604" 的异常值（2015 年附近），属特殊大额交易的标注。</div>
+  </div>
+  <div style="background:var(--card);border:1px solid var(--bd);border-radius:14px;padding:22px 24px 16px;margin:22px 0">
+    <div style="font-size:15px;font-weight:600;margin-bottom:4px">Exhibit 14 右图 · 英瑞双边金条流（2013–2026，吨/月）</div>
+    <div style="font-size:12.5px;color:var(--tx3);margin-bottom:16px">蓝线 = 英国对瑞士净出口（英方记录）；红线 = 瑞士自英国净进口（瑞方记录）。2022 年俄储备冻结（图中竖线）后两线出现系统性背离，被解读为央行黄金借道瑞士。</div>
+    <div style="height:290px;height:290px"><canvas id="cEx14R"></canvas></div>
+    <div style="font-size:12px;color:var(--tx3);border-left:2px solid var(--bd2);padding-left:12px;margin:12px 0;font-style:normal">据原图复绘（示意）。原图来源：HMRC, Swiss Customs, Goldman Sachs GIR。纵轴约 -100 至 200 吨，2013–2014 年曾有约 220 吨的极端峰值。</div>
+  </div>
+</section><section id="a3">
+  <div style="display:flex;align-items:baseline;gap:14px;margin-bottom:10px;flex-wrap:wrap"><span style="font-size:13px;color:var(--gold);font-weight:600;letter-spacing:1px">附注 A.3</span><h2>各年套用与验证情况</h2></div>
+  <p style="color:var(--tx3);font-size:13.5px;margin-bottom:24px">Nowcast 不是黑箱——把它的输出放回历史，能与官方数据、其他机构估算互相印证。下面按时间线梳理关键年份。</p>
+
+  <h3>3.1 全球央行持仓：报告值 vs GS 估算（Exhibit 12，1985–2025）</h3>
+  <div style="background:var(--card);border:1px solid var(--bd);border-radius:14px;padding:22px 24px 16px;margin:22px 0">
+    <div style="font-size:15px;font-weight:600;margin-bottom:4px">全球官方黄金储备（吨）：蓝线=报告值，红虚线=GS 2022 年后估算</div>
+    <div style="font-size:12.5px;color:var(--tx3);margin-bottom:16px">原图显示：2008–2010 金融危机前后降至约 30,000 吨谷底（央行曾净卖出），此后持续回升；2022 年俄储备冻结（虚线标注）后，报告值约 35,000–36,000 吨，而 GS 估算（红虚线）进一步上探至约 38,000–39,000 吨——差额即"未报告购金"。</div>
+    <div style="height:290px;height:320px"><canvas id="cHoldings"></canvas></div>
+    <div style="font-size:12px;color:var(--tx3);border-left:2px solid var(--bd2);padding-left:12px;margin:12px 0;font-style:normal">据 Exhibit 12 复绘（示意趋势，非精确逐月数值）。原图来源：IFS, Goldman Sachs GIR，1985–2025。</div>
+  </div>
+
+  <h3>3.2 关键年份套用情况</h3>
+  <div style="content:"";position:absolute;left:8px;top:6px;bottom:6px;width:2px;background:var(--bd2)">
+    <div style="content:"";position:absolute;left:-24px;top:14px;width:10px;height:10px;border-radius:50%;background:var(--gold);border:2px solid var(--bg)"><div style="color:var(--gold2);font-weight:600;font-size:13px">2008–2010 · 全球金融危机</div><div style="font-size:13.5px;color:var(--tx2)">全球央行黄金持仓降到约 30,000 吨的谷底——危机期间央行曾是净卖方。这是高盛"央行需求顺周期于对储备体系的信心"的历史证据：信心崩塌时反而先卖，信心恢复后才逐步买回。</div></div>
+    <div style="content:"";position:absolute;left:-24px;top:14px;width:10px;height:10px;border-radius:50%;background:var(--gold);border:2px solid var(--bg)"><div style="color:var(--gold2);font-weight:600;font-size:13px">2015 附近 · 中国异常大额标注</div><div style="font-size:13.5px;color:var(--tx2)">Exhibit 14 左图出现 "604" 的标注值，反映该时期中国通过伦敦 OTC 的购金与官方报告之间存在显著错位，是 Nowcast 早期验证中国"未报告买盘"的样本之一。</div></div>
+    <div style="content:"";position:absolute;left:-24px;top:14px;width:10px;height:10px;border-radius:50%;background:var(--gold);border:2px solid var(--bg)"><div style="color:var(--gold2);font-weight:600;font-size:13px">2016–2021 · Nowcast 与报告大体同步</div><div style="font-size:13.5px;color:var(--tx2)">中国 nowcast（蓝）与 PBoC 报告（红）走势基本同向，蓝柱偶有高出。此时英瑞双边流大体匹配，模型可靠性较高。</div></div>
+    <div style="content:"";position:absolute;left:-24px;top:14px;width:10px;height:10px;border-radius:50%;background:var(--gold);border:2px solid var(--bg)"><div style="color:var(--gold2);font-weight:600;font-size:13px">2022 · 俄储备被冻结（结构性断点）</div><div style="font-size:13.5px;color:var(--tx2)">所有代理指标同时异动：① 英国对非瑞士出口激增；② 英瑞报告差额开始背离；③ 全球持仓 GS 估算（约 38,000–39,000 吨）明显甩开报告值（约 35,000–36,000 吨）。Nowcast 首次因"结构性变化"而大幅上修，成为此后黄金定价框架的关键信号。</div></div>
+    <div style="content:"";position:absolute;left:-24px;top:14px;width:10px;height:10px;border-radius:50%;background:var(--gold);border:2px solid var(--bg)"><div style="color:var(--gold2);font-weight:600;font-size:13px">2023 · 信念流量验证</div><div style="font-size:13.5px;color:var(--tx2)">高盛整体模型：央行+ETF+投机信念净流入 +975 吨 → 预测金价 +18%（95%CI 15–21%），实际 +15%。Nowcast 提供的央行分项（约 993 吨）是其中最大贡献者，模型的年度预测落在置信区间内。</div></div>
+    <div style="content:"";position:absolute;left:-24px;top:14px;width:10px;height:10px;border-radius:50%;background:var(--gold);border:2px solid var(--bg)"><div style="color:var(--gold2);font-weight:600;font-size:13px">2025-08 · Nowcast 方法本身被写入 Primer</div><div style="font-size:13.5px;color:var(--tx2)">高盛在 Gold Market Primer 中系统公开上述两组件方法，并给出中国案例："启动更早、读数更高、持续更久"。此时 12 个月均值口径的央行购金读数处于高位。</div></div>
+    <div style="content:"";position:absolute;left:-24px;top:14px;width:10px;height:10px;border-radius:50%;background:var(--gold);border:2px solid var(--bg)"><div style="color:var(--gold2);font-weight:600;font-size:13px">2025-08 起 · 模型开始系统性低估（事后发现）</div><div style="font-size:13.5px;color:var(--tx2)">英瑞关系再度恶化：伦敦金库持续下降，但英国出口统计不再能完全解释——部分主权交易<strong>从贸易统计中彻底消失</strong>。旧 Nowcast 未捕捉这部分，开始低估。</div></div>
+    <div style="content:"";position:absolute;left:-24px;top:14px;width:10px;height:10px;border-radius:50%;background:var(--gold);border:2px solid var(--bg)"><div style="color:var(--gold2);font-weight:600;font-size:13px">2025-12 · 读数短暂回落</div><div style="font-size:13.5px;color:var(--tx2)">高盛 nowcast 显示当月央行购金 22 吨，低于 12 个月均值 52 吨——高盛判断为"高波动下的暂时放缓"，而非趋势反转（后续被 2026 数据印证）。</div></div>
+    <div style="content:"";position:absolute;left:-24px;top:14px;width:10px;height:10px;border-radius:50%;background:var(--gold);border:2px solid var(--bg)"><div style="color:var(--gold2);font-weight:600;font-size:13px">2026-01 至 03 · 模型修订</div><div style="font-size:13.5px;color:var(--tx2)">修订后：1 月购金从原估 12 吨上修至 <strong>66 吨</strong>；12 个月均值从 <strong>29 吨/月 → 50 吨/月</strong>（3 月口径）；2026 全年预期 60 吨/月。修订方法：把"伦敦金库流出 − 英国净出口"的缺口加入 nowcast，作为未记录主权黄金流。</div></div>
+    <div style="content:"";position:absolute;left:-24px;top:14px;width:10px;height:10px;border-radius:50%;background:var(--gold);border:2px solid var(--bg)"><div style="color:var(--gold2);font-weight:600;font-size:13px">2026Q1 · 交叉验证：表面数据 vs 真实需求</div><div style="font-size:13.5px;color:var(--tx2)">公开净买入仅 16 吨（且有 129 吨净卖出、土耳其卖 60 吨），看似崩塌；但 WGC 用类似方法（伦敦 OTC + 瑞士炼厂流）估算实际约 244 吨，高于 2025Q4 的 208 吨，中国净进口 317 吨（近 3 倍环比）。这是 Nowcast 类方法"纠正官方数据误导"的经典案例。</div></div>
+  </div>
+</section><section id="a4">
+  <div style="display:flex;align-items:baseline;gap:14px;margin-bottom:10px;flex-wrap:wrap"><span style="font-size:13px;color:var(--gold);font-weight:600;letter-spacing:1px">附注 A.4</span><h2>2025 年模型失效与 2026 年修订：一堂"方法也要迭代"的课</h2></div>
+  <p style="color:var(--tx3);font-size:13.5px;margin-bottom:24px">这段历史比任何静态结论都更有价值——它展示了即使顶级投行的另类数据模型，也会随市场结构变化而失效。</p>
+
+  <div style="grid-template-columns:1fr">
+    <div style="background:var(--card);border:1px solid var(--bd);border-radius:12px;padding:18px 20px;border-color:rgba(229,72,77,.3)">
+      <div  style="color:#f08a8d">失效</div>
+      <div style="font-size:15px;font-weight:600;margin:6px 0 10px;color:var(--tx)">2025 年 8 月起：海关数据"漏掉"了主权交易</div>
+      <p>原本"伦敦金库变动 ≈ 英国净出口"的关系<strong>在 2025 年 8 月破裂</strong>：金库库存继续下降，但出口统计不再同步。说明部分央行黄金<strong>完全从贸易统计中消失</strong>。旧模型因未计入这部分，持续低估需求。</p>
+    </div>
+    <div style="background:var(--card);border:1px solid var(--bd);border-radius:12px;padding:18px 20px;border-color:rgba(47,163,107,.3)">
+      <div  style="color:#5cc99a">修订</div>
+      <div style="font-size:15px;font-weight:600;margin:6px 0 10px;color:var(--tx)">2026 年 5 月：把差额加回去</div>
+      <p>Thomas & Struyven 调整 nowcast：<strong>新增"伦敦金库流出 − 英国净出口"缺口</strong>作为未记录主权流。修订后 12 个月均值 29→50 吨/月，1 月读数 12→66 吨。维持 2026 年底 5,400 美元目标不变。</p>
+    </div>
+  </div>
+
+  <div class="callout" style="background:rgba(229,72,77,.06);border:1px solid rgba(229,72,77,.28)">
+    <span >三个方法论教训</span>
+    ① <strong>另类数据不是永久有效的</strong>——当市场结构变化（央行开始规避贸易统计），代理变量会失效；② <strong>好的研究者会公开修订</strong>——高盛明确说明"自 2025 年 8 月起低估"，并把新旧口径并列；③ <strong>不要迷信单一时点的读数</strong>——2025-12 的 22 吨曾被解读为需求放缓，事后看只是波动中的噪音。这与我们前面"用滚动均值、不用单季外推"的原则完全一致。
+  </div>
+  <p style="font-size:12px;color:var(--tx3);border-left:2px solid var(--bd2);padding-left:12px;margin:12px 0;font-style:normal">信息源：ADVFN / GoldFix 转述高盛 2026-05-25 报告（Thomas & Struyven）："revised its proprietary model... undercounting demand since August 2025... 12-month MA climbed to 50 tonnes per month in March, up from 29 previously... January 66t vs earlier 12t... adjust our nowcast by adding the discrepancy between London vault outflows and UK net exports as unrecorded sovereign gold flows"。腾讯新闻 2026-02 转述 2025-12 nowcast 22 吨/12月均值 52 吨。</p>
+</section><section id="a5">
+  <div style="display:flex;align-items:baseline;gap:14px;margin-bottom:10px;flex-wrap:wrap"><span style="font-size:13px;color:var(--gold);font-weight:600;letter-spacing:1px">附注 A.5</span><h2>个人投资者如何借用这套方法</h2></div>
+  <p style="color:var(--tx3);font-size:13.5px;margin-bottom:24px">你无法复制高盛的 HMRC 数据授权，但可以借用它的"用代理数据戳破官方数据"的思维方式。</p>
+
+  <table>
+    <thead><tr><th>高盛做法</th><th>个人可获得的对应数据源</th><th>怎么用</th></tr></thead>
+    <tbody>
+      <tr><td>英国海关金条出口</td><td>UK HMRC 贸易统计（公开）；LBMA 金库月报</td><td>跟踪"金库存量变动"与"净出口"是否背离，背离扩大=隐性央行买盘</td></tr>
+      <tr><td>英瑞报告差额</td><td>瑞士海关（SWISS-STAT 公开数据库）金银进出口</td><td>对比英国出口与瑞士进口，差额方向即未记录流向</td></tr>
+      <tr><td>中国 Nowcast</td><td>中国黄金净进口（海关）、PBoC 月度储备公告、上海金溢价</td><td>当"进口高、报告低、溢价正"三者并存时，实际买盘可能强于官方数字</td></tr>
+      <tr><td>全球央行持仓</td><td>WGC Gold Reserves by Country（季度，滞后 2 月）+ IMF IFS</td><td>用季度报告值做慢变量锚，用月度代理数据做实时修正</td></tr>
+    </tbody>
+  </table>
+  <div class="callout" style="background:rgba(47,163,107,.06);border:1px solid rgba(47,163,107,.25)">
+    <span >一个简化的"个人版 Nowcast"思路</span>
+    每月记三个数：① PBoC 官方增持吨数；② 中国黄金净进口吨数；③ 伦敦金库/上海金溢价方向。<strong>当②持续明显高于①、且③偏强时</strong>，视为"隐性官方买盘"信号，强化你的长期层判断；反之则减弱。不需要精确到吨，方向对了就有用。
+  </div>
+  <div class="callout" style="background:rgba(91,156,246,.06);border:1px solid rgba(91,156,246,.25)">
+    <span >使用纪律（来自高盛自己的教训）</span>
+    ① 看<strong>12 个月滚动均值</strong>，不看单月（2025-12 的 22 吨噪音）；② 当代理关系突然背离时，先怀疑<strong>市场结构变了</strong>而非数据错了；③ 任何估算都要<strong>公开记录口径与修订</strong>，方便事后复盘——这正是高盛把新旧口径并列的价值。
+  </div>
+</section><section id="a6">
+  <div style="display:flex;align-items:baseline;gap:14px;margin-bottom:10px;flex-wrap:wrap"><span style="font-size:13px;color:var(--gold);font-weight:600;letter-spacing:1px">附注 A.6</span><h2>信源与图表说明</h2></div>
+  <table>
+    <thead><tr><th>内容</th><th>信息源</th></tr></thead>
+    <tbody>
+      <tr><td>Nowcast 机制、两组件、Exhibit 12/13/14 原始图表</td><td>Goldman Sachs Global Investment Research, <em>Gold Market Primer / Precious Analyst</em>, Lina Thomas & Daan Struyven, 2025-08-17（PDF 原文第 11–14 页）</td></tr>
+      <tr><td>2026 模型修订（29→50 吨/月、1 月 12→66 吨、8 月起低估）</td><td>ADVFN / GoldFix 转述高盛 2026-05-25 报告；silvertrade.com 转述</td></tr>
+      <tr><td>2025-12 读数 22 吨、12 月均值 52 吨、两情景</td><td>腾讯新闻 2026-02 转述高盛报告</td></tr>
+      <tr><td>中国 2025-09 高盛估 15 吨 vs 官方约 1 吨</td><td>新浪财经 / Yahoo Finance 2026-01 转述</td></tr>
+      <tr><td>2026Q1 公开 16 吨 vs WGC 估算 244 吨、中国进口 317 吨</td><td>J.P. Morgan Global Research, 2026-06-09（官网原文）</td></tr>
+    </tbody>
+  </table>
+  <div class="callout" style="background:rgba(229,72,77,.06);border:1px solid rgba(229,72,77,.28)">
+    <span >图表说明</span>
+    本文中标注"据原图复绘（示意）"的图表，是根据高盛 PDF 中 Exhibit 12/13/14 的<strong>趋势和标注</strong>重绘的示意图，用于说明机制与数量级，<strong>不是逐月精确数据</strong>。需要精确数值请查阅原报告图表或 HMRC/Swiss Customs 原始数据。所有引用均已标注日期，机构估算会随方法修订而变化。
+  </div>
+</section>
+<!-- ============ 摩根大通 ============ -->
+<section id="s2">
+  <div style="display:flex;align-items:baseline;gap:14px;margin-bottom:10px;flex-wrap:wrap"><span style="font-size:13px;color:var(--gold);font-weight:600;letter-spacing:1px">PART 02</span><h2>摩根大通：制度变迁框架 + 替代数据还原真相</h2></div>
+  <p style="color:var(--tx3);font-size:13.5px;margin-bottom:24px">JPM 不追求高盛那样的单一回归方程，而是把黄金放在"储备货币体系变迁"的历史坐标里，并用替代数据戳破表面数据。</p>
+
+  <div style="padding:4px 18px 18px;border-top:3px solid var(--blue)">
+    <div style="padding:20px 0 14px;border-bottom:1px solid var(--bd);margin-bottom:8px"><div style="font-size:20px;font-weight:600;color:var(--tx)"> J.P. Morgan Global Research / Private Bank</div><div style="color:var(--tx3);font-size:13px;margin-top:4px">核心命题：央行购金表面降温可能是假象——先看穿数据，再谈价格；金价由三维度共同决定</div></div>
+
+    <h4>第 1 步：三维度定价框架——不只盯一个变量</h4>
+    <table>
+      <thead><tr><th>维度</th><th>分析内容</th><th>个人如何借用</th></tr></thead>
+      <tbody>
+        <tr><td><b>① 储备货币范式转换的历史参照</b></td><td>类比美元取代英镑等历史更替期，看黄金在货币体系转换中的角色</td><td>问"当前是否有货币体系结构性变化"，而非只看月度数据</td></tr>
+        <tr><td><b>② 投资者进一步增配的影响</b></td><td>中国险资获准配黄金（上限 1% AUM≈200 吨）、可能升至 5%；新需求源改变地板与天花板</td><td>盯监管政策变化——新买家入场是慢变量但影响巨大</td></tr>
+        <tr><td><b>③ 美债扩张下黄金的隐含定价</b></td><td>美国债务扩张、财政赤字→黄金作为价值储藏的隐含重估</td><td>把债务/赤字数据当长期背景变量</td></tr>
+      </tbody>
+    </table>
+
+    <h4>第 2 步：识别"数据陷阱"——这是 JPM 最值得学的一招</h4>
+    <p>2026Q1 表面数据：央行<strong>净卖出 129 吨</strong>（土耳其 3 月卖 60 吨），公开净买入仅 16 吨——看起来购金动能崩塌。JPM 引用 WGC 用<strong>伦敦 OTC 与瑞士炼厂流向</strong>的估算：2026Q1 实际购金约 <strong>244 吨，反而高于 2025Q4 的 208 吨</strong>。中国净进口 317 吨（环比近 3 倍）、央行报告从每月约 1 吨升至 3 月 5 吨/4 月 8 吨。</p>
+    <div class="callout" style="background:rgba(229,72,77,.06);border:1px solid rgba(229,72,77,.28)">
+      <span >方法论要点：官方数据 ≠ 真实需求</span>
+      因为向 IMF 报告购金<strong>没有强制规则</strong>，公开数据天然低估。JPM 的做法是：<strong>当公开数据与替代数据冲突时，信替代数据</strong>。对你而言，可跟踪的替代指标包括：中国黄金净进口、瑞士海关金条流向、伦敦金库持仓变动、上海金溢价。这正是本系列前面"321 吨中仅 120 吨公开、63% 靠估算"的权威出处。
+    </div>
+
+    <h4>第 3 步：把"驱动因素"转化为可跟踪的盘中参照</h4>
+    <p>JPM 私行用<strong>5 年期掉期利差建模美元指数</strong>（DXY 模型）：2026 年初 DXY 约 99、模型值约 90，判断美元<strong>相对利差高估约 9%</strong>，因此看美元上行空间有限、对黄金构成 benign（温和）环境。同时明确列出历史上相关性失效的案例（2012–13 美元几乎没动、黄金跌 18%），提醒<strong>负相关不是铁律</strong>。</p>
+    <p>它还给出技术锚点：金价夹在 200 日均线约 4,340 与 50 日均线约 4,730 之间，称之为"技术无人区"——<strong>用均线定义震荡区间</strong>，而非预测方向。</p>
+
+    <h4>第 4 步：明确定义看空条件——不是无条件看多</h4>
+    <p>JPM 的 bear case 逻辑很清晰：最显著的看空风险是"美国增长与就业强劲 + 通胀加速 → 美联储加息周期固化"——这会<strong>先动摇西方 ETF 需求</strong>，叠加央行购金强度下降，形成持续逆风。它强调这是"高门槛"情景（high bar），但在跟踪清单里必须存在。</p>
+
+    <h4>第 5 步：把预测做成"可追溯修订"的季度表</h4>
+    <table>
+      <thead><tr><th>时点</th><th>2026 Q1</th><th>Q2</th><th>Q3</th><th>4Q26</th><th>2027 年底</th></tr></thead>
+      <tbody>
+        <tr><td><b>最新</b></td><td>4,873</td><td>4,800</td><td>5,300</td><td><b>6,000</b></td><td><b>6,300</b></td></tr>
+        <tr><td>旧（2026-02）</td><td>5,100</td><td>5,530</td><td>5,900</td><td>6,300</td><td>6,600</td></tr>
+        <tr><td>变化</td><td>−4%</td><td>−13%</td><td>−10%</td><td>−5%</td><td>−5%</td></tr>
+      </tbody>
+    </table>
+    <p style="font-size:12px;color:var(--tx3);border-left:2px solid var(--bd2);padding-left:12px;margin:12px 0;font-style:normal">来源：J.P. Morgan Commodities Research。这张表的意义不在数字本身，而在<strong>它公开了修订路径</strong>——你可以对比"当时预测 vs 实际"，校准自己对机构的信任度。</p>
+
+    <div class="callout" style="background:rgba(91,156,246,.06);border:1px solid rgba(91,156,246,.25)">
+      <span >你可以直接抄走的方法</span>
+      ① <strong>永远对官方数据做替代数据交叉检验</strong>——这是识别"央行数据是假象"的关键；② <strong>用利差模型判断美元是否高估</strong>，而非裸看汇率；③ <strong>盯监管/制度变化带来的新买家</strong>（如中国险资 1%→5% 的空间）；④ <strong>把预测做成可追溯表</strong>，记录每次修订和理由；⑤ 明确写出<strong>看空触发条件</strong>，避免只准备一套剧本。
+    </div>
+    <div style="font-size:12px;color:var(--tx3);border-left:2px solid var(--bd2);padding-left:12px;margin:12px 0;font-style:normal">信息源（primary）：J.P. Morgan Global Research, <em>Gold Price Predictions for 2026 and 2027</em>, 2026-06-09, jpmorgan.com/insights/global-research/commodities/gold-prices（含分季度目标价表、央行替代数据估算、三维度框架、看空条件）；J.P. Morgan Private Bank, <em>Is It a Golden Era for Gold?</em>（DXY 5Y 掉期利差模型、实际利率长周期、历史相关性失效案例）。中文转述：中证网 cs.com.cn（三维度框架 15% 上调、长期 4,500）。</div>
+  </div>
+</section>
+
+<!-- ============ 摩根士丹利 ============ -->
+<section id="s3">
+  <div style="display:flex;align-items:baseline;gap:14px;margin-bottom:10px;flex-wrap:wrap"><span style="font-size:13px;color:var(--gold);font-weight:600;letter-spacing:1px">PART 03</span><h2>摩根士丹利：残差归因 + 三情景树</h2></div>
+  <p style="color:var(--tx3);font-size:13.5px;margin-bottom:24px">大摩的方法最适合普通人直接模仿：先证明传统模型解释不了现状，把差额归因于新增需求；再用三情景覆盖不确定性，且预测与仓位分开管理。</p>
+
+  <div style="padding:4px 18px 18px;border-top:3px solid var(--purple)">
+    <div style="padding:20px 0 14px;border-bottom:1px solid var(--bd);margin-bottom:8px"><div style="font-size:20px;font-weight:600;color:var(--tx)"> Morgan Stanley · 2027 Global Strategy Outlook</div><div style="color:var(--tx3);font-size:13px;margin-top:4px">核心命题：实际利率模型已经"失效"约 24%——这个缺口正是央行与 ETF 的贡献</div></div>
+
+    <h4>第 1 步：建立基准模型，然后诚实面对它的失败</h4>
+    <p>大摩把 <strong>2026 年 3–7 月</strong>金价与美国 10 年期实际收益率的历史关系外推到当下，模型给出的"应有金价"是<strong>低于 3,000 美元/盎司</strong>——而当时实际金价约 <strong>3,900</strong>。这个约 <strong>24% 的缺口</strong>（相对模型值），被归因于<strong>央行实物需求与 ETF 资金流入</strong>。</p>
+    <div style="background:var(--card2);border:1px dashed var(--bd2);border-radius:10px;padding:14px 18px;margin:14px 0;font-family:Menlo,Consolas,monospace;font-size:13px;color:var(--gold2);text-align:center">模型应有价 &lt; 3,000　vs　实际 ≈ 3,900<br>缺口 ≈ 24% → 归因于央行 + ETF 的"结构性买盘"</div>
+    <p>这是本系列前面"双层框架"的机构量化版本：<strong>短期利率模型解释不了的部分，由长期买盘填补</strong>。大摩明确说"单纯用实际收益率预测价格会低估金价"。</p>
+
+    <h4>第 2 步：把结论展开成三情景树——每个情景有明确条件</h4>
+    <table>
+      <thead><tr><th>情景</th><th>2027Q4 目标</th><th>相对 3,877 现货</th><th>触发条件（大摩原文逻辑）</th></tr></thead>
+      <tbody>
+        <tr><td><b>悲观</b></td><td>3,938</td><td>+2%</td><td>利率/美元继续压制，需求买盘不敌机会成本</td></tr>
+        <tr><td><b>基准</b></td><td><b>5,250</b></td><td>+35%</td><td>中东局势缓和→油价从 100 回落至 75→通胀与加息预期下降→持金成本降低；央行+ETF 持续</td></tr>
+        <tr><td><b>乐观</b></td><td>7,088</td><td>+83%</td><td>债券收益率因财政可持续性担忧上升，资金转向无信用风险实物资产；或高油价引发滞胀避险</td></tr>
+      </tbody>
+    </table>
+    <p>大摩特意指出一个反直觉点：<strong>收益率上升不必然利空黄金</strong>——如果上涨源于"财政可持续性担忧"，投资者反而会买黄金。这与高盛"财政问题重塑定价框架"的说法一致，也和本文原文"美元信用事件是反转开关"完全呼应。</p>
+
+    <h4>第 3 步：预测与仓位分开——最容易被个人忽略的一课</h4>
+    <p>尽管给出 +35% 的基准目标，大摩跨资产团队<strong>仍维持黄金中性配置</strong>，等政策利率定价稳定后再考虑增持；同期对全球股票是最高程度超配、大宗商品整体低配 3 个百分点。它的宏观假设是 <strong>2027 年 10Y 美债 5%、美元指数 105</strong>——这个环境对黄金短期仍有压力。</p>
+    <div class="callout" style="background:rgba(167,139,250,.07);border:1px solid rgba(167,139,250,.28)">
+      <span >方法论精髓：观点 ≠ 仓位</span>
+      预测是"如果条件成立，价格会到哪"；仓位是"在当下不确定性下，我该配多少"。两者可以不一致——大摩看涨但中性配置，就是因为条件尚未稳定。<strong>个人投资者最常见的错误就是把"看涨"直接变成"满仓"</strong>。学大摩：给出方向判断，但让仓位跟随"条件的确定性"，而非"方向的吸引力"。
+    </div>
+
+    <div class="callout" style="background:rgba(91,156,246,.06);border:1px solid rgba(91,156,246,.25)">
+      <span >你可以直接抄走的方法</span>
+      ① <strong>用"模型残差"识别结构性力量</strong>：算一个简单利率模型，看实际价与模型价的差额，差额扩大说明有新变量（央行/ETF）在起作用；② <strong>做任何预测都给三档情景 + 每档条件</strong>；③ <strong>把方向判断与仓位决策分开</strong>；④ 接受"收益率上涨也可能利多黄金"的条件性思维，不做机械的利率单因子判断。
+    </div>
+    <div style="font-size:12px;color:var(--tx3);border-left:2px solid var(--bd2);padding-left:12px;margin:12px 0;font-style:normal">信息源（primary）：Morgan Stanley, <em>2027 Global Strategy Outlook</em>, 2026-11-15（三档目标 3,938/5,250/7,088、3–7 月实际利率外推至&lt;3,000、24% 缺口归因、宏观假设 10Y 5%/DXY 105、组合中性配置）。中文转述：财联社 cls.cn/detail/2535201、金十数据 xnews.jin10.com/details/235306、上海有色网 smm.cn/news/IDPYG7TFDLRWPCXGMBKRRGIQHCQTHR2KXRVV4VA、中国证券网 cnstock.com。</div>
+  </div>
+</section>
+
+<!-- ============ 对照 ============ -->
+<section id="s4">
+  <div style="display:flex;align-items:baseline;gap:14px;margin-bottom:10px;flex-wrap:wrap"><span style="font-size:13px;color:var(--gold);font-weight:600;letter-spacing:1px">PART 04</span><h2>三方对照与方法论迁移</h2></div>
+  <p style="color:var(--tx3);font-size:13.5px;margin-bottom:24px">三家看似结论不同（目标价从 4,150 到 6,300），实则在方法上高度互补。</p>
+  <table>
+    <thead><tr><th>维度</th><th>高盛</th><th>摩根大通</th><th>摩根士丹利</th></tr></thead>
+    <tbody>
+      <tr><td><b>核心问题</b></td><td>谁在净买入，买多少</td><td>真实需求是什么，制度在怎么变</td><td>传统模型失效的部分是什么</td></tr>
+      <tr><td><b>分析工具</b></td><td>OLS 回归 + 流量预测 + Nowcast</td><td>替代数据交叉验证 + 历史范式类比</td><td>残差归因 + 三情景树</td></tr>
+      <tr><td><b>关键量化</b></td><td>100 吨≈+1.7%；降息 25bp≈60 吨 ETF</td><td>央行 225 吨/季；美元高估 9%</td><td>实际利率模型缺口≈24%</td></tr>
+      <tr><td><b>对投机的态度</b></td><td>噪声，均值回归，不当公允价值</td><td>关注技术位与仓位拥挤</td><td>事件驱动，结果揭晓后常反转</td></tr>
+      <tr><td><b>最值得你学的一点</b></td><td>可复现的定价公式</td><td>不轻信公开数据</td><td>预测与仓位分开</td></tr>
+    </tbody>
+  </table>
+  <div class="callout" style="background:rgba(47,163,107,.06);border:1px solid rgba(47,163,107,.25)">
+    <span >三家的共识（比目标价可靠得多）</span>
+    ① <strong>央行购金是结构性、长期性的支撑</strong>，不是短期炒作；② <strong>2022 年后传统利率—黄金关系破裂</strong>，必须叠加需求侧变量；③ <strong>财政可持续性/美元信用是长期定价锚</strong>；④ <strong>ETF 与央行是方向决定者，投机仓位是波动来源</strong>；⑤ <strong>都没做无条件看多</strong>，各自列出明确的看空条件。这五条共识，比任何单一目标价都更值得作为你的判断基础。
+  </div>
+  <div class="callout" style="background:rgba(229,72,77,.06);border:1px solid rgba(229,72,77,.28)">
+    <span >分歧本身也是信息</span>
+    2026-11 同时点，高盛 2027 年底 4,800、大摩 5,250、JPM 6,300——差距源于<strong>对"央行购金持续性"和"财政/利率路径"的假设不同</strong>。与其选一个相信，不如把分歧拆成假设：如果你认为央行购金放缓+美联储更鹰，靠近高盛；如果认为结构性买盘持续+财政恶化，靠近 JPM。<strong>目标价的差异，本质是情景假设的差异</strong>。
+  </div>
+</section>
+
+<!-- ============ 实操清单 ============ -->
+<section id="s5">
+  <div style="display:flex;align-items:baseline;gap:14px;margin-bottom:10px;flex-wrap:wrap"><span style="font-size:13px;color:var(--gold);font-weight:600;letter-spacing:1px">PART 05</span><h2>你的实操清单：把三家框架装进一个流程</h2></div>
+  <p style="color:var(--tx3);font-size:13.5px;margin-bottom:24px">这是一份可以直接照做的月度/季度流程，每个动作都标明借自哪家。</p>
+
+  <h4>每月（约 30 分钟）</h4>
+  <ol style="counter-reset:stp;list-style:none;margin:14px 0">
+    <li><b>算信念净流量</b>（高盛）：央行月度净购金（WGC/公开+替代数据）+ ETF 月度净流入（WGC xlsx）+ 投机净多头变化（CFTC，仅看极端值）。<strong>用 1.7%/100 吨估价格方向</strong>。</li>
+    <li><b>交叉验证央行数据</b>（摩根大通）：公开净购金 vs 中国净进口/瑞士流向/伦敦金库变动。若公开数据很低但替代数据高，按后者判断。</li>
+    <li><b>看利率预期</b>（高盛+JPM）：FedWatch 概率变化；降息预期对应未来 6 个月 ETF 需求（25bp≈60 吨）。</li>
+    <li><b>看美元是否偏离利差模型</b>（JPM）：DXY vs 利差模型，偏离越大、均值回归动能越强。</li>
+    <li><b>检查投机仓位是否极端</b>（高盛）：COMEX 净多头历史分位，极端=波动风险，不是趋势信号。</li>
+  </ol>
+
+  <h4>每季（约 30 分钟）</h4>
+  <ol style="counter-reset:stp;list-style:none;margin:14px 0">
+    <li><b>算一次"模型残差"</b>（大摩）：用实际利率简单回归估"应有金价"，与实际价的差额若扩大，说明结构性买盘在增强。</li>
+    <li><b>更新三情景</b>（大摩）：悲观/基准/乐观各写条件下的一年目标，检查哪个情景的假设正在兑现。</li>
+    <li><b>检查制度性新买家</b>（JPM）：监管变化（如险资黄金配置上限）、新储备政策——慢变量但决定长期地板。</li>
+    <li><b>复核长期层</b>：央行购金趋势是否逆转？财政/债务是否恶化？这决定你的底仓比例。</li>
+    <li><b>对比机构预测修订</b>（JPM 式可追溯表）：记录高盛/大摩/JPM 目标价变化，看共识是上移还是下移。</li>
+  </ol>
+
+  <h4>决策纪律</h4>
+  <div class="callout" style="background:rgba(224,164,74,.08);border:1px solid rgba(224,164,74,.3)">
+    <span >三条来自投行、但更易被个人忽略的规则</span>
+    ① <strong>方向判断 ≠ 仓位</strong>（大摩）：看涨也维持中性，等条件稳定再加仓；② <strong>投机极端是波动信号</strong>（高盛）：不因净多头高就追涨，均值回归会制造战术回调；③ <strong>数据冲突时信替代数据</strong>（JPM）：官方购金数据天然滞后和遗漏。把这三条写进你的交易纪律，比多记几个目标价有用得多。
+  </div>
+</section>
+
+<!-- ============ 信源 ============ -->
+<section id="s6">
+  <div style="display:flex;align-items:baseline;gap:14px;margin-bottom:10px;flex-wrap:wrap"><span style="font-size:13px;color:var(--gold);font-weight:600;letter-spacing:1px">PART 06</span><h2>信源与引用规范</h2></div>
+  <p style="color:var(--tx3);font-size:13.5px;margin-bottom:24px">按可信度分层列出。引用时请带日期，并区分原始研报与媒体转述。</p>
+  <table>
+    <thead><tr><th>层级</th><th>信源</th><th>用于本文的内容</th></tr></thead>
+    <tbody>
+      <tr><td><span style="display:inline-block;font-size:11px;padding:2px 9px;border-radius:20px;margin-left:6px;vertical-align:middle;background:rgba(91,156,246,.14);color:#8db8f8;border:1px solid rgba(91,156,246,.3)">primary 原始</span></td><td>Goldman Sachs GIR, <em>Gold Market Primer / Precious Analyst</em>, Lina Thomas & Daan Struyven, 2025-08-17（PDF）</td><td>信念/机会买家框架、OLS 1.7%、70% 解释力、VAR 降息换算、GS Nowcast、均值回归、历史验证案例</td></tr>
+      <tr><td><span style="display:inline-block;font-size:11px;padding:2px 9px;border-radius:20px;margin-left:6px;vertical-align:middle;background:rgba(91,156,246,.14);color:#8db8f8;border:1px solid rgba(91,156,246,.3)">primary 原始</span></td><td>Goldman Sachs, "Gold Is Forecast to Rise 6% by the Middle of 2026", 2025-09-24</td><td>预测实例、COMEX 第 73 百分位、上行风险判断</td></tr>
+      <tr><td><span style="display:inline-block;font-size:11px;padding:2px 9px;border-radius:20px;margin-left:6px;vertical-align:middle;background:rgba(91,156,246,.14);color:#8db8f8;border:1px solid rgba(91,156,246,.3)">primary 原始</span></td><td>J.P. Morgan Global Research, "Gold Price Predictions for 2026 and 2027", 2026-06-09, jpmorgan.com</td><td>三维度框架、分季度目标价表与修订、央行替代数据、看空条件</td></tr>
+      <tr><td><span style="display:inline-block;font-size:11px;padding:2px 9px;border-radius:20px;margin-left:6px;vertical-align:middle;background:rgba(91,156,246,.14);color:#8db8f8;border:1px solid rgba(91,156,246,.3)">primary 原始</span></td><td>J.P. Morgan Private Bank, "Is It a Golden Era for Gold?"</td><td>DXY 5Y 掉期利差模型、实际利率长周期、相关性失效案例、技术无人区</td></tr>
+      <tr><td><span style="display:inline-block;font-size:11px;padding:2px 9px;border-radius:20px;margin-left:6px;vertical-align:middle;background:rgba(91,156,246,.14);color:#8db8f8;border:1px solid rgba(91,156,246,.3)">原始(经转述)</span></td><td>Morgan Stanley, <em>2027 Global Strategy Outlook</em>, 2026-11-15</td><td>三情景目标、24% 缺口、宏观假设、组合中性——以财联社/金十/上海有色网转述为准，精确数值请核对原报告</td></tr>
+      <tr><td><span style="display:inline-block;font-size:11px;padding:2px 9px;border-radius:20px;margin-left:6px;vertical-align:middle;background:rgba(229,72,77,.12);color:#f08a8d;border:1px solid rgba(229,72,77,.28)">媒体转述</span></td><td>Kitco 2025-10-01；汇金网 gold678.com 2026-09；证券时报 stcn.com、上海证券报 cnstock.com、goldinvest.de 2026-11</td><td>高盛 2025-09 后目标价多次调整、期权 gamma 对冲机制、市场反应</td></tr>
+    </tbody>
+  </table>
+  <div class="callout" style="background:rgba(229,72,77,.06);border:1px solid rgba(229,72,77,.28)">
+    <span >三点引用纪律</span>
+    ① <strong>目标价必须带日期</strong>——高盛 2026 年内从 4,900→4,650→4,150 多次调整；② <strong>能引原始研报就不引二手</strong>——本文已尽量用高盛 PDF、JPM 官网原文；大摩原报告未公开获取，明确标注为媒体转述；③ <strong>投行观点也可能出错且有利益冲突</strong>——学方法论，不迷信结论。
+  </div>
+</section>
+
+<footer>
+  本文为方法论学习材料，非投资建议。所有目标价均为特定时点的情景假设，会随美联储政策、地缘事件与数据修订而频繁变化。<br>
+  高盛 1.7%/100 吨等量化规则来自其历史样本回归（2014-2024），样本外有效性需自行检验；"模型残差"与三情景法为对投行方法的个人化简化，未经回测。<br>
+  生成于 2026-11-21 · 信源分层与日期见第六节。
+</footer>
+
+
+</div>
+<div class="part" id="cheat"><div class="part-head"><span class="part-num">CH</span><h2>速查卡</h2></div>
+<div class="cheat-grid">
+<div class="cheat-card"><div class="cc-name">高盛定价机器</div><div class="cc-detail">信念买家(央行/ETF/投机)定方向，解释70%月度波动；每100吨≈涨1.7%。</div></div>
+<div class="cheat-card"><div class="cc-name">高盛三类预测</div><div class="cc-detail">ETF看利率(降25bp≈60吨/6月)，央行看财政+制裁，投机当噪声均值回归。</div></div>
+<div class="cheat-card"><div class="cc-name">GS Nowcast</div><div class="cc-detail">用英国海关数据还原未披露央行购金；两组件=对非瑞士出口+英瑞差额。</div></div>
+<div class="cheat-card"><div class="cc-name">摩根大通</div><div class="cc-detail">三维度框架；公开数据不可信时用OTC/炼厂替代数据；DXY用5Y利差模型。</div></div>
+<div class="cheat-card"><div class="cc-name">摩根士丹利</div><div class="cc-detail">实际利率模型缺口24%归因央行+ETF；三情景；看涨但组合中性。</div></div>
+<div class="cheat-card"><div class="cc-name">WGC GRAM</div><div class="cc-detail">四因子回归(经济/风险/机会成本/动能)，行业标准的归因框架。</div></div>
+<div class="cheat-card"><div class="cc-name">三家共识</div><div class="cc-detail">央行结构性支撑、2022后利率关系失效、财政是长期锚、投机是波动源。</div></div>
+<div class="cheat-card"><div class="cc-name">目标价分歧</div><div class="cc-detail">同时点4150-6300差35%，且频繁修订——学框架不抄数字。</div></div>
+<div class="cheat-card"><div class="cc-name">方法论迁移</div><div class="cc-detail">流量框架+交叉验证+情景树+预测与仓位分开，见正文实操清单。</div></div>
+</div></div>
+<div class="part" id="quiz"><div class="part-head"><span class="part-num">QZ</span><h2>自测：检验掌握程度</h2></div>
+<div class="quiz-item"><div class="q-title">第 1 题 · 高盛</div><p>高盛的"信念买家"包括谁？每100吨对应涨幅？</p><details><summary>查看解析</summary><div class="answer"><b>央行/ETF/投机；约1.7%（95%CI 1.5-2%）。</b>见正文 PART 01。</div></details></div>
+<div class="quiz-item"><div class="q-title">第 2 题 · Nowcast</div><p>GS Nowcast 为何能用英国海关数据看见主权黄金？</p><details><summary>查看解析</summary><div class="answer"><b>英国不产金，伦敦交易黄金必进口；海关分类由官员判断，主权交易常被记录。</b>见附注 A.1。</div></details></div>
+<div class="quiz-item"><div class="q-title">第 3 题 · 摩根大通</div><p>2026Q1公开净买16吨，JPM为何判断实际需求约244吨？</p><details><summary>查看解析</summary><div class="answer"><b>用伦敦OTC与瑞士炼厂流向等替代数据估算未披露购金。</b>见正文 PART 02。</div></details></div>
+<div class="quiz-item"><div class="q-title">第 4 题 · 摩根士丹利</div><p>实际利率模型给出&lt;3000、实际3900，24%缺口归因于什么？</p><details><summary>查看解析</summary><div class="answer"><b>央行实物需求与ETF流入的结构性买盘。</b>见正文 PART 03。</div></details></div>
+<div class="quiz-item"><div class="q-title">第 5 题 · 迁移</div><p>三家投行最值得个人借用的各一点是什么？</p><details><summary>查看解析</summary><div class="answer"><b>高盛可复现定价公式、摩根交叉验证数据、大摩预测与仓位分开。</b>见正文 PART 04。</div></details></div>
+</div>
+<div class="summary-box"><h3>本章小结</h3><p>本章为完整报告原文，覆盖核心论点、逻辑链条、真实数据与执行方法。建议结合 Atlas 本课题其他模块交叉阅读。</p><div class="mnemonic-line">先看框架，再看数据，最后看执行。</div></div>
+<div class="next-card"><div><div class="n-label">下一步</div><div class="n-title"><a href="../index.html">回到本课题目录 →</a></div></div><div class="n-arrow">→</div></div>
+<p style="text-align:center"><a href="../index.html">← 返回黄金定价与2026年阶段复盘学习手册目录</a></p>
+<div class="page-footer"><span>三大投行黄金分析框架深度拆解 · 独立章节</span><span>原文完整保留 · 数据与来源见正文 · 不构成投资建议</span></div>
+</div>
+<script>
+Chart.defaults.color='#a6adba';
+Chart.defaults.font.family='-apple-system,BlinkMacSystemFont,"PingFang SC",sans-serif';
+new Chart(document.getElementById('cGS'),{
+  data:{labels:['2018','2021','2023'],datasets:[
+    {type:'bar',label:'信念净流量(吨)',data:[114,-209,975],backgroundColor:['#486581','#9c3338','#486581'],yAxisID:'y',borderRadius:4,barPercentage:.5},
+    {type:'line',label:'金价实际涨跌(%)',data:[0,-4,15],borderColor:'#e0a44a',backgroundColor:'#e0a44a',borderWidth:2.5,pointRadius:5,pointHoverRadius:7,yAxisID:'y1',tension:.2},
+    {type:'line',label:'模型预测(%)',data:[2,-4,18],borderColor:'#5b9cf6',backgroundColor:'#5b9cf6',borderWidth:1.5,borderDash:[5,4],pointRadius:3,yAxisID:'y1',tension:.2}
+  ]},
+  options:{responsive:true,maintainAspectRatio:false,interaction:{mode:'index',intersect:false},
+    plugins:{legend:{display:true,position:'bottom',labels:{font:{size:11},boxWidth:12}},tooltip:{callbacks:{label:c=>c.dataset.label+': '+c.parsed.y+(c.dataset.label.includes('%')?'%':' 吨')}}},
+    scales:{
+      x:{ticks:{font:{size:12}},grid:{display:false}},
+      y:{position:'left',title:{display:true,text:'吨'},ticks:{font:{size:11}},grid:{color:'rgba(255,255,255,0.06)'}},
+      y1:{position:'right',title:{display:true,text:'%'},ticks:{font:{size:11},callback:v=>v+'%'},grid:{display:false}}
+    }}
+});
+const gridC='rgba(255,255,255,0.06)';
+// Exhibit 13 示意：伦敦金库变化 vs 英国净进口
+const m13=['17','18','19','20','21','22','23','24','25'];
+new Chart(document.getElementById('cEx13'),{
+ data:{labels:m13,datasets:[
+  {type:'line',label:'伦敦金库变化',data:[180,-130,230,160,280,-80,-150,120,80],borderColor:'#1f4e79',backgroundColor:'#1f4e79',borderWidth:2,pointRadius:2,tension:.3},
+  {type:'line',label:'英国净进口',data:[160,-100,210,140,260,-60,-140,100,95],borderColor:'#5b9cf6',backgroundColor:'#5b9cf6',borderWidth:2,borderDash:[5,4],pointRadius:2,tension:.3}
+ ]},
+ options:{responsive:true,maintainAspectRatio:false,plugins:{legend:{display:true,position:'bottom',labels:{font:{size:11},boxWidth:14}}},scales:{
+  x:{grid:{display:false}},y:{min:-200,max:300,title:{display:true,text:'吨/月'},grid:{color:gridC}}}}
+});
+// Exhibit 14 左：中国 nowcast vs 报告
+new Chart(document.getElementById('cEx14L'),{
+ data:{labels:['15','16','17','18','19','20','21','22','23','24','25','26'],datasets:[
+  {type:'bar',label:'GS估算(蓝)',data:[38,20,10,22,25,0,5,60,45,50,58,52],backgroundColor:'rgba(91,156,246,.7)',borderRadius:2},
+  {type:'bar',label:'PBoC报告(红)',data:[604,15,0,8,0,0,0,15,22,5,3,2],backgroundColor:'rgba(229,72,77,.75)',borderRadius:2}
+ ]},
+ options:{responsive:true,maintainAspectRatio:false,plugins:{legend:{display:true,position:'bottom',labels:{font:{size:11},boxWidth:14}},tooltip:{callbacks:{label:c=>c.dataset.label+': '+c.parsed.y+' 吨'}}},scales:{
+  x:{grid:{display:false}},y:{min:0,max:80,title:{display:true,text:'吨/月'},grid:{color:gridC}}}}
+});
+// Exhibit 14 右：英瑞双边流
+new Chart(document.getElementById('cEx14R'),{
+ data:{labels:['13','14','15','16','17','18','19','20','21','22','23','24','25','26'],datasets:[
+  {type:'line',label:'英国对瑞士出口',data:[60,220,40,20,30,10,60,90,160,30,20,10,5,0],borderColor:'#1f4e79',borderWidth:2,pointRadius:0,tension:.3},
+  {type:'line',label:'瑞士自英国进口',data:[50,210,80,60,70,90,120,180,145,90,70,55,60,40],borderColor:'#e5484d',borderWidth:2,pointRadius:0,tension:.3}
+ ]},
+ options:{responsive:true,maintainAspectRatio:false,plugins:{legend:{display:true,position:'bottom',labels:{font:{size:11},boxWidth:14}}},scales:{
+  x:{grid:{display:false}},y:{min:-100,max:230,title:{display:true,text:'吨/月'},grid:{color:gridC}}}}
+});
+// 全球央行持仓
+new Chart(document.getElementById('cHoldings'),{
+ data:{labels:['1985','1990','1995','2000','2005','2008','2010','2015','2020','2022','2024','2025'],datasets:[
+  {type:'line',label:'报告持仓',data:[36000,35800,34500,33000,31000,30000,30200,32000,35000,35500,36000,36200],borderColor:'#1f4e79',borderWidth:2.5,pointRadius:0,tension:.3,fill:false},
+  {type:'line',label:'GS估算(2022起)',data:[null,null,null,null,null,null,null,null,null,null,37500,38800],borderColor:'#e5484d',borderWidth:2,borderDash:[6,4],pointRadius:0,tension:.3}
+ ]},
+ options:{responsive:true,maintainAspectRatio:false,plugins:{legend:{display:true,position:'bottom',labels:{font:{size:11},boxWidth:14}}},scales:{
+  x:{grid:{display:false}},y:{min:28000,max:40000,title:{display:true,text:'吨'},grid:{color:gridC},ticks:{callback:v=>(v/1000).toFixed(0)+'k'}}}}
+});
+
+
+</script>
+</body></html>
