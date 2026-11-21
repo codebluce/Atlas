@@ -109,7 +109,7 @@
       <span  style="background:rgba(224,164,74,.08);border-color:rgba(224,164,74,.4);color:var(--gold2)">所有伦敦交易的黄金必靠进口</span><span style="text-align:center;color:var(--tx3);padding:4px 0;line-height:1">→</span>
       <span style="background:rgba(224,164,74,.08);border-color:rgba(224,164,74,.4);color:var(--gold2)">留在英国=金库；运出英国=央行金库或瑞士改铸</span>
     </div>
-    <p>Nowcast 两个组件：① <strong>英国对全球（除瑞士）的金条出口</strong>——直接运往央行金库的代理，2022 年中后激增；② <strong>英瑞报告差额</strong>（英国对瑞士出口 vs 瑞士自英国进口，2022 年后出现背离）——瑞士严格遵守主权黄金豁免、英国可能不严格，差额即"经伦敦买入的央行黄金"。对中国，nowcast 比央行报告"启动更早、数值更高、持续更久"。</p>
+    <p>Nowcast 两个组件：① <strong>英国对全球（除瑞士）的金条出口</strong>——直接运往央行金库的代理，2022 年中后激增；② <strong>英瑞报告差额</strong>（英国对瑞士出口 vs 瑞士自英国进口，2022 年后出现背离）——瑞士能把央行黄金单独识别并计入黄金进口、英国的记录不完整，红蓝缺口即"经伦敦买入、运往瑞士的央行黄金"。对中国，nowcast 比央行报告"启动更早、数值更高、持续更久"。</p>
 
     <h4>第 6 步：把这套框架转成你的预测公式</h4>
     <div style="background:var(--card2);border:1px dashed var(--bd2);border-radius:10px;padding:14px 18px;margin:14px 0;font-family:Menlo,Consolas,monospace;font-size:13px;color:var(--gold2);text-align:center">预期金价涨幅% ≈ 1.7% × (预期信念净买入吨数 ÷ 100)<br>信念净买入 = 央行(Nowcast/公开) + ETF(利率推算) + 投机(取均值=0)</div>
@@ -178,7 +178,7 @@
       <div >COMPONENT 2</div>
       <div style="font-size:15px;font-weight:600;margin:6px 0 10px;color:var(--tx)">英瑞报告差额（UK–Switzerland gap）</div>
       <p><strong>捕捉什么</strong>：经伦敦买入、但借道瑞士流转/储存的央行黄金。<br>
-      <strong>原理</strong>：英国对瑞士出口 vs 瑞士自英国进口，理论上应相等；但 2022 年后两者<strong>出现背离</strong>。原因是瑞士严格遵守主权黄金豁免（不记录），英国可能不严格（记录）。<br>
+      <strong>原理</strong>：英国对瑞士出口 vs 瑞士自英国进口，理论上应相等；但 2022 年后两者<strong>出现背离</strong>。原因是瑞士对主权黄金豁免的处理更严格、能把央行黄金单独识别并计入黄金进口（红线高）；英国的记录不完整、漏掉了这部分出口（蓝线低）——红蓝缺口即被英国漏记、瑞士记录的央行黄金。<br>
       <strong>差额的含义</strong>：这部分"对不上的账"就是被隐匿的主权买盘。<br>
       <strong>验证图</strong>：Exhibit 14 右图，红蓝线 2022 后明显分叉。</p>
     </div>
@@ -195,7 +195,7 @@
   </div>
   <div style="background:var(--card);border:1px solid var(--bd);border-radius:14px;padding:22px 24px 16px;margin:22px 0">
     <div style="font-size:15px;font-weight:600;margin-bottom:4px">Exhibit 14 右图 · 英瑞双边金条流（2013–2026，吨/月）</div>
-    <div style="font-size:12.5px;color:var(--tx3);margin-bottom:16px">蓝线 = 英国对瑞士净出口（英方记录）；红线 = 瑞士自英国净进口（瑞方记录）。2022 年俄储备冻结（图中竖线）后两线出现系统性背离，被解读为央行黄金借道瑞士。</div>
+    <div style="font-size:12.5px;color:var(--tx3);margin-bottom:16px">蓝线 = 英国对瑞士净出口，红线 = 瑞士自英国净进口。2022 年后红线明显高于蓝线（图中双向箭头标注"Central Banks' Gold Sent To Switzerland"）——这个红蓝缺口被高盛解读为经伦敦买入、运往瑞士的央行黄金：瑞士海关将其计入进口，英国海关未完整记录为出口。</div>
     <div style="height:290px;height:290px"><canvas id="cEx14R"></canvas></div>
     <div style="font-size:12px;color:var(--tx3);border-left:2px solid var(--bd2);padding-left:12px;margin:12px 0;font-style:normal">据原图复绘（示意）。原图来源：HMRC, Swiss Customs, Goldman Sachs GIR。纵轴约 -100 至 200 吨，2013–2014 年曾有约 220 吨的极端峰值。</div>
   </div>
@@ -216,7 +216,7 @@
     <div style="content:"";position:absolute;left:-24px;top:14px;width:10px;height:10px;border-radius:50%;background:var(--gold);border:2px solid var(--bg)"><div style="color:var(--gold2);font-weight:600;font-size:13px">2008–2010 · 全球金融危机</div><div style="font-size:13.5px;color:var(--tx2)">全球央行黄金持仓降到约 30,000 吨的谷底——危机期间央行曾是净卖方。这是高盛"央行需求顺周期于对储备体系的信心"的历史证据：信心崩塌时反而先卖，信心恢复后才逐步买回。</div></div>
     <div style="content:"";position:absolute;left:-24px;top:14px;width:10px;height:10px;border-radius:50%;background:var(--gold);border:2px solid var(--bg)"><div style="color:var(--gold2);font-weight:600;font-size:13px">2015 附近 · 中国异常大额标注</div><div style="font-size:13.5px;color:var(--tx2)">Exhibit 14 左图出现 "604" 的标注值，反映该时期中国通过伦敦 OTC 的购金与官方报告之间存在显著错位，是 Nowcast 早期验证中国"未报告买盘"的样本之一。</div></div>
     <div style="content:"";position:absolute;left:-24px;top:14px;width:10px;height:10px;border-radius:50%;background:var(--gold);border:2px solid var(--bg)"><div style="color:var(--gold2);font-weight:600;font-size:13px">2016–2021 · Nowcast 与报告大体同步</div><div style="font-size:13.5px;color:var(--tx2)">中国 nowcast（蓝）与 PBoC 报告（红）走势基本同向，蓝柱偶有高出。此时英瑞双边流大体匹配，模型可靠性较高。</div></div>
-    <div style="content:"";position:absolute;left:-24px;top:14px;width:10px;height:10px;border-radius:50%;background:var(--gold);border:2px solid var(--bg)"><div style="color:var(--gold2);font-weight:600;font-size:13px">2022 · 俄储备被冻结（结构性断点）</div><div style="font-size:13.5px;color:var(--tx2)">所有代理指标同时异动：① 英国对非瑞士出口激增；② 英瑞报告差额开始背离；③ 全球持仓 GS 估算（约 38,000–39,000 吨）明显甩开报告值（约 35,000–36,000 吨）。Nowcast 首次因"结构性变化"而大幅上修，成为此后黄金定价框架的关键信号。</div></div>
+    <div style="content:"";position:absolute;left:-24px;top:14px;width:10px;height:10px;border-radius:50%;background:var(--gold);border:2px solid var(--bg)"><div style="color:var(--gold2);font-weight:600;font-size:13px">2022 · 俄储备被冻结（结构性断点）</div><div style="font-size:13.5px;color:var(--tx2)">所有代理指标同时异动：① 英国对非瑞士出口激增；② 英瑞报告差额开始背离（瑞士进口红线高于英国出口蓝线，缺口即央行黄金）；③ 全球持仓 GS 估算（约 38,000–39,000 吨）明显甩开报告值（约 35,000–36,000 吨）。Nowcast 首次因"结构性变化"而大幅上修，成为此后黄金定价框架的关键信号。</div></div>
     <div style="content:"";position:absolute;left:-24px;top:14px;width:10px;height:10px;border-radius:50%;background:var(--gold);border:2px solid var(--bg)"><div style="color:var(--gold2);font-weight:600;font-size:13px">2023 · 信念流量验证</div><div style="font-size:13.5px;color:var(--tx2)">高盛整体模型：央行+ETF+投机信念净流入 +975 吨 → 预测金价 +18%（95%CI 15–21%），实际 +15%。Nowcast 提供的央行分项（约 993 吨）是其中最大贡献者，模型的年度预测落在置信区间内。</div></div>
     <div style="content:"";position:absolute;left:-24px;top:14px;width:10px;height:10px;border-radius:50%;background:var(--gold);border:2px solid var(--bg)"><div style="color:var(--gold2);font-weight:600;font-size:13px">2025-08 · Nowcast 方法本身被写入 Primer</div><div style="font-size:13.5px;color:var(--tx2)">高盛在 Gold Market Primer 中系统公开上述两组件方法，并给出中国案例："启动更早、读数更高、持续更久"。此时 12 个月均值口径的央行购金读数处于高位。</div></div>
     <div style="content:"";position:absolute;left:-24px;top:14px;width:10px;height:10px;border-radius:50%;background:var(--gold);border:2px solid var(--bg)"><div style="color:var(--gold2);font-weight:600;font-size:13px">2025-08 起 · 模型开始系统性低估（事后发现）</div><div style="font-size:13.5px;color:var(--tx2)">英瑞关系再度恶化：伦敦金库持续下降，但英国出口统计不再能完全解释——部分主权交易<strong>从贸易统计中彻底消失</strong>。旧 Nowcast 未捕捉这部分，开始低估。</div></div>
